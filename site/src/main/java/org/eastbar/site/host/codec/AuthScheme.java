@@ -3,7 +3,8 @@ package org.eastbar.site.host.codec;
 /**
  * Created by andysjtu on 2015/5/6.
  */
-public class AuthSchme {
+public class AuthScheme {
+    private String messageId;
     private String version;
     private String macAddress;
     private String ipAddress;
@@ -41,9 +42,17 @@ public class AuthSchme {
         this.os = os;
     }
 
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+
     @Override
     public String toString() {
-        return "AuthSchme{" +
+        return "AuthScheme{" +
                 "version='" + version + '\'' +
                 ", macAddress='" + macAddress + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +

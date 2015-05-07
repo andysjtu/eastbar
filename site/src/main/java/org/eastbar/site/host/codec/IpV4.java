@@ -1,6 +1,5 @@
 package org.eastbar.site.host.codec;
 
-import org.eastbar.sitecmd.IPFormatException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
