@@ -41,12 +41,23 @@
               <pattern>%date [%thread] %-5level %logger{80} - %msg%n</pattern>
           </encoder>
       </appender>
+  
 
+  
+
+     <logger name="org.javasimon">
+         <level value="DEBUG" />
+     </logger>
+
+    <logger name="org.eastbar">
+        <level value="DEBUG" />
+    </logger>
     
  
      <root level="INFO">
          <appender-ref ref="stdout" />
          <appender-ref ref="file-debug" />
+         <appender-ref ref="file-error" />
          <appender-ref ref="file-str" />
      </root>
  

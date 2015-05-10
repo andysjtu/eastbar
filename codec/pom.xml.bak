@@ -15,19 +15,13 @@
 
 	<!-- 项目属性 -->
 	<properties>
-		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
-		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
-		<jdbc.driver.version>5.1.35</jdbc.driver.version>
+		<jdbc.driver.groupId>com.h2database</jdbc.driver.groupId>
+		<jdbc.driver.artifactId>h2</jdbc.driver.artifactId>
+		<jdbc.driver.version>${h2.version}</jdbc.driver.version>
 	</properties>
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-
-		<dependency>
-			<groupId>org.eastbar</groupId>
-			<artifactId>eastbar-codec</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
 
 		<!-- SPRING basic begin -->
 		<!-- email/scheduler/freemarker -->
