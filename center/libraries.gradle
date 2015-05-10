@@ -1,0 +1,90 @@
+// build a map of the dependency artifacts to use.  Allows centralized definition of the version of artifacts to
+// use.  In that respect it serves a role similar to <dependencyManagement> in Maven
+ext {
+
+    junitVersion = '4.12'
+    h2Version = '1.2.145'
+    bytemanVersion = '2.1.2'
+    infinispanVersion = '6.0.0.Final'
+    jnpVersion = '5.0.6.CR1'
+
+    springVerion = '4.1.6.RELEASE'
+    nettyVersion = "4.0.26.Final"
+
+    libraries = [
+            // Ant
+            ant                : 'org.apache.ant:ant:1.8.2',
+
+            // Antlr
+            antlr              : 'antlr:antlr:2.7.7',
+
+            // Annotations
+            commons_annotations: 'org.hibernate.common:hibernate-commons-annotations:4.0.5.Final',
+            jandex             : 'org.jboss:jandex:1.1.0.Final',
+            classmate          : 'com.fasterxml:classmate:0.8.0',
+
+            // Dom4J
+            dom4j              : 'dom4j:dom4j:1.6.1@jar',
+
+            // Javassist
+            javassist          : 'org.javassist:javassist:3.18.1-GA',
+
+            // javax
+            jpa                : 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final',
+            jta                : 'org.jboss.spec.javax.transaction:jboss-transaction-api_1.2_spec:1.0.0.Final',
+            validation         : 'javax.validation:validation-api:1.1.0.Final',
+            jacc               : 'org.jboss.spec.javax.security.jacc:jboss-jacc-api_1.4_spec:1.0.2.Final',
+
+            // logging
+            logback_classic            : "ch.qos.logback:logback-classic:1.1.3",
+            logback_ext        : "org.logback-extensions:logback-ext-spring:0.1.2",
+            log4j_over_slf4j   : "org.slf4j:log4j-over-slf4j:1.7.7",
+
+            slf4j_api          : "org.slf4j:slf4j-api:1.7.7",
+            slf4j_log4j        : "org.slf4j:slf4j-log4j12:1.7.7",
+
+            // jaxb task
+            jaxb               : 'com.sun.xml.bind:jaxb-xjc:2.1.6',
+            jaxb2_basics       : 'org.jvnet.jaxb2_commons:jaxb2-basics:0.6.0',
+            jaxb2_ant          : 'org.jvnet.jaxb2_commons:jaxb2-basics-ant:0.6.0',
+
+            // Animal Sniffer Ant Task and Java 1.6 API signature file
+            // not using 1.9 for the time being due to MANIMALSNIFFER-34
+            animal_sniffer     : 'org.codehaus.mojo:animal-sniffer-ant-tasks:1.8',
+            java16_signature   : 'org.codehaus.mojo.signature:java16:1.0@signature',
+
+            //Maven plugin framework
+            maven_plugin       : 'org.apache.maven:maven-plugin-api:3.0.5',
+            maven_plugin_tools : 'org.apache.maven.plugin-tools:maven-plugin-annotations:3.2',
+
+            // ~~~~~~~~~~~~~~~~~~~~~~~~~~ testing
+
+            // logging for testing
+            log4j              : "log4j:log4j:1.2.17",
+            junit              : "junit:junit:${junitVersion}",
+            byteman            : "org.jboss.byteman:byteman:${bytemanVersion}",
+            byteman_install    : "org.jboss.byteman:byteman-install:${bytemanVersion}",
+            byteman_bmunit     : "org.jboss.byteman:byteman-bmunit:${bytemanVersion}",
+            shrinkwrap_api     : 'org.jboss.shrinkwrap:shrinkwrap-api:1.0.0-beta-6',
+            shrinkwrap         : 'org.jboss.shrinkwrap:shrinkwrap-impl-base:1.0.0-beta-6',
+            validator          : 'org.hibernate:hibernate-validator:5.0.1.Final',
+            h2                 : "com.h2database:h2:${h2Version}",
+            derby              : "org.apache.derby:derby:10.9.1.0",
+            jboss_jta          : "org.jboss.jbossts:jbossjta:4.16.4.Final",
+            xapool             : "com.experlog:xapool:1.5.0",
+            mockito            : 'org.mockito:mockito-core:1.9.0',
+
+            c3p0               : "com.mchange:c3p0:0.9.2.1",
+            ehcache            : "net.sf.ehcache:ehcache-core:2.4.3",
+            proxool            : "proxool:proxool:0.8.3",
+            hikaricp           : "com.zaxxer:HikariCP:1.3.5",
+            spring_core        : "org.springframework:spring-core:${springVerion}",
+            spring_context     : "org.springframework:spring-context:${springVerion}",
+            spring_aop         : "org.springframework:spring-aop:${springVerion}",
+            spring_beans       : "org.springframework:spring-beans:${springVerion}",
+            netty_all          :"io.netty:netty-all:${nettyVersion}",
+            javasimon_spring          :"org.javasimon:javasimon-spring:3.4.0",
+            janino             :"org.codehaus.janino:janino:2.7.5",
+            codec              :"commons-codec:commons-codec:1.10"
+    ]
+}

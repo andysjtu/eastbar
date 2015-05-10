@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -9,25 +9,14 @@
 		<relativePath>../parent/</relativePath>
 	</parent>
 	<groupId>org.eastbar</groupId>
-	<artifactId>eastbar-site</artifactId>
+	<artifactId>eastbar-codec</artifactId>
 	<packaging>jar</packaging>
-	<name>EastBar :: Application :: Site</name>
+	<name>EastBar :: Application :: Codec</name>
 
-	<!-- 项目属性 -->
-	<properties>
-		<jdbc.driver.groupId>mysql</jdbc.driver.groupId>
-		<jdbc.driver.artifactId>mysql-connector-java</jdbc.driver.artifactId>
-		<jdbc.driver.version>5.1.35</jdbc.driver.version>
-	</properties>
+	
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-
-		<dependency>
-			<groupId>org.eastbar</groupId>
-			<artifactId>eastbar-codec</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
 
 		<!-- SPRING basic begin -->
 		<!-- email/scheduler/freemarker -->
@@ -49,39 +38,13 @@
 		</dependency>
 		<!-- AOP end -->
 
-		<!-- PERSISTENCE begin -->
-		<!-- hibernate -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-		</dependency>
+		
 
 	
 
-		<!-- spring data access -->
-		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-		</dependency>
+		
 
-		<!-- connection pool -->
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-jdbc</artifactId>
-		</dependency>
-
-		<!-- jdbc driver -->
-		<dependency>
-			<groupId>${jdbc.driver.groupId}</groupId>
-			<artifactId>${jdbc.driver.artifactId}</artifactId>
-			<version>${jdbc.driver.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<!-- PERSISTENCE end -->
+		
 	
 	
 		<dependency>
