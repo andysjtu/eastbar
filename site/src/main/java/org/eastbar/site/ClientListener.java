@@ -46,6 +46,13 @@ public class ClientListener implements Listener {
         this.listenPort = listenPort;
     }
 
+    private ChannelFutureListener closeListener  = new ChannelFutureListener() {
+        @Override
+        public void operationComplete(ChannelFuture future) throws Exception {
+            serverChannel = null;
+        }
+    };
+
     @Override
     public void listen() {
         ServerBootstrap bootstrap = new ServerBootstrap();
@@ -67,7 +74,6 @@ public class ClientListener implements Listener {
                         pipeline.addLast("beatenHandler",new ClientBeatenHandler());
                         pipeline.addLast("clientLogHandler",new ClientLogHandler());
                         pipeline.addLast("clientAlertHandler",new ClientAlertHandler());
-                        pipeline.addLast("cmdRespHandler",new ClientCmdRespHandler());
                         pipeline.addLast("generalHandler",new ClientHandler());
 
                     }
@@ -79,6 +85,7 @@ public class ClientListener implements Listener {
                 if (future.isSuccess()) {
                     logger.info("开启侦听客户端服务成功");
                     serverChannel = future.channel();
+                    serverChannel.closeFuture().addListener(closeListener);
 
                 } else {
                     logger.error("开启侦听客户端服务失败");
@@ -97,6 +104,7 @@ public class ClientListener implements Listener {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if(future.isSuccess()){
+                        serverChannel = null;
                         logger.info("关闭侦听客户端服务成功");
                     }
                 }

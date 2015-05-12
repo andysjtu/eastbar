@@ -22,12 +22,9 @@ public class ClientCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
         ClientMsgType type = ClientMsgType.valueOf(value);
         switch (type) {
             case CAPTURE_CLIENT:
-                System.out.println("receive general resp");
                 ByteBuf byteBuf = msg.data().content().duplicate();
                 short recMssageId = byteBuf.readShort();
                 short recMsgType = byteBuf.readShort();
-                System.out.println("8888888888888888888888888888888888888888");
-                System.out.println("recMsgtype is " + recMsgType);
 
 
                 try {

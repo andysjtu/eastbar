@@ -2,6 +2,7 @@ package org.eastbar.site.handler.client;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.SocketMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ public class ClientHandler extends SimpleChannelInboundHandler<SocketMsg> {
     
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
-        System.out.println("----------------------");
+        ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
     }
 
     @Override

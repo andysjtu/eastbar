@@ -32,11 +32,11 @@ public class ConsoleClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(new LoggingHandler(LogLevel.INFO));
-                        pipeline.addLast(new StringEncoder());
-                        pipeline.addLast(new LineBasedFrameDecoder(1000));
-                        pipeline.addLast(new StringDecoder());
-                        pipeline.addLast(new ResultHandler());
+                        pipeline.addLast("log",new LoggingHandler(LogLevel.INFO));
+                        pipeline.addLast("stringEncoder",new StringEncoder());
+                        pipeline.addLast("lineFrameDecoder",new LineBasedFrameDecoder(1000));
+                        pipeline.addLast("stringDecoder",new StringDecoder());
+                        pipeline.addLast("stringResultHandler",new ResultHandler());
                     }
                 });
         ChannelFuture future =  bootstrap.connect();
@@ -51,18 +51,29 @@ public class ConsoleClient {
                             worker.shutdownGracefully();
                         }
                     });
+                }else{
+                    worker.shutdownGracefully();
                 }
             }
         });
         future.sync();
     }
 
+    private void close(){
+        channel.close();
+        worker.shutdownGracefully();
+    }
+
     public void readConsole(){
         Scanner scanner = new Scanner(System.in);
         String content = scanner.nextLine();
         while(true&&channel.isActive()) {
-            System.out.println("scan content is :{" + content + "}");
-            if(StringUtils.trimToNull(content)!=null) {
+            String cmd = StringUtils.trimToNull(content);
+            if(cmd!=null) {
+                if("quit".equals(cmd)){
+                    close();
+                    break;
+                }
                 if (channel.isActive()) {
                     channel.writeAndFlush(content + "\n");
                 } else {
@@ -78,14 +89,21 @@ public class ConsoleClient {
     public static void main(String[] args) throws InterruptedException {
         ConsoleClient client = new ConsoleClient();
         client.connect();
-        client.readConsole();
+        if(client.getChannel()!=null) {
+            client.readConsole();
+        }
+    }
+
+    public Channel getChannel() {
+        return channel;
     }
 
     public static class ResultHandler extends SimpleChannelInboundHandler<String>{
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-            System.out.println("received msg is : "+msg);
+            System.out.println(">"+msg);
+            System.out.print(">");
         }
     }
 

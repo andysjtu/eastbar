@@ -28,7 +28,6 @@ public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
             sendResp(ctx,msg);
         }
         else{
-            System.out.println("other------------");
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }
     }

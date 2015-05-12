@@ -1,20 +1,29 @@
 package org.eastbar.site.policy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * Created by andysjtu on 2015/5/11.
  */
-//@Entity
-//@Table(name="policy_version")
+@Entity
+@Table(name="policy_version")
 public class PolicyVersion implements Serializable{
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
     private int urlVersion;
     private int pgVersion;
     private int spmVersion;
     private int kwVersion;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public int getPgVersion() {
         return pgVersion;

@@ -41,4 +41,16 @@ public abstract class ClientCmd extends SocketMsg {
             setMessageType(ClientMsgType.CAPTURE_CLIENT.shortValue());
         }
     }
+
+    public static class QueryClientProcessCmd extends  ClientCmd{
+        public QueryClientProcessCmd() {
+            setMessageType(ClientMsgType.QUERY_CLIENT_PROCESS.shortValue());
+        }
+    }
+
+    public static class QueryClientModuleCmd extends  ClientCmd{
+        public QueryClientModuleCmd() {
+            setMessageType(ClientMsgType.QUERY_CLIENT_MODULE.shortValue());
+        }
+    }
 }
