@@ -40,6 +40,9 @@ public class SiteServer {
         site.disconnectAll();
     }
 
+    public Site getSite() {
+        return site;
+    }
 }
 
 

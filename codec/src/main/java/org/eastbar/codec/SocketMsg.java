@@ -62,12 +62,16 @@ public class SocketMsg {
 
     private DefaultByteBufHolder data=null;
 
-    public void parse(){
-        try{
-            parseContent(data.content());
-        }finally {
-            data.release();
-        }
+//    public void parse(){
+//        try{
+//            parseContent(data.content());
+//        }finally {
+//            data.release();
+//        }
+//    }
+
+    public void release(){
+        data.release();
     }
 
     protected void parseContent(ByteBuf content) {

@@ -6,10 +6,13 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.apache.commons.lang3.StringUtils;
+import sun.plugin2.main.server.ResultHandler;
 
 import java.util.Scanner;
 
@@ -31,6 +34,9 @@ public class ConsoleClient {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
                         pipeline.addLast(new StringEncoder());
+                        pipeline.addLast(new LineBasedFrameDecoder(1000));
+                        pipeline.addLast(new StringDecoder());
+                        pipeline.addLast(new ResultHandler());
                     }
                 });
         ChannelFuture future =  bootstrap.connect();
@@ -75,7 +81,13 @@ public class ConsoleClient {
         client.readConsole();
     }
 
+    public static class ResultHandler extends SimpleChannelInboundHandler<String>{
 
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+            System.out.println("received msg is : "+msg);
+        }
+    }
 
     public static class ShutdownHandler extends ChannelInboundHandlerAdapter{
         @Override

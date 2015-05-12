@@ -1,37 +1,34 @@
 package org.eastbar.codec;
 
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 /**
  * Created by andysjtu on 2015/5/9.
  */
 public class ClientInitResp extends SocketMsg {
-    public final static int MESSAGE_TYPE = 0x3001;
-    private short recMessageId;
-    private short recMessageType;
-    private String userId;
-    private String idtype;
-    private String userName;
-    private int specailMode;
-    private String userAccount;
 
-    public short getRecMessageId() {
-        return recMessageId;
-    }
+//   private ClientAuthResp authResp;
 
-    public void setRecMessageId(short recMessageId) {
-        this.recMessageId = recMessageId;
-    }
 
-    public short getRecMessageType() {
-        return recMessageType;
-    }
-
-    public void setRecMessageType(short recMessageType) {
-        this.recMessageType = recMessageType;
-    }
-
-    public ClientInitResp() {
+    public ClientInitResp(short recMessageId,ClientAuthResp resp) {
+//        this.authResp = resp;
         setMsgAttr(MsgAttrBuilder.buildDefaultSiteToClientAttr().byteValue());
         setVersion(ProtocolVersion.Version);
-        //TODO
+        setMessageId(IDGenerator.nextID());
+        setHost(IpV4.localIpV4());
+        setMessageType(ClientMsgType.CLIENT_INIT_RESP.shortValue());
+
+        data(buildContent(recMessageId,resp));
+    }
+
+    private ByteBuf buildContent(short recMsgId,ClientAuthResp resp) {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeShort(recMsgId);
+        buf.writeShort(ClientMsgType.CLIENT_INIT_REQ.shortValue());
+        byte[] content  = resp.toString().getBytes(Charsets.UTF_8);
+        buf.writeBytes(content);
+        return buf;
     }
 }

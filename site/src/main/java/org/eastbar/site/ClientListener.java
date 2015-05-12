@@ -8,9 +8,14 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
+import org.eastbar.site.handler.client.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +35,9 @@ public class ClientListener implements Listener {
     @Value("${ClientToManagerPort}")
     private int listenPort;
 
+    @Autowired
+    private Site site;
+
     public void setLocalIp(String localIp) {
         this.localIp = localIp;
     }
@@ -43,13 +51,25 @@ public class ClientListener implements Listener {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .childOption(ChannelOption.SO_BACKLOG, 1000)
+                .option(ChannelOption.SO_BACKLOG, 1000)
+                .childOption(ChannelOption.SO_KEEPALIVE,true)
+                .childOption(ChannelOption.TCP_NODELAY,true)
                 .handler(new ServerChannelInitilizer())
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
+                        pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
+                        pipeline.addLast("skmsgDecoder",new SocketMsgDecoder());
+                        pipeline.addLast("skmsgEncoder",new SocketMsgEncoder());
+                        pipeline.addLast("initHandler",new ClientInitReqHandler(site));
+                        pipeline.addLast("beatenHandler",new ClientBeatenHandler());
+                        pipeline.addLast("clientLogHandler",new ClientLogHandler());
+                        pipeline.addLast("clientAlertHandler",new ClientAlertHandler());
+                        pipeline.addLast("cmdRespHandler",new ClientCmdRespHandler());
+                        pipeline.addLast("generalHandler",new ClientHandler());
+
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

@@ -7,8 +7,8 @@ import java.io.Serializable;
 /**
  * Created by andysjtu on 2015/5/11.
  */
-@Entity
-@Table(name="policy_version")
+//@Entity
+//@Table(name="policy_version")
 public class PolicyVersion implements Serializable{
 
     private int urlVersion;

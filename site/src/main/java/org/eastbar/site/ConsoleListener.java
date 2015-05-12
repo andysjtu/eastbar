@@ -7,6 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.eastbar.comm.Listener;
@@ -51,6 +52,7 @@ public class ConsoleListener implements Listener {
                         pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
                         pipeline.addLast("delimter",new LineBasedFrameDecoder(100));
                         pipeline.addLast("string",new StringDecoder());
+                        pipeline.addLast("stringencoder",new StringEncoder());
                         pipeline.addLast("cmdDecoder",new ConsoleHandler(siteServer));
                     }
                 });

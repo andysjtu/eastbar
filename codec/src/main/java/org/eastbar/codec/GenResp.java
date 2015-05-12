@@ -17,6 +17,8 @@ public abstract class GenResp extends SocketMsg {
         buildContent(recMessageId, recMessageType, status);
     }
 
+
+
     protected void buildHeader() {
         setMsgAttr(getMsgAttr());
         setVersion(ProtocolVersion.Version);

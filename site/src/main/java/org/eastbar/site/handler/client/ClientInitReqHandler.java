@@ -4,11 +4,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.eastbar.codec.*;
 import org.eastbar.site.Site;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by andysjtu on 2015/5/10.
  */
 public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>{
+    public final static Logger logger= LoggerFactory.getLogger(ClientInitReqHandler.class);
+
     private final Site site;
 
     public ClientInitReqHandler(Site site) {
@@ -18,38 +22,34 @@ public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short messageType = msg.getMessageType();
-        if(messageType!=0x1001){
-            sendErrorResponse(ctx,msg);
+        logger.info("收到的消息类型是 : {}",messageType);
+        if(messageType!=ClientMsgType.CLIENT_INIT_REQ.shortValue()){
+            sendErrorResponse(ctx, msg);
+            logger.warn("格式错误，关闭通道");
+            ctx.channel().close();
+        }else {
+            ClientInitReq req = new ClientInitReq(msg);
+            req.parse();
+            ClientAuthScheme authScheme = req.getAuthSchme();
+
+            ClientAuthResp resp = site.registerChannel(ctx.channel(), authScheme);
+
+            if (resp != null) {
+                ClientInitResp initResp = new ClientInitResp(req.getMessageId(), resp);
+                ctx.channel().writeAndFlush(initResp);
+                ctx.pipeline().remove(this);
+            } else {
+                sendErrorResponse(ctx, req.getMsg());
+                logger.warn("格式错误，关闭通道");
+                ctx.channel().close();
+            }
         }
-        ClientInitReq req = (ClientInitReq)msg;
-        req.parse();
-        ClientAuthScheme authScheme =req.getAuthSchme();
-        //TODO
-        ClientAuthResp resp = new ClientAuthResp();
-        resp.setIdType("1");
-        resp.setSpecialModel(false);
-        resp.setUserId("310107197902026432");
-        resp.setUserAccount("OA333");
-        resp.setUserName("梁琳");
-        resp.setVersion("1.0");
 
-        sendSucessResponse(ctx,req);
     }
 
-    private void sendSucessResponse(ChannelHandlerContext ctx, ClientInitReq req) {
-        short recMessageId= req.getMessageId();
-        short recMsgType = req.getMessageType();
-        GenResp resp = GenRespUtil.createS2ClientSucessResp(recMessageId,recMsgType);
-        ctx.channel().writeAndFlush(resp);
-    }
 
     private void sendErrorResponse(ChannelHandlerContext ctx, SocketMsg msg) {
-        short recMessageId= msg.getMessageId();
-        short recMsgType = msg.getMessageType();
-        ClientInitResp resp = new ClientInitResp();
-        resp.setRecMessageId(recMessageId);
-        resp.setRecMessageType(recMsgType);
-        //TODO
+        GenResp resp= GenRespUtil.createS2ClientMsgErrorResp(msg.getMessageId(),msg.getMessageType());
         ctx.channel().writeAndFlush(resp);
     }
 }

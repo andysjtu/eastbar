@@ -50,7 +50,7 @@ public class CenterConnector implements Connector {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast(new LoggingHandler(LogLevel.INFO));
+//                        pipeline.addLast(new LoggingHandler(LogLevel.ERROR));
                     }
                 });
     }

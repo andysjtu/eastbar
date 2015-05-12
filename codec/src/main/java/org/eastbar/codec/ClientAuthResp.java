@@ -8,7 +8,7 @@ public class ClientAuthResp {
     private String idType;
     private String userId;
     private String userName;
-    private boolean specialModel;
+    private boolean specialMode;
     private String userAccount;
 
     public String getVersion() {
@@ -43,12 +43,12 @@ public class ClientAuthResp {
         this.userName = userName;
     }
 
-    public boolean isSpecialModel() {
-        return specialModel;
+    public boolean isSpecialMode() {
+        return specialMode;
     }
 
-    public void setSpecialModel(boolean specialModel) {
-        this.specialModel = specialModel;
+    public void setSpecialMode(boolean specialMode) {
+        this.specialMode = specialMode;
     }
 
     public String getUserAccount() {
@@ -57,5 +57,14 @@ public class ClientAuthResp {
 
     public void setUserAccount(String userAccount) {
         this.userAccount = userAccount;
+    }
+
+    public String toString(){
+        String str = "Version:" + this.version + "\r\n" + "IdType:"
+                + this.idType + "\r\n" + "UserId:" + this.userId + "\r\n"
+                + "UserName:" + this.userName + "\r\n" + "SPECIAL_MODE:"
+                + (this.specialMode?"1":"0") + "\r\n" + "UserAccount:"
+                + this.userAccount + "\r\n";
+       return str;
     }
 }
