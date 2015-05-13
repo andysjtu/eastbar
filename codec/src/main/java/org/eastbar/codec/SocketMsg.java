@@ -4,17 +4,33 @@ import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.buffer.DefaultByteBufHolder;
+import io.netty.buffer.Unpooled;
+import io.netty.util.ReferenceCountUtil;
+import io.netty.util.ReferenceCounted;
 
 /**
  * Created by AndySJTU on 2015/5/6.
  */
-public class SocketMsg {
+public class SocketMsg implements ReferenceCounted {
     private byte msgAttr;
-    private byte version=ProtocolVersion.Version.byteValue();
+    private byte version = ProtocolVersion.Version.byteValue();
     private short messageType;
     private short messageId;
     private IpV4 host;
 
+    private ByteBufHolder data;
+
+    public SocketMsg() {
+    }
+
+    public SocketMsg(SocketMsg oldMsg) {
+        this.msgAttr = oldMsg.getMsgAttr();
+        this.version = oldMsg.getVersion();
+        this.messageType = oldMsg.getMessageType();
+        this.messageId = oldMsg.getMessageId();
+        this.host =oldMsg.getHost();
+        this.data = oldMsg.data();
+    }
 
     public byte getMsgAttr() {
         return msgAttr;
@@ -32,7 +48,7 @@ public class SocketMsg {
         this.version = version;
     }
 
-    public void setVersion(ProtocolVersion version){
+    public void setVersion(ProtocolVersion version) {
         this.version = version.byteValue();
     }
 
@@ -60,30 +76,46 @@ public class SocketMsg {
         this.host = host;
     }
 
-    private DefaultByteBufHolder data=null;
 
-//    public void parse(){
-//        try{
-//            parseContent(data.content());
-//        }finally {
-//            data.release();
-//        }
-//    }
+    @Override
+    public int refCnt() {
+        return data.refCnt();
+    }
 
-    public void release(){
-        data.release();
+    @Override
+    public ReferenceCounted retain() {
+        return data.retain();
+    }
+
+    @Override
+    public ReferenceCounted retain(int increment) {
+        return data.retain(increment);
+    }
+
+    @Override
+    public boolean release() {
+        if (data != null) {
+            return data.release();
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean release(int decrement) {
+        return data.release(decrement);
     }
 
     protected void parseContent(ByteBuf content) {
     }
 
-    public void setContent(ByteBuf buf){
+    public void setContent(ByteBuf buf) {
         data = new DefaultByteBufHolder(buf);
     }
 
-    public void readByteBuf(ByteBuf buf){
-       int readable = buf.readableBytes();
-        if(readable<14){
+    public void readByteBuf(ByteBuf buf) {
+        int readable = buf.readableBytes();
+        if (readable < 14) {
             throw new RuntimeException("byteBuf readable length is not enought");
         }
         msgAttr = buf.readByte();
@@ -95,35 +127,36 @@ public class SocketMsg {
         host = new IpV4(ipContent);
         int length = buf.readInt();
 
-        if(length>0){
+        if (length > 0) {
             data = new DefaultByteBufHolder(buf.readBytes(length));
         }
 
     }
 
 
-    public  void encodeAsByteBuf(ByteBuf buf){
+    public void encodeAsByteBuf(ByteBuf buf) {
         buf.writeByte(msgAttr);
         buf.writeByte(version);
         buf.writeShort(messageType);
         buf.writeShort(messageId);
         buf.writeBytes(host.getContent());
-        if(data ==null){
+        if (data == null) {
             buf.writeInt(0);
-        }
-        else{
+        } else {
             buf.writeInt(data.content().readableBytes());
             buf.writeBytes(data.content());
         }
 
-    };
+    }
+
+    ;
 
 
-    public ByteBufHolder data(){
+    public ByteBufHolder data() {
         return this.data;
     }
 
-    public void data(ByteBuf buf){
+    public void data(ByteBuf buf) {
         this.data = new DefaultByteBufHolder(buf);
     }
 
@@ -137,6 +170,20 @@ public class SocketMsg {
                 ", host=" + host.toRegularIpFormat() +
                 ", data=" + data.content().toString(Charsets.UTF_8) +
                 '}';
+    }
+
+    public static void main(String[] args) {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeInt(4);
+
+        SocketMsg msg = new SocketMsg();
+        msg.data(buf);
+
+
+        System.out.println(msg.data().refCnt());
+
+        System.out.println(ReferenceCountUtil.release(msg));
+        System.out.println(msg.data().refCnt());
     }
 
 

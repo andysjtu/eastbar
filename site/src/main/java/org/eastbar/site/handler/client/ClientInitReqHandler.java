@@ -22,7 +22,7 @@ public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short messageType = msg.getMessageType();
-        logger.info("收到的消息类型是 : {}",messageType);
+//        logger.info("收到的消息类型是 : {}",messageType);
         if(messageType!=ClientMsgType.CLIENT_INIT_REQ.shortValue()){
             sendErrorResponse(ctx, msg);
             logger.warn("格式错误，关闭通道");
@@ -47,6 +47,10 @@ public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
 
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("exception is ",cause);
+    }
 
     private void sendErrorResponse(ChannelHandlerContext ctx, SocketMsg msg) {
         GenResp resp= GenRespUtil.createS2ClientMsgErrorResp(msg.getMessageId(),msg.getMessageType());

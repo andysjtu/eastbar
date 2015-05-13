@@ -11,10 +11,10 @@ import java.util.Map;
 /**
  * Created by AndySJTU on 2015/5/6.
  */
-public class ClientInitReq   {
+public class ClientInitReq {
     private ClientAuthScheme authSchme;
-    
-    public static final  Logger logger = LoggerFactory.getLogger(ClientInitReq.class);
+
+    public static final Logger logger = LoggerFactory.getLogger(ClientInitReq.class);
 
     private final SocketMsg msg;
 
@@ -26,19 +26,15 @@ public class ClientInitReq   {
         this.msg = msg;
     }
 
-    public void parse(){
-        try{
-            parseContent(msg.data().content());
-        }finally {
-            msg.release();
-        }
+    public void parse() {
+        parseContent(msg.data().content());
     }
 
 
     protected void parseContent(ByteBuf buf) {
         String content = buf.toString(Charsets.UTF_8);
-        logger.info("client init info is : {}", content);
-        Map<String,String> map = Splitter.on("\r\n").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(content);
+//        logger.info("client init info is : {}", content);
+        Map<String, String> map = Splitter.on("\r\n").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(content);
         authSchme = new ClientAuthScheme();
         authSchme.setIpAddress(map.get("IPAddress"));
         authSchme.setMacAddress(map.get("MacAddress"));

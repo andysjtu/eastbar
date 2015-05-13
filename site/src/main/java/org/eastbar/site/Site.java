@@ -30,6 +30,13 @@ public class Site {
 
     private Map<String,Terminal> terminalMap = Maps.newConcurrentMap();
 
+    private volatile Channel centerChannel;
+
+
+    public void setCenterChannel(Channel centerChannel){
+        this.centerChannel = centerChannel;
+    }
+
 
     public void disconnectAll() {
 
@@ -107,4 +114,14 @@ public class Site {
     public Channel getTerminalChannel(String hostIp) {
         return channelMap.get(hostIp);
     }
+
+    public void reportOnLine(){
+
+    }
+
+    public void reportOffline(){
+
+    }
+
+
 }

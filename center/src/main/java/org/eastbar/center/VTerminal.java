@@ -9,6 +9,9 @@ public class VTerminal {
 
     private Status status;
     private Customer currentCustomer;
+    private String macAddress;
+    private String os;
+    private String monitorVersion;
 
     public VTerminal(String terminalIP, String siteCode) {
         this.terminalIP = terminalIP;

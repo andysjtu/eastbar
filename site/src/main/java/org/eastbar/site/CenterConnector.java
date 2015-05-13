@@ -9,6 +9,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,9 @@ public class CenterConnector implements Connector {
     @Value("${managerCenterPort}")
     private int remotePort;
     private int localPort=19999;
+
+    @Autowired
+    private Site site;
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -50,7 +54,7 @@ public class CenterConnector implements Connector {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-//                        pipeline.addLast(new LoggingHandler(LogLevel.ERROR));
+                        pipeline.addLast(new LoggingHandler(LogLevel.DEBUG));
                     }
                 });
     }
@@ -77,10 +81,12 @@ public class CenterConnector implements Connector {
                 if (future.isSuccess()) {
                     logger.info("成功连接上Center管理端");
                     remoteChannel = future.channel();
+                    site.setCenterChannel(remoteChannel);
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception {
                             remoteChannel=null;
+                            site.setCenterChannel(null);
                             scheduleNextConnect();
                         }
                     });
@@ -110,5 +116,29 @@ public class CenterConnector implements Connector {
             service.shutdownNow();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
+
+    public String getRemoteAddr() {
+        return remoteAddr;
+    }
+
+    public void setRemoteAddr(String remoteAddr) {
+        this.remoteAddr = remoteAddr;
+    }
+
+    public int getRemotePort() {
+        return remotePort;
+    }
+
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
     }
 }

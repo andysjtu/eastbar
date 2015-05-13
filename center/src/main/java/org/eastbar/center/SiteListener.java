@@ -8,6 +8,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +51,10 @@ public class SiteListener implements Listener {
                         //TODO
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log",new LoggingHandler(LogLevel.INFO));
-                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
+//                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
+                        pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
+                        pipeline.addLast("sockMsgDecoder",new SocketMsgDecoder());
+                        pipeline.addLast("socketMsgEncoder",new SocketMsgEncoder());
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

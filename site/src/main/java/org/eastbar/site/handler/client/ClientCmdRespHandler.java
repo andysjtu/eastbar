@@ -16,6 +16,14 @@ import java.io.IOException;
  * Created by AndySJTU on 2015/5/11.
  */
 public class ClientCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg> {
+
+
+
+    @Override
+    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+        super.handlerAdded(ctx);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
