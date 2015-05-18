@@ -17,7 +17,7 @@ public class BanUrl {
     private boolean isBlock;
     private int alarmRank;
     private int verNum;
-    private boolean delete;
+    private boolean deleted;
 
     public int getAlarmRank() {
         return alarmRank;
@@ -35,12 +35,12 @@ public class BanUrl {
         this.alarmType = alarmType;
     }
 
-    public boolean isDelete() {
-        return delete;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setDelete(boolean delete) {
-        this.delete = delete;
+    public void setDeleted(boolean delete) {
+        this.deleted = delete;
     }
 
     public Integer getId() {

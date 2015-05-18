@@ -8,6 +8,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ReferenceCounted;
 
+import java.util.Arrays;
+
 /**
  * Created by AndySJTU on 2015/5/6.
  */
@@ -28,7 +30,7 @@ public class SocketMsg implements ReferenceCounted {
         this.version = oldMsg.getVersion();
         this.messageType = oldMsg.getMessageType();
         this.messageId = oldMsg.getMessageId();
-        this.host =oldMsg.getHost();
+        this.host = oldMsg.getHost();
         this.data = oldMsg.data();
     }
 
@@ -76,6 +78,14 @@ public class SocketMsg implements ReferenceCounted {
         this.host = host;
     }
 
+    public void changeSiteToCenterAttr(){
+        setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
+    }
+
+    public void changeSiteToClientAttr(){
+        setMsgAttr(MsgAttrBuilder.buildDefaultSiteToClientAttr().byteValue());
+    }
+
 
     @Override
     public int refCnt() {
@@ -83,13 +93,15 @@ public class SocketMsg implements ReferenceCounted {
     }
 
     @Override
-    public ReferenceCounted retain() {
-        return data.retain();
+    public SocketMsg retain() {
+        data.retain();
+        return this;
     }
 
     @Override
-    public ReferenceCounted retain(int increment) {
-        return data.retain(increment);
+    public SocketMsg retain(int increment) {
+        data.retain(increment);
+        return this;
     }
 
     @Override
@@ -168,22 +180,22 @@ public class SocketMsg implements ReferenceCounted {
                 ", messageType=" + messageType +
                 ", messageId=" + messageId +
                 ", host=" + host.toRegularIpFormat() +
-                ", data=" + data.content().toString(Charsets.UTF_8) +
                 '}';
     }
 
     public static void main(String[] args) {
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(4);
+        SiteBeatenEvent event = new SiteBeatenEvent();
 
-        SocketMsg msg = new SocketMsg();
-        msg.data(buf);
+        System.out.println("event is : " + event);
+        IDGenerator.nextID();
+        System.out.println("event is : " + event);
 
+        ByteBuf buf = Unpooled.buffer(14);
 
-        System.out.println(msg.data().refCnt());
+        event.encodeAsByteBuf(buf);
 
-        System.out.println(ReferenceCountUtil.release(msg));
-        System.out.println(msg.data().refCnt());
+        System.out.println(Arrays.toString(buf.array()));
+
     }
 
 

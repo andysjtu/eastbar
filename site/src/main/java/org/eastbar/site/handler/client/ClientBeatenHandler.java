@@ -24,6 +24,7 @@ public class ClientBeatenHandler extends SimpleChannelInboundHandler<SocketMsg> 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketMsg socketMsg) throws Exception {
         short value = socketMsg.getMessageType();
+        logger.info("receive message type value is : "+value);
         ClientMsgType type = ClientMsgType.valueOf(value);
         if (type == ClientMsgType.BEATEN) {
             logger.info("收到心跳信息");

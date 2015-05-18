@@ -11,7 +11,8 @@ public class IDGenerator {
         if(value<0){
             value=1;
         }
-        return value;
+        short newValue= value;
+        return newValue;
     }
 
     public static synchronized void reset(short newValue){

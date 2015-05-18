@@ -33,7 +33,7 @@ public class KeyWord {
     private int alarmType;
     private int alarmRank;
     private boolean isBlock;
-    private boolean delete;
+    private boolean deleted;
     private int verNum;
 
     public int getAlarmRank() {
@@ -52,12 +52,12 @@ public class KeyWord {
         this.alarmType = alarmType;
     }
 
-    public boolean isDelete() {
-        return delete;
+    public boolean isDeleted() {
+        return deleted;
     }
 
-    public void setDelete(boolean delete) {
-        this.delete = delete;
+    public void setDeleted(boolean delete) {
+        this.deleted = delete;
     }
 
     public Integer getId() {

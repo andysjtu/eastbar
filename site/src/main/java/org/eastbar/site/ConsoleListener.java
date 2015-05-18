@@ -5,11 +5,12 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.site.handler.client.ClientProxyChannelHandler;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
 import org.eastbar.site.handler.console.ConsoleHandler;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class ConsoleListener implements Listener {
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2);
     private volatile Channel serverChannel;
 
+    @Autowired
+    private ClientProxyChannelHandler proxyChannelHandler;
+
     private int listenPort=9999;
 
     @Override
@@ -49,11 +53,11 @@ public class ConsoleListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
-                        pipeline.addLast("delimter",new LineBasedFrameDecoder(100));
-                        pipeline.addLast("string",new StringDecoder());
-                        pipeline.addLast("stringencoder",new StringEncoder());
-                        pipeline.addLast("cmdDecoder",new ConsoleHandler(siteServer));
+                        pipeline.addLast("logHandler", new LoggingHandler("连接命令窗口通道",LogLevel.INFO));
+                        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
+                        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+                        pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
+                        pipeline.addLast("cmdDecoder",new ConsoleHandler(proxyChannelHandler, siteServer));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

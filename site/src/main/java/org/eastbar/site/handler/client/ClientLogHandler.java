@@ -21,6 +21,7 @@ public class ClientLogHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
+        logger.info("receive message type value is : "+value);
         ClientMsgType type = ClientMsgType.valueOf(value);
 
         if(type==ClientMsgType.CLIENT_LOG){

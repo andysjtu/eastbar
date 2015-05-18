@@ -6,12 +6,15 @@ package org.eastbar.codec;
 public enum SiteMsgType {
     GEN_RESP((short) 0x0001),
     BEATEN((short) 0x0002),
-    INIT_CONN((short)0x4000),
+    INIT_CONN((short) 0x4000),
     LOGIN((short) 0x4001),
     ONLINE((short) 0x4002),
     OFFLINE((short) 0x4003),
     LOGOUT((short) 0x4004),
+    LIST((short) 0x6001),
     UNKNOWN((short) 0xffff);
+
+
     private final short typeValue;
 
     SiteMsgType(short typeValue) {

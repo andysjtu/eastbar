@@ -1,5 +1,6 @@
 package org.eastbar.site;
 
+import com.google.common.collect.Sets;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -8,9 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.codec.EastbarFrameDecoder;
-import org.eastbar.codec.SocketMsgDecoder;
-import org.eastbar.codec.SocketMsgEncoder;
+import org.eastbar.codec.*;
 import org.eastbar.comm.Listener;
 import org.eastbar.site.handler.client.*;
 import org.slf4j.Logger;
@@ -46,35 +45,43 @@ public class ClientListener implements Listener {
         this.listenPort = listenPort;
     }
 
-    private ChannelFutureListener closeListener  = new ChannelFutureListener() {
+    private ChannelFutureListener closeListener = new ChannelFutureListener() {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
             serverChannel = null;
         }
     };
 
+    @Autowired
+    private ClientProxyChannelHandler proxyChannelHandler;
+
     @Override
     public void listen() {
+        proxyChannelHandler.registerkeys(Sets.newHashSet(ClientMsgType.GEN_RESP.shortValue(),
+                ClientMsgType.QUERY_CLIENT_MODULE.shortValue(),
+                ClientMsgType.QUERY_CLIENT_PROCESS.shortValue(),
+                ClientMsgType.CAPTURE_CLIENT.shortValue()));
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1000)
-                .childOption(ChannelOption.SO_KEEPALIVE,true)
-                .childOption(ChannelOption.TCP_NODELAY,true)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.TCP_NODELAY, true)
                 .handler(new ServerChannelInitilizer())
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
-                        pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
-                        pipeline.addLast("skmsgDecoder",new SocketMsgDecoder());
-                        pipeline.addLast("skmsgEncoder",new SocketMsgEncoder());
-                        pipeline.addLast("initHandler",new ClientInitReqHandler(site));
-                        pipeline.addLast("beatenHandler",new ClientBeatenHandler());
-                        pipeline.addLast("clientLogHandler",new ClientLogHandler());
-                        pipeline.addLast("clientAlertHandler",new ClientAlertHandler());
-                        pipeline.addLast("generalHandler",new ClientHandler());
+                        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
+                        pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
+                        pipeline.addLast("skmsgEncoder", new SocketMsgEncoder());
+                        pipeline.addLast("initHandler", new ClientInitReqHandler(site));
+                        pipeline.addLast("beatenHandler", new ClientBeatenHandler());
+                        pipeline.addLast("clientLogHandler", new ClientLogHandler());
+                        pipeline.addLast("clientAlertHandler", new ClientAlertHandler());
+                        pipeline.addLast("clientCmdRespHandler", proxyChannelHandler);
+                        pipeline.addLast("generalHandler", new ClientHandler());
 
                     }
                 });
@@ -98,12 +105,12 @@ public class ClientListener implements Listener {
 
     @Override
     public void stopListen() {
-        if(serverChannel!=null) {
+        if (serverChannel != null) {
             ChannelFuture future = serverChannel.close();
             future.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if(future.isSuccess()){
+                    if (future.isSuccess()) {
                         serverChannel = null;
                         logger.info("关闭侦听客户端服务成功");
                     }
@@ -119,7 +126,7 @@ public class ClientListener implements Listener {
         @Override
         protected void initChannel(ServerSocketChannel ch) throws Exception {
             ChannelPipeline pipeline = ch.pipeline();
-            pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
+            pipeline.addLast("logHandler", new LoggingHandler(LogLevel.DEBUG));
         }
     }
 

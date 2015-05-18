@@ -43,10 +43,34 @@ public abstract class SiteCmd extends SocketMsg {
         }
     }
 
+    public static class QueryClientModuleCmd extends SiteCmd {
+        public QueryClientModuleCmd(String tip) {
+            super(tip);
+            setMessageType(ClientMsgType.QUERY_CLIENT_MODULE.shortValue());
+        }
+    }
+
+    public static class QueryClientProcessCmd extends SiteCmd {
+        public QueryClientProcessCmd(String tip) {
+            super(tip);
+            setMessageType(ClientMsgType.QUERY_CLIENT_PROCESS.shortValue());
+        }
+    }
+
     public static class CaptureClientCmd extends SiteCmd {
         public CaptureClientCmd(String tip) {
             super(tip);
             setMessageType(ClientMsgType.CAPTURE_CLIENT.shortValue());
+        }
+    }
+
+    public static class ListTerminalCmd extends SocketMsg {
+        public ListTerminalCmd() {
+            setMsgAttr(MsgAttrBuilder.buildDefaultCenterToSiteAttr().byteValue());
+            setVersion(ProtocolVersion.Version);
+            setMessageId(IDGenerator.nextID());
+            setHost(IpV4.localIpV4());
+            setMessageType(SiteMsgType.LIST.shortValue());
         }
     }
 }

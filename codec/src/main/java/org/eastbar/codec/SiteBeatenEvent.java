@@ -7,7 +7,8 @@ public class SiteBeatenEvent extends SocketMsg {
     public SiteBeatenEvent() {
         setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
         setVersion(ProtocolVersion.Version);
-        setMessageId(IDGenerator.nextID());
+        short value = IDGenerator.nextID();
+        setMessageId(value);
         setMessageType(SiteMsgType.BEATEN.shortValue());
         setHost(IpV4.localIpV4());
     }

@@ -14,6 +14,10 @@ public class MsgAttr {
         return attrValue;
     }
 
+    public Type msgType(){
+        return Type.valueOf((byte)(attrValue>>4));
+    }
+
     public static enum Type {
         CLIENT_TO_SITE((byte) 1), SITE_TO_CLIENT((byte) 2), SITE_TO_CENTER((byte) 3), CENTER_TO_SITE((byte) 4), CENTER_TO_CLIENT((byte) 5), UNKNOWN((byte) 0xff);
 
@@ -23,7 +27,7 @@ public class MsgAttr {
 
         private final byte value;
 
-        public Type valueOf(byte value) {
+        public static Type valueOf(byte value) {
             for (Type type : values()) {
                 if (type.value == value) {
                     return type;

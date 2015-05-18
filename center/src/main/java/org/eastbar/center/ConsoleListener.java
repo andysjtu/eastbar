@@ -10,6 +10,9 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.eastbar.center.handler.console.ConsoleHandler;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ public class ConsoleListener implements Listener {
     public static final  Logger logger = LoggerFactory.getLogger(ConsoleListener.class);
     @Autowired
     private CenterServer centerServer;
+
 
 
 
@@ -45,9 +49,11 @@ public class ConsoleListener implements Listener {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
-                        pipeline.addLast("delimter",new LineBasedFrameDecoder(100));
-                        pipeline.addLast("string",new StringDecoder());
-                        pipeline.addLast("cmdDecoder",new ConsoleHandler(centerServer));
+                        pipeline.addLast("logHandler", new LoggingHandler("连接命令窗口通道",LogLevel.INFO));
+                        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
+                        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+                        pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
+                        pipeline.addLast("cmdDecoder",new ConsoleHandler(proxyChannelHandler,centerServer));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);
