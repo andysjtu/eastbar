@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.eastbar.codec.ClientAuthResp;
 import org.eastbar.codec.ClientAuthScheme;
+import org.eastbar.codec.LoginEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,26 +43,34 @@ public class Site {
 
     }
 
+    public void registerCustomerLogin(){
+        //TODO
+    }
+
+    public void registerCustomerLogout(){
+        //TODO
+    }
+
     public ClientAuthResp registerChannel(final Channel channel, ClientAuthScheme authScheme) {
         logger.info("authScheme is : " + authScheme);
 
         String host = getAddress(channel);
         logger.info("上传通道地址是 : "+getAddress(channel));
-        String repostHost = authScheme.getIpAddress();
+        String reportHost = authScheme.getIpAddress();
 
-        if(!host.equalsIgnoreCase(repostHost)){
-            logger.warn("上传IP信息{}和Socket通道信息{}不一致，以Socket通道信息为准 ",repostHost,host);
+        if(!host.equalsIgnoreCase(reportHost)){
+            logger.warn("上传IP信息{}和Socket通道信息{}不一致，以上传IP信息为准 ",reportHost,host);
         }
 
-        if(channelMap.containsKey(host)){
-            logger.warn("重复登录不允许, 地址是 : " + host);
+        if(channelMap.containsKey(reportHost)){
+            logger.warn("重复登录不允许, 地址是 : " + reportHost);
             return null;
         }
 
         addClientChannel(channel);
 
-        if(terminalMap.containsKey(host)){
-            Terminal terminal = terminalMap.get(host);
+        if(terminalMap.containsKey(reportHost)){
+            Terminal terminal = terminalMap.get(reportHost);
             terminal.setClientVersion(authScheme.getVersion());
             terminal.setOs(authScheme.getOs());
             terminal.setMacAddress(authScheme.getMacAddress());
