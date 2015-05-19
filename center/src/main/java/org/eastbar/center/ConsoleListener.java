@@ -53,7 +53,7 @@ public class ConsoleListener implements Listener {
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("cmdDecoder",new ConsoleHandler(proxyChannelHandler,centerServer));
+//                        pipeline.addLast("cmdDecoder",new ConsoleHandler(proxyChannelHandler,centerServer));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

@@ -35,6 +35,7 @@ public class BanProg {
     private String featureCode;
     private String alarmType;
     private String alarmRank;
+    private boolean isBlock;
     private int verNum;
     private boolean deleted;
 
@@ -108,5 +109,13 @@ public class BanProg {
 
     public void setVerNum(int verNum) {
         this.verNum = verNum;
+    }
+
+    public boolean isBlock() {
+        return isBlock;
+    }
+
+    public void setIsBlock(boolean isBlock) {
+        this.isBlock = isBlock;
     }
 }

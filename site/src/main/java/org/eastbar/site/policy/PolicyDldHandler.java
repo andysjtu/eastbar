@@ -1,5 +1,6 @@
 package org.eastbar.site.policy;
 
+import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -9,9 +10,12 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import sun.nio.cs.ext.GBK;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaders.Names.CONTENT_TYPE;
@@ -26,6 +30,12 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
     public final static Logger logger = LoggerFactory.getLogger(PolicyDldHandler.class);
 
 
+    private final PolicyManager manager;
+
+    public PolicyDldHandler(PolicyManager manager) {
+        this.manager = manager;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
         if (!request.getDecoderResult().isSuccess()) {
@@ -39,15 +49,57 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
         logger.info("uri is : " + uri);
 
         if ("/url".equals(uri)) {
-            sendFile(ctx, "url");
+            sendUrl(ctx);
         } else if ("/program".equals(uri)) {
-            sendFile(ctx, "program");
+            sendProgram(ctx);
         } else if ("/keywords".equals(uri)) {
-            sendFile(ctx, "keywords");
+            sendKeywords(ctx);
         } else
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
 
 
+    }
+
+    private void sendKeywords(ChannelHandlerContext ctx) throws UnsupportedEncodingException {
+        String keywords = manager.getBanKeywordString();
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
+
+
+        long fileLength = keywords.length();
+
+        byte[] content = keywords.getBytes("GBK");
+        setContentLength(response, fileLength);
+        response.content().writeBytes(content);
+
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    private void sendProgram(ChannelHandlerContext ctx) throws UnsupportedEncodingException {
+        String progStr = manager.getBanProgString();
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
+
+
+        long fileLength = progStr.length();
+
+        byte[] content = progStr.getBytes("GBK");
+        setContentLength(response, fileLength);
+        response.content().writeBytes(content);
+
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    private void sendUrl(ChannelHandlerContext ctx) throws UnsupportedEncodingException {
+        String urlString = manager.getBanUrlString();
+        FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
+
+
+        long fileLength = urlString.length();
+
+        byte[] content = urlString.getBytes("GBK");
+        setContentLength(response, fileLength);
+        response.content().writeBytes(content);
+
+        ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
     private void sendFile(ChannelHandlerContext ctx, String fileName) {
@@ -71,7 +123,7 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
 
     private void setContentLength(HttpResponse response, long fileLength) {
         response.headers().set(CONTENT_LENGTH, fileLength);
-        response.headers().set(CONTENT_TYPE, "text/plain;charset=utf8");
+        response.headers().set(CONTENT_TYPE, "text/plain;charset=GBK");
         //application/octet-stream;attachment=file.txt
     }
 

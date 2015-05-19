@@ -29,20 +29,19 @@ public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
             ctx.channel().close();
         }else {
             ClientInitReq req = new ClientInitReq(msg);
-            req.parse();
             ClientAuthScheme authScheme = req.getAuthSchme();
 
-            ClientAuthResp resp = site.registerChannel(ctx.channel(), authScheme);
+            site.registerChannel(ctx.channel(), req);
 
-            if (resp != null) {
-                ClientInitResp initResp = new ClientInitResp(req.getMessageId(), resp);
-                ctx.channel().writeAndFlush(initResp);
-                ctx.pipeline().remove(this);
-            } else {
-                sendErrorResponse(ctx, req.getMsg());
-                logger.warn("格式错误，关闭通道");
-                ctx.channel().close();
-            }
+//            if (resp != null) {
+//                ClientInitResp initResp = new ClientInitResp(req.getMessageId(), resp);
+//                ctx.channel().writeAndFlush(initResp);
+//                ctx.pipeline().remove(this);
+//            } else {
+//                sendErrorResponse(ctx, req.getMsg());
+//                logger.warn("格式错误，关闭通道");
+//                ctx.channel().close();
+//            }
         }
 
     }

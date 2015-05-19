@@ -108,6 +108,10 @@ public class CenterConnector implements Connector {
         });
     }
 
+    public void reportSiteStatus(Channel channel){
+        
+    }
+
     private void scheduleNextConnect() {
         service.schedule(new Runnable() {
             @Override

@@ -13,12 +13,11 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import org.eastbar.comm.Listener;
 import org.eastbar.site.policy.PolicyDldHandler;
+import org.eastbar.site.policy.PolicyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
 
 /**
  * just for download policies
@@ -26,17 +25,19 @@ import java.io.Serializable;
  */
 @Component
 public class PolicyDldListener implements Listener {
-    public final static Logger logger= LoggerFactory.getLogger(PolicyDldListener.class);
+    public final static Logger logger = LoggerFactory.getLogger(PolicyDldListener.class);
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(2);
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(100);
     private volatile Channel serverChannel;
 
     private String localIp;
-    @Value("${ClientToManagerPort}")
-    private int listenPort;
+    private int listenPort = 6176;
 
-    private ChannelFutureListener closeListener  = new ChannelFutureListener() {
+    @Autowired
+    private PolicyManager manager;
+
+    private ChannelFutureListener closeListener = new ChannelFutureListener() {
         @Override
         public void operationComplete(ChannelFuture future) throws Exception {
             serverChannel = null;
@@ -59,7 +60,7 @@ public class PolicyDldListener implements Listener {
                         pipeline.addLast("http-aggregator", new HttpObjectAggregator(65536));
                         pipeline.addLast("http-encoder", new HttpResponseEncoder());
                         pipeline.addLast("http-chunked", new ChunkedWriteHandler());
-                        pipeline.addLast("policyHandler", new PolicyDldHandler());
+                        pipeline.addLast("policyHandler", new PolicyDldHandler(manager));
 
                     }
                 });
@@ -67,13 +68,14 @@ public class PolicyDldListener implements Listener {
         ChannelFuture future = bootstrap.bind(listenPort).addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
-                if(future.isSuccess()){
+                if (future.isSuccess()) {
                     logger.info("启动下载服务开启成功");
                     serverChannel = future.channel();
                     serverChannel.closeFuture().addListener(closeListener);
-                }
-                else {
+                } else {
                     logger.info("启动下载服务开启失败");
+                    logger.warn("原因是:", future.cause());
+                    System.out.println("listening port is : " + listenPort);
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }
@@ -83,12 +85,12 @@ public class PolicyDldListener implements Listener {
 
     @Override
     public void stopListen() {
-        if(serverChannel!=null) {
+        if (serverChannel != null) {
             ChannelFuture future = serverChannel.close();
             future.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if(future.isSuccess()){
+                    if (future.isSuccess()) {
                         logger.info("关闭侦听客户端服务成功");
                         serverChannel = null;
                     }
