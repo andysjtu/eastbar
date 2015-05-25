@@ -8,10 +8,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.eastbar.codec.EastbarFrameDecoder;
-import org.eastbar.codec.SocketMsgDecoder;
-import org.eastbar.codec.SocketMsgEncoder;
+import org.eastbar.codec.*;
 import org.eastbar.site.handler.center.BeatenHandler;
+import org.eastbar.site.handler.center.StatusHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +63,7 @@ public class CenterConnector implements Connector {
                         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+                        pipeline.addLast("siteInitHandler", new StatusHandler(site));
                         pipeline.addLast("bentenHandler", new BeatenHandler());
 
                     }
@@ -92,6 +92,7 @@ public class CenterConnector implements Connector {
                 if (future.isSuccess()) {
                     logger.info("成功连接上Center管理端");
                     remoteChannel = future.channel();
+                    reportSiteStatus(remoteChannel);
                     site.setCenterChannel(remoteChannel);
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
@@ -108,8 +109,10 @@ public class CenterConnector implements Connector {
         });
     }
 
-    public void reportSiteStatus(Channel channel){
-        
+    public void reportSiteStatus(Channel channel) {
+        SiteReport report = site.getSiteReport();
+        SiteInitReq req = new SiteInitReq(report);
+        channel.writeAndFlush(req).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
     }
 
     private void scheduleNextConnect() {

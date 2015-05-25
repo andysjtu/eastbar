@@ -8,6 +8,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
 
@@ -37,7 +39,7 @@ public class ConsoleClient {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-//                        pipeline.addLast("log", new LoggingHandler(LogLevel.INFO));
+                        pipeline.addLast("log", new LoggingHandler(LogLevel.INFO));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
@@ -73,10 +75,10 @@ public class ConsoleClient {
     public void readConsole() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("请输入命令：");
-        String content = scanner.nextLine();
+        String content = scanner.next();
         while (true && channel.isActive()) {
             String cmd = StringUtils.trimToNull(content);
-            System.out.println("Receive CMD is : {"+cmd+"}");
+            System.out.println("Receive CMD is : {" + cmd + "}");
             if (cmd != null) {
                 if ("quit".equals(cmd)) {
                     close();
@@ -88,7 +90,18 @@ public class ConsoleClient {
                     }
                     try {
                         cyclicBarrier.await();
-                        System.out.println("xxxxxxxxxxxxxxxxxxxxx----------------------");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    }
+                } else if (cmd.equals("status")) {
+                    SocketMsg msg = new SiteCmd.StatusTerminalCmd();
+                    if (channel != null) {
+                        channel.writeAndFlush(msg);
+                    }
+                    try {
+                        cyclicBarrier.await();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
@@ -101,13 +114,10 @@ public class ConsoleClient {
                         channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                     }
                     try {
-                        cyclicBarrier.await(5, TimeUnit.SECONDS);
-                        System.out.println("xxxxxxxxxxxxxxxxxxx----------------------");
+                        cyclicBarrier.await();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
-                        e.printStackTrace();
-                    } catch (TimeoutException e) {
                         e.printStackTrace();
                     }
                 } else if (cmd.startsWith("unlock ")) {
@@ -126,15 +136,14 @@ public class ConsoleClient {
                     } catch (TimeoutException e) {
                         e.printStackTrace();
                     }
-                }
-                else if (cmd.startsWith("query module ")) {
+                } else if (cmd.startsWith("query module ")) {
                     String ip = cmd.replace("query module", "").trim();
                     SocketMsg msg = new SiteCmd.QueryClientModuleCmd(ip);
                     if (channel != null) {
                         channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                     }
                     try {
-                        cyclicBarrier.await(5, TimeUnit.SECONDS);
+                        cyclicBarrier.await(15, TimeUnit.SECONDS);
                         System.out.println("xxxxxxxxxxxxxxxx----------------------");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -143,16 +152,14 @@ public class ConsoleClient {
                     } catch (TimeoutException e) {
                         e.printStackTrace();
                     }
-                }
-                else if (cmd.startsWith("query process ")) {
+                } else if (cmd.startsWith("query process ")) {
                     String ip = cmd.replace("query process ", "").trim();
                     SocketMsg msg = new SiteCmd.QueryClientProcessCmd(ip);
                     if (channel != null) {
                         channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                     }
                     try {
-                        cyclicBarrier.await(5, TimeUnit.SECONDS);
-                        System.out.println("xxxxxxxxxxxx----------------------");
+                        cyclicBarrier.await(15, TimeUnit.SECONDS);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
@@ -161,8 +168,7 @@ public class ConsoleClient {
                         e.printStackTrace();
                     }
 
-                }
-                else if (cmd.startsWith("capture ")) {
+                } else if (cmd.startsWith("capture ")) {
                     String ip = cmd.replace("capture ", "").trim();
                     SocketMsg msg = new SiteCmd.CaptureClientCmd(ip);
                     if (channel != null) {
@@ -170,16 +176,45 @@ public class ConsoleClient {
                     }
                     try {
                         cyclicBarrier.await();
-                        System.out.println("xxxxxxxxxxxxxxxxx----------------------");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
                         e.printStackTrace();
                     }
+                } else if (cmd.startsWith("kill module ")) {
+                    String[] ipid = cmd.replace("kill module ", "").trim().split(" ");
+                    SocketMsg msg = new SiteCmd.KillClientModule(ipid[0].trim(), ipid[1].trim());
+                    if (channel != null) {
+                        channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                    }
+                    try {
+                        cyclicBarrier.await(5, TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
+                } else if (cmd.startsWith("kill ")) {
+                    String[] ipid = cmd.replace("kill ", "").trim().split(" ");
+                    SocketMsg msg = new SiteCmd.KillClientProcess(ipid[0].trim(), ipid[1].trim());
+                    if (channel != null) {
+                        channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                    }
+                    try {
+                        cyclicBarrier.await(5, TimeUnit.SECONDS);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
+                    } catch (TimeoutException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             System.out.print("请输入命令：");
-            content = scanner.nextLine();
+            content = scanner.next();
         }
 
     }
@@ -209,6 +244,9 @@ public class ConsoleClient {
             try {
                 if (msg.getMessageType() == SiteMsgType.LIST.shortValue()) {
                     System.out.println(msg.data().content().toString(Charsets.UTF_8));
+                }
+                if (msg.getMessageType() == SiteMsgType.STATUS.shortValue()) {
+                    System.out.println(msg.data().content().toString(Charsets.UTF_8));
                 } else if (msg.getMessageType() == SiteMsgType.GEN_RESP.shortValue()) {
                     ByteBuf buf = msg.data().content();
                     buf.readShort();
@@ -237,12 +275,12 @@ public class ConsoleClient {
                     System.out.println("path is : " + path);
                     ImageIO.write(imageBuffer, "JPEG", path.toFile());
                 }
-            }finally {
+            } finally {
                 try {
                     barrier.await(1, TimeUnit.SECONDS);
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                }finally {
+                } finally {
                     barrier.reset();
                 }
             }

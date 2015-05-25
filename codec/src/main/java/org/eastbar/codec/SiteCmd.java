@@ -1,5 +1,11 @@
 package org.eastbar.codec;
 
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import java.nio.charset.Charset;
+
 /**
  * Created by andysjtu on 2015/5/12.
  */
@@ -71,6 +77,50 @@ public abstract class SiteCmd extends SocketMsg {
             setMessageId(IDGenerator.nextID());
             setHost(IpV4.localIpV4());
             setMessageType(SiteMsgType.LIST.shortValue());
+        }
+    }
+
+    public static class StatusTerminalCmd extends SocketMsg {
+        public StatusTerminalCmd() {
+            setMsgAttr(MsgAttrBuilder.buildDefaultCenterToSiteAttr().byteValue());
+            setVersion(ProtocolVersion.Version);
+            setMessageId(IDGenerator.nextID());
+            setHost(IpV4.localIpV4());
+            setMessageType(SiteMsgType.STATUS.shortValue());
+        }
+    }
+
+    public static class KillClientProcess extends SocketMsg {
+        public KillClientProcess(String ip, String processId) {
+            setMsgAttr(MsgAttrBuilder.buildDefaultCenterToSiteAttr().byteValue());
+            setVersion(ProtocolVersion.Version);
+            setMessageId(IDGenerator.nextID());
+            try {
+                setHost(IpV4.convertIPV4(ip));
+            } catch (IPFormatException e) {
+                e.printStackTrace();
+            }
+            setMessageType(ClientMsgType.KILL_CLIENT_PORCESS.shortValue());
+            ByteBuf buf = Unpooled.buffer();
+            buf.writeBytes((processId + "\r\n").getBytes(Charsets.UTF_8));
+            data(buf);
+        }
+    }
+
+    public static class KillClientModule extends SocketMsg {
+        public KillClientModule(String ip, String moduleId) {
+            setMsgAttr(MsgAttrBuilder.buildDefaultCenterToSiteAttr().byteValue());
+            setVersion(ProtocolVersion.Version);
+            setMessageId(IDGenerator.nextID());
+            try {
+                setHost(IpV4.convertIPV4(ip));
+            } catch (IPFormatException e) {
+                e.printStackTrace();
+            }
+            setMessageType(ClientMsgType.CLOSE_CLIENT_MODULE.shortValue());
+            ByteBuf buf = Unpooled.buffer();
+            buf.writeBytes((moduleId+"\r\n").getBytes(Charsets.UTF_8));
+            data(buf);
         }
     }
 }

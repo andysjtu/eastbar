@@ -9,6 +9,7 @@ import org.eastbar.codec.ClientMsgType;
 import org.eastbar.codec.GenResp;
 import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SocketMsg;
+import org.eastbar.site.LogServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,17 +18,23 @@ import org.slf4j.LoggerFactory;
  */
 public class ClientLogHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger= LoggerFactory.getLogger(ClientLogHandler.class);
-    
+
+    private final LogServer logServer;
+
+    public ClientLogHandler(LogServer logServer) {
+        this.logServer = logServer;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
-        logger.info("receive message type value is : "+value);
         ClientMsgType type = ClientMsgType.valueOf(value);
 
         if(type==ClientMsgType.CLIENT_LOG){
             ByteBuf buf = msg.data().content();
-            System.out.println("日志类型 ： "+buf.readByte());
-            System.out.println(buf.toString(Charsets.UTF_8));
+            byte[] content = new byte[buf.readableBytes()];
+            buf.readBytes(content);
+            logServer.appendLog(content);
 
             sendResp(ctx,msg);
         }

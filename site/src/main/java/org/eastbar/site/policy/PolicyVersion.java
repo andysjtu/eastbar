@@ -17,6 +17,11 @@ public class PolicyVersion implements Serializable{
     private int spmVersion;
     private int kwVersion;
 
+    private int centerUrlVersion;
+    private int centerPgVersion;
+    private int centerSpmVersion;
+    private int centerKwVersion;
+
     public Integer getId() {
         return id;
     }
@@ -56,5 +61,52 @@ public class PolicyVersion implements Serializable{
 
     public void setUrlVersion(int urlVersion) {
         this.urlVersion = urlVersion;
+    }
+
+    public int getCenterKwVersion() {
+        return centerKwVersion;
+    }
+
+    public void setCenterKwVersion(int centerKwVersion) {
+        this.centerKwVersion = centerKwVersion;
+    }
+
+    public int getCenterPgVersion() {
+        return centerPgVersion;
+    }
+
+    public void setCenterPgVersion(int centerPgVersion) {
+        this.centerPgVersion = centerPgVersion;
+    }
+
+    public int getCenterSpmVersion() {
+        return centerSpmVersion;
+    }
+
+    public void setCenterSpmVersion(int centerSpmVersion) {
+        this.centerSpmVersion = centerSpmVersion;
+    }
+
+    public int getCenterUrlVersion() {
+        return centerUrlVersion;
+    }
+
+    public void setCenterUrlVersion(int centerUrlVersion) {
+        this.centerUrlVersion = centerUrlVersion;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicyVersion{" +
+                "centerKwVersion=" + centerKwVersion +
+                ", id=" + id +
+                ", urlVersion=" + urlVersion +
+                ", pgVersion=" + pgVersion +
+                ", spmVersion=" + spmVersion +
+                ", kwVersion=" + kwVersion +
+                ", centerUrlVersion=" + centerUrlVersion +
+                ", centerPgVersion=" + centerPgVersion +
+                ", centerSpmVersion=" + centerSpmVersion +
+                '}';
     }
 }

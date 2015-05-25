@@ -5,9 +5,11 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import org.eastbar.codec.*;
+import org.eastbar.site.Terminal;
 import org.eastbar.site.handler.client.ClientProxyChannelHandler;
 import org.eastbar.site.Site;
 import org.eastbar.site.SiteServer;
+import org.eastbar.site.policy.PolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,60 +34,11 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
     }
 
 
-//    protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-//        System.out.println("receive String is : " + msg);
-//        if ("squit".equalsIgnoreCase(msg)) {
-//            logger.info("收到控制端指令退出");
-//            siteServer.stop();
-//        } else if ("list".equalsIgnoreCase(msg)) {
-//            Site site = siteServer.getSite();
-//            Set<String> hosts = site.getHosts();
-//            ctx.channel().writeAndFlush("hosts " + hosts + "\r\n");
-//        } else if (msg.startsWith("lock ")) {
-//            lockClient(msg, ctx.channel());
-//
-//        } else if (msg.startsWith("unlock ")) {
-//            unlockClient(msg, ctx.channel());
-//        } else if (msg.startsWith("restart ")) {
-//            restartClient(msg);
-//        } else if (msg.startsWith("shutdown ")) {
-//            shutdownClient(msg);
-//        } else if (msg.startsWith("capture ")) {
-//            captureClient(msg);
-//        } else if (msg.startsWith("queryp ")) {
-//            queryClientProcess(msg, ctx.channel());
-//        }else if (msg.startsWith("querym ")) {
-//            queryClientModule(msg, ctx.channel());
-//        }else if(msg.startsWith("querypm ")){
-//            String hostiP = trimHostIp(msg,"querypm");
-//
-//            Channel channel = findTerminalChannel(hostiP);
-//            System.out.println("channel is : "+channel);
-//            if(channel!=null){
-//                sendQueryClientProcessCmd(ctx.channel(), channel);
-//                sendQueryClientModuleCmd(ctx.channel(),channel);
-//            }
-//        }
-//    }
-//
-//    private String trimHostIp(String msg,String key){
-//        String hostIp = msg.replace(key, "").trim();
-//        return hostIp;
-//    }
-
-//    public void sendCmd(String hostIp,Channel consoleChannel){
-//        Channel channel = findTerminalChannel(hostIp);
-//        if(channel!=null){
-//
-//        }
-//    }
-
     private Channel findTerminalChannel(String host) {
         Site site = siteServer.getSite();
         Channel channel = site.getTerminalChannel(host);
         return channel;
     }
-
 
 
     @Override
@@ -97,9 +50,9 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
             SocketMsg newMsg = new SocketMsg(msg);
             newMsg.setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
             ByteBuf buf = Unpooled.buffer();
-            if(hosts.size()==0){
+            if (hosts.size() == 0) {
                 buf.writeBytes("没有终端连上\n".getBytes(Charsets.UTF_8));
-            }else {
+            } else {
                 for (String host : hosts) {
                     buf.writeBytes(host.getBytes(Charsets.UTF_8));
                     buf.writeBytes("\n".getBytes());
@@ -107,23 +60,28 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
             }
             newMsg.data(buf);
             ctx.writeAndFlush(newMsg);
+        } else if (msg.getMessageType() == SiteMsgType.STATUS.shortValue()) {
+            Set<String> hosts = siteServer.getSite().getHosts();
+            SocketMsg newMsg = new SocketMsg(msg);
+            newMsg.setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
+            ByteBuf buf = Unpooled.buffer();
+            PolicyVersion version = siteServer.getSite().getVersion();
+            buf.writeBytes(JsonUtil.toJson(version).getBytes(Charsets.UTF_8));
+            newMsg.data(buf);
+            ctx.writeAndFlush(newMsg);
         } else {
             String ip = msg.getHost().toRegularIpFormat();
-            Channel channel = findTerminalChannel(ip);
-            if (channel != null) {
+            Terminal terminal = siteServer.getSite().getTerminalManager().getTerminalWithoutCreate(ip);
+            if (terminal != null) {
                 msg.changeSiteToClientAttr();
-                channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture future) throws Exception {
-                        if(future.isSuccess()){
-                            proxyChannelHandler.registerTarget(msg.getMessageId(), msg.getMessageType(), ctx.channel());
-                        }
-                    }
-                });
+                terminal.redirect(msg.retain(), ctx.channel());
+            } else {
+                GenResp resp = new GenResp.S2CenterGenResp(msg.getMessageId(), msg.getMessageType(), GenResp.Status.Failure);
+                ctx.channel().writeAndFlush(resp);
             }
+
         }
     }
-
 
 
 }

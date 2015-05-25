@@ -65,10 +65,8 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
 
 
-        long fileLength = keywords.length();
-
         byte[] content = keywords.getBytes("GBK");
-        setContentLength(response, fileLength);
+        setContentLength(response, content.length);
         response.content().writeBytes(content);
 
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
@@ -79,10 +77,9 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
 
 
-        long fileLength = progStr.length();
 
         byte[] content = progStr.getBytes("GBK");
-        setContentLength(response, fileLength);
+        setContentLength(response, content.length);
         response.content().writeBytes(content);
 
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
@@ -93,10 +90,9 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, OK);
 
 
-        long fileLength = urlString.length();
 
         byte[] content = urlString.getBytes("GBK");
-        setContentLength(response, fileLength);
+        setContentLength(response, content.length);
         response.content().writeBytes(content);
 
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);

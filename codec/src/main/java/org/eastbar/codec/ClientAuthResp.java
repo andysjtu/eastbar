@@ -6,10 +6,10 @@ package org.eastbar.codec;
 public class ClientAuthResp {
     private String version;
     private String idType;
-    private String userId;
-    private String userName;
+    private String id;
+    private String name;
     private boolean specialMode;
-    private String userAccount;
+    private String account;
 
     public String getVersion() {
         return version;
@@ -27,20 +27,20 @@ public class ClientAuthResp {
         this.idType = idType;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public boolean isSpecialMode() {
@@ -51,20 +51,20 @@ public class ClientAuthResp {
         this.specialMode = specialMode;
     }
 
-    public String getUserAccount() {
-        return userAccount;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String toString(){
         String str = "Version:" + this.version + "\r\n" + "IdType:"
-                + this.idType + "\r\n" + "UserId:" + this.userId + "\r\n"
-                + "UserName:" + this.userName + "\r\n" + "SPECIAL_MODE:"
+                + this.idType + "\r\n" + "UserId:" + this.id + "\r\n"
+                + "UserName:" + this.name + "\r\n" + "SPECIAL_MODE:"
                 + (this.specialMode?"1":"0") + "\r\n" + "UserAccount:"
-                + this.userAccount + "\r\n";
+                + this.account + "\r\n";
        return str;
     }
 }

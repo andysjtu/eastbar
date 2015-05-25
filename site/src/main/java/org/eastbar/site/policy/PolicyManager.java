@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,6 +25,17 @@ public class PolicyManager {
     private BanProgDao banProgDao;
     @Autowired
     private BanUrlDao banUrlDao;
+
+    @Autowired
+    private PolicyVersionDao versionDao;
+
+    public PolicyVersion getPolicyVersion() {
+        Iterator<PolicyVersion> it = versionDao.findAll().iterator();
+        if (it.hasNext()) {
+            return it.next();
+        }
+        return new PolicyVersion();
+    }
 
 
     public String getBanUrlString() {
@@ -46,15 +58,14 @@ public class PolicyManager {
 
     @PostConstruct
     public void init() {
-        for (int i = 0; i < 100; i++) {
-            BanUrl url = new BanUrl();
-            url.setUrlType(1);
-            url.setUrlValue("www.sina.com");
-            url.setAlarmType(1);
-            url.setAlarmRank(2);
-            url.setIsBlock(false);
-            urlList.add(url);
-        }
+
+        BanUrl url = new BanUrl();
+        url.setUrlType(1);
+        url.setUrlValue("www.sina.com");
+        url.setAlarmType(1);
+        url.setAlarmRank(2);
+        url.setIsBlock(false);
+        urlList.add(url);
         KeyWord word = new KeyWord();
         word.setKeyword("中文测试");
         word.setAlarmRank(1);
@@ -86,7 +97,9 @@ public class PolicyManager {
     public String getBanKeywordString() {
         StringBuilder builder = new StringBuilder();
         for (KeyWord kw : keywords) {
+            builder.append("\"");
             builder.append(kw.getKeyword());
+            builder.append("\"");
             builder.append(" : ");
             builder.append(kw.getAlarmType());
             builder.append(" : ");
@@ -98,5 +111,11 @@ public class PolicyManager {
 
         return builder.toString();
 
+    }
+
+    public static void main(String[] args) {
+        PolicyManager manager = new PolicyManager();
+        manager.init();
+        System.out.println(manager.getBanKeywordString());
     }
 }

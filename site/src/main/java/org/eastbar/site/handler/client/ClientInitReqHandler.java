@@ -33,15 +33,8 @@ public class ClientInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
 
             site.registerChannel(ctx.channel(), req);
 
-//            if (resp != null) {
-//                ClientInitResp initResp = new ClientInitResp(req.getMessageId(), resp);
-//                ctx.channel().writeAndFlush(initResp);
-//                ctx.pipeline().remove(this);
-//            } else {
-//                sendErrorResponse(ctx, req.getMsg());
-//                logger.warn("格式错误，关闭通道");
-//                ctx.channel().close();
-//            }
+            ctx.pipeline().remove(this);
+
         }
 
     }

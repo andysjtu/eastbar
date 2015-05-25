@@ -78,11 +78,11 @@ public class SocketMsg implements ReferenceCounted {
         this.host = host;
     }
 
-    public void changeSiteToCenterAttr(){
+    public void changeSiteToCenterAttr() {
         setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
     }
 
-    public void changeSiteToClientAttr(){
+    public void changeSiteToClientAttr() {
         setMsgAttr(MsgAttrBuilder.buildDefaultSiteToClientAttr().byteValue());
     }
 
@@ -94,13 +94,15 @@ public class SocketMsg implements ReferenceCounted {
 
     @Override
     public SocketMsg retain() {
-        data.retain();
+        if (data != null)
+            data.retain();
         return this;
     }
 
     @Override
     public SocketMsg retain(int increment) {
-        data.retain(increment);
+        if (data != null)
+            data.retain(increment);
         return this;
     }
 
@@ -115,7 +117,9 @@ public class SocketMsg implements ReferenceCounted {
 
     @Override
     public boolean release(int decrement) {
-        return data.release(decrement);
+        if (data != null)
+            return data.release(decrement);
+        return false;
     }
 
     protected void parseContent(ByteBuf content) {

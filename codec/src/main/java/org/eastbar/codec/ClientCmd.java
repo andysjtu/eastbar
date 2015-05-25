@@ -1,5 +1,9 @@
 package org.eastbar.codec;
 
+import com.google.common.base.Charsets;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
 /**
  * Created by AndySJTU on 2015/5/11.
  */
@@ -53,4 +57,13 @@ public abstract class ClientCmd extends SocketMsg {
             setMessageType(ClientMsgType.QUERY_CLIENT_MODULE.shortValue());
         }
     }
+
+//    public static class KillProcessCmd extends  ClientCmd{
+//        public KillProcessCmd(String processId) {
+//            setMessageType(ClientMsgType.KILL_CLIENT_PORCESS.shortValue());
+//            ByteBuf buf = Unpooled.buffer();
+//            buf.writeBytes(processId.getBytes(Charsets.UTF_8));
+//            data(buf);
+//        }
+//    }
 }

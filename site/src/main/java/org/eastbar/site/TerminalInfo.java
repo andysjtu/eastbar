@@ -4,17 +4,17 @@ package org.eastbar.site;
  * Created by andysjtu on 2015/5/18.
  */
 public class TerminalInfo {
-    private String clientVersion;
+    private String version;
     private String os;
     private String macAddress;
     private String ipAddress;
 
-    public String getClientVersion() {
-        return clientVersion;
+    public String getVersion() {
+        return version;
     }
 
-    public void setClientVersion(String clientVersion) {
-        this.clientVersion = clientVersion;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public String getOs() {
@@ -39,5 +39,15 @@ public class TerminalInfo {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "TerminalInfo{" +
+                "ipAddress='" + ipAddress + '\'' +
+                ", version='" + version + '\'' +
+                ", os='" + os + '\'' +
+                ", macAddress='" + macAddress + '\'' +
+                '}';
     }
 }

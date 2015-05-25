@@ -3,11 +3,7 @@ package org.eastbar.site;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
-import org.eastbar.codec.ClientInitReq;
-import org.eastbar.codec.IPFormatException;
-import org.eastbar.codec.IpV4;
-import org.eastbar.site.biz.CustomerLoginEvent;
-import org.eastbar.site.biz.CustomerLogoutEvent;
+import org.eastbar.codec.*;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
@@ -23,11 +19,8 @@ import java.util.Map;
 public class TerminalManager {
 
     private Map<String, Terminal> terminalMap = Maps.newConcurrentMap();
-//    private Map<InetSocketAddress, Channel> terminalChannels = Maps.newConcurrentMap();
-//    private Map<String,InetSocketAddress> ipSocketMaps = Maps.newConcurrentMap();
 
-
-    public Terminal getTerminal(String ip) {
+    public Terminal getTerminalOrCreated(String ip) {
         Terminal terminal = terminalMap.get(ip);
         if (terminal == null) {
             terminal = new Terminal(ip);
@@ -36,8 +29,12 @@ public class TerminalManager {
         return terminal;
     }
 
-    public void customerLogin(CustomerLoginEvent loginEvent) {
-        String eip = loginEvent.getIpAddress();
+    public Terminal getTerminalWithoutCreate(String ip){
+        return terminalMap.get(ip);
+    }
+
+    public void customerLogin(UserInfo loginEvent) {
+        String eip = loginEvent.getHostIp();
         String ip = null;
         try {
             ip = IpV4.convertIPV4(eip).toRegularIpFormat();
@@ -55,8 +52,8 @@ public class TerminalManager {
         }
     }
 
-    public void customerLogout(CustomerLogoutEvent logoutEvent) {
-        String eip = logoutEvent.getIpAddress();
+    public void customerLogout(UserInfo logoutEvent) {
+        String eip = logoutEvent.getHostIp();
         String ip = null;
         try {
             ip = IpV4.convertIPV4(eip).toRegularIpFormat();
@@ -73,13 +70,7 @@ public class TerminalManager {
             terminal.logoutCustomer(logoutEvent);
         }
 
-//        InetSocketAddress address = ipSocketMaps.remove(ip);
-//        if(address!=null){
-//            Channel channel = terminalChannels.remove(address);
-//            if(channel!=null){
-//                channel.close();
-//            }
-//        }
+
     }
 
     public void monitorActive(ClientInitReq initReq, Channel channel) {
@@ -120,4 +111,41 @@ public class TerminalManager {
         return results;
     }
 
+    public List<TermReport> getTerminalReport() {
+        List<TermReport> reporst = Lists.newArrayList();
+        Collection<Terminal> terminals = terminalMap.values();
+        for (Terminal t : terminals) {
+            if (t.isActive()) {
+                TermReport report = new TermReport();
+                TerminalInfo info = t.getTermInfo();
+                UserInfo usedInfo = t.getUserInfo();
+                report.setHostIp(t.getIp());
+                if (info != null) {
+                    report.setOs(info.getOs());
+                    report.setMacAddress(info.getMacAddress());
+                    report.setVersion(info.getVersion());
+                }
+                if (usedInfo != null) {
+                    report.setAccount(usedInfo.getAccount());
+                    report.setId(usedInfo.getId());
+                    report.setIdType(usedInfo.getIdType());
+                    report.setName(usedInfo.getName());
+                    report.setAuthOrg(usedInfo.getAuthOrg());
+                }
+                reporst.add(report);
+            }
+        }
+
+        return reporst;
+    }
+
+    public void closeAll() {
+        Collection<Terminal> terminals = Collections.unmodifiableCollection(terminalMap.values());
+        for (Terminal terminal : terminals) {
+            Channel channel = terminal.channel();
+            if (channel != null && channel.isActive()) {
+                channel.close();
+            }
+        }
+    }
 }

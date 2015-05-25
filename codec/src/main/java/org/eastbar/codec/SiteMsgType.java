@@ -12,6 +12,7 @@ public enum SiteMsgType {
     OFFLINE((short) 0x4003),
     LOGOUT((short) 0x4004),
     LIST((short) 0x6001),
+    STATUS((short)0x6002),
     UNKNOWN((short) 0xffff);
 
 

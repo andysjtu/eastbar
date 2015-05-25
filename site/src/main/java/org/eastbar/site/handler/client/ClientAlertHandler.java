@@ -9,31 +9,37 @@ import org.eastbar.codec.ClientMsgType;
 import org.eastbar.codec.GenResp;
 import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SocketMsg;
+import org.eastbar.site.AlertServer;
 
 /**
  * Created by AndySJTU on 2015/5/11.
  */
 public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
+    private final AlertServer alertServer;
+
+    public ClientAlertHandler(AlertServer alertServer) {
+        this.alertServer = alertServer;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
         ClientMsgType type = ClientMsgType.valueOf(value);
 
-        if(type==ClientMsgType.CLIENT_ALERT){
-            //TODO
+        if (type == ClientMsgType.CLIENT_ALERT) {
             ByteBuf buf = msg.data().content();
-            System.out.println("告警类型 ： "+buf.readByte());
-            System.out.println(buf.toString(Charsets.UTF_8));
-
-            sendResp(ctx,msg);
-        }
-        else{
+            byte[] content = new byte[buf.readableBytes()];
+            buf.readBytes(content);
+            System.out.println(new String(content));
+            alertServer.appendAlert(content);
+            sendResp(ctx, msg);
+        } else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }
     }
 
     private void sendResp(ChannelHandlerContext ctx, SocketMsg msg) {
-        GenResp resp = GenRespUtil.createS2ClientSucessResp(msg.getMessageId(),msg.getMessageType());
+        GenResp resp = GenRespUtil.createS2ClientSucessResp(msg.getMessageId(), msg.getMessageType());
         ctx.channel().writeAndFlush(resp);
     }
 }

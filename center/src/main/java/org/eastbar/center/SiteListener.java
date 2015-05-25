@@ -9,12 +9,14 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.center.handler.site.SiteHeatBeatenHandler;
+import org.eastbar.center.handler.site.SiteInitReqHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,9 @@ public class SiteListener implements Listener {
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2000);
 
     private volatile Channel serverChannel;
+
+    @Autowired
+    private Center center;
 
     @Override
     public void listen() {
@@ -56,6 +61,7 @@ public class SiteListener implements Listener {
                         pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder",new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder",new SocketMsgEncoder());
+                        pipeline.addLast("siteInitHandler",new SiteInitReqHandler(center));
                         pipeline.addLast("siteHeatbeaten",new SiteHeatBeatenHandler());
                     }
                 });

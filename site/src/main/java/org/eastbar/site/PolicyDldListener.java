@@ -55,7 +55,7 @@ public class PolicyDldListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-
+                        pipeline.addLast("loggingHandler",new LoggingHandler("下载策略通道",LogLevel.INFO));
                         pipeline.addLast("http-decoder", new HttpRequestDecoder());
                         pipeline.addLast("http-aggregator", new HttpObjectAggregator(65536));
                         pipeline.addLast("http-encoder", new HttpResponseEncoder());

@@ -4,6 +4,9 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.assertj.core.util.Maps;
+import org.eastbar.codec.CenterNotice;
+import org.eastbar.codec.SiteInitReq;
+import org.eastbar.codec.SiteReport;
 import org.eastbar.codec.SocketMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,63 +21,43 @@ import java.util.Map;
  */
 @Component
 public class Center {
-    
-    public final static Logger logger= LoggerFactory.getLogger(Center.class);
-    
 
-    private Map<String,Channel> siteChannels = Maps.newConcurrentHashMap();
+    public final static Logger logger = LoggerFactory.getLogger(Center.class);
 
-    private Map<String,VSite> sites = Maps.newConcurrentHashMap();
+    private Map<String, VSite> sites = Maps.newConcurrentHashMap();
 
-    private ChannelFutureListener closeListener = new ChannelFutureListener() {
-        @Override
-        public void operationComplete(ChannelFuture future) throws Exception {
-
-        }
-    };
-
+    private volatile int urlVersion = 1;
+    private volatile int pgVersion = 1;
+    private volatile int spVersion = 1;
+    private volatile int kwVersion = 1;
 
     public void disconnectAllSites() {
-        Collection<Channel> channelList = siteChannels.values();
-        for(Channel channel: channelList){
-            //FIXME may be send close cmd,then remote close channel
-            channel.close();
+        Collection<VSite> channelList = sites.values();
+        for (VSite vsite : channelList) {
+            vsite.close();
         }
     }
 
-    public boolean registerSite(final String siteCode,Channel siteChannel){
-        if(!existDuplicateSite(siteCode)) {
-            siteChannels.put(siteCode, siteChannel);
-            //TODO init vsite
-            siteChannel.closeFuture().addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    siteChannels.remove(siteCode);
-                    sites.get(siteCode).offline();
-                }
-            });
-            return true;
+
+    public void initSite(SiteInitReq initReq, Channel channel) {
+        SiteReport report = initReq.getSiteReport();
+        String siteCode = report.getSiteCode();
+        VSite vSite = sites.get(siteCode);
+        if (vSite == null) {
+            vSite = new VSite(siteCode);
+            vSite.setCenter(this);
+            sites.put(siteCode, vSite);
         }
-        logger.warn("该场所端siteCode:{} 存在，不允许重复连接，请检查",siteCode);
-        return false;
+        vSite.online(initReq, channel);
     }
 
-    private boolean existDuplicateSite(String siteCode){
-        if(siteChannels.containsKey(siteCode))return true;
-        return false;
+    public CenterNotice genNotice() {
+
+        CenterNotice notice = new CenterNotice();
+        notice.setKwVersion(kwVersion);
+        notice.setPgVersion(pgVersion);
+        notice.setSpVersion(spVersion);
+        notice.setUrlPolicyVersion(urlVersion);
+        return notice;
     }
-
-
-    public Channel findSiteChannel(String siteCode){
-        return siteChannels.get(siteCode);
-    }
-
-
-    public void sendLockCmd(String siteCode){
-        Channel siteChannel = siteChannels.get(siteCode);
-        if(siteChannel!=null){
-
-        }
-    }
-
 }

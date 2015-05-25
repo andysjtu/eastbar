@@ -35,6 +35,11 @@ public class ClientListener implements Listener {
     private int listenPort;
 
     @Autowired
+    private LogServer logServer;
+    @Autowired
+    private AlertServer alertServer;
+
+    @Autowired
     private Site site;
 
     public void setLocalIp(String localIp) {
@@ -72,14 +77,14 @@ public class ClientListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler(LogLevel.INFO));
+                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道",LogLevel.INFO));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("skmsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("initHandler", new ClientInitReqHandler(site));
                         pipeline.addLast("beatenHandler", new ClientBeatenHandler());
-                        pipeline.addLast("clientLogHandler", new ClientLogHandler());
-                        pipeline.addLast("clientAlertHandler", new ClientAlertHandler());
+                        pipeline.addLast("clientLogHandler", new ClientLogHandler(logServer));
+                        pipeline.addLast("clientAlertHandler", new ClientAlertHandler(alertServer));
                         pipeline.addLast("clientCmdRespHandler", proxyChannelHandler);
                         pipeline.addLast("generalHandler", new ClientHandler());
 
