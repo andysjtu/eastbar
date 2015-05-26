@@ -173,7 +173,8 @@ public class SocketMsg implements ReferenceCounted {
     }
 
     public void data(ByteBuf buf) {
-        this.data = new DefaultByteBufHolder(buf);
+        if (buf != null)
+            this.data = new DefaultByteBufHolder(buf);
     }
 
     @Override
@@ -203,4 +204,7 @@ public class SocketMsg implements ReferenceCounted {
     }
 
 
+    public void setData(ByteBufHolder data) {
+        this.data = data;
+    }
 }

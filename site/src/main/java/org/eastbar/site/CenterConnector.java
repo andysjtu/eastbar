@@ -10,6 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.codec.*;
 import org.eastbar.site.handler.center.BeatenHandler;
+import org.eastbar.site.handler.center.Center2ClientCmdHandler;
 import org.eastbar.site.handler.center.StatusHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,7 @@ public class CenterConnector implements Connector {
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("siteInitHandler", new StatusHandler(site));
                         pipeline.addLast("bentenHandler", new BeatenHandler());
+                        pipeline.addLast("centerCmdHandler",new Center2ClientCmdHandler(site));
 
                     }
                 });

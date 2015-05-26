@@ -35,9 +35,40 @@ public class VSite {
         this.siteCode = siteCode;
     }
 
+    private void sendErrorResponse(Channel respTargetChannel, short messageId, short messageType) {
+        GenResp resp = new GenResp.S2CenterGenResp(messageId, messageType, GenResp.Status.Failure);
+        respTargetChannel.writeAndFlush(resp);
+    }
 
     public void changeStatus(Status newStatus) {
         this.status = newStatus;
+    }
+
+    public void redirect(final SocketMsg msg, final Channel respChannel) {
+        if (siteChannel != null && siteChannel.isActive()) {
+            siteChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if (!future.isSuccess()) {
+                        logger.warn("发送命令失败", future.cause());
+                        sendErrorResponse(respChannel, msg.getMessageId(), msg.getMessageType());
+                    }
+                }
+            });
+            ProxyChannelHandler handler = (ProxyChannelHandler) siteChannel.pipeline().get(ProxyChannelHandler.HANDLER_NAME);
+            if (handler != null) {
+                handler.registerTarget(msg.getMessageId(), msg.getMessageType(), respChannel);
+            } else {
+                logger.warn("没有找到ProxyHandler，请检查");
+            }
+        } else {
+            try {
+                logger.warn("SiteChannel没有建立，返回失败操作");
+                sendErrorResponse(respChannel, msg.getMessageId(), msg.getMessageType());
+            } finally {
+                msg.release();
+            }
+        }
     }
 
     public void online(SiteInitReq req, Channel channel) {
@@ -114,5 +145,13 @@ public class VSite {
 
     public void setCenter(Center center) {
         this.center = center;
+    }
+
+    public boolean isConnected() {
+
+        if (siteChannel != null && siteChannel.isActive()) {
+            return true;
+        }
+        return false;
     }
 }

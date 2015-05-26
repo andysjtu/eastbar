@@ -17,11 +17,9 @@ import java.util.Set;
 public class Center2ClientCmdHandler extends SimpleChannelInboundHandler<SocketMsg> {
     private final Site site;
 
-    private final ClientProxyChannelHandler proxyChannelHandler;
 
-    public Center2ClientCmdHandler(Site site, ClientProxyChannelHandler proxyChannelHandler) {
+    public Center2ClientCmdHandler(Site site) {
         this.site = site;
-        this.proxyChannelHandler = proxyChannelHandler;
     }
 
     @Override
@@ -40,6 +38,7 @@ public class Center2ClientCmdHandler extends SimpleChannelInboundHandler<SocketM
             String ip = msg.getHost().toRegularIpFormat();
             Channel channel = site.getTerminalChannel(ip);
             if (channel != null && channel.isActive()) {
+                final ClientProxyChannelHandler proxyChannelHandler = (ClientProxyChannelHandler) channel.pipeline().get("clientCmdRespHandler");
                 msg.changeSiteToClientAttr();
                 channel.writeAndFlush(ReferenceCountUtil.retain(msg)).addListener(new ChannelFutureListener() {
                     @Override

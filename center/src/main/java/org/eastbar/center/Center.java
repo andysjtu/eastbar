@@ -42,6 +42,7 @@ public class Center {
     public void initSite(SiteInitReq initReq, Channel channel) {
         SiteReport report = initReq.getSiteReport();
         String siteCode = report.getSiteCode();
+        logger.info("siteCode is : "+siteCode);
         VSite vSite = sites.get(siteCode);
         if (vSite == null) {
             vSite = new VSite(siteCode);
@@ -59,5 +60,9 @@ public class Center {
         notice.setSpVersion(spVersion);
         notice.setUrlPolicyVersion(urlVersion);
         return notice;
+    }
+
+    public VSite getVSite(String siteCode){
+        return sites.get(siteCode);
     }
 }

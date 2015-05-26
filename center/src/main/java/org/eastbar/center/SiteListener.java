@@ -11,6 +11,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.center.handler.site.SiteHeatBeatenHandler;
 import org.eastbar.center.handler.site.SiteInitReqHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.ProxyChannelHandler;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
@@ -56,13 +57,14 @@ public class SiteListener implements Listener {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         //TODO
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("log",new LoggingHandler(LogLevel.INFO));
+                        pipeline.addLast("log",new LoggingHandler("连接场所端通道",LogLevel.INFO));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder",new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder",new SocketMsgEncoder());
                         pipeline.addLast("siteInitHandler",new SiteInitReqHandler(center));
                         pipeline.addLast("siteHeatbeaten",new SiteHeatBeatenHandler());
+                        pipeline.addLast(ProxyChannelHandler.HANDLER_NAME,new ProxyChannelHandler());
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);
