@@ -1,0 +1,36 @@
+package org.eastbar.site.handler.center;
+
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.ReferenceCountUtil;
+import org.eastbar.codec.CenterNotice;
+import org.eastbar.codec.SiteInitResp;
+import org.eastbar.codec.SiteMsgType;
+import org.eastbar.codec.SocketMsg;
+import org.eastbar.site.Site;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Created by AndySJTU on 2015/5/20.
+ */
+public class StatusHandler extends SimpleChannelInboundHandler<SocketMsg> {
+    public final static Logger logger= LoggerFactory.getLogger(StatusHandler.class);
+    
+    private final Site site;
+
+    public StatusHandler(Site site) {
+        this.site = site;
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
+        short value = msg.getMessageType();
+        if (value == SiteMsgType.INIT_CONN.shortValue()) {
+           
+        } else {
+            ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
+        }
+
+    }
+}
