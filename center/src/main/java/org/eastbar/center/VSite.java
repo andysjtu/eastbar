@@ -4,7 +4,6 @@ import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import org.dozer.DozerBeanMapper;
 import org.eastbar.codec.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +37,13 @@ public class VSite {
     private void sendErrorResponse(Channel respTargetChannel, short messageId, short messageType) {
         GenResp resp = new GenResp.S2CenterGenResp(messageId, messageType, GenResp.Status.Failure);
         respTargetChannel.writeAndFlush(resp);
+    }
+
+    public SiteReport getSiteReport() {
+        SiteReport report = new SiteReport();
+        report.setSiteCode(siteCode);
+        DozerUtil.copyProperties(version, report);
+        return report;
     }
 
     public void changeStatus(Status newStatus) {
@@ -82,9 +88,11 @@ public class VSite {
             });
             changeStatus(Status.ONLINE);
             init(req.getSiteReport());
-            CenterNotice notice = center.genNotice();
-            SiteInitResp resp = new SiteInitResp(notice);
-            channel.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+            //TODO send success resp
+
+//            CenterNotice notice = center.genNotice();
+//            SiteInitResp resp = new SiteInitResp(notice);
+//            channel.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
 
         } else {
             logger.warn("不允许重复siteCode :{}上报,关闭通道", siteCode);
@@ -131,10 +139,7 @@ public class VSite {
     }
 
     private void initPolicyVersion(SiteReport report) {
-        version.setKwVersion(report.getKwVersion());
-        version.setPrgVersion(report.getProgVersion());
-        version.setSpVersion(report.getSmVersion());
-        version.setUrlVersion(report.getUrlVersion());
+        DozerUtil.copyProperties(report, version);
     }
 
     public void close() {
@@ -154,4 +159,6 @@ public class VSite {
         }
         return false;
     }
+
+
 }

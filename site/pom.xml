@@ -362,30 +362,76 @@
 				</executions>
 			</plugin>
 
-			<!-- test插件, 设定內存 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-					<argLine>-Xmx256M</argLine>
+					<excludes>
+						<exclude>**/*.xml</exclude>
+						<exclude>**/*.properties</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 
-			<!-- cobertura插件, 取消不需要计算覆盖率的类 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>cobertura-maven-plugin</artifactId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<version>1.8.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>generate-daemons</goal>
+							<goal>assemble</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<instrumentation>
-						<excludes>
-							<exclude>**/entity/*.class</exclude>
-							<exclude>**/dto/*.class</exclude>
-							<exclude>**/*Controller.class</exclude>
-							<exclude>**/*Demo.class</exclude>
-						</excludes>
-					</instrumentation>
+					<configurationDirectory>config</configurationDirectory>
+					<repositoryLayout>flat</repositoryLayout>
+					<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
+					<copyConfigurationDirectory>true</copyConfigurationDirectory>
+					<assembleDirectory>${project.build.directory}/site</assembleDirectory>
+					<extraJvmArguments>-Xms512m</extraJvmArguments>
+					<programs>
+						<program>
+							<mainClass>org.eastbar.site.SiteMain</mainClass>
+							<id>site-service</id>
+							<platforms>
+								<platform>windows</platform>
+								<platform>unix</platform>
+							</platforms>
+						</program>
+					</programs>
+					<daemons>
+						<daemon>
+							<id>siteServiceDaemon</id>
+							<mainClass>org.eastbar.site.SiteMain</mainClass>
+							<generatorConfigurations>
+								<generatorConfiguration>
+									<generator>jsw</generator>
+									<includes>
+										<include>linux-x86-64</include>
+										<include>windows-x86-64</include>
+									</includes>
+									<configuration>
+										<property>
+											<name>wrapper.logfile</name>
+											<value>logs/wrapper.log</value>
+										</property>
+									</configuration>
+								</generatorConfiguration>
+							</generatorConfigurations>
+							<platforms>
+								<platform>jsw</platform>
+							</platforms>
+						</daemon>
+					</daemons>
 				</configuration>
 			</plugin>
+
+
 
 		</plugins>
 	</build>

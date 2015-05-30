@@ -29,12 +29,12 @@ public class PolicyManager {
     @Autowired
     private PolicyVersionDao versionDao;
 
-    public PolicyVersion getPolicyVersion() {
-        Iterator<PolicyVersion> it = versionDao.findAll().iterator();
+    public SitePolicyVersion getPolicyVersion() {
+        Iterator<SitePolicyVersion> it = versionDao.findAll().iterator();
         if (it.hasNext()) {
             return it.next();
         }
-        return new PolicyVersion();
+        return new SitePolicyVersion();
     }
 
 

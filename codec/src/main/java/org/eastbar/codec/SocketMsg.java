@@ -1,11 +1,9 @@
 package org.eastbar.codec;
 
-import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.buffer.DefaultByteBufHolder;
 import io.netty.buffer.Unpooled;
-import io.netty.util.ReferenceCountUtil;
 import io.netty.util.ReferenceCounted;
 
 import java.util.Arrays;
@@ -189,7 +187,7 @@ public class SocketMsg implements ReferenceCounted {
     }
 
     public static void main(String[] args) {
-        SiteBeatenEvent event = new SiteBeatenEvent();
+        BeatenEvent event = new BeatenEvent();
 
         System.out.println("event is : " + event);
         IDGenerator.nextID();

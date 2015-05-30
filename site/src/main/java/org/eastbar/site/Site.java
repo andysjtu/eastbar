@@ -2,11 +2,13 @@ package org.eastbar.site;
 
 import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.*;
 import org.eastbar.site.file.FileAppender;
 import org.eastbar.site.policy.PolicyManager;
-import org.eastbar.site.policy.PolicyVersion;
+import org.eastbar.site.policy.SitePolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class Site {
 
     private volatile Channel centerChannel;
 
-    private PolicyVersion version;
+    private SitePolicyVersion version;
 
     @Autowired
     private PolicyManager policyManager;
@@ -66,11 +68,11 @@ public class Site {
         this.version = policyManager.getPolicyVersion();
     }
 
-    public PolicyVersion getVersion() {
+    public SitePolicyVersion getVersion() {
         return version;
     }
 
-    public void setVersion(PolicyVersion version) {
+    public void setVersion(SitePolicyVersion version) {
         this.version = version;
     }
 
@@ -133,8 +135,22 @@ public class Site {
 //        return channelMap.get(hostIp);
     }
 
-    public void reportOnLine() {
+    public void writeDown(TermReport report){
+        //
+    }
 
+    public void reportOnLine(final TermReport report) {
+        if(centerChannel!=null&&centerChannel.isActive()){
+            SocketMsg msg = new TermReportMsg(report);
+            centerChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if(!future.isSuccess()){
+                        writeDown(report);
+                    }
+                }
+            });
+        }
     }
 
     public void reportOffline() {
@@ -146,7 +162,7 @@ public class Site {
         SiteReport report = new SiteReport();
         report.setUrlVersion(version.getUrlVersion());
         report.setKwVersion(version.getKwVersion());
-        report.setProgVersion(version.getPgVersion());
+        report.setPrgVersion(version.getPrgVersion());
         report.setSiteCode(siteCode);
         report.setUrlVersion(version.getUrlVersion());
         List<TermReport> termReport = terminalManager.getTerminalReport();
@@ -154,17 +170,16 @@ public class Site {
         return report;
     }
 
-    public void notice(CenterNotice notice) {
-        version.setCenterKwVersion(notice.getKwVersion());
-        version.setCenterPgVersion(notice.getPgVersion());
-        version.setCenterSpmVersion(notice.getSpVersion());
-        version.setCenterUrlVersion(notice.getUrlPolicyVersion());
-    }
+
 
     @PostConstruct
     public void initFileAppender(){
         appender = new FileAppender();
-        appender.setFile(Paths.get("status","status.log").toString());
+        appender.setFile(Paths.get("status", "status.log").toString());
         appender.start();
+    }
+
+    public void notice(CenterNotice notice) {
+        //TODO
     }
 }

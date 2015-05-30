@@ -1,5 +1,6 @@
 package org.eastbar.codec;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
 import org.slf4j.Logger;
@@ -24,6 +25,16 @@ public class JsonUtil {
             e.printStackTrace();
         }
         return writer.toString();
+    }
+
+    public static <T> T fromJson(TypeReference<T> tr,byte[] content){
+        T t=null;
+        try {
+            t = objectMapper.readValue(content,tr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return t;
     }
 
     public static <T> T fromJson(Class<T> clz,byte[] content){

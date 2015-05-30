@@ -6,9 +6,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.*;
-import org.eastbar.site.handler.client.ClientProxyChannelHandler;
 import org.eastbar.site.Site;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,7 +38,7 @@ public class Center2ClientCmdHandler extends SimpleChannelInboundHandler<SocketM
             String ip = msg.getHost().toRegularIpFormat();
             Channel channel = site.getTerminalChannel(ip);
             if (channel != null && channel.isActive()) {
-                final ClientProxyChannelHandler proxyChannelHandler = (ClientProxyChannelHandler) channel.pipeline().get("clientCmdRespHandler");
+                final ProxyChannelHandler proxyChannelHandler = (ProxyChannelHandler) channel.pipeline().get(ProxyChannelHandler.HANDLER_NAME);
                 msg.changeSiteToClientAttr();
                 channel.writeAndFlush(ReferenceCountUtil.retain(msg)).addListener(new ChannelFutureListener() {
                     @Override
@@ -60,14 +60,21 @@ public class Center2ClientCmdHandler extends SimpleChannelInboundHandler<SocketM
             SocketMsg newMsg = new SocketMsg(msg);
             newMsg.setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
             ByteBuf buf = Unpooled.buffer();
-            if (hosts.size() == 0) {
+            SiteReport report = site.getSiteReport();
+            buf.writeBytes(("UrlVersion=" + report.getUrlVersion() + "\n").getBytes(Charsets.UTF_8));
+            buf.writeBytes(("PgVersion=" + report.getPrgVersion() + "\n").getBytes(Charsets.UTF_8));
+            buf.writeBytes(("KwVersion=" + report.getKwVersion() + "\n").getBytes(Charsets.UTF_8));
+            buf.writeBytes(("SpVersion=" + report.getSmVersion() + "\n").getBytes(Charsets.UTF_8));
+            List<TermReport> termReportList = report.getTermReportList();
+            if (termReportList.size() == 0) {
                 buf.writeBytes("没有终端连上\n".getBytes(Charsets.UTF_8));
-            } else {
-                for (String host : hosts) {
-                    buf.writeBytes(host.getBytes(Charsets.UTF_8));
-                    buf.writeBytes("\n".getBytes());
-                }
             }
+            for (TermReport terminal : termReportList) {
+                StringBuilder builder = new StringBuilder();
+                builder.append("hostIp=").append(terminal.getHostIp()).append("\n");
+                buf.writeBytes(builder.toString().getBytes(Charsets.UTF_8));
+            }
+
             newMsg.data(buf);
             ctx.writeAndFlush(newMsg);
             return;

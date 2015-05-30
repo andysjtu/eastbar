@@ -15,7 +15,10 @@ import org.eastbar.codec.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
@@ -72,10 +75,10 @@ public class ConsoleClient {
         worker.shutdownGracefully();
     }
 
-    public void readConsole() {
-        Scanner scanner = new Scanner(System.in);
+    public void readConsole() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("请输入命令：");
-        String content = scanner.next();
+        String content = reader.readLine();
         while (true && channel.isActive()) {
             String cmd = StringUtils.trimToNull(content);
             System.out.println("Receive CMD is : {" + cmd + "}");
@@ -214,12 +217,12 @@ public class ConsoleClient {
                 }
             }
             System.out.print("请输入命令：");
-            content = scanner.next();
+            content = reader.readLine();
         }
 
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         ConsoleClient client = new ConsoleClient();
         client.connect();
         if (client.getChannel() != null) {

@@ -50,7 +50,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath*:/application-site.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-site.properties"/>
 
     <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"

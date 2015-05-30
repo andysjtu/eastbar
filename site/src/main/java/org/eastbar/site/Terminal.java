@@ -4,7 +4,6 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.eastbar.codec.*;
-import org.eastbar.site.handler.client.ClientProxyChannelHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +39,7 @@ public class Terminal {
                     }
                 }
             });
-            ClientProxyChannelHandler handler = (ClientProxyChannelHandler) termChannel.pipeline().get("clientCmdRespHandler");
+            ProxyChannelHandler handler = (ProxyChannelHandler) termChannel.pipeline().get(ProxyChannelHandler.HANDLER_NAME);
             if (handler != null) {
                 handler.registerTarget(msg.getMessageId(), msg.getMessageType(), respChannel);
             } else {

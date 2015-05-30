@@ -1,7 +1,7 @@
 package org.eastbar.site;
 
-import com.google.common.collect.Sets;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.ServerSocketChannel;
@@ -57,27 +57,28 @@ public class ClientListener implements Listener {
         }
     };
 
-    @Autowired
-    private ClientProxyChannelHandler proxyChannelHandler;
+//    @Autowired
+//    private ClientProxyChannelHandler proxyChannelHandler;
 
     @Override
     public void listen() {
-        proxyChannelHandler.registerkeys(Sets.newHashSet(ClientMsgType.GEN_RESP.shortValue(),
-                ClientMsgType.QUERY_CLIENT_MODULE.shortValue(),
-                ClientMsgType.QUERY_CLIENT_PROCESS.shortValue(),
-                ClientMsgType.CAPTURE_CLIENT.shortValue()));
+//        proxyChannelHandler.registerKeys(Sets.newHashSet(ClientMsgType.GEN_RESP.shortValue(),
+//                ClientMsgType.QUERY_CLIENT_MODULE.shortValue(),
+//                ClientMsgType.QUERY_CLIENT_PROCESS.shortValue(),
+//                ClientMsgType.CAPTURE_CLIENT.shortValue()));
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1000)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
                 .handler(new ServerChannelInitilizer())
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道",LogLevel.INFO));
+                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道", LogLevel.INFO));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("skmsgEncoder", new SocketMsgEncoder());
@@ -85,8 +86,8 @@ public class ClientListener implements Listener {
                         pipeline.addLast("beatenHandler", new ClientBeatenHandler());
                         pipeline.addLast("clientLogHandler", new ClientLogHandler(logServer));
                         pipeline.addLast("clientAlertHandler", new ClientAlertHandler(alertServer));
-                        pipeline.addLast("clientCmdRespHandler", proxyChannelHandler);
-                        pipeline.addLast("generalHandler", new ClientHandler());
+                        pipeline.addLast(ProxyChannelHandler.HANDLER_NAME, new ProxyChannelHandler());
+                        pipeline.addLast("generalHandler", new ExceptionHandler());
 
                     }
                 });

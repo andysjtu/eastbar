@@ -8,7 +8,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
-import org.eastbar.site.handler.client.ClientProxyChannelHandler;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
@@ -37,8 +36,7 @@ public class ConsoleListener implements Listener {
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2);
     private volatile Channel serverChannel;
 
-    @Autowired
-    private ClientProxyChannelHandler proxyChannelHandler;
+
 
     private int listenPort=9999;
 
@@ -57,7 +55,7 @@ public class ConsoleListener implements Listener {
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("cmdDecoder",new ConsoleHandler(proxyChannelHandler, siteServer));
+                        pipeline.addLast("cmdDecoder",new ConsoleHandler(siteServer));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

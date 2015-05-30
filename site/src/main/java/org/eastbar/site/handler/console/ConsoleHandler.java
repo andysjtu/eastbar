@@ -6,10 +6,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import org.eastbar.codec.*;
 import org.eastbar.site.Terminal;
-import org.eastbar.site.handler.client.ClientProxyChannelHandler;
 import org.eastbar.site.Site;
 import org.eastbar.site.SiteServer;
-import org.eastbar.site.policy.PolicyVersion;
+import org.eastbar.site.policy.SitePolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +22,9 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(ConsoleHandler.class);
 
 
-    private final ClientProxyChannelHandler proxyChannelHandler;
-
-
     private final SiteServer siteServer;
 
-    public ConsoleHandler(ClientProxyChannelHandler proxyChannelHandler, SiteServer siteServer) {
-        this.proxyChannelHandler = proxyChannelHandler;
+    public ConsoleHandler(SiteServer siteServer) {
         this.siteServer = siteServer;
     }
 
@@ -65,7 +60,7 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
             SocketMsg newMsg = new SocketMsg(msg);
             newMsg.setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
             ByteBuf buf = Unpooled.buffer();
-            PolicyVersion version = siteServer.getSite().getVersion();
+            SitePolicyVersion version = siteServer.getSite().getVersion();
             buf.writeBytes(JsonUtil.toJson(version).getBytes(Charsets.UTF_8));
             newMsg.data(buf);
             ctx.writeAndFlush(newMsg);

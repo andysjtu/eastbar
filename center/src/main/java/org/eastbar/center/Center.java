@@ -1,5 +1,6 @@
 package org.eastbar.center;
 
+import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -12,9 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by andysjtu on 2015/5/10.
@@ -38,11 +37,25 @@ public class Center {
         }
     }
 
+    public String getReportString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("urlVersion=").append(urlVersion).append("\n");
+        builder.append("pgVersion=").append(pgVersion).append("\n");
+        builder.append("spVersion=").append(spVersion).append("\n");
+        builder.append("kwVersion=").append(kwVersion).append("\n");
+        Iterator<Map.Entry<String, VSite>> it = Collections.unmodifiableSet(sites.entrySet()).iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, VSite> entry = it.next();
+            builder.append("siteCode=").append(entry.getKey()).append(": \n");
+        }
+        return builder.toString();
+    }
+
 
     public void initSite(SiteInitReq initReq, Channel channel) {
         SiteReport report = initReq.getSiteReport();
         String siteCode = report.getSiteCode();
-        logger.info("siteCode is : "+siteCode);
+        logger.info("siteCode is : " + siteCode);
         VSite vSite = sites.get(siteCode);
         if (vSite == null) {
             vSite = new VSite(siteCode);
@@ -52,17 +65,19 @@ public class Center {
         vSite.online(initReq, channel);
     }
 
-    public CenterNotice genNotice() {
 
-        CenterNotice notice = new CenterNotice();
-        notice.setKwVersion(kwVersion);
-        notice.setPgVersion(pgVersion);
-        notice.setSpVersion(spVersion);
-        notice.setUrlPolicyVersion(urlVersion);
-        return notice;
+
+    public VSite getVSite(String siteCode) {
+        return sites.get(siteCode);
     }
 
-    public VSite getVSite(String siteCode){
-        return sites.get(siteCode);
+    public List<SiteReport> getSiteReports() {
+        List<SiteReport> siteReports = Lists.newArrayList();
+        Collection<VSite> vSites = Collections.unmodifiableCollection(sites.values());
+        for(VSite vSite:vSites){
+            SiteReport report = vSite.getSiteReport();
+            siteReports.add(report);
+        }
+        return siteReports;
     }
 }

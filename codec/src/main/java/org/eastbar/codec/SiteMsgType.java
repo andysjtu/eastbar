@@ -13,6 +13,7 @@ public enum SiteMsgType {
     LOGOUT((short) 0x4004),
     LIST((short) 0x6001),
     STATUS((short)0x6002),
+    UPDATE_URL((short)0x6003),
     UNKNOWN((short) 0xffff);
 
 
