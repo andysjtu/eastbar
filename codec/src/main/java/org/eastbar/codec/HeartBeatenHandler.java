@@ -58,7 +58,7 @@ public class HeartBeatenHandler extends SimpleChannelInboundHandler<SocketMsg> {
         } else if (value == SiteMsgType.BEATEN.shortValue()) {
             logger.info("收到对方的心跳信息");
             GenResp resp = GenRespUtil.createCenter2SiteSuccessResp(msg.getMessageId(), msg.getMessageType());
-            ctx.channel().writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+            ctx.channel().writeAndFlush(resp);
             return;
         }
         ctx.fireChannelRead(ReferenceCountUtil.retain(msg));

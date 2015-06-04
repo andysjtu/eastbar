@@ -1,10 +1,10 @@
 package org.eastbar.site;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.*;
 import org.eastbar.site.file.FileAppender;
 import org.eastbar.site.policy.PolicyManager;
@@ -86,13 +86,10 @@ public class Site {
 
     public void registerCustomerLogin(UserInfo loginEvent) {
         terminalManager.customerLogin(loginEvent);
-        if(centerChannel!=null&&centerChannel.isActive()){
-             //TODO
-        }
     }
 
     public void registerCustomerLogout(UserInfo logoutEvent) {
-        //TODO
+        terminalManager.customerLogout(logoutEvent);
     }
 
     public void registerChannel(final Channel channel, ClientInitReq initReq) {
@@ -101,22 +98,22 @@ public class Site {
 
         String host = getAddress(channel);
         logger.info("上传通道地址是 : " + getAddress(channel));
-        String reportHost = authScheme.getIpAddress();
+        String reportHost = authScheme.getIp();
 
         if (!host.equalsIgnoreCase(reportHost)) {
             logger.warn("上传IP信息{}和Socket通道信息{}不一致，以上传IP信息为准 ", reportHost, host);
         }
-        reportToCenter(ReferenceCountUtil.retain(initReq));
+//        reportToCenter(ReferenceCountUtil.retain(initReq));
         terminalManager.monitorActive(initReq, channel);
 
     }
 
-    private void reportToCenter(ClientInitReq initReq) {
-        if (centerChannel != null && centerChannel.isActive()) {
-            OnOffLineEvent event = new OnOffLineEvent(initReq.getAuthSchme(), true);
-            centerChannel.writeAndFlush(event);
-        }
-    }
+//    private void reportToCenter(ClientInitReq initReq) {
+//        if (centerChannel != null && centerChannel.isActive()) {
+//            OnOffLineEvent event = new OnOffLineEvent(initReq.getAuthSchme(), true);
+//            centerChannel.writeAndFlush(event);
+//        }
+//    }
 
 
     private String getAddress(Channel channel) {
@@ -141,7 +138,7 @@ public class Site {
 
     public void reportOnLine(final TermReport report) {
         if(centerChannel!=null&&centerChannel.isActive()){
-            SocketMsg msg = new TermReportMsg(report);
+            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
             centerChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
@@ -165,8 +162,7 @@ public class Site {
         report.setPrgVersion(version.getPrgVersion());
         report.setSiteCode(siteCode);
         report.setUrlVersion(version.getUrlVersion());
-        List<TermReport> termReport = terminalManager.getTerminalReport();
-        report.setTermReportList(termReport);
+        report.setConnected(true);
         return report;
     }
 
@@ -179,7 +175,20 @@ public class Site {
         appender.start();
     }
 
-    public void notice(CenterNotice notice) {
-        //TODO
+
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void notifyEvent(TermReport report) {
+        if(centerChannel!=null&&centerChannel.isActive()){
+            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
+            centerChannel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+        }
+    }
+
+    public List<TermReport> getTermReportList() {
+        return terminalManager.getTerminalReport();
     }
 }

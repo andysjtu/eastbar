@@ -66,7 +66,7 @@ public class CenterConnector implements Connector {
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("siteInitHandler", new StatusHandler(site));
                         pipeline.addLast("bentenHandler", new HeartBeatenHandler());
-                        pipeline.addLast("centerCmdHandler",new Center2ClientCmdHandler(site));
+                        pipeline.addLast("centerCmdHandler", new Center2ClientCmdHandler(site));
 
                     }
                 });
@@ -113,7 +113,7 @@ public class CenterConnector implements Connector {
 
     public void reportSiteStatus(Channel channel) {
         SiteReport report = site.getSiteReport();
-        SiteInitReq req = new SiteInitReq(report);
+        SiteInitReq req = new SiteInitReq(report, site.getTermReportList());
         channel.writeAndFlush(req).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
     }
 

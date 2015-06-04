@@ -15,16 +15,22 @@ public class Terminal {
 
 
     private final String ip;
-    private volatile Status status = Status.DOWN;
+
     private volatile Channel termChannel;
 
-    private volatile UserInfo userInfo;
+    private  UserInfo userInfo = new UserInfo();
 
-    private volatile TerminalInfo termInfo;
+    private  TerminalInfo termInfo = new TerminalInfo();
 
-    private volatile boolean active = false;
+    private volatile boolean connected = false;
+    private volatile boolean online = false;
+    private final String siteCode;
 
-    public Terminal(String ip) {
+    private final Site site;
+
+    public Terminal(Site site, String ip) {
+        this.siteCode = site.getSiteCode();
+        this.site = site;
         this.ip = ip;
     }
 
@@ -63,44 +69,62 @@ public class Terminal {
 
 
     public void loginCustomer(UserInfo loginEvent) {
-
-        if (!(status == Status.DOWN || status == Status.LOGOUT)) {
-            logger.warn("状况变化出现异常，可能是退出登录通知没有收到");
+        userInfo = new UserInfo(loginEvent);
+        online = true;
+        if (connected) {
             if (termChannel != null) {
                 termChannel.close();
             }
         }
-        userInfo = new UserInfo(loginEvent);
-        status = Status.LOGIN;
+        notifyStatusUpdate();
+    }
+
+    private void notifyStatusUpdate() {
+        site.notifyEvent(getReport());
     }
 
     public void logoutCustomer(UserInfo logoutEvent) {
-        if (status == Status.ONLINE || status == Status.OFFLINE) {
+        online = false;
+        if (isSameCustomer(logoutEvent)) {//same one
             userInfo.setLogoutTime(logoutEvent.getLogoutTime());
-        } else {
-            logger.warn("状况变化出现异常，可能是Login登录通知没有收到");
-            userInfo = new UserInfo(logoutEvent);
-
+            if(connected){
+                termChannel.close();
+            }
+        } else {//not same one
+            generateLogoutEvent(logoutEvent);
+            DozerUtil.copyProperties(logoutEvent, userInfo);
+            if(connected){
+                termChannel.close();
+            }
         }
-        status = Status.LOGOUT;
+        notifyStatusUpdate();
+
+    }
+
+    private void generateLogoutEvent(UserInfo logoutEvent) {
+        TermReport report = getReport();
+        report.setLogoutTime(logoutEvent.getLoginTime());
+        site.notifyEvent(report);
+    }
+
+    private boolean isSameCustomer(UserInfo logoutEvent) {
+        return logoutEvent.getId().equals(userInfo.getId());
     }
 
     public void active(ClientInitReq initReq, final Channel channel) {
         this.termChannel = channel;
-        this.status = Status.ONLINE;
-        this.active = true;
-        termInfo = new TerminalInfo();
+        this.connected = true;
         ClientAuthScheme authScheme = initReq.getAuthSchme();
         DozerUtil.copyProperties(authScheme, termInfo);
 
         ClientAuthResp authResp = new ClientAuthResp();
-        if (userInfo != null) {
+        if(online){
             authResp.setVersion(authScheme.getVersion());
             authResp.setIdType(userInfo.getIdType());
             authResp.setId(userInfo.getId());
             authResp.setName(userInfo.getName());
             authResp.setAccount(userInfo.getAccount());
-        } else {
+        }else{
             logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息");
             authResp.setIdType("1");
             authResp.setVersion("1");
@@ -117,8 +141,8 @@ public class Terminal {
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
                     termChannel = null;
-                    status = Status.OFFLINE;
-                    active = false;
+                    connected = false;
+                    notifyStatusUpdate();
                 }
             }
         });
@@ -132,6 +156,7 @@ public class Terminal {
                 }
             }
         });
+        notifyStatusUpdate();
     }
 
     public Channel channel() {
@@ -140,14 +165,6 @@ public class Terminal {
 
     public String getIp() {
         return ip;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
 
@@ -167,13 +184,30 @@ public class Terminal {
         this.userInfo = userInfo;
     }
 
-    public boolean isActive() {
-        return active;
+    public boolean isConnected() {
+        return connected;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
+    public boolean isOnline() {
+        return online;
+    }
 
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public TermReport getReport() {
+        TermReport report = new TermReport();
+        DozerUtil.copyProperties(userInfo, report);
+        DozerUtil.copyProperties(termInfo, report);
+        report.setOnline(online);
+        report.setConnected(connected);
+        report.setSiteCode(siteCode);
+        return report;
+
+    }
 }

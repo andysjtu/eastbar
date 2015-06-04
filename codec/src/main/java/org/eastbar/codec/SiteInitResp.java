@@ -14,7 +14,7 @@ public class SiteInitResp extends SocketMsg {
         setMsgAttr(MsgAttrBuilder.buildDefaultCenterToSiteAttr().byteValue());
         setVersion(ProtocolVersion.Version);
         setMessageId(IDGenerator.nextID());
-        setMessageType(SiteMsgType.INIT_CONN.shortValue());
+        setMessageType(SiteMsgType.SITE_INIT_CONN.shortValue());
         setHost(IpV4.localIpV4());
         this.notice = notice;
         this.data(Unpooled.wrappedBuffer(JsonUtil.toJson(notice).getBytes(Charsets.UTF_8)));

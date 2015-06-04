@@ -6,7 +6,7 @@ package org.eastbar.codec;
 public enum SiteMsgType {
     GEN_RESP((short) 0x0001),
     BEATEN((short) 0x0002),
-    INIT_CONN((short) 0x4000),
+    SITE_INIT_CONN((short) 0x4000),
     LOGIN((short) 0x4001),
     ONLINE((short) 0x4002),
     OFFLINE((short) 0x4003),
@@ -14,6 +14,20 @@ public enum SiteMsgType {
     LIST((short) 0x6001),
     STATUS((short)0x6002),
     UPDATE_URL((short)0x6003),
+    TERM_STATUS((short)0x6004),
+    POLICY_STATUS((short)0x6005),
+    CENTER_INIT_CONN((short)0x6006),
+    //////////////////////////////////////
+    ILLEGAL_LOG((short)0x7001),
+    EMAIL_LOG((short)0x7002),
+    INST_MSG_LOG((short)0x7003),
+    PROG_MSG_LOG((short)0x7004),
+
+    URL_LOG((short)0x7005),
+    ///////////////////////
+    URL_ALERT((short)0x8001),
+    PROG_ALERT((short)0x8002),
+    ILLEGAL_ALERT((short)0x8003),
     UNKNOWN((short) 0xffff);
 
 
@@ -37,4 +51,6 @@ public enum SiteMsgType {
     public short shortValue() {
         return this.typeValue;
     }
+
+
 }

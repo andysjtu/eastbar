@@ -6,7 +6,7 @@ package org.eastbar.codec;
 public class ClientAuthScheme {
     private String version;
     private String macAddress;
-    private String ipAddress;
+    private String ip;
     private String os;
 
     public String getVersion() {
@@ -25,12 +25,12 @@ public class ClientAuthScheme {
         this.macAddress = macAddress;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
+    public String getIp() {
+        return ip;
     }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getOs() {
@@ -48,7 +48,7 @@ public class ClientAuthScheme {
         return "ClientAuthScheme{" +
                 "version='" + version + '\'' +
                 ", macAddress='" + macAddress + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
+                ", ip='" + ip + '\'' +
                 ", os='" + os + '\'' +
                 '}';
     }

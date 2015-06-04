@@ -10,6 +10,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.center.handler.site.SiteHeatBeatenHandler;
 import org.eastbar.center.handler.site.SiteInitReqHandler;
+import org.eastbar.center.handler.site.SiteStatusUpdateHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.ProxyChannelHandler;
 import org.eastbar.codec.SocketMsgDecoder;
@@ -64,7 +65,8 @@ public class SiteListener implements Listener {
                         pipeline.addLast("socketMsgEncoder",new SocketMsgEncoder());
                         pipeline.addLast("siteInitHandler",new SiteInitReqHandler(center));
                         pipeline.addLast("siteHeatbeaten",new SiteHeatBeatenHandler());
-                        pipeline.addLast(ProxyChannelHandler.HANDLER_NAME,new ProxyChannelHandler());
+                        pipeline.addLast("siteStatusUpdater",new SiteStatusUpdateHandler(center));
+                        pipeline.addLast(ProxyChannelHandler.HANDLER_NAME, new ProxyChannelHandler());
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

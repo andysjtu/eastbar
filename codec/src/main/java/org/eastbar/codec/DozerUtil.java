@@ -8,6 +8,7 @@ import org.dozer.DozerBeanMapper;
 public class DozerUtil {
     private static DozerBeanMapper mapper = new DozerBeanMapper();
 
+
     public static void copyProperties(Object src, Object dest) {
         mapper.map(src, dest);
     }

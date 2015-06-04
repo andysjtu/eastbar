@@ -1,5 +1,7 @@
 package org.eastbar.center;
 
+import org.eastbar.codec.TermReport;
+
 /**
  * Created by andysjtu on 2015/5/12.
  */
@@ -7,9 +9,10 @@ public class VTerminal {
     private final String terminalIP;
     private final String siteCode;
 
-    private Status status;
 
-    private String hostIp;
+    private boolean online;
+    private boolean connected;
+
     private String account;
     private String name;
     private String idType;
@@ -36,13 +39,7 @@ public class VTerminal {
         this.authOrg = authOrg;
     }
 
-    public String getHostIp() {
-        return hostIp;
-    }
 
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
-    }
 
     public String getId() {
         return id;
@@ -96,13 +93,7 @@ public class VTerminal {
         return siteCode;
     }
 
-    public Status getStatus() {
-        return status;
-    }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     public String getTerminalIP() {
         return terminalIP;
@@ -113,30 +104,19 @@ public class VTerminal {
         this.siteCode = siteCode;
     }
 
-    private void changeStatus(Status status){
-        this.status = status;
+    public boolean isConnected() {
+        return connected;
     }
 
-    public void login(){
-        this.status = Status.login;
-    }
-    public void logout(){
-        this.status = Status.logout;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 
-    public void offline(){
-        this.status = Status.offline;
+    public boolean isOnline() {
+        return online;
     }
 
-    public void online(){
-        this.status = Status.online;
+    public void setOnline(boolean online) {
+        this.online = online;
     }
-
-
-
-    public static enum Status {
-        offline, login, online, logout;
-    }
-
-
 }

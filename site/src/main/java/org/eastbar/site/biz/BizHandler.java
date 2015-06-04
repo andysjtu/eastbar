@@ -4,6 +4,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import org.eastbar.codec.DozerUtil;
+import org.eastbar.codec.UserInfo;
 import org.eastbar.site.Site;
 import org.eastbar.site.biz.model.C1001;
 import org.eastbar.site.biz.model.C1101;
@@ -65,8 +67,7 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
                 buf.release();
                 break;
             case 1002:
-
-                //TODO
+                logger.warn("收到1002事件，没有处理");
                 break;
             case 1101:
                 String[] login = value.trim().split("\0");
@@ -84,52 +85,61 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
                             .decodeBuffer(login[6]), "GBK"));
                     c1101.setIp(login[7]);
                     c1101.setLoginTime(login[8]);
+                    UserInfo userInfo = new UserInfo();
+                    DozerUtil.copyProperties(c1101, userInfo);
+                    site.registerCustomerLogin(userInfo);
                 }
 
                 break;
             case 1102:
                 String[] logout = value.trim().split("\0");
-                C1102 c1102 = new C1102();
-                c1102.setVersion(logout[0]);
-                c1102.setSessionId(logout[1]);
-                c1102.setAccount(logout[2]);
-                c1102.setName(new String(new BASE64Decoder()
-                        .decodeBuffer(logout[3]), "GBK"));
-                c1102.setIdType(logout[4]);
-                c1102.setId(new String(new BASE64Decoder()
-                        .decodeBuffer(logout[5]), "GBK"));
-                c1102.setAuthOrg(new String(new BASE64Decoder()
-                        .decodeBuffer(logout[6]), "GBK"));
-                c1102.setIp(logout[7]);
-                c1102.setLoginTime(logout[8]);
-                c1102.setLogoutTime(logout[9]);
-                //TODO
+                if (logout.length > 9) {
+                    C1102 c1102 = new C1102();
+                    c1102.setVersion(logout[0]);
+                    c1102.setSessionId(logout[1]);
+                    c1102.setAccount(logout[2]);
+                    c1102.setName(new String(new BASE64Decoder()
+                            .decodeBuffer(logout[3]), "GBK"));
+                    c1102.setIdType(logout[4]);
+                    c1102.setId(new String(new BASE64Decoder()
+                            .decodeBuffer(logout[5]), "GBK"));
+                    c1102.setAuthOrg(new String(new BASE64Decoder()
+                            .decodeBuffer(logout[6]), "GBK"));
+                    c1102.setIp(logout[7]);
+                    c1102.setLoginTime(logout[8]);
+                    c1102.setLogoutTime(logout[9]);
+                    UserInfo userInfo = new UserInfo();
+                    DozerUtil.copyProperties(c1102, userInfo);
+                    site.registerCustomerLogout(userInfo);
+                }
                 break;
             case 1103:
-                //TODO
+                logger.warn("收到1103事件，没有处理");
                 break;
             case 1104:
-                //TODO
+                logger.warn("收到1104事件，没有处理");
                 break;
             case 1105:
-                //TODO
+                logger.warn("收到1105事件，没有处理");
                 break;
             case 1111:
-                //TODO
+                logger.warn("收到1111事件，没有处理");
                 break;
             case 1112:
+                logger.warn("收到1112事件，没有处理");
                 //TODO
                 break;
             case 1113:
-                //TODO
+                logger.warn("收到1113事件，没有处理");
                 break;
             case 1121:
-                //TODO
+                logger.warn("收到1121事件，没有处理");
 
                 break;
             case 1122:
-                //TODO
+                logger.warn("收到1122事件，没有处理");
                 break;
+            default:logger.warn("收到其他类型事件，没有处理");
         }
 
 

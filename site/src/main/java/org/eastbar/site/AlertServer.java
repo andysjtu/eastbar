@@ -20,30 +20,11 @@ public class AlertServer {
 
 
 
-    private FileAppender fileAppender;
+    public void appendAlert(byte type,String content) {
 
-    @Value("${alert.dir}")
-    private String alertDir;
-
-    public void appendAlert(final byte[] content) {
-        service.submit(new Runnable() {
-            @Override
-            public void run() {
-                fileAppender.append(content);
-            }
-        });
     }
 
-    @PostConstruct
-    public void initFileAppender() {
-        if (alertDir == null) throw new RuntimeException("alert.dir must be set");
-        fileAppender = new RollingFileAppender();
-        fileAppender.setFile(Paths.get(alertDir, "sitealert").toString());
-        fileAppender.start();
-    }
 
-    @PreDestroy
-    public void close(){
-        fileAppender.stop();
-    }
+
+
 }

@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory;
  * Created by AndySJTU on 2015/5/20.
  */
 public class StatusHandler extends SimpleChannelInboundHandler<SocketMsg> {
-    public final static Logger logger= LoggerFactory.getLogger(StatusHandler.class);
-    
+    public final static Logger logger = LoggerFactory.getLogger(StatusHandler.class);
+
     private final Site site;
 
     public StatusHandler(Site site) {
@@ -26,11 +26,9 @@ public class StatusHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
-        if (value == SiteMsgType.INIT_CONN.shortValue()) {
-           
-        } else {
-            ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
-        }
+        logger.warn("不知道是否生效。。。。");
+        ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
+
 
     }
 }

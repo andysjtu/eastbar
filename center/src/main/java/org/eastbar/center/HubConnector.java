@@ -8,15 +8,16 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import org.eastbar.center.rmi.CenterCmdRespHandler;
 import org.eastbar.codec.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -28,9 +29,10 @@ import java.util.concurrent.TimeUnit;
 public class HubConnector {
     public static final Logger logger = LoggerFactory.getLogger(HubConnector.class);
 
+    @Value("${rmi.center.ip}")
     private String remoteAddr;
-
-    private int remotePort=7999;
+    @Value("${rmi.center.port}")
+    private int remotePort = 6888;
 
     private int localPort = 2999;
 
@@ -42,7 +44,7 @@ public class HubConnector {
     private Bootstrap bootstrap;
 
     @Autowired
-    private  Center center;
+    private Center center;
 
 
     @PostConstruct
@@ -76,9 +78,6 @@ public class HubConnector {
         return this.remoteChannel;
     }
 
-    public void doWhenConnect(){
-        List<SiteReport> siteReportList = center.getSiteReports();
-    }
 
     public boolean isConnected() {
         if (remoteChannel != null && remoteChannel.isActive()) {
@@ -96,19 +95,29 @@ public class HubConnector {
                 if (future.isSuccess()) {
                     logger.info("成功连接上CenterHub端");
                     remoteChannel = future.channel();
+                    reportStatus(remoteChannel);
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception {
-                            remoteChannel = null;
-                            scheduleNextConnect();
+                            if (future.isSuccess()) {
+                                remoteChannel = null;
+                                scheduleNextConnect();
+                            }
                         }
                     });
-                    doWhenConnect();
                 } else {
                     scheduleNextConnect();
                 }
             }
         });
+    }
+
+    private void reportStatus(Channel remoteChannel) {
+        Map<SiteReport, List<TermReport>> siteReportListMap = center.getSiteTermReports();
+        CenterInitReq initReq = new CenterInitReq(siteReportListMap);
+        if (remoteChannel != null && remoteChannel.isActive()) {
+            remoteChannel.writeAndFlush(initReq);
+        }
     }
 
 

@@ -27,7 +27,7 @@ public class ClientInitReq extends SocketMsg {
         String content = buf.toString(Charsets.UTF_8);
         Map<String, String> map = Splitter.on("\r\n").trimResults().omitEmptyStrings().withKeyValueSeparator(":").split(content);
         authSchme = new ClientAuthScheme();
-        authSchme.setIpAddress(map.get("IPAddress"));
+        authSchme.setIp(map.get("IPAddress"));
         authSchme.setMacAddress(map.get("MacAddress"));
         authSchme.setOs(map.get("Os"));
         authSchme.setVersion(map.get("Version"));

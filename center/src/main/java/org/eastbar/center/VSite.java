@@ -1,6 +1,8 @@
 package org.eastbar.center;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.sun.xml.internal.xsom.impl.Ref;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
@@ -8,6 +10,8 @@ import org.eastbar.codec.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +31,8 @@ public class VSite {
 
     private Map<String, VTerminal> terminalMap = Maps.newConcurrentMap();
 
-    private volatile Status status = Status.OFFLINE;
+    private volatile boolean connected = false;
+
     private Center center;
 
     public VSite(String siteCode) {
@@ -42,13 +47,11 @@ public class VSite {
     public SiteReport getSiteReport() {
         SiteReport report = new SiteReport();
         report.setSiteCode(siteCode);
+        report.setConnected(connected);
         DozerUtil.copyProperties(version, report);
         return report;
     }
 
-    public void changeStatus(Status newStatus) {
-        this.status = newStatus;
-    }
 
     public void redirect(final SocketMsg msg, final Channel respChannel) {
         if (siteChannel != null && siteChannel.isActive()) {
@@ -80,20 +83,15 @@ public class VSite {
     public void online(SiteInitReq req, Channel channel) {
         if (this.siteChannel == null) {
             this.siteChannel = channel;
+            connected = true;
             siteChannel.closeFuture().addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    siteChannel = null;
+                    siteOffline();
                 }
             });
-            changeStatus(Status.ONLINE);
-            init(req.getSiteReport());
-            //TODO send success resp
-
-//            CenterNotice notice = center.genNotice();
-//            SiteInitResp resp = new SiteInitResp(notice);
-//            channel.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-
+            init(req.getSiteReport(), req.getTermReport());
+            center.notifySiteOffline(getSiteReport(), getTermReport());
         } else {
             logger.warn("不允许重复siteCode :{}上报,关闭通道", siteCode);
             channel.close();
@@ -101,42 +99,40 @@ public class VSite {
 
     }
 
-    public void offline() {
-        changeStatus(Status.OFFLINE);
-    }
 
 
-    public void siteOnline() {
-
-    }
 
     public void siteOffline() {
-        status = Status.OFFLINE;
+        connected = false;
         siteChannel = null;
+        disAllTerm();
+        center.notifySiteOffline(getSiteReport(),getTermReport());
     }
 
-    public void init(SiteReport report) {
+    private void disAllTerm() {
+        Collection<VTerminal> vTerminals =terminalMap.values();
+        for(VTerminal vt : vTerminals){
+            vt.setConnected(false);
+        }
+    }
+
+    public void init(SiteReport report, List<TermReport> termReportLis) {
         initPolicyVersion(report);
-        initTerminalStatus(report);
+        initTerminalStatus(termReportLis);
 
     }
 
-    private void initTerminalStatus(SiteReport reportt) {
-        List<TermReport> termReportLis = reportt.getTermReportList();
+    private void initTerminalStatus(List<TermReport> termReportLis) {
         Map<String, VTerminal> newTerminalMap = Maps.newConcurrentMap();
         for (TermReport tr : termReportLis) {
-            String ip = tr.getHostIp();
-            VTerminal vt = new VTerminal(ip, reportt.getSiteCode());
-            initVTerminal(vt, tr);
+            String ip = tr.getIp();
+            VTerminal vt = new VTerminal(ip, tr.getSiteCode());
+            DozerUtil.copyProperties(tr, vt);
+            newTerminalMap.put(ip,vt);
         }
-        terminalMap.clear();
         terminalMap.putAll(newTerminalMap);
     }
 
-    private void initVTerminal(VTerminal vt, TermReport tr) {
-        BeanUtil.copyBeanProperties(tr, vt);
-        vt.setStatus(VTerminal.Status.online);
-    }
 
     private void initPolicyVersion(SiteReport report) {
         DozerUtil.copyProperties(report, version);
@@ -161,4 +157,36 @@ public class VSite {
     }
 
 
+    public void updateTermStatus(TermReport reportMsg) {
+        String hostIp = reportMsg.getIp();
+        VTerminal vTerminal = terminalMap.get(hostIp);
+        if (vTerminal == null) {
+            vTerminal = new VTerminal(hostIp, siteCode);
+            terminalMap.put(hostIp, vTerminal);
+        }
+        DozerUtil.copyProperties(reportMsg, vTerminal);
+        center.notifyTermEvent(reportMsg);
+    }
+
+    public void updatePolicyStatus(SiteReport msg) {
+        this.version.setKwVersion(msg.getKwVersion());
+        version.setPrgVersion(msg.getPrgVersion());
+        version.setSmVersion(msg.getSmVersion());
+        version.setUrlVersion(msg.getUrlVersion());
+    }
+
+    public List<TermReport> getTermReport() {
+        List<TermReport> termReports = Lists.newArrayList();
+        Collection<VTerminal> vTerminalCollection = Collections.unmodifiableCollection(terminalMap.values());
+        System.out.println("vTerminalCollection 大小是 : "+vTerminalCollection.size());
+        for (VTerminal vt : vTerminalCollection) {
+            TermReport report = new TermReport();
+            report.setIp(vt.getTerminalIP());
+            report.setSiteCode(vt.getSiteCode());
+            DozerUtil.copyProperties(vt, report);
+            termReports.add(report);
+        }
+        return termReports;
+
+    }
 }

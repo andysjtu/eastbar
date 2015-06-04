@@ -65,13 +65,13 @@ public class Center2ClientCmdHandler extends SimpleChannelInboundHandler<SocketM
             buf.writeBytes(("PgVersion=" + report.getPrgVersion() + "\n").getBytes(Charsets.UTF_8));
             buf.writeBytes(("KwVersion=" + report.getKwVersion() + "\n").getBytes(Charsets.UTF_8));
             buf.writeBytes(("SpVersion=" + report.getSmVersion() + "\n").getBytes(Charsets.UTF_8));
-            List<TermReport> termReportList = report.getTermReportList();
+            List<TermReport> termReportList = site.getTermReportList();
             if (termReportList.size() == 0) {
                 buf.writeBytes("没有终端连上\n".getBytes(Charsets.UTF_8));
             }
             for (TermReport terminal : termReportList) {
                 StringBuilder builder = new StringBuilder();
-                builder.append("hostIp=").append(terminal.getHostIp()).append("\n");
+                builder.append("hostIp=").append(terminal.getIp()).append("\n");
                 buf.writeBytes(builder.toString().getBytes(Charsets.UTF_8));
             }
 

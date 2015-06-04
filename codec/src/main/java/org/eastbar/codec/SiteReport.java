@@ -14,8 +14,10 @@ public class SiteReport implements Serializable {
     private int prgVersion;
     private int kwVersion;
     private int smVersion;
+    private boolean connected;
 
-    private List<TermReport> termReportList = Lists.newArrayList();
+    public SiteReport() {
+    }
 
     public int getKwVersion() {
         return kwVersion;
@@ -41,13 +43,6 @@ public class SiteReport implements Serializable {
         this.siteCode = siteCode;
     }
 
-    public List<TermReport> getTermReportList() {
-        return termReportList;
-    }
-
-    public void setTermReportList(List<TermReport> termReportList) {
-        this.termReportList = termReportList;
-    }
 
     public int getUrlVersion() {
         return urlVersion;
@@ -63,5 +58,34 @@ public class SiteReport implements Serializable {
 
     public void setSmVersion(int smVersion) {
         this.smVersion = smVersion;
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SiteReport report = (SiteReport) o;
+
+        return !(siteCode != null ? !siteCode.equals(report.siteCode) : report.siteCode != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return siteCode != null ? siteCode.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return JsonUtil.toJson(this);
     }
 }

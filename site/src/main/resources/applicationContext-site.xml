@@ -26,7 +26,7 @@
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
-        <property name="packagesToScan" value="org.eastbar.site.policy"/>
+        <property name="packagesToScan" value="org.eastbar.site.policy,org.eastbar.site.log,org.eastbar.site.alert"/>
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
@@ -43,7 +43,7 @@
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <jpa:repositories base-package="org.eastbar.site.policy" transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>
+    <jpa:repositories base-package="org.eastbar.site.policy,org.eastbar.site.log,org.eastbar.site.alert" transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 

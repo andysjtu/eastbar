@@ -8,7 +8,7 @@ import java.util.List;
  * Created by andysjtu on 2015/5/18.
  */
 public class UserInfo {
-    private String hostIp;
+    private String ip;
     private String account;
     private String name;
     private String id;
@@ -17,7 +17,7 @@ public class UserInfo {
     private String loginTime;
     private String logoutTime;
     private String nation;
-    private String desc;
+
 
     public UserInfo(UserInfo loginEvent) {
         DozerUtil.copyProperties(loginEvent, this);
@@ -82,20 +82,12 @@ public class UserInfo {
         this.logoutTime = logoutTime;
     }
 
-    public String getHostIp() {
-        return hostIp;
+    public String getIp() {
+        return ip;
     }
 
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setIp(String ip) {
+        this.ip = ip;
     }
 
     public String getNation() {
@@ -110,7 +102,7 @@ public class UserInfo {
     public String toString() {
         return "UserInfo{" +
                 "account='" + account + '\'' +
-                ", hostIp='" + hostIp + '\'' +
+                ", ip='" + ip + '\'' +
                 ", name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 ", idType='" + idType + '\'' +
@@ -118,42 +110,7 @@ public class UserInfo {
                 ", loginTime='" + loginTime + '\'' +
                 ", logoutTime='" + logoutTime + '\'' +
                 ", nation='" + nation + '\'' +
-                ", desc='" + desc + '\'' +
                 '}';
     }
 
-    public static class T{
-        int verNum;
-        String version;
-        private List<String> xx= Lists.newArrayList();
-
-        public List<String> getXx() {
-            return xx;
-        }
-
-        public void setXx(List<String> xx) {
-            this.xx = xx;
-        }
-
-        public int getVerNum() {
-            return verNum;
-        }
-
-        public void setVerNum(int verNum) {
-            this.verNum = verNum;
-        }
-
-        public String getVersion() {
-            return version;
-        }
-
-        public void setVersion(String version) {
-            this.version = version;
-        }
-    }
-
-    public static void main(String[] args) {
-        T t = new T();
-        System.out.println(JsonUtil.toJson(t));
-    }
 }

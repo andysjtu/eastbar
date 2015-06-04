@@ -24,7 +24,7 @@ public class SiteInitReqHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
-        if (value == SiteMsgType.INIT_CONN.shortValue()) {
+        if (value == SiteMsgType.SITE_INIT_CONN.shortValue()) {
             SiteInitReq initReq = new SiteInitReq(msg);
             center.initSite(initReq, ctx.channel());
             ctx.channel().pipeline().remove(this);

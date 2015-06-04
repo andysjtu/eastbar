@@ -4,7 +4,10 @@ package org.eastbar.codec;
  * Created by AndySJTU on 2015/5/19.
  */
 public class TermReport {
-    private String hostIp;
+    private String siteCode;
+    private String ip;
+    private String nation;
+
     private String account;
     private String name;
     private String idType;
@@ -17,6 +20,8 @@ public class TermReport {
 
     private String loginTime;
     private String logoutTime;
+    private boolean online;
+    private boolean connected;
 
     public String getAccount() {
         return account;
@@ -34,12 +39,20 @@ public class TermReport {
         this.authOrg = authOrg;
     }
 
-    public String getHostIp() {
-        return hostIp;
+    public String getIp() {
+        return ip;
     }
 
-    public void setHostIp(String hostIp) {
-        this.hostIp = hostIp;
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
     }
 
     public String getId() {
@@ -106,11 +119,36 @@ public class TermReport {
         this.logoutTime = logoutTime;
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
+
     @Override
     public String toString() {
         return "TermReport{" +
                 "account='" + account + '\'' +
-                ", hostIp='" + hostIp + '\'' +
+                ", ip='" + ip + '\'' +
+                ", nation='" + nation + '\'' +
                 ", name='" + name + '\'' +
                 ", idType='" + idType + '\'' +
                 ", id='" + id + '\'' +
@@ -120,6 +158,12 @@ public class TermReport {
                 ", macAddress='" + macAddress + '\'' +
                 ", loginTime='" + loginTime + '\'' +
                 ", logoutTime='" + logoutTime + '\'' +
+                ", online=" + online +
+                ", connected=" + connected +
                 '}';
+    }
+
+    public void changeStatus(TermReport termReport) {
+        DozerUtil.copyProperties(termReport, this);
     }
 }

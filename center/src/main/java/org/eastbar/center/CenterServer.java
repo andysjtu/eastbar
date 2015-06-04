@@ -16,16 +16,21 @@ public class CenterServer {
     @Autowired
     private Center center;
 
-    public void start(){
-        for(Listener listener:listeners){
+    @Autowired
+    private HubConnector connector;
+
+    public void start() {
+        for (Listener listener : listeners) {
             listener.listen();
         }
+        connector.connect();
     }
 
-    public void stop(){
-        for(Listener listener:listeners){
+    public void stop() {
+        for (Listener listener : listeners) {
             listener.stopListen();
         }
+        connector.disconnect();
 
         center.disconnectAllSites();
     }
