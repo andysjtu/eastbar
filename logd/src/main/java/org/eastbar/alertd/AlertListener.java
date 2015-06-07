@@ -32,10 +32,10 @@ public class AlertListener implements Listener {
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2000);
 
     @Autowired
-    private LogSaver logSaver;
+    private AlertSaver logSaver;
 
     private volatile Channel serverChannel;
-    @Value("${log.port}")
+    @Value("${alert.port}")
     private int listenPort=9100;
 
     @Override
@@ -56,13 +56,13 @@ public class AlertListener implements Listener {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log", new LoggingHandler("告警接受通道", LogLevel.INFO));
+                        pipeline.addLast("readTimeout", new ReadTimeoutHandler(120, TimeUnit.SECONDS));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-
                         pipeline.addLast("bizyAlertHandler", new AlertHandler(logSaver));
                     }
                 });

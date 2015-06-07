@@ -39,7 +39,7 @@ public class LogListener implements Listener {
 
     private volatile Channel serverChannel;
     @Value("${log.port}")
-    private int listenPort=9100;
+    private int listenPort = 9100;
 
     @Override
     public void listen() {
@@ -59,6 +59,7 @@ public class LogListener implements Listener {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log", new LoggingHandler("日志接受通道", LogLevel.INFO));
+                        pipeline.addLast("readTimeout", new ReadTimeoutHandler(120, TimeUnit.SECONDS));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));

@@ -4,15 +4,9 @@ import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.Lists;
 import org.eastbar.codec.DozerUtil;
-import org.eastbar.comm.log.entity.EmailLog;
-import org.eastbar.comm.log.entity.IllegalLog;
-import org.eastbar.comm.log.entity.InstMsgLog;
-import org.eastbar.comm.log.entity.UrlLog;
+import org.eastbar.comm.log.entity.*;
 import org.eastbar.logd.dao.LogService;
-import org.eastbar.logd.entity.SiteEmailLog;
-import org.eastbar.logd.entity.SiteIllegalLog;
-import org.eastbar.logd.entity.SiteInstMsgLog;
-import org.eastbar.logd.entity.SiteUrlLog;
+import org.eastbar.logd.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,6 +127,30 @@ public class LogSaver {
                     logService.saveIllegalLog(list);
                 } catch (Throwable t) {
                     logger.warn("保存SiteUrlLog出错,输入是: {}请检查{}", illegalLogs, t);
+                }
+            }
+        });
+    }
+
+    public void saveProgLosg(final List<PrgLog> prgLogs) {
+        service.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<SiteProgLog> list = FluentIterable.from(prgLogs).transform(new Function<PrgLog, SiteProgLog>() {
+                        @Nullable
+                        @Override
+                        public SiteProgLog apply(@Nullable PrgLog input) {
+                            SiteProgLog siteProgLog = new SiteProgLog();
+                            DozerUtil.copyProperties(input, siteProgLog);
+                            siteProgLog.setId(null);
+                            return siteProgLog;
+                        }
+                    }).toList();
+
+                    logService.saveProgLog(list);
+                } catch (Throwable t) {
+                    logger.warn("保存ProgLog出错,输入是: {}请检查{}", prgLogs, t);
                 }
             }
         });

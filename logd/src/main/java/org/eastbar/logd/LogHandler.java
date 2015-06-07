@@ -4,14 +4,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
-import org.eastbar.codec.log.EmailLogMsg;
-import org.eastbar.codec.log.IllegalLogMsg;
-import org.eastbar.codec.log.InstMsgLogMsg;
-import org.eastbar.codec.log.UrlLogMsg;
-import org.eastbar.comm.log.entity.EmailLog;
-import org.eastbar.comm.log.entity.IllegalLog;
-import org.eastbar.comm.log.entity.InstMsgLog;
-import org.eastbar.comm.log.entity.UrlLog;
+import org.eastbar.codec.log.*;
+import org.eastbar.comm.log.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +39,9 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 service.saveEmailLogs(emailLogs);
                 break;
             case PROG_MSG_LOG:
+                ProgLogMsg progLogMsg = new ProgLogMsg(msg);
+                List<PrgLog> prgLogs = progLogMsg.getLogs();
+                service.saveProgLosg(prgLogs);
                 break;
             case URL_LOG:
                 UrlLogMsg logMsg = new UrlLogMsg(msg);

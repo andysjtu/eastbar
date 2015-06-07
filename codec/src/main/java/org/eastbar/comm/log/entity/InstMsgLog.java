@@ -1,5 +1,7 @@
 package org.eastbar.comm.log.entity;
 
+import org.eastbar.comm.EntityObject;
+
 import javax.persistence.*;
 
 /**
@@ -7,10 +9,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "intmsg_log")
-public class InstMsgLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class InstMsgLog extends EntityObject{
+
 
     private String customerId;
     private String customerName;
@@ -63,12 +63,19 @@ public class InstMsgLog {
         this.hostIp = hostIp;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "InstMsgLog{" +
+                "customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", hostIp='" + hostIp + '\'' +
+                ", recordTime='" + recordTime + '\'' +
+                ", isBlock=" + isBlock +
+                ", progType='" + progType + '\'' +
+                ", progAccount='" + progAccount + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                "} " + super.toString();
     }
 
     public boolean isBlock() {
@@ -103,19 +110,4 @@ public class InstMsgLog {
         this.startTime = startTime;
     }
 
-    @Override
-    public String toString() {
-        return "InstMsgLog{" +
-                "progAccount='" + progAccount + '\'' +
-                ", id=" + id +
-                ", customerId='" + customerId + '\'' +
-                ", customerName='" + customerName + '\'' +
-                ", hostIp='" + hostIp + '\'' +
-                ", recordTime='" + recordTime + '\'' +
-                ", isBlocked=" + isBlock +
-                ", progType='" + progType + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", endTime='" + endTime + '\'' +
-                '}';
-    }
 }

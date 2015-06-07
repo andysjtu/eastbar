@@ -4,21 +4,29 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
-import org.eastbar.logd.LogSaver;
+import org.eastbar.codec.alert.IllegalBlockAlertMsg;
+import org.eastbar.codec.alert.ProgBlockAlertMsg;
+import org.eastbar.codec.alert.UrlBlockAlertMsg;
+import org.eastbar.codec.log.IllegalLogMsg;
+import org.eastbar.comm.alert.entity.IllegalBlockAlert;
+import org.eastbar.comm.alert.entity.ProgBlockAlert;
+import org.eastbar.comm.alert.entity.UrlBlockAlert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Created by AndySJTU on 2015/6/4.
  */
 public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
-    public final static Logger logger= LoggerFactory.getLogger(AlertHandler.class);
+    public final static Logger logger = LoggerFactory.getLogger(AlertHandler.class);
 
-    
-    private final LogSaver logSaver;
 
-    public AlertHandler(LogSaver logSaver) {
-        this.logSaver = logSaver;
+    private final AlertSaver alertSaver;
+
+    public AlertHandler(AlertSaver logSaver) {
+        this.alertSaver = logSaver;
     }
 
     @Override
@@ -27,10 +35,19 @@ public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
         SiteMsgType siteMsgType = SiteMsgType.valueOf(typeValue);
         switch (siteMsgType) {
             case URL_ALERT:
+                UrlBlockAlertMsg urlBlockAlertMsg = new UrlBlockAlertMsg(msg);
+                List<UrlBlockAlert> urlBlockAlertList = urlBlockAlertMsg.getAlerts();
+                alertSaver.saveUrlAlert(urlBlockAlertList);
                 break;
             case ILLEGAL_ALERT:
+                IllegalBlockAlertMsg illegalLogMsg = new IllegalBlockAlertMsg(msg);
+                List<IllegalBlockAlert> illegalBlockAlerts = illegalLogMsg.getAlerts();
+                alertSaver.saveIllegalAlert(illegalBlockAlerts);
                 break;
             case PROG_ALERT:
+                ProgBlockAlertMsg progBlockAlertMsg = new ProgBlockAlertMsg(msg);
+                List<ProgBlockAlert> progBlockAlertList = progBlockAlertMsg.getAlerts();
+                alertSaver.saveProgAlert(progBlockAlertList);
                 break;
             default:
                 logger.warn("收到未知告警类型的数据，请检查SocketMsg: {}", msg);

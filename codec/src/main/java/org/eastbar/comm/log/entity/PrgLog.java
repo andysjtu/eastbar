@@ -1,5 +1,7 @@
 package org.eastbar.comm.log.entity;
 
+import org.eastbar.comm.EntityObject;
+
 import javax.persistence.*;
 
 /**
@@ -7,10 +9,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "prg_log")
-public class PrgLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class PrgLog extends EntityObject{
+
 
     private String customerId;
     private String customerName;
@@ -55,13 +55,7 @@ public class PrgLog {
         this.hostIp = hostIp;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public boolean isBlock() {
         return isBlock;
@@ -107,15 +101,14 @@ public class PrgLog {
     public String toString() {
         return "PrgLog{" +
                 "customerId='" + customerId + '\'' +
-                ", id=" + id +
                 ", customerName='" + customerName + '\'' +
                 ", hostIp='" + hostIp + '\'' +
                 ", recordTime='" + recordTime + '\'' +
-                ", isBlocked=" + isBlock +
+                ", isBlock=" + isBlock +
                 ", progName='" + progName + '\'' +
                 ", processName='" + processName + '\'' +
                 ", startTime='" + startTime + '\'' +
                 ", endTime='" + endTime + '\'' +
-                '}';
+                "} " + super.toString();
     }
 }

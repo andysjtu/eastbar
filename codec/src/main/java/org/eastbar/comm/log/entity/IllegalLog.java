@@ -1,5 +1,7 @@
 package org.eastbar.comm.log.entity;
 
+import org.eastbar.comm.EntityObject;
+
 import javax.persistence.*;
 
 /**
@@ -7,10 +9,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "illegal_log")
-public class IllegalLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class IllegalLog extends EntityObject{
+
 
     private String customerId;
     private String customerName;
@@ -44,12 +44,17 @@ public class IllegalLog {
         this.hostIp = hostIp;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "IllegalLog{" +
+                "customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", hostIp='" + hostIp + '\'' +
+                ", recordTime='" + recordTime + '\'' +
+                ", isBlock=" + isBlock +
+                ", keyword='" + keyword + '\'' +
+                ", url='" + url + '\'' +
+                "} " + super.toString();
     }
 
     public boolean isBlock() {
@@ -84,17 +89,4 @@ public class IllegalLog {
         this.url = url;
     }
 
-    @Override
-    public String toString() {
-        return "IllegalLog{" +
-                "customerId='" + customerId + '\'' +
-                ", id=" + id +
-                ", customerName='" + customerName + '\'' +
-                ", hostIp='" + hostIp + '\'' +
-                ", recordTime='" + recordTime + '\'' +
-                ", isBlocked=" + isBlock +
-                ", keyword='" + keyword + '\'' +
-                ", url='" + url + '\'' +
-                '}';
-    }
 }

@@ -20,7 +20,7 @@ public class EmailLogMsg extends SocketMsg{
         setMsgAttr(MsgAttrBuilder.buildDefaultSiteToCenterAttr().byteValue());
         setVersion(ProtocolVersion.Version);
         setMessageId(IDGenerator.nextID());
-        setMessageType(SiteMsgType.INST_MSG_LOG.shortValue());
+        setMessageType(SiteMsgType.EMAIL_LOG.shortValue());
         setHost(IpV4.localIpV4());
         data(toByteBuf(logs));
     }

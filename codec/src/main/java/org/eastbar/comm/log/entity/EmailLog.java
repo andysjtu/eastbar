@@ -1,5 +1,7 @@
 package org.eastbar.comm.log.entity;
 
+import org.eastbar.comm.EntityObject;
+
 import javax.persistence.*;
 
 /**
@@ -7,10 +9,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "email_log")
-public class EmailLog {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class EmailLog extends EntityObject {
+
 
     private String customerId;
     private String customerName;
@@ -79,12 +79,19 @@ public class EmailLog {
         this.hostIp = hostIp;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String toString() {
+        return "EmailLog{" +
+                "customerId='" + customerId + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", hostIp='" + hostIp + '\'' +
+                ", recordTime='" + recordTime + '\'' +
+                ", isBlock=" + isBlock +
+                ", emailType='" + emailType + '\'' +
+                ", emailAccount='" + emailAccount + '\'' +
+                ", emailReceptor='" + emailReceptor + '\'' +
+                ", emailSubject='" + emailSubject + '\'' +
+                "} " + super.toString();
     }
 
     public boolean isBlock() {
@@ -103,19 +110,4 @@ public class EmailLog {
         this.recordTime = recordTime;
     }
 
-    @Override
-    public String toString() {
-        return "EmailLog{" +
-                "customerId='" + customerId + '\'' +
-                ", id=" + id +
-                ", customerName='" + customerName + '\'' +
-                ", hostIp='" + hostIp + '\'' +
-                ", recordTime='" + recordTime + '\'' +
-                ", isBlocked=" + isBlock +
-                ", emailType='" + emailType + '\'' +
-                ", emailAccount='" + emailAccount + '\'' +
-                ", emailReceptor='" + emailReceptor + '\'' +
-                ", emailSubject='" + emailSubject + '\'' +
-                '}';
-    }
 }
