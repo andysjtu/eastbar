@@ -12,22 +12,31 @@ public enum SiteMsgType {
     OFFLINE((short) 0x4003),
     LOGOUT((short) 0x4004),
     LIST((short) 0x6001),
-    STATUS((short)0x6002),
-    UPDATE_URL((short)0x6003),
-    TERM_STATUS((short)0x6004),
-    POLICY_STATUS((short)0x6005),
-    CENTER_INIT_CONN((short)0x6006),
-    //////////////////////////////////////
-    ILLEGAL_LOG((short)0x7001),
-    EMAIL_LOG((short)0x7002),
-    INST_MSG_LOG((short)0x7003),
-    PROG_MSG_LOG((short)0x7004),
+    STATUS((short) 0x6002),
 
-    URL_LOG((short)0x7005),
+    UPDATE_URL_POLICY((short) 0x6003),
+    UPDATE_PROG_POLICY((short) 0x6007),
+    UPDATE_KW_POLICY((short) 0x6008),
+    UPDATE_SP_POLICY((short) 0x6009),
+
+    UPDATE_POLICY_RESP((short) 0x6010),
+
+
+    TERM_STATUS((short) 0x6004),
+    POLICY_STATUS((short) 0x6005),
+    CENTER_INIT_CONN((short) 0x6006),
+    //////////////////////////////////////
+    ILLEGAL_LOG((short) 0x7001),
+    EMAIL_LOG((short) 0x7002),
+    INST_MSG_LOG((short) 0x7003),
+    PROG_MSG_LOG((short) 0x7004),
+
+    URL_LOG((short) 0x7005),
     ///////////////////////
-    URL_ALERT((short)0x8001),
-    PROG_ALERT((short)0x8002),
-    ILLEGAL_ALERT((short)0x8003),
+    URL_ALERT((short) 0x8001),
+    PROG_ALERT((short) 0x8002),
+    ILLEGAL_ALERT((short) 0x8003),
+    GENERAL_ALERT((short) 0x8004),
     UNKNOWN((short) 0xffff);
 
 

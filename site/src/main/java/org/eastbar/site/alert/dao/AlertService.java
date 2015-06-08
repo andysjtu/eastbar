@@ -1,6 +1,7 @@
 package org.eastbar.site.alert.dao;
 
 import com.google.common.collect.Lists;
+import org.eastbar.comm.alert.entity.GeneralAlert;
 import org.eastbar.comm.alert.entity.IllegalBlockAlert;
 import org.eastbar.comm.alert.entity.ProgBlockAlert;
 import org.eastbar.comm.alert.entity.UrlBlockAlert;
@@ -25,6 +26,8 @@ public class AlertService {
     private ProgBlockAlertDao progBlockAlertDao;
     @Autowired
     private UrlBlockAlertDao urlBlockAlertDao;
+    @Autowired
+    private GeneralAlertDao generalAlertDao;
 
     public void saveUrlBlockAlert(UrlBlockAlert urlBlockAlert) {
         urlBlockAlertDao.save(urlBlockAlert);
@@ -41,7 +44,7 @@ public class AlertService {
     public List<UrlBlockAlert> getOldestUrlBlockRecord() {
         PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
         Page<UrlBlockAlert> page = urlBlockAlertDao.findAll(request);
-        urlBlockAlertDao.delete(page.getContent());
+//        urlBlockAlertDao.delete(page.getContent());
         return Lists.newArrayList(page.getContent());
     }
 
@@ -49,14 +52,25 @@ public class AlertService {
         PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
         Page<IllegalBlockAlert> page = illegalBlockAlertDao.findAll(request);
 
-        illegalBlockAlertDao.delete(page.getContent());
+//        illegalBlockAlertDao.delete(page.getContent());
         return Lists.newArrayList(page.getContent());
     }
 
     public List<ProgBlockAlert> getOldestProgBlockRecord() {
         PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
         Page<ProgBlockAlert> page = progBlockAlertDao.findAll(request);
-        progBlockAlertDao.delete(page.getContent());
+//        progBlockAlertDao.delete(page.getContent());
         return Lists.newArrayList(page.getContent());
+    }
+
+    public List<GeneralAlert> getOldestGeneralAlarmRecord() {
+        PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
+        Page<GeneralAlert> page = generalAlertDao.findAll(request);
+//        generalAlertDao.delete(page.getContent());
+        return Lists.newArrayList(page.getContent());
+    }
+
+    public void saveGeneralAlert(List<GeneralAlert> alerts) {
+        generalAlertDao.save(alerts);
     }
 }

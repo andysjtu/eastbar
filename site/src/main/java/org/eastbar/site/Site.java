@@ -8,7 +8,7 @@ import io.netty.channel.ChannelFutureListener;
 import org.eastbar.codec.*;
 import org.eastbar.site.file.FileAppender;
 import org.eastbar.site.policy.PolicyManager;
-import org.eastbar.site.policy.SitePolicyVersion;
+import org.eastbar.site.policy.entity.SitePolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package org.eastbar.site.policy;
+package org.eastbar.site.policy.entity;
 
 /**
  * Created by AndySJTU on 2015/5/12.

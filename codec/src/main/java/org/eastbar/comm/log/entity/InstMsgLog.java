@@ -3,6 +3,7 @@ package org.eastbar.comm.log.entity;
 import org.eastbar.comm.EntityObject;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by AndySJTU on 2015/5/29.
@@ -15,13 +16,13 @@ public class InstMsgLog extends EntityObject{
     private String customerId;
     private String customerName;
     private String hostIp;
-    private String recordTime;
+    private Date recordTime;
     private boolean isBlock=false;
 
     private String progType;
     private String progAccount;
-    private String startTime;
-    private String endTime;
+    private Date startTime;
+    private Date endTime;
 
     public String getProgAccount() {
         return progAccount;
@@ -47,12 +48,8 @@ public class InstMsgLog extends EntityObject{
         this.customerName = customerName;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
-    }
-
-    public void setEndTime(String endTime) {
-        this.endTime = endTime;
     }
 
     public String getHostIp() {
@@ -94,20 +91,25 @@ public class InstMsgLog extends EntityObject{
         this.progType = progType;
     }
 
-    public String getRecordTime() {
-        return recordTime;
-    }
 
-    public void setRecordTime(String recordTime) {
+
+    public void setRecordTime(Date recordTime) {
         this.recordTime = recordTime;
     }
 
-    public String getStartTime() {
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getRecordTime() {
+        return recordTime;
+    }
+
+    public Date getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(String startTime) {
+    public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
-
 }

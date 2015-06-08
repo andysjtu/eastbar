@@ -1,4 +1,4 @@
-package org.eastbar.site.policy;
+package org.eastbar.site.policy.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;

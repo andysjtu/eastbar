@@ -28,10 +28,12 @@ public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
         if (type == ClientMsgType.CLIENT_ALERT) {
             ByteBuf buf = msg.data().content();
-            System.out.println("告警类型是: "+buf.readByte());
+            byte alertType = buf.readByte();
+            System.out.println("告警类型是: " + alertType);
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
-            System.out.println("告警内容是:"+new String(content));
+            System.out.println("告警内容是:" + new String(content));
+            alertServer.appendAlert(alertType, new String(content));
             sendResp(ctx, msg);
         } else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));

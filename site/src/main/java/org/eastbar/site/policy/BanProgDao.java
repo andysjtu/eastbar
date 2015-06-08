@@ -1,5 +1,6 @@
 package org.eastbar.site.policy;
 
+import org.eastbar.site.policy.entity.BanProg;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

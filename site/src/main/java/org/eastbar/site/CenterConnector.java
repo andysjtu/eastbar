@@ -11,7 +11,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.codec.*;
 import org.eastbar.codec.HeartBeatenHandler;
 import org.eastbar.site.handler.center.Center2ClientCmdHandler;
+import org.eastbar.site.handler.center.PolicyUpdateHandler;
 import org.eastbar.site.handler.center.StatusHandler;
+import org.eastbar.site.policy.PolicySaver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +39,8 @@ public class CenterConnector implements Connector {
 
     @Autowired
     private Site site;
+    @Autowired
+    private PolicySaver policySaver;
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -66,6 +70,7 @@ public class CenterConnector implements Connector {
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("siteInitHandler", new StatusHandler(site));
                         pipeline.addLast("bentenHandler", new HeartBeatenHandler());
+                        pipeline.addLast("policyUpdater", new PolicyUpdateHandler(policySaver));
                         pipeline.addLast("centerCmdHandler", new Center2ClientCmdHandler(site));
 
                     }

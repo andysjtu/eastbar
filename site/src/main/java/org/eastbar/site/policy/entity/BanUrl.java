@@ -1,4 +1,4 @@
-package org.eastbar.site.policy;
+package org.eastbar.site.policy.entity;
 
 import javax.persistence.*;
 
@@ -9,15 +9,13 @@ import javax.persistence.*;
 @Table(name="ban_url")
 public class BanUrl {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Integer urlType;
     private String urlValue;
     private int alarmType;
-    private boolean isBlock;
+    private int isBlock;
     private int alarmRank;
     private int verNum;
-    private boolean deleted;
 
     public int getAlarmRank() {
         return alarmRank;
@@ -35,13 +33,6 @@ public class BanUrl {
         this.alarmType = alarmType;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean delete) {
-        this.deleted = delete;
-    }
 
     public Integer getId() {
         return id;
@@ -51,11 +42,11 @@ public class BanUrl {
         this.id = id;
     }
 
-    public boolean isBlock() {
+    public int isBlock() {
         return isBlock;
     }
 
-    public void setIsBlock(boolean isBlock) {
+    public void setIsBlock(int isBlock) {
         this.isBlock = isBlock;
     }
 

@@ -1,4 +1,4 @@
-package org.eastbar.site.policy;
+package org.eastbar.site.policy.entity;
 
 /**
  * Created by AndySJTU on 2015/5/12.
@@ -32,8 +32,8 @@ public class KeyWord {
     private String keyword;
     private int alarmType;
     private int alarmRank;
-    private boolean isBlock;
-    private boolean deleted;
+    private int isBlock;
+//    private boolean deleted;
     private int verNum;
 
     public int getAlarmRank() {
@@ -52,13 +52,13 @@ public class KeyWord {
         this.alarmType = alarmType;
     }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean delete) {
-        this.deleted = delete;
-    }
+//    public boolean isDeleted() {
+//        return deleted;
+//    }
+//
+//    public void setDeleted(boolean delete) {
+//        this.deleted = delete;
+//    }
 
     public Integer getId() {
         return id;
@@ -68,11 +68,11 @@ public class KeyWord {
         this.id = id;
     }
 
-    public boolean isBlock() {
+    public int isBlock() {
         return isBlock;
     }
 
-    public void setIsBlock(boolean isBlock) {
+    public void setIsBlock(int isBlock) {
         this.isBlock = isBlock;
     }
 
@@ -90,5 +90,17 @@ public class KeyWord {
 
     public void setVerNum(int verNum) {
         this.verNum = verNum;
+    }
+
+    @Override
+    public String toString() {
+        return "KeyWord{" +
+                "alarmRank=" + alarmRank +
+                ", id=" + id +
+                ", keyword='" + keyword + '\'' +
+                ", alarmType=" + alarmType +
+                ", isBlock=" + isBlock +
+                ", verNum=" + verNum +
+                '}';
     }
 }

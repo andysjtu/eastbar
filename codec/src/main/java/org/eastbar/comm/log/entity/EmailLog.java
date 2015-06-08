@@ -3,6 +3,7 @@ package org.eastbar.comm.log.entity;
 import org.eastbar.comm.EntityObject;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by AndySJTU on 2015/5/29.
@@ -15,7 +16,7 @@ public class EmailLog extends EntityObject {
     private String customerId;
     private String customerName;
     private String hostIp;
-    private String recordTime;
+    private Date recordTime;
     private boolean isBlock = false;
 
     private String emailType;
@@ -102,12 +103,11 @@ public class EmailLog extends EntityObject {
         this.isBlock = isBlock;
     }
 
-    public String getRecordTime() {
+    public Date getRecordTime() {
         return recordTime;
     }
 
-    public void setRecordTime(String recordTime) {
+    public void setRecordTime(Date recordTime) {
         this.recordTime = recordTime;
     }
-
 }

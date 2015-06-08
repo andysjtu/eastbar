@@ -1,8 +1,10 @@
-package org.eastbar.site.policy;
+package org.eastbar.site.policy.entity;
 
 /**
  * Created by AndySJTU on 2015/5/12.
  */
+
+import javax.persistence.*;
 
 /**
  * 字段名	类型	pk/fk	说明
@@ -24,7 +26,11 @@ package org.eastbar.site.policy;
  * delete_flag	int(1)		删除标志
  * ver_num	bigint(20)		版本号系统内部表示
  */
+@Entity
+@Table(name="sp_person")
 public class SpecialPerson {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int certType;
     private String certId;
