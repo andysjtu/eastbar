@@ -18,16 +18,16 @@ import java.net.Socket;
  * Created by AndySJTU on 2015/5/11.
  */
 public class ClientBeatenHandler extends SimpleChannelInboundHandler<SocketMsg> {
-    public final static Logger logger= LoggerFactory.getLogger(ClientBeatenHandler.class);
+    public final static Logger logger = LoggerFactory.getLogger(ClientBeatenHandler.class);
 
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketMsg socketMsg) throws Exception {
         short value = socketMsg.getMessageType();
-        logger.info("receive message type value is : "+value);
+//        logger.info("receive message type value is : " + value);
         ClientMsgType type = ClientMsgType.valueOf(value);
         if (type == ClientMsgType.BEATEN) {
-            logger.info("收到心跳信息");
+            logger.debug("收到来自:{}心跳信息", channelHandlerContext.channel().remoteAddress());
             GenResp resp = GenRespUtil.createS2ClientSucessResp(socketMsg.getMessageId(), socketMsg.getMessageType());
             channelHandlerContext.channel().writeAndFlush(resp);
         } else

@@ -22,7 +22,7 @@ public class IpV4 {
     public String toRegularIpFormat() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 4; i++) {
-            int ip = ipBytes[i] > 0 ? ipBytes[i] : ipBytes[i] + 256;
+            int ip = ipBytes[i] >= 0 ? ipBytes[i] : ipBytes[i] + 256;
             builder.append(ip);
             if (i < 3)
                 builder.append(".");
@@ -33,7 +33,7 @@ public class IpV4 {
     public String toEastBarFormat(){
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 4; i++) {
-            int ip = ipBytes[i] > 0 ? ipBytes[i] : ipBytes[i] + 256;
+            int ip = ipBytes[i] >= 0 ? ipBytes[i] : ipBytes[i] + 256;
             if(ip<10){
                builder.append("00");
             }else if(ip<100){
@@ -47,18 +47,16 @@ public class IpV4 {
     }
 
     public static void main(String[] args) throws IPFormatException {
-//        byte x = (byte)0xFF;
-//        System.out.println("x is : "+x);
-//        byte[] ipbs = new byte[]{x,23,34,5};
 
-        byte[] ipbs = localIpBytes();
 
-        IpV4 ip = new IpV4(ipbs);
+//        byte[] ipbs = localIpBytes();
+//
+//        IpV4 ip = new IpV4(ipbs);
+//
+//        System.out.println(ip.toRegularIpFormat());
+//        System.out.println(ip.toEastBarFormat());
 
-        System.out.println(ip.toRegularIpFormat());
-        System.out.println(ip.toEastBarFormat());
-
-        IpV4 testIP = IpV4.convertIPV4("244.255.001.244");
+        IpV4 testIP = IpV4.convertIPV4("244.255.000.244");
         System.out.println(testIP.toRegularIpFormat());
         System.out.println(testIP.toEastBarFormat());
     }

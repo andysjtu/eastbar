@@ -66,7 +66,7 @@ public class AlertServer {
                                     }
                                     generalAlert.setAlarmContent(logAttrs[6]);
 
-                                    generalAlert.setIsBlock("0".equals(logAttrs[7]) ? false : true);
+                                    generalAlert.setIsBlock(isBlock(logAttrs[7]));
                                     generalAlert.setAlarmType(logAttrs[8].trim());
                                     generalAlert.setAlarmRank(logAttrs[9].trim());
                                     generalAlert.setSiteCode(siteCode);
@@ -91,7 +91,7 @@ public class AlertServer {
                                     String content = logAttrs[6] + ":" + logAttrs[7] + ":" + logAttrs[8] + ":" + logAttrs[9];
                                     generalAlert.setAlarmContent(content);
 
-                                    generalAlert.setIsBlock("0".equals(logAttrs[10]) ? false : true);
+                                    generalAlert.setIsBlock(isBlock(logAttrs[10]));
                                     generalAlert.setAlarmType(logAttrs[11].trim());
                                     generalAlert.setAlarmRank(logAttrs[12].trim());
                                     generalAlert.setSiteCode(siteCode);
@@ -115,7 +115,7 @@ public class AlertServer {
                                     }
                                     generalAlert.setAlarmContent(logAttrs[6] + ":" + logAttrs[7]);
 
-                                    generalAlert.setIsBlock("0".equals(logAttrs[8]) ? false : true);
+                                    generalAlert.setIsBlock(isBlock(logAttrs[8]));
                                     generalAlert.setAlarmType(logAttrs[9].trim());
                                     generalAlert.setAlarmRank(logAttrs[10].trim());
                                     generalAlert.setSiteCode(siteCode);
@@ -139,6 +139,10 @@ public class AlertServer {
                 }
             }
         });
+    }
+
+    private boolean isBlock(String logAttr) {
+        return "0".equals(logAttr) ? false : true;
     }
 
 

@@ -56,7 +56,7 @@ public class SiteListener implements Listener {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        //TODO
+
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log",new LoggingHandler("连接场所端通道",LogLevel.INFO));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));

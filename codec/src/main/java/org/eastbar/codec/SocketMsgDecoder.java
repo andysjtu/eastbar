@@ -22,8 +22,4 @@ public class SocketMsgDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     }
 
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.warn("exception is : ",cause);
-    }
 }

@@ -244,6 +244,15 @@ public class ConsoleClient {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
+            if(msg.getMessageType()==SiteMsgType.TERM_STATUS.shortValue()){
+                TermReportMsg termReportMsg = new TermReportMsg(msg);
+                System.out.println(termReportMsg.getReport());
+                return;
+            }else if(msg.getMessageType()==SiteMsgType.POLICY_STATUS.shortValue()){
+                SiteReportMsg siteReportMsg = new SiteReportMsg(msg);
+                System.out.println(siteReportMsg.getReport());
+                return;
+            }
             try {
                 if (msg.getMessageType() == SiteMsgType.LIST.shortValue()) {
                     System.out.println(msg.data().content().toString(Charsets.UTF_8));

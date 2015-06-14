@@ -178,7 +178,6 @@ public class VSite {
     public List<TermReport> getTermReport() {
         List<TermReport> termReports = Lists.newArrayList();
         Collection<VTerminal> vTerminalCollection = Collections.unmodifiableCollection(terminalMap.values());
-        System.out.println("vTerminalCollection 大小是 : "+vTerminalCollection.size());
         for (VTerminal vt : vTerminalCollection) {
             TermReport report = new TermReport();
             report.setIp(vt.getTerminalIP());

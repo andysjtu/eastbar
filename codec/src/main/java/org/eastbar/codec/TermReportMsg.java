@@ -42,7 +42,7 @@ public class TermReportMsg extends SocketMsg {
         int contentLength = buf.readableBytes();
         byte[] content = new byte[contentLength];
         buf.readBytes(content);
-        logger.info("接受到的字符串是 : "+new String(content));
+//        logger.info("接受到的字符串是 : "+new String(content));
         this.report = JsonUtil.fromJson(new TypeReference<List<TermReport>>() {
         }, content);
     }

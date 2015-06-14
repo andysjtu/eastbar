@@ -35,6 +35,11 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
         return channel;
     }
 
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        super.channelActive(ctx);
+        siteServer.getSite().getReportManager().registerChannel(ctx.channel(),true);
+    }
 
     @Override
     protected void channelRead0(final ChannelHandlerContext ctx, final SocketMsg msg) throws Exception {
@@ -71,6 +76,8 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 msg.changeSiteToClientAttr();
                 terminal.redirect(msg.retain(), ctx.channel());
             } else {
+                logger.warn("找不到指定IP->{}设备:",ip);
+                logger.warn("当前通道和ip映射："+siteServer.getSite().getTerminalManager().getTerminalMap());
                 GenResp resp = new GenResp.S2CenterGenResp(msg.getMessageId(), msg.getMessageType(), GenResp.Status.Failure);
                 ctx.channel().writeAndFlush(resp);
             }

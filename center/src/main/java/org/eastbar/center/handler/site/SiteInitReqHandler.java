@@ -2,6 +2,7 @@ package org.eastbar.center.handler.site;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.ReferenceCountUtil;
 import org.eastbar.center.Center;
 import org.eastbar.codec.SiteInitReq;
 import org.eastbar.codec.SiteMsgType;
@@ -27,10 +28,11 @@ public class SiteInitReqHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (value == SiteMsgType.SITE_INIT_CONN.shortValue()) {
             SiteInitReq initReq = new SiteInitReq(msg);
             center.initSite(initReq, ctx.channel());
-            ctx.channel().pipeline().remove(this);
+//            ctx.channel().pipeline().remove(this);
         } else {
-            logger.warn("消息格式有错误，请检查，关闭site通道");
-            ctx.channel().close();
+//            logger.warn("消息格式有错误，请检查，关闭site通道");
+//            ctx.channel().close();
+            ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }
     }
 }

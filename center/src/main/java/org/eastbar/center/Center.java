@@ -95,6 +95,11 @@ public class Center {
     public void updateSitePolicyStatus(SiteReport msg) {
         String siteCode = msg.getSiteCode();
         VSite vSite = getVSite(siteCode);
+        if(vSite==null){
+            vSite = new VSite(siteCode);
+            vSite.setCenter(this);
+            sites.put(siteCode,vSite);
+        }
         vSite.updatePolicyStatus(msg);
     }
 

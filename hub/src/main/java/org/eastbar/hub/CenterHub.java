@@ -11,10 +11,7 @@ import org.eastbar.codec.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -85,17 +82,24 @@ public class CenterHub {
     public void registerCenter(Channel channel, CenterInitReq initReq) {
         Map<SiteReport, List<TermReport>> reportListMap = initReq.getSiteTermReports();
         centerChannels.put(channel, Lists.newArrayList(reportListMap.keySet().iterator()));
-        //TODO
+        Set<SiteReport> reportSet = reportListMap.keySet();
+        for(SiteReport siteReport:reportSet){
+            siteTermMaps.put(siteReport,reportListMap.get(siteReport));
+        }
+
         channel.closeFuture().addListener(new ChannelFutureListener() {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 unregisterCenter(future.channel());
             }
         });
+
+        printStatus();
     }
 
     public void unregisterCenter(Channel channel) {
         centerChannels.remove(channel);
+        printStatus();
     }
 
     public Channel getCenterChannelBySiteCode(String siteCode) {
@@ -210,6 +214,7 @@ public class CenterHub {
             centerChannels.put(channel, siteReports);
         }
         siteReports.add(siteReport);
+        printStatus();
     }
 
     public void updateTermStatus(List<TermReport> termReportList, Channel channel) {
@@ -238,6 +243,7 @@ public class CenterHub {
                 }
             }
         }
+        printStatus();
     }
 
     public static enum OPERATE_METHOD {

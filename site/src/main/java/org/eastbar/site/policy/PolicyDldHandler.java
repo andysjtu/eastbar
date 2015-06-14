@@ -50,9 +50,9 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
 
         if ("/url".equals(uri)) {
             sendUrl(ctx);
-        } else if ("/program".equals(uri)) {
+        } else if (uri.startsWith("/program")) {
             sendProgram(ctx);
-        } else if ("/keywords".equals(uri)) {
+        } else if (uri.startsWith("/keyword")) {
             sendKeywords(ctx);
         } else
             sendError(ctx, HttpResponseStatus.NOT_FOUND);

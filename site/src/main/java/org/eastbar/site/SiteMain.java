@@ -20,9 +20,9 @@ public class SiteMain {
                 "applicationContext-site.xml"
         });
 
-//        SiteServer server = context.getBean(SiteServer.class);
-//        System.out.println("场所服务器正在开启中....");
-//        server.start();
+        SiteServer server = context.getBean(SiteServer.class);
+        System.out.println("场所服务器正在开启中....");
+        server.start();
 
 //        AlertService service = context.getBean(AlertService.class);
 //        UrlBlockAlert alert = new UrlBlockAlert();
@@ -34,20 +34,20 @@ public class SiteMain {
 
 
 
-        PolicyService service = context.getBean(PolicyService.class);
-        BanUrl banUrl = new BanUrl();
-        banUrl.setId(1);
-        banUrl.setAlarmRank(2);
-        banUrl.setAlarmType(1);
-        banUrl.setUrlType(1);
-        banUrl.setUrlValue("www.sina.com.cn");
-        banUrl.setIsBlock(1);
-        banUrl.setVerNum(1);
-        List<BanUrl> addList = Lists.newArrayList(banUrl);
-        service.updateUrlPolicy(null, addList, null);
-
-        PolicyManager policyManager = context.getBean(PolicyManager.class);
-        System.out.println(policyManager.getBanUrlString());
+//        PolicyService service = context.getBean(PolicyService.class);
+//        BanUrl banUrl = new BanUrl();
+//        banUrl.setId(1);
+//        banUrl.setAlarmRank(2);
+//        banUrl.setAlarmType(1);
+//        banUrl.setUrlType(1);
+//        banUrl.setUrlValue("www.sina.com.cn");
+//        banUrl.setIsBlock(1);
+//        banUrl.setVerNum(1);
+//        List<BanUrl> addList = Lists.newArrayList(banUrl);
+//        service.updateUrlPolicy(1,null, addList, null);
+//
+//        PolicyManager policyManager = context.getBean(PolicyManager.class);
+//        System.out.println(policyManager.getBanUrlString());
 
     }
 

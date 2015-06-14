@@ -114,7 +114,7 @@ public class LogServer {
                 emailLog.setHostIp(logAttrs[2]);
                 try {
                     emailLog.setRecordTime(format.parseDateTime(logAttrs[3].trim()).toDate());
-                }catch(Throwable t){
+                } catch (Throwable t) {
                     t.printStackTrace();
                 }
 
@@ -122,7 +122,7 @@ public class LogServer {
                 emailLog.setEmailAccount(logAttrs[5]);
                 emailLog.setEmailReceptor(logAttrs[6]);
                 emailLog.setEmailSubject(logAttrs[7]);
-                emailLog.setIsBlock("0".equals(logAttrs[8]) ? false : true);
+                emailLog.setIsBlock(isBlock(logAttrs[8]));
                 emailLog.setSiteCode(siteCode);
                 logService.saveEmailLog(emailLog);
             } else {
@@ -160,7 +160,7 @@ public class LogServer {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-                instMsgLog.setIsBlock("0".equals(logAttrs[8]) ? false : true);
+                instMsgLog.setIsBlock(isBlock(logAttrs[8]));
                 instMsgLog.setSiteCode(siteCode);
                 logService.saveInstMsgLog(instMsgLog);
             } else {
@@ -187,7 +187,7 @@ public class LogServer {
                 }
                 illegalLog.setKeyword(logAttrs[4]);
                 illegalLog.setUrl(logAttrs[5]);
-                illegalLog.setIsBlock("0".equals(logAttrs[6]) ? false : true);
+                illegalLog.setIsBlock(isBlock(logAttrs[6]));
                 illegalLog.setSiteCode(siteCode);
                 logService.saveIllegalLog(illegalLog);
             } else {
@@ -225,13 +225,17 @@ public class LogServer {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-                prgLog.setIsBlock("0".equals(logAttrs[8]) ? false : true);
+                prgLog.setIsBlock(isBlock(logAttrs[8]));
                 prgLog.setSiteCode(siteCode);
                 logService.savePrgLog(prgLog);
             } else {
                 logger.warn("日志格式错误，类型是:2,内容是{}", content);
             }
         }
+    }
+
+    private boolean isBlock(String logAttr) {
+        return logAttr.startsWith("0") ? false : true;
     }
 
 

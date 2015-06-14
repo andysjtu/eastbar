@@ -56,7 +56,7 @@ public class PolicyManager {
             builder.append(url.getAlarmRank());
             builder.append(" : ");
             builder.append(url.isBlock());
-            builder.append("\n");
+            builder.append("\r\n");
         }
 
         return builder.toString();

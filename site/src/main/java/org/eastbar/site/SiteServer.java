@@ -19,6 +19,8 @@ public class SiteServer {
 
     @Autowired
     private Site site;
+    @Autowired
+    private LogUploader uploader;
 
     public void start() {
        for(Connector connector:connectors){
@@ -27,6 +29,7 @@ public class SiteServer {
         for(Listener listener:listeners){
             listener.listen();
         }
+        uploader.start();
     }
 
     public void stop(){

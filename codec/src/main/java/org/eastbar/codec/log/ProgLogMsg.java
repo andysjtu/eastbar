@@ -33,6 +33,7 @@ public class ProgLogMsg extends SocketMsg{
         int contentLength = buf.readableBytes();
         byte[] content = new byte[contentLength];
         buf.readBytes(content);
+        System.out.println("收到的内容是 :"+new String(content));
         this.logs = JsonUtil.fromJson(new TypeReference<List<PrgLog>>() {
         }, content);
     }

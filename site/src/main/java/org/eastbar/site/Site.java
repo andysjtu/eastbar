@@ -46,6 +46,9 @@ public class Site {
     @Autowired
     private PolicyManager policyManager;
 
+    @Autowired
+    private SiteReportManager reportManager;
+
 
     private FileAppender appender;
 
@@ -80,7 +83,7 @@ public class Site {
         terminalManager.closeAll();
     }
 
-    public Terminal findTerminal(String ip){
+    public Terminal findTerminal(String ip) {
         return terminalManager.getTerminalOrCreated(ip);
     }
 
@@ -132,22 +135,20 @@ public class Site {
 //        return channelMap.get(hostIp);
     }
 
-    public void writeDown(TermReport report){
-        //
-    }
 
     public void reportOnLine(final TermReport report) {
-        if(centerChannel!=null&&centerChannel.isActive()){
-            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
-            centerChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    if(!future.isSuccess()){
-                        writeDown(report);
-                    }
-                }
-            });
-        }
+//        if (centerChannel != null && centerChannel.isActive()) {
+//            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
+//            centerChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+//                @Override
+//                public void operationComplete(ChannelFuture future) throws Exception {
+//                    if (!future.isSuccess()) {
+//                        writeDown(report);
+//                    }
+//                }
+//            });
+//        }
+        notifyEvent(report);
     }
 
     public void reportOffline() {
@@ -166,15 +167,20 @@ public class Site {
         return report;
     }
 
+    public SiteReportManager getReportManager() {
+        return reportManager;
+    }
 
+    public void setReportManager(SiteReportManager reportManager) {
+        this.reportManager = reportManager;
+    }
 
     @PostConstruct
-    public void initFileAppender(){
+    public void initFileAppender() {
         appender = new FileAppender();
         appender.setFile(Paths.get("status", "status.log").toString());
         appender.start();
     }
-
 
 
     public String getSiteCode() {
@@ -182,10 +188,11 @@ public class Site {
     }
 
     public void notifyEvent(TermReport report) {
-        if(centerChannel!=null&&centerChannel.isActive()){
-            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
-            centerChannel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-        }
+//        if(centerChannel!=null&&centerChannel.isActive()){
+//            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
+//            centerChannel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+//        }
+        reportManager.report(report);
     }
 
     public List<TermReport> getTermReportList() {

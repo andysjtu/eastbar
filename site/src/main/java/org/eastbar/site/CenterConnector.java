@@ -41,6 +41,8 @@ public class CenterConnector implements Connector {
     private Site site;
     @Autowired
     private PolicySaver policySaver;
+    @Autowired
+    private SiteReportManager siteReportManager;
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
@@ -68,7 +70,7 @@ public class CenterConnector implements Connector {
                         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
-                        pipeline.addLast("siteInitHandler", new StatusHandler(site));
+//                        pipeline.addLast("siteInitHandler", new StatusHandler(site));
                         pipeline.addLast("bentenHandler", new HeartBeatenHandler());
                         pipeline.addLast("policyUpdater", new PolicyUpdateHandler(policySaver));
                         pipeline.addLast("centerCmdHandler", new Center2ClientCmdHandler(site));
@@ -99,8 +101,9 @@ public class CenterConnector implements Connector {
                 if (future.isSuccess()) {
                     logger.info("成功连接上Center管理端");
                     remoteChannel = future.channel();
-                    reportSiteStatus(remoteChannel);
+//                    reportSiteStatus(remoteChannel);
                     site.setCenterChannel(remoteChannel);
+                    siteReportManager.registerChannel(remoteChannel, true);
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception {
@@ -116,11 +119,11 @@ public class CenterConnector implements Connector {
         });
     }
 
-    public void reportSiteStatus(Channel channel) {
-        SiteReport report = site.getSiteReport();
-        SiteInitReq req = new SiteInitReq(report, site.getTermReportList());
-        channel.writeAndFlush(req).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-    }
+//    public void reportSiteStatus(Channel channel) {
+//        SiteReport report = site.getSiteReport();
+//        SiteInitReq req = new SiteInitReq(report, site.getTermReportList());
+//        channel.writeAndFlush(req).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+//    }
 
     private void scheduleNextConnect() {
         service.schedule(new Runnable() {

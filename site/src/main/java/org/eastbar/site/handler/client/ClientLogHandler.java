@@ -33,10 +33,13 @@ public class ClientLogHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if(type==ClientMsgType.CLIENT_LOG){
             ByteBuf buf = msg.data().content();
             byte logType = buf.readByte();
-            System.out.println("日志类型是 : "+logType);
+            logger.info("收到来自{}的日志信息",ctx.channel().remoteAddress());
+            logger.info("-----------------------------------------------------");
+            logger.info("日志类型是 : " + logType);
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
-            System.out.println("日志内容是 : "+new String(content));
+            logger.info("日志内容是 : "+new String(content));
+            logger.info("----------------------------------------------------");
 
             logServer.appendLog(logType,new String(content));
 

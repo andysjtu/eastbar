@@ -27,6 +27,9 @@ public class CenterInitReqHandler extends SimpleChannelInboundHandler<SocketMsg>
         } else if (type == SiteMsgType.SITE_INIT_CONN.shortValue()) {
             SiteInitReq req = new SiteInitReq(msg);
             hub.updateSiteStatus(req, ctx.channel());
+        } else if (type == SiteMsgType.TERM_STATUS.shortValue()) {
+            TermReportMsg termReportMsg = new TermReportMsg(msg);
+            hub.updateTermStatus(termReportMsg.getReport(), ctx.channel());
         } else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }

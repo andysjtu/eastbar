@@ -2,6 +2,7 @@ package org.eastbar.center.handler.site;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SiteMsgType;
@@ -25,5 +26,15 @@ public class SiteHeatBeatenHandler extends SimpleChannelInboundHandler<SocketMsg
         } else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        if (cause instanceof ReadTimeoutException) {
+            logger.warn("来自{}的网络长时间没有数据到达,可能出现问题，将关闭", ctx.channel().remoteAddress());
+        } else {
+            logger.warn("来自{}的网络出现异常，异常是:{}", ctx.channel().remoteAddress(), cause.getMessage());
+        }
+        ctx.close();
     }
 }

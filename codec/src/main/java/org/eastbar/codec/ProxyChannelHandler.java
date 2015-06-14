@@ -19,7 +19,7 @@ import java.util.Set;
  */
 @ChannelHandler.Sharable
 public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> {
-    public final static Logger logger= LoggerFactory.getLogger(ProxyChannelHandler.class);
+    public final static Logger logger = LoggerFactory.getLogger(ProxyChannelHandler.class);
 
     public final static String HANDLER_NAME = "proxyHandler";
     private Map<EntryKey, Channel> targetChannels = Maps.newConcurrentMap();
@@ -38,7 +38,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> 
         this.keySet = keySet;
     }
 
-    public ProxyChannelHandler(){
+    public ProxyChannelHandler() {
         keySet.add(SiteMsgType.GEN_RESP.shortValue());
         keySet.add(ClientMsgType.CAPTURE_CLIENT.shortValue());
         keySet.add(ClientMsgType.QUERY_CLIENT_MODULE.shortValue());
@@ -48,9 +48,10 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
-        logger.info("keySet is : "+keySet);
-        if(value==SiteMsgType.GEN_RESP.shortValue()||value==ClientMsgType.CAPTURE_CLIENT.shortValue()){
+//        logger.info("keySet is : "+keySet);
+//        if(value==SiteMsgType.GEN_RESP.shortValue()||value==ClientMsgType.CAPTURE_CLIENT.shortValue()){
 
+        if (keySet.contains(value)) {
             ByteBuf buf = msg.data().content().duplicate();
             short recMessageId = buf.readShort();
             short recMessageType = buf.readShort();

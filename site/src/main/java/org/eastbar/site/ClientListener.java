@@ -9,6 +9,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.codec.*;
 import org.eastbar.comm.Listener;
 import org.eastbar.site.handler.client.*;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -72,13 +75,14 @@ public class ClientListener implements Listener {
                 .option(ChannelOption.SO_BACKLOG, 1000)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childOption(ChannelOption.TCP_NODELAY, true)
+                .childOption(ChannelOption.RCVBUF_ALLOCATOR,AdaptiveRecvByteBufAllocator.DEFAULT)
                 .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                .handler(new ServerChannelInitilizer())
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道", LogLevel.INFO));
+                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道", LogLevel.DEBUG));
+                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("skmsgEncoder", new SocketMsgEncoder());
@@ -127,13 +131,13 @@ public class ClientListener implements Listener {
         }
     }
 
-    public static class ServerChannelInitilizer extends ChannelInitializer<ServerSocketChannel> {
-
-        @Override
-        protected void initChannel(ServerSocketChannel ch) throws Exception {
-            ChannelPipeline pipeline = ch.pipeline();
-            pipeline.addLast("logHandler", new LoggingHandler(LogLevel.DEBUG));
-        }
-    }
+//    public static class ServerChannelInitilizer extends ChannelInitializer<ServerSocketChannel> {
+//
+//        @Override
+//        protected void initChannel(ServerSocketChannel ch) throws Exception {
+//            ChannelPipeline pipeline = ch.pipeline();
+//            pipeline.addLast("logHandler", new LoggingHandler(LogLevel.DEBUG));
+//        }
+//    }
 
 }

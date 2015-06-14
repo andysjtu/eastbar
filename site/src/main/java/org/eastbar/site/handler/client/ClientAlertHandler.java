@@ -10,12 +10,16 @@ import org.eastbar.codec.GenResp;
 import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.site.AlertServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by AndySJTU on 2015/5/11.
  */
 public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
     private final AlertServer alertServer;
+    public final static Logger logger= LoggerFactory.getLogger(ClientAlertHandler.class);
+
 
     public ClientAlertHandler(AlertServer alertServer) {
         this.alertServer = alertServer;
@@ -29,10 +33,14 @@ public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (type == ClientMsgType.CLIENT_ALERT) {
             ByteBuf buf = msg.data().content();
             byte alertType = buf.readByte();
-            System.out.println("告警类型是: " + alertType);
+            logger.info("收到来自{}的告警信息",ctx.channel().remoteAddress());
+            logger.info("-----------------------------------------------------");
+
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
-            System.out.println("告警内容是:" + new String(content));
+            logger.info("告警类型是: " + alertType);
+            logger.info("告警内容是:" + new String(content));
+            logger.info("--------------------------------------------------");
             alertServer.appendAlert(alertType, new String(content));
             sendResp(ctx, msg);
         } else {

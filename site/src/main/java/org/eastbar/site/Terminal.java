@@ -125,7 +125,7 @@ public class Terminal {
             authResp.setName(userInfo.getName());
             authResp.setAccount(userInfo.getAccount());
         }else{
-            logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息");
+            logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息,推送地址是:{}",channel.remoteAddress());
             authResp.setIdType("1");
             authResp.setVersion("1");
             authResp.setId("310101197902026432");

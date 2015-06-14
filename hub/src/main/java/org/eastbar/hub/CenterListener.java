@@ -56,6 +56,7 @@ public class CenterListener implements Listener {
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("CenterInitHandlerler", new CenterInitReqHandler(centerHub));
+
                         pipeline.addLast("centerHeartBeatenHandler", new HeartBeatenHandler());
                         pipeline.addLast(ProxyChannelHandler.HANDLER_NAME, new ProxyChannelHandler());
                     }

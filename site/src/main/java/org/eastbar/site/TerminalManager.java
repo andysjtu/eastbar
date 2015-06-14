@@ -32,6 +32,14 @@ public class TerminalManager {
         return terminal;
     }
 
+    public Map<String, Terminal> getTerminalMap() {
+        return terminalMap;
+    }
+
+    public void setTerminalMap(Map<String, Terminal> terminalMap) {
+        this.terminalMap = terminalMap;
+    }
+
     public Terminal getTerminalWithoutCreate(String ip) {
         return terminalMap.get(ip);
     }
@@ -95,8 +103,10 @@ public class TerminalManager {
         for (Terminal terminal : terminals) {
             StringBuilder builder = new StringBuilder();
             builder.append(terminal.getIp());
-            builder.append(" : ");
+            builder.append(" : online->");
             builder.append(terminal.isOnline());
+            builder.append(":connected->");
+            builder.append(terminal.isConnected());
             results.add(builder.toString());
         }
         return results;

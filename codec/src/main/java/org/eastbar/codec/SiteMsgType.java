@@ -37,6 +37,10 @@ public enum SiteMsgType {
     PROG_ALERT((short) 0x8002),
     ILLEGAL_ALERT((short) 0x8003),
     GENERAL_ALERT((short) 0x8004),
+
+
+    ADDRESS_REQ((short)0x9001),
+    ADDRESS_RESP((short)0x9002),
     UNKNOWN((short) 0xffff);
 
 
