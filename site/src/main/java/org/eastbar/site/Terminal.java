@@ -18,9 +18,9 @@ public class Terminal {
 
     private volatile Channel termChannel;
 
-    private  UserInfo userInfo = new UserInfo();
+    private  UserInfo userInfo;
 
-    private  TerminalInfo termInfo = new TerminalInfo();
+    private  TerminalInfo termInfo;
 
     private volatile boolean connected = false;
     private volatile boolean online = false;
@@ -32,6 +32,10 @@ public class Terminal {
         this.siteCode = site.getSiteCode();
         this.site = site;
         this.ip = ip;
+        userInfo= new UserInfo();
+        userInfo.setIp(ip);
+        termInfo = new TerminalInfo();
+        termInfo.setIp(ip);
     }
 
     public void redirect(final SocketMsg msg, final Channel respChannel) {
@@ -86,11 +90,14 @@ public class Terminal {
     public void logoutCustomer(UserInfo logoutEvent) {
         online = false;
         if (isSameCustomer(logoutEvent)) {//same one
+//            logger.info("when logoutCustomer is same one ");
+            DozerUtil.copyProperties(logoutEvent, userInfo);
             userInfo.setLogoutTime(logoutEvent.getLogoutTime());
             if(connected){
                 termChannel.close();
             }
         } else {//not same one
+//            logger.info("when logoutCustomer is not same one");
             generateLogoutEvent(logoutEvent);
             DozerUtil.copyProperties(logoutEvent, userInfo);
             if(connected){
@@ -102,13 +109,19 @@ public class Terminal {
     }
 
     private void generateLogoutEvent(UserInfo logoutEvent) {
+//        logger.info("----------------------generateLogoutEvent-----------------------");
         TermReport report = getReport();
         report.setLogoutTime(logoutEvent.getLoginTime());
         site.notifyEvent(report);
     }
 
     private boolean isSameCustomer(UserInfo logoutEvent) {
-        return logoutEvent.getId().equals(userInfo.getId());
+//        logger.info("isSameCustomer, logoutEvent is : {},userInfo is {}",logoutEvent,userInfo);
+        if(userInfo.getId()!=null){
+            return logoutEvent.getId().equals(userInfo.getId());
+        }
+        return true;
+//        return logoutEvent.getId().equals(userInfo.getId());
     }
 
     public void active(ClientInitReq initReq, final Channel channel) {
@@ -119,6 +132,7 @@ public class Terminal {
 
         ClientAuthResp authResp = new ClientAuthResp();
         if(online){
+            logger.warn("向客户端推送客户信息,推送地址是:{}",channel.remoteAddress());
             authResp.setVersion(authScheme.getVersion());
             authResp.setIdType(userInfo.getIdType());
             authResp.setId(userInfo.getId());
@@ -202,11 +216,14 @@ public class Terminal {
 
     public TermReport getReport() {
         TermReport report = new TermReport();
+        logger.info("when getReport ,userInfo is {},termInfo is {}",userInfo,termInfo);
         DozerUtil.copyProperties(userInfo, report);
         DozerUtil.copyProperties(termInfo, report);
+        logger.info("when getReport ,report is : {}",report);
         report.setOnline(online);
         report.setConnected(connected);
         report.setSiteCode(siteCode);
+        report.setIp(getIp());
         return report;
 
     }

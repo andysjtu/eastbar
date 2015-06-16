@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import org.eastbar.codec.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +20,8 @@ import java.util.Map;
  */
 @Component
 public class TerminalManager {
+    public final static Logger logger= LoggerFactory.getLogger(TerminalManager.class);
+
     @Autowired
     private Site site;
 
@@ -73,9 +77,11 @@ public class TerminalManager {
             ip = eip;
         }
         if (terminalMap.containsKey(ip)) {
+//            logger.info("找到该设备{}",ip);
             Terminal terminal = terminalMap.get(ip);
             terminal.logoutCustomer(logoutEvent);
         } else {
+//            logger.info("没有找到该设备{}",ip);
             Terminal terminal = new Terminal(site, ip);
             terminalMap.put(ip, terminal);
             terminal.logoutCustomer(logoutEvent);

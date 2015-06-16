@@ -76,6 +76,7 @@ public class AlertServer {
                                 }
                                 break;
                             case 0x02:
+//                                logger.info("处理类型0x02的告警");
                                 if (logAttrs.length == 13) {
                                     GeneralAlert generalAlert = new GeneralAlert();
                                     generalAlert.setCustomerAccount(logAttrs[0]);
@@ -101,6 +102,7 @@ public class AlertServer {
                                 }
                                 break;
                             case 0x03:
+//                                logger.info("处理类型0x03的告警");
                                 if (logAttrs.length == 11) {
                                     GeneralAlert generalAlert = new GeneralAlert();
                                     generalAlert.setCustomerAccount(logAttrs[0]);
@@ -128,7 +130,7 @@ public class AlertServer {
                                 logger.warn("告警格式错误，类型是:{},内容是{}", type, content);
 
                         }
-
+//                        logger.info("alerts.size is : {}",alerts.size());
                         if (alerts.size() > 0) {
                             alertService.saveGeneralAlert(alerts);
                         }
