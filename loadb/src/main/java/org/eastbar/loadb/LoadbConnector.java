@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +77,7 @@ public class LoadbConnector {
         return false;
     }
 
-    public void connect() throws InterruptedException {
+    public void connect(final CountDownLatch latch) throws InterruptedException {
         if (started) return;
         started = true;
         ChannelFuture future = bootstrap.connect();
@@ -95,10 +96,12 @@ public class LoadbConnector {
                             }
                         }
                     });
+                } else {
+                    System.out.println(future.cause());
                 }
+                latch.countDown();
             }
         });
-        future.syncUninterruptibly();
     }
 
 
