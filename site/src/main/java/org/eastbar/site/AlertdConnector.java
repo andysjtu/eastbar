@@ -28,9 +28,7 @@ public class AlertdConnector extends AbstractConnector {
     public static int DEFAULT_LOCAL_PORT = 19979;
 
     public AlertdConnector(String remoteAddr, int remotePort, int localPort) {
-        this.remoteAddress = remoteAddr;
-        this.remotePort = remotePort;
-        this.localPort = localPort;
+        super(remoteAddr, remotePort, localPort);
     }
 
     public AlertdConnector(String remoteAddr, int remotePort) {

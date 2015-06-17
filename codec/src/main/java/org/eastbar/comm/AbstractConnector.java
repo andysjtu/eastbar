@@ -26,6 +26,15 @@ public abstract class AbstractConnector {
     private volatile Channel remoteChannel;
     private Bootstrap bootstrap;
 
+    public AbstractConnector() {
+    }
+
+    public AbstractConnector(String remoteAddress, int remotePort, int localPort) {
+        this.remoteAddress = remoteAddress;
+        this.remotePort = remotePort;
+        this.localPort = localPort;
+    }
+
 
     private void configBootstrap() {
         checkParameter();
@@ -129,7 +138,7 @@ public abstract class AbstractConnector {
             public void run() {
                 connect();
             }
-        }, 2, TimeUnit.SECONDS);
+        }, 10, TimeUnit.SECONDS);
     }
 
     public void disconnect() {

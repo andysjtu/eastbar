@@ -22,7 +22,6 @@ import java.util.Properties;
  */
 public class SiteMain {
     public static void main(String[] args) throws IOException {
-//        String siteCode = readSiteCodeFromProperties();
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
                 "applicationContext-site.xml"
         });
@@ -30,16 +29,15 @@ public class SiteMain {
         SiteServer server = context.getBean(SiteServer.class);
         System.out.println("Site Server is starting....");
         server.start();
-        System.out.println();
-
+       
 
     }
 
-    public static String readSiteCodeFromProperties() throws IOException {
-        Path propertiesPath = Paths.get("/root", "netbar", "sitecode");
-        FileSystemResource resource = new FileSystemResource(propertiesPath.toFile());
-        Properties properties = PropertiesLoaderUtils.loadProperties(resource);
-        return properties.getProperty("sitecode");
-    }
+//    public static String readSiteCodeFromProperties() throws IOException {
+//        Path propertiesPath = Paths.get("/root", "netbar", "sitecode");
+//        FileSystemResource resource = new FileSystemResource(propertiesPath.toFile());
+//        Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+//        return properties.getProperty("sitecode");
+//    }
 
 }
