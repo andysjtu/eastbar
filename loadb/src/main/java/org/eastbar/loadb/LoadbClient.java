@@ -25,8 +25,8 @@ public class LoadbClient {
     @Value("${sitecode")
     private String siteCode;
 
-    public void connnect() throws InterruptedException {
-        connector.connect();
+    public void connnect(CountDownLatch latch) throws InterruptedException {
+        connector.connect(latch);
     }
 
     public DomainAndPort getServerAddr(String type) {
@@ -85,9 +85,12 @@ public class LoadbClient {
 
         LoadbClient client = context.getBean(LoadbClient.class);
         client.setSiteCode("43001001");
-
-        client.connnect();
-        Thread.sleep(1000);
+        CountDownLatch latch = new CountDownLatch(1);
+        client.connnect(latch);
+        latch.await();
+        System.out.println("----------------------");
+        System.out.println("");
+        Thread.sleep(5000);
         System.out.println(client.getServerAddr("alert"));
 
         client.close();
