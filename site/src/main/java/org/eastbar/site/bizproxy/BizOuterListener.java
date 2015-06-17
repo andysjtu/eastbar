@@ -1,7 +1,10 @@
-package org.eastbar.site.biz;
+package org.eastbar.site.bizproxy;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -9,28 +12,27 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.comm.Listener;
-import org.eastbar.site.Site;
+import org.eastbar.site.biz.BizHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
- * Created by andysjtu on 2015/5/9.
+ * Created by AndySJTU on 2015/6/15.
  */
-@Component
-public class BizListener implements Listener {
-    public final static Logger logger = LoggerFactory.getLogger(BizListener.class);
+public class BizOuterListener {
+    public final static Logger logger = LoggerFactory.getLogger(BizOuterListener.class);
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup();
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
     private int listenPort = 3004;
-    @Autowired
-    private Site site;
 
-    @Override
-    public void listen() {
+    private final BizProxyServer server;
+
+    public BizOuterListener(BizProxyServer server) {
+        this.server = server;
+    }
+
+    public void doListen() {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -42,7 +44,7 @@ public class BizListener implements Listener {
                         pipeline.addLast("logHandler", new LoggingHandler("CONN TO BIZ-SERVER", LogLevel.INFO));
                         pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4));
                         pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
-                        pipeline.addLast("bizHandler", new BizHandler(site));
+                        pipeline.addLast("bizHandler", new BizOuterHandler(server));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);
@@ -60,15 +62,5 @@ public class BizListener implements Listener {
                 }
             }
         });
-    }
-
-    @Override
-    public void stopListen() {
-
-    }
-
-    public static void main(String[] args) {
-        BizListener listener = new BizListener();
-        listener.listen();
     }
 }

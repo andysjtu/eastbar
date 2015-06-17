@@ -1,4 +1,4 @@
-package org.eastbar.site.biz;
+package org.eastbar.site.bizproxy;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -7,7 +7,6 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.DozerUtil;
 import org.eastbar.codec.UserInfo;
-import org.eastbar.site.Site;
 import org.eastbar.site.biz.model.C1001;
 import org.eastbar.site.biz.model.C1101;
 import org.eastbar.site.biz.model.C1102;
@@ -16,10 +15,11 @@ import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 
 /**
- * Created by AndySJTU on 2015/5/20.
+ * Created by AndySJTU on 2015/6/15.
  */
-public class BizHandler extends ChannelInboundHandlerAdapter {
-    public final static Logger logger = LoggerFactory.getLogger(BizHandler.class);
+public class BizOuterHandler extends ChannelInboundHandlerAdapter {
+    private final BizProxyServer server;
+    public final static Logger logger = LoggerFactory.getLogger(BizOuterHandler.class);
 
     private static int SC_OK = 200; // 成功.
     private static int SC_EXCEPTION = 300; // 由于未知原因，服务方抛出了异常.
@@ -38,15 +38,12 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
     private static int SC_NO_AVAILABLE_SERVER = 500; // 请求服务端可能不存在
 
 
-    private final Site site;
-
-    public BizHandler(Site site) {
-        this.site = site;
+    public BizOuterHandler(BizProxyServer server) {
+        this.server = server;
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-
         try {
 
             ByteBuf buf = (ByteBuf) msg;
@@ -93,7 +90,7 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
                         UserInfo userInfo = new UserInfo();
                         DozerUtil.copyProperties(c1101, userInfo);
                         System.out.println("收到的消息1101是: " + userInfo);
-                        site.registerCustomerLogin(userInfo);
+                        server.registerCustomerLogin(userInfo);
                     }
                     break;
                 case 1102:
@@ -118,7 +115,7 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
                         UserInfo userInfo = new UserInfo();
                         DozerUtil.copyProperties(c1102, userInfo);
                         System.out.println("收到的消息1102是: " + userInfo);
-                        site.registerCustomerLogout(userInfo);
+                        server.registerCustomerLogout(userInfo);
                     }
                     break;
                 case 1103:
@@ -153,15 +150,13 @@ public class BizHandler extends ChannelInboundHandlerAdapter {
         } finally {
             ReferenceCountUtil.release(msg);
         }
-
-
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {
-        System.out.println("--------------------------------------------------");
-        logger.warn("Unexpected exception from downstream.........", cause);
+        logger.warn("Unexpected exception from downstream.........", cause.getMessage());
+        ctx.close();
     }
 
     public ByteBuf builderPacketHead(int messType, String sessionId) {
