@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
 import org.eastbar.site.file.FileAppender;
 import org.eastbar.site.policy.PolicyManager;
@@ -32,7 +33,7 @@ public class Site {
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
 
-    @Value("${siteCode}")
+    @Value("${sitecode}")
     private String siteCode;
 
 
@@ -188,14 +189,21 @@ public class Site {
     }
 
     public void notifyEvent(TermReport report) {
-//        if(centerChannel!=null&&centerChannel.isActive()){
-//            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
-//            centerChannel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-//        }
         reportManager.report(report);
     }
 
     public List<TermReport> getTermReportList() {
         return terminalManager.getTerminalReport();
+    }
+
+    public void initTermInfos(List<UserInfo> userInfoList) {
+        for (UserInfo userInfo : userInfoList) {
+            String logoutTime = StringUtils.trimToNull(userInfo.getLogoutTime());
+            if (logoutTime == null) {
+                registerCustomerLogin(userInfo);
+            } else {
+                registerCustomerLogout(userInfo);
+            }
+        }
     }
 }

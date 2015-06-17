@@ -35,7 +35,7 @@ public class AlertServer {
 
     public static DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH时mm分ss秒");
 
-    @Value("${siteCode}")
+    @Value("${sitecode}")
     private String siteCode;
 
     @Autowired

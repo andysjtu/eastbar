@@ -45,7 +45,6 @@ public class CenterConnector implements Connector {
     private SiteReportManager siteReportManager;
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
-    private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     private volatile Channel remoteChannel;
     private Bootstrap bootstrap;
@@ -101,7 +100,6 @@ public class CenterConnector implements Connector {
                 if (future.isSuccess()) {
                     logger.info("成功连接上Center管理端");
                     remoteChannel = future.channel();
-//                    reportSiteStatus(remoteChannel);
                     site.setCenterChannel(remoteChannel);
                     siteReportManager.registerChannel(remoteChannel, true);
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
@@ -119,14 +117,9 @@ public class CenterConnector implements Connector {
         });
     }
 
-//    public void reportSiteStatus(Channel channel) {
-//        SiteReport report = site.getSiteReport();
-//        SiteInitReq req = new SiteInitReq(report, site.getTermReportList());
-//        channel.writeAndFlush(req).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
-//    }
 
     private void scheduleNextConnect() {
-        service.schedule(new Runnable() {
+        workerGroup.schedule(new Runnable() {
             @Override
             public void run() {
                 connect();
@@ -140,7 +133,6 @@ public class CenterConnector implements Connector {
             remoteChannel.close();
             workerGroup.shutdownGracefully();
         } else {
-            service.shutdownNow();
             workerGroup.shutdownGracefully();
         }
     }

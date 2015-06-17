@@ -44,19 +44,18 @@ public class HeartBeatenHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short value = msg.getMessageType();
-        logger.info("sets is : " + messageIds);
         if (value == SiteMsgType.GEN_RESP.shortValue()) {
             GenResp resp = new GenResp(msg);
             short recMessageId = resp.getRecMessageId();
             short recMessageType = resp.getRecMessageType();
-            logger.info("通用答复 recMessageId is {},recMessageType is {}", recMessageId, recMessageType);
+            logger.debug("通用答复 recMessageId is {},recMessageType is {}", recMessageId, recMessageType);
             if (messageIds.contains(recMessageId) && recMessageType == SiteMsgType.BEATEN.shortValue()) {
-                logger.info("receive beaten reply...");
+                logger.debug("receive beaten reply...");
                 messageIds.remove(recMessageId);
                 return;
             }
         } else if (value == SiteMsgType.BEATEN.shortValue()) {
-            logger.info("收到对方的心跳信息");
+            logger.debug("收到对方的心跳信息");
             GenResp resp = GenRespUtil.createCenter2SiteSuccessResp(msg.getMessageId(), msg.getMessageType());
             ctx.channel().writeAndFlush(resp);
             return;

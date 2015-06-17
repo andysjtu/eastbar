@@ -41,7 +41,6 @@ public class CaptureConnector implements Connector {
 
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
-    private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     private volatile Channel remoteChannel;
     private Bootstrap bootstrap;
@@ -62,7 +61,7 @@ public class CaptureConnector implements Connector {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("连接截图服务器", LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CON-TO-CAPTURE-SERVER", LogLevel.DEBUG));
                         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
                         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
@@ -94,7 +93,7 @@ public class CaptureConnector implements Connector {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("成功连接上截图服务器");
+                    logger.info("connect capture server success....");
                     remoteChannel = future.channel();
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
@@ -113,7 +112,7 @@ public class CaptureConnector implements Connector {
 
 
     private void scheduleNextConnect() {
-        service.schedule(new Runnable() {
+        workerGroup.schedule(new Runnable() {
             @Override
             public void run() {
                 connect();
@@ -127,7 +126,6 @@ public class CaptureConnector implements Connector {
             remoteChannel.close();
             workerGroup.shutdownGracefully();
         } else {
-            service.shutdownNow();
             workerGroup.shutdownGracefully();
         }
     }

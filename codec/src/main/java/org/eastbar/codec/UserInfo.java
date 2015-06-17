@@ -113,4 +113,30 @@ public class UserInfo {
                 '}';
     }
 
+
+    public boolean isSameLogoutInfo(UserInfo o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        UserInfo userInfo = (UserInfo) o;
+
+        if (id != null ? !id.equals(userInfo.id) : userInfo.id != null) return false;
+        if (loginTime != null ? !loginTime.equals(userInfo.loginTime) : userInfo.loginTime != null) return false;
+        return !(logoutTime != null ? !logoutTime.equals(userInfo.logoutTime) : userInfo.logoutTime != null);
+
+    }
+
+
+    public boolean isSameLoginInfo(UserInfo o) {
+        if (this == o) return true;
+        if (o == null) return false;
+
+        UserInfo userInfo = (UserInfo) o;
+
+        if (id != null ? !id.equals(userInfo.id) : userInfo.id != null) return false;
+        if (loginTime != null ? !loginTime.equals(userInfo.loginTime) : userInfo.loginTime != null) return false;
+        return true;
+    }
+
+
 }

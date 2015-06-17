@@ -18,8 +18,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by andysjtu on 2015/5/9.
+ * @deprecated
  */
-@Component
 public class BizListener implements Listener {
     public final static Logger logger = LoggerFactory.getLogger(BizListener.class);
 

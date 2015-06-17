@@ -18,9 +18,9 @@ public class Terminal {
 
     private volatile Channel termChannel;
 
-    private  UserInfo userInfo;
+    private UserInfo userInfo;
 
-    private  TerminalInfo termInfo;
+    private TerminalInfo termInfo;
 
     private volatile boolean connected = false;
     private volatile boolean online = false;
@@ -32,7 +32,7 @@ public class Terminal {
         this.siteCode = site.getSiteCode();
         this.site = site;
         this.ip = ip;
-        userInfo= new UserInfo();
+        userInfo = new UserInfo();
         userInfo.setIp(ip);
         termInfo = new TerminalInfo();
         termInfo.setIp(ip);
@@ -73,9 +73,13 @@ public class Terminal {
 
 
     public void loginCustomer(UserInfo loginEvent) {
+        online=true;
+        if(loginEvent.isSameLoginInfo(userInfo)){
+            return;
+        }
         userInfo = new UserInfo(loginEvent);
-        online = true;
-        if (connected) {
+
+        if (connected) {//如果客户端还保持连接，可能是比业务信息早到，可能是业务信息中断
             if (termChannel != null) {
                 termChannel.close();
             }
@@ -88,19 +92,20 @@ public class Terminal {
     }
 
     public void logoutCustomer(UserInfo logoutEvent) {
-        online = false;
+        if(logoutEvent.isSameLogoutInfo(userInfo)){
+            return;
+        }
+        online=false;
         if (isSameCustomer(logoutEvent)) {//same one
-//            logger.info("when logoutCustomer is same one ");
             DozerUtil.copyProperties(logoutEvent, userInfo);
             userInfo.setLogoutTime(logoutEvent.getLogoutTime());
-            if(connected){
+            if (connected) {
                 termChannel.close();
             }
         } else {//not same one
-//            logger.info("when logoutCustomer is not same one");
             generateLogoutEvent(logoutEvent);
             DozerUtil.copyProperties(logoutEvent, userInfo);
-            if(connected){
+            if (connected) {
                 termChannel.close();
             }
         }
@@ -109,19 +114,16 @@ public class Terminal {
     }
 
     private void generateLogoutEvent(UserInfo logoutEvent) {
-//        logger.info("----------------------generateLogoutEvent-----------------------");
         TermReport report = getReport();
         report.setLogoutTime(logoutEvent.getLoginTime());
         site.notifyEvent(report);
     }
 
     private boolean isSameCustomer(UserInfo logoutEvent) {
-//        logger.info("isSameCustomer, logoutEvent is : {},userInfo is {}",logoutEvent,userInfo);
-        if(userInfo.getId()!=null){
+        if (userInfo.getId() != null) {
             return logoutEvent.getId().equals(userInfo.getId());
         }
         return true;
-//        return logoutEvent.getId().equals(userInfo.getId());
     }
 
     public void active(ClientInitReq initReq, final Channel channel) {
@@ -131,15 +133,15 @@ public class Terminal {
         DozerUtil.copyProperties(authScheme, termInfo);
 
         ClientAuthResp authResp = new ClientAuthResp();
-        if(online){
-            logger.warn("向客户端推送客户信息,推送地址是:{}",channel.remoteAddress());
+        if (online) {
+            logger.warn("向客户端推送客户信息,推送地址是:{}", channel.remoteAddress());
             authResp.setVersion(authScheme.getVersion());
             authResp.setIdType(userInfo.getIdType());
             authResp.setId(userInfo.getId());
             authResp.setName(userInfo.getName());
             authResp.setAccount(userInfo.getAccount());
-        }else{
-            logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息,推送地址是:{}",channel.remoteAddress());
+        } else {
+            logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息,推送地址是:{}", channel.remoteAddress());
             authResp.setIdType("1");
             authResp.setVersion("1");
             authResp.setId("310101197902026432");
@@ -216,10 +218,8 @@ public class Terminal {
 
     public TermReport getReport() {
         TermReport report = new TermReport();
-        logger.info("when getReport ,userInfo is {},termInfo is {}",userInfo,termInfo);
         DozerUtil.copyProperties(userInfo, report);
         DozerUtil.copyProperties(termInfo, report);
-        logger.info("when getReport ,report is : {}",report);
         report.setOnline(online);
         report.setConnected(connected);
         report.setSiteCode(siteCode);

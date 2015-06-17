@@ -7,48 +7,39 @@ import org.eastbar.site.policy.PolicyManager;
 import org.eastbar.site.policy.PolicyService;
 import org.eastbar.site.policy.entity.BanUrl;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by andysjtu on 2015/5/9.
  */
 public class SiteMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+//        String siteCode = readSiteCodeFromProperties();
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
                 "applicationContext-site.xml"
         });
 
         SiteServer server = context.getBean(SiteServer.class);
-        System.out.println("场所服务器正在开启中....");
+        System.out.println("Site Server is starting....");
         server.start();
-
-//        AlertService service = context.getBean(AlertService.class);
-//        UrlBlockAlert alert = new UrlBlockAlert();
-//        alert.setAlarmRank("1");
-//        alert.setAlertTime(new Timestamp(System.currentTimeMillis()));
-//        service.saveUrlBlockAlert(alert);
-//        List<UrlBlockAlert> list =service.getOldestUrlBlockRecord();
-//        System.out.println("list is : "+list);
+        System.out.println();
 
 
+    }
 
-//        PolicyService service = context.getBean(PolicyService.class);
-//        BanUrl banUrl = new BanUrl();
-//        banUrl.setId(1);
-//        banUrl.setAlarmRank(2);
-//        banUrl.setAlarmType(1);
-//        banUrl.setUrlType(1);
-//        banUrl.setUrlValue("www.sina.com.cn");
-//        banUrl.setIsBlock(1);
-//        banUrl.setVerNum(1);
-//        List<BanUrl> addList = Lists.newArrayList(banUrl);
-//        service.updateUrlPolicy(1,null, addList, null);
-//
-//        PolicyManager policyManager = context.getBean(PolicyManager.class);
-//        System.out.println(policyManager.getBanUrlString());
-
+    public static String readSiteCodeFromProperties() throws IOException {
+        Path propertiesPath = Paths.get("/root", "netbar", "sitecode");
+        FileSystemResource resource = new FileSystemResource(propertiesPath.toFile());
+        Properties properties = PropertiesLoaderUtils.loadProperties(resource);
+        return properties.getProperty("sitecode");
     }
 
 }

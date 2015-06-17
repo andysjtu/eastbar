@@ -41,7 +41,7 @@ public class BizOuterListener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("CONN TO BIZ-SERVER", LogLevel.INFO));
+                        pipeline.addLast("logHandler", new LoggingHandler("CONN TO BIZ-SERVER", LogLevel.DEBUG));
                         pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(65536, 0, 4, 0, 4));
                         pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
                         pipeline.addLast("bizHandler", new BizOuterHandler(server));

@@ -1,6 +1,7 @@
 package org.eastbar.site;
 
 import org.eastbar.comm.Listener;
+import org.eastbar.site.biz.BizProxyConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,9 @@ import java.util.List;
  */
 @Component
 public class SiteServer {
+
+    @Autowired
+    private BizProxyConnector bizProxyConnector;
     @Autowired
     private List<Listener> listeners;
 
@@ -23,21 +27,22 @@ public class SiteServer {
     private LogUploader uploader;
 
     public void start() {
-       for(Connector connector:connectors){
-           connector.connect();
-       }
-        for(Listener listener:listeners){
+        bizProxyConnector.connect();
+        for (Connector connector : connectors) {
+            connector.connect();
+        }
+        for (Listener listener : listeners) {
             listener.listen();
         }
         uploader.start();
     }
 
-    public void stop(){
-        for(Connector con : connectors){
+    public void stop() {
+        for (Connector con : connectors) {
             con.disconnect();
         }
 
-        for(Listener listener: listeners){
+        for (Listener listener : listeners) {
             listener.stopListen();
         }
         site.disconnectAll();

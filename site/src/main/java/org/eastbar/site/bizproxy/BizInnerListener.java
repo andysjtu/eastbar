@@ -1,10 +1,7 @@
 package org.eastbar.site.bizproxy;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -12,6 +9,11 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.HeartBeatenHandler;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * Created by AndySJTU on 2015/6/15.
  */
 public class BizInnerListener {
-    public final static Logger logger= LoggerFactory.getLogger(BizInnerListener.class);
+    public final static Logger logger = LoggerFactory.getLogger(BizInnerListener.class);
 
     private final BizProxyServer proxyServer;
 
@@ -33,18 +35,22 @@ public class BizInnerListener {
     private int listenPort = 3005;
 
 
-
     public void doListen() {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .handler(new LoggingHandler(LogLevel.INFO))
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("logHandler", new LoggingHandler("CONN TO SITE-SERVER", LogLevel.INFO));
-
+                        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
+                        pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
+                        pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
+                        pipeline.addLast("registerChannelHandler",new RegisterHandler());
+                        pipeline.addLast("heartBeaten",new HeartBeatenHandler());
                         pipeline.addLast("bizHandler", new BizInnerHandler(proxyServer));
                     }
                 });
@@ -63,5 +69,13 @@ public class BizInnerListener {
                 }
             }
         });
+    }
+
+    private class RegisterHandler extends ChannelInboundHandlerAdapter {
+        @Override
+        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+            super.channelActive(ctx);
+            BizInnerListener.this.proxyServer.registerSiteChannelContext(ctx);
+        }
     }
 }

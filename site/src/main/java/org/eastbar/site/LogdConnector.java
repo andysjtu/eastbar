@@ -41,10 +41,7 @@ public class LogdConnector implements Connector{
 
 
 
-
-
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
-    private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
 
     private volatile Channel remoteChannel;
     private Bootstrap bootstrap;
@@ -64,7 +61,7 @@ public class LogdConnector implements Connector{
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("连接日志汇报端", LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-LOG-SERVER", LogLevel.DEBUG));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
                         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
@@ -94,7 +91,7 @@ public class LogdConnector implements Connector{
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("成功连接上日志汇报端");
+                    logger.info("CON LOG SERVER SUCCESS");
                     remoteChannel = future.channel();
                     remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
                         @Override
@@ -113,7 +110,7 @@ public class LogdConnector implements Connector{
 
 
     private void scheduleNextConnect() {
-        service.schedule(new Runnable() {
+        workerGroup.schedule(new Runnable() {
             @Override
             public void run() {
                 connect();
@@ -126,7 +123,6 @@ public class LogdConnector implements Connector{
             remoteChannel.close();
             workerGroup.shutdownGracefully();
         } else {
-            service.shutdownNow();
             workerGroup.shutdownGracefully();
         }
     }

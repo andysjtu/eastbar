@@ -30,7 +30,7 @@ public class LogServer {
 
     //    public static SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH时mm分ss秒");
     public static DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH时mm分ss秒");
-    @Value("${siteCode}")
+    @Value("${sitecode}")
     private String siteCode;
     @Autowired
     private LogService logService;

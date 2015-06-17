@@ -43,6 +43,11 @@ public enum SiteMsgType {
 
     ADDRESS_REQ((short)0x9001),
     ADDRESS_RESP((short)0x9002),
+
+    CUSTOMER_LOGIN((short)0x9010),
+    CUSTOMER_LOGOUT((short)0x9011),
+    CUSTOMER_ALL((short)0x9012),
+
     UNKNOWN((short) 0xffff);
 
 
