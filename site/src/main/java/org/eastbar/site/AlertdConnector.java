@@ -11,9 +11,13 @@ import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.AbstractConnector;
+import org.eastbar.loadb.DomainAndPort;
+import org.eastbar.loadb.LoadbClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.Executors;
@@ -23,17 +27,28 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by AndySJTU on 2015/6/11.
  */
+@Component
 public class AlertdConnector extends AbstractConnector {
 
     public static int DEFAULT_LOCAL_PORT = 19979;
 
-    public AlertdConnector(String remoteAddr, int remotePort, int localPort) {
-        super(remoteAddr, remotePort, localPort);
+    @Autowired
+    private LoadbClient loadbClient;
+
+
+    @PostConstruct
+    public void init() throws Exception {
+        try {
+            DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
+            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            remoteAddress = domainAndPort.getDomain();
+            remotePort = domainAndPort.getPort();
+        } catch (Throwable t) {
+            throw new Exception("Center Server Address cannot found");
+        }
+
     }
 
-    public AlertdConnector(String remoteAddr, int remotePort) {
-        this(remoteAddr, remotePort, DEFAULT_LOCAL_PORT);
-    }
 
 
     @Override

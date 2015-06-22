@@ -1,65 +1,80 @@
 package org.eastbar.loadb;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelPipeline;
+import ch.qos.logback.core.net.SyslogOutputStream;
+import io.netty.channel.*;
+import io.netty.util.concurrent.EventExecutorGroup;
+import io.netty.util.concurrent.Promise;
+import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.loadb.AddressReq;
 import org.eastbar.codec.loadb.AddressResp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.net.SocketAddress;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by AndySJTU on 2015/6/12.
  */
-@Component
-public class LoadbClient {
 
-    @Autowired
+public class LoadbClient implements InitializingBean {
+    public final static Logger logger = LoggerFactory.getLogger(LoadbClient.class);
+
     private LoadbConnector connector;
 
-    @Value("${sitecode")
     private String siteCode;
 
-    public void connnect(CountDownLatch latch) throws InterruptedException {
-        connector.connect(latch);
-    }
+    private volatile ChannelFuture connectFuture;
 
-    public DomainAndPort getServerAddr(String type) {
-        if (connector.isConnected()) {
-            final CountDownLatch latch = new CountDownLatch(2);
-            AddressReq req = new AddressReq(siteCode, type);
-            connector.channel().writeAndFlush(req).addListener(new ChannelFutureListener() {
-                @Override
-                public void operationComplete(ChannelFuture future) throws Exception {
-                    if (!future.isSuccess()) {
-                        latch.countDown();
-                    }
-                }
-            });
-            ChannelPipeline pipeline = connector.channel().pipeline();
-            AddressRespHandler handler = (AddressRespHandler) pipeline.get(AddressRespHandler.DEFAULT_HANDLER_NAME);
+    private volatile boolean isStarted = false;
 
-            handler.register(req.getMessageId(), req.getMessageType(), latch);
-            try {
-                latch.await(2, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Failure");
-            }
 
-            AddressRespHandler.ResultWrapper resultWrapper = handler.getResult(req.getMessageId(), req.getMessageType());
-            if (resultWrapper != null) {
-                if (resultWrapper.getResultType() == 2) {
-                    return (DomainAndPort) resultWrapper.getResult();
-                }
-            }
+    public void connect() throws InterruptedException {
+        if (!isStarted) {
+            isStarted = true;
+            connectFuture = connector.connect();
+            connectFuture.sync();
         }
-        throw new RuntimeException("Failure");
     }
+
+    public DomainAndPort getServerAddr(final String type) throws InterruptedException {
+
+        if (connectFuture.isSuccess()) {
+            ChannelPipeline pipeline = connectFuture.channel().pipeline();
+            AddressReq req = new AddressReq(siteCode, type);
+            System.out.println("req messageId is " + req.getMessageId());
+            System.out.println("req messageType is " + req.getMessageType());
+            ClientHandler handler = new ClientHandler(req, connectFuture.channel().eventLoop());
+            pipeline.addLast(handler);
+
+            Promise promise = handler.getPromise();
+            promise.await(60, TimeUnit.SECONDS);
+            if (promise.isSuccess()) {
+                try {
+                    return (DomainAndPort) promise.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                throw new RuntimeException(promise.cause());
+            }
+
+        }
+        throw new RuntimeException("xx");
+    }
+
 
     public String getSiteCode() {
         return siteCode;
@@ -73,26 +88,39 @@ public class LoadbClient {
         connector.disconnect();
     }
 
+    public LoadbConnector getConnector() {
+        return connector;
+    }
 
+    @Autowired
+    public void setConnector(LoadbConnector connector) {
+        this.connector = connector;
+    }
 
     public static void main(String[] args) throws InterruptedException {
 
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-               "applicationContext-loadb.xml"
+                "applicationContext-loadb-client.xml"
         });
 
 
         LoadbClient client = context.getBean(LoadbClient.class);
         client.setSiteCode("43001001");
-        CountDownLatch latch = new CountDownLatch(1);
-        client.connnect(latch);
-        latch.await();
-        System.out.println("----------------------");
-        System.out.println("");
-        Thread.sleep(5000);
+
+        client.connect();
+
         System.out.println(client.getServerAddr("alert"));
+        System.out.println(client.getServerAddr("status"));
+        System.out.println(client.getServerAddr("log"));
+        System.out.println(client.getServerAddr("capture"));
+
 
         client.close();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if (connector == null) throw new Exception("connector connot be null");
     }
 }

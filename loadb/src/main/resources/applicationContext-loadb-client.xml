@@ -15,22 +15,22 @@
 
     <description>Spring公共配置</description>
 
-    <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-    <context:component-scan base-package="org.eastbar.loadb">
-    </context:component-scan>
-
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-loadb.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-loadbclient.properties"/>
 
-    <bean id="loadbListener" class="org.eastbar.loadb.LoadbListener">
-        <property name="listenPort" value="${loadb.port}"/>
-        <property name="loadbManager" ref="loadbManager"/>
+    <bean id="loadbConnector" class="org.eastbar.loadb.LoadbConnector">
+        <property name="localPort" value="0"/>
+        <property name="remoteAddress" value="127.0.0.1"/>
+        <property name="remotePort" value="7888"/>
     </bean>
 
-    <bean id="loadbManager" class="org.eastbar.loadb.LoadbManager"/>
+    <bean id="loadbClient" class="org.eastbar.loadb.LoadbClient">
+        <property name="connector" ref="loadbConnector"/>
+        <property name="siteCode" value="${sitecode}"/>
+    </bean>
 
 
 </beans>

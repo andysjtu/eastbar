@@ -15,11 +15,22 @@ public class SiteServer {
 
     @Autowired
     private BizProxyConnector bizProxyConnector;
-    @Autowired
-    private List<Listener> listeners;
 
     @Autowired
-    private List<Connector> connectors;
+    private ClientListener clientListener;
+    @Autowired
+    private PolicyDldListener policyDldListener;
+    @Autowired
+    private ConsoleListener consoleListener;
+
+    @Autowired
+    private CenterConnector centerConnector;
+    @Autowired
+    private CaptureConnector captureConnector;
+    @Autowired
+    private LogdConnector logdConnector;
+    @Autowired
+    private AlertdConnector alertdConnector;
 
     @Autowired
     private Site site;
@@ -28,23 +39,32 @@ public class SiteServer {
 
     public void start() {
         bizProxyConnector.connect();
-        for (Connector connector : connectors) {
-            connector.connect();
-        }
-        for (Listener listener : listeners) {
-            listener.listen();
-        }
+        centerConnector.connect();
+        captureConnector.connect();
+
+        policyDldListener.listen();
+        clientListener.listen();
+        consoleListener.listen();
+
+        logdConnector.connect();
+        alertdConnector.connect();
+
         uploader.start();
     }
 
     public void stop() {
-        for (Connector con : connectors) {
-            con.disconnect();
-        }
+        bizProxyConnector.disconnect();
+        centerConnector.disconnect();
+        captureConnector.disconnect();
 
-        for (Listener listener : listeners) {
-            listener.stopListen();
-        }
+        policyDldListener.stopListen();
+        clientListener.stopListen();
+        consoleListener.stopListen();
+
+        logdConnector.disconnect();
+        alertdConnector.disconnect();
+
+        uploader.stop();
         site.disconnectAll();
     }
 

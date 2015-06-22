@@ -19,6 +19,7 @@ import org.eastbar.site.Site;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,12 +29,18 @@ import java.util.concurrent.TimeUnit;
 public class BizProxyConnector extends AbstractConnector {
 
     public static String DEFALT_REMOTE_ADDRESS = "127.0.0.1";
-    public static int DEFAULT_REMOTE_PORT = 3005;
     public static int DEFAULT_LOCAL_PORT = 3006;
 
 
     @Autowired
     private Site site;
+
+    @PostConstruct
+    public void init(){
+        remoteAddress=DEFALT_REMOTE_ADDRESS;
+        remotePort=DEFAULT_LOCAL_PORT;
+        localPort=0;
+    }
 
 
     @Override

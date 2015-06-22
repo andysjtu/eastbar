@@ -2,6 +2,7 @@ package org.eastbar.loadb;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.loadb.AddressReq;
@@ -29,34 +30,35 @@ public class LoadbHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (type == SiteMsgType.ADDRESS_REQ.shortValue()) {
             AddressReq req = new AddressReq(msg);
             String reqType = req.getType();
-            String siteCode =req.getSiteCode();
+            String siteCode = req.getSiteCode();
             if ("log".equals(reqType)) {
                 DomainAndPort domainAndPort = loadbManager.getLogServerAddr(siteCode);
-                AddressResp resp = new AddressResp(req.getMessageId(),req.getMessageType(),domainAndPort.getDomain(),domainAndPort.getPort());
+                AddressResp resp = new AddressResp(req.getMessageId(), req.getMessageType(), domainAndPort.getDomain(), domainAndPort.getPort());
                 ctx.channel().writeAndFlush(resp);
             } else if ("alert".equals(reqType)) {
                 DomainAndPort domainAndPort = loadbManager.getAlertServerAddr(siteCode);
-                AddressResp resp = new AddressResp(req.getMessageId(),req.getMessageType(),domainAndPort.getDomain(),domainAndPort.getPort());
+                AddressResp resp = new AddressResp(req.getMessageId(), req.getMessageType(), domainAndPort.getDomain(), domainAndPort.getPort());
                 ctx.channel().writeAndFlush(resp);
                 System.out.println("--------------------------");
             } else if ("capture".equals(reqType)) {
                 DomainAndPort domainAndPort = loadbManager.getCaptureServerAddr(siteCode);
-                AddressResp resp = new AddressResp(req.getMessageId(),req.getMessageType(),domainAndPort.getDomain(),domainAndPort.getPort());
+                AddressResp resp = new AddressResp(req.getMessageId(), req.getMessageType(), domainAndPort.getDomain(), domainAndPort.getPort());
                 ctx.channel().writeAndFlush(resp);
             } else if ("status".equals(reqType)) {
                 DomainAndPort domainAndPort = loadbManager.getStatusServerAddr(siteCode);
-                AddressResp resp = new AddressResp(req.getMessageId(),req.getMessageType(),domainAndPort.getDomain(),domainAndPort.getPort());
+                AddressResp resp = new AddressResp(req.getMessageId(), req.getMessageType(), domainAndPort.getDomain(), domainAndPort.getPort());
                 ctx.channel().writeAndFlush(resp);
             } else {
                 logger.warn("收到未知类型的协议");
-                ctx.close();
+                SocketMsg resp = GenRespUtil.createS2ClientMsgErrorResp(req.getMessageId(), req.getMessageType());
+                ctx.channel().writeAndFlush(resp);
             }
         }
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.warn("error is  :",cause);
+        logger.warn("error is  :", cause);
         ctx.close();
     }
 }

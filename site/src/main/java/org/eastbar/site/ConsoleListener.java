@@ -82,13 +82,14 @@ public class ConsoleListener implements Listener {
             future.addListener(new ChannelFutureListener() {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
-                    if(future.isSuccess()){
+                    if (future.isSuccess()) {
                         logger.info("关闭侦听终端命令服务成功");
                     }
                 }
             });
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+
         }
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 }

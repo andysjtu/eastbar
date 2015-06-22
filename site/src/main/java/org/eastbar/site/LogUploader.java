@@ -67,6 +67,10 @@ public class LogUploader {
 
     }
 
+    public void stop() {
+        logdConnector.disconnect();
+    }
+
     public static class RemoveLogHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
         @Override

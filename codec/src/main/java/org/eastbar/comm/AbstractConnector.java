@@ -26,6 +26,8 @@ public abstract class AbstractConnector {
     private volatile Channel remoteChannel;
     private Bootstrap bootstrap;
 
+    private volatile ChannelFuture future;
+
     public AbstractConnector() {
     }
 
@@ -43,7 +45,7 @@ public abstract class AbstractConnector {
         bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class);
         configOptions(bootstrap).
-        localAddress(localPort)
+                localAddress(localPort)
                 .remoteAddress(remoteAddress, remotePort)
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
@@ -55,13 +57,12 @@ public abstract class AbstractConnector {
     }
 
     protected Bootstrap configOptions(Bootstrap bootstrap) {
-        return bootstrap.option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.SO_REUSEADDR, true)
-                .option(ChannelOption.TCP_NODELAY, true);
+        return bootstrap.option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
+                .option(ChannelOption.TCP_NODELAY, Boolean.TRUE)
+                .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE);
     }
 
     private void checkParameter() {
-        if (localPort == 0) throw new IllegalArgumentException("loalPort cannot be null");
         if (StringUtils.trimToNull(remoteAddress) == null) {
             throw new IllegalArgumentException("remoteAddress cannot be null");
         }
@@ -84,7 +85,7 @@ public abstract class AbstractConnector {
     }
 
 
-    public void connect() {
+    public ChannelFuture connect() {
         if (bootstrap == null) {
             synchronized (this) {
                 if (bootstrap == null) {
@@ -93,7 +94,7 @@ public abstract class AbstractConnector {
             }
         }
 
-        ChannelFuture future = bootstrap.connect();
+        future = bootstrap.connect();
         future.addListener(new ChannelFutureListener() {
                                @Override
                                public void operationComplete(ChannelFuture future) throws Exception {
@@ -120,6 +121,7 @@ public abstract class AbstractConnector {
                            }
 
         );
+        return future;
     }
 
     protected void doSuccessConnect(ChannelFuture future) {
@@ -138,16 +140,20 @@ public abstract class AbstractConnector {
             public void run() {
                 connect();
             }
-        }, 10, TimeUnit.SECONDS);
+        }, 60, TimeUnit.SECONDS);
     }
 
     public void disconnect() {
-        if (remoteChannel.isActive()) {
-            remoteChannel.close();
-            workerGroup.shutdownGracefully();
-        } else {
-            workerGroup.shutdownGracefully();
+        if (future != null) {
+            if (!future.isDone()) future.cancel(true);
+            else {
+                if (remoteChannel.isActive()) {
+                    remoteChannel.close();
+                }
+            }
         }
+        workerGroup.shutdownGracefully();
+
     }
 
 

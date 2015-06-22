@@ -20,21 +20,25 @@ import org.springframework.stereotype.Component;
 /**
  * Created by AndySJTU on 2015/6/11.
  */
-@Component
 public class LoadbListener implements Listener {
     public final static Logger logger = LoggerFactory.getLogger(LoadbListener.class);
 
 
-    @Value("${loadb.port}")
     private int listenPort = 0;
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup();
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
     private volatile Channel serverChannel;
 
-    @Autowired
     private LoadbManager loadbManager;
 
+    public int getListenPort() {
+        return listenPort;
+    }
+
+    public void setListenPort(int listenPort) {
+        this.listenPort = listenPort;
+    }
 
     @Override
     public void listen() {
@@ -50,7 +54,7 @@ public class LoadbListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("log", new LoggingHandler("loadb-to-site", LogLevel.DEBUG));
+                        pipeline.addLast("log", new LoggingHandler("CONN-TO-LOADB", LogLevel.DEBUG));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
@@ -88,5 +92,13 @@ public class LoadbListener implements Listener {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+    }
+
+    public LoadbManager getLoadbManager() {
+        return loadbManager;
+    }
+
+    public void setLoadbManager(LoadbManager loadbManager) {
+        this.loadbManager = loadbManager;
     }
 }

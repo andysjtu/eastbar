@@ -126,9 +126,10 @@ public class ClientListener implements Listener {
                     }
                 }
             });
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+
         }
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 
 //    public static class ServerChannelInitilizer extends ChannelInitializer<ServerSocketChannel> {

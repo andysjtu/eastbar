@@ -14,7 +14,6 @@ import java.util.Properties;
 /**
  * Created by AndySJTU on 2015/6/12.
  */
-@Component
 public class LoadbManager {
 
     private ServerLoad alertServerLoad;

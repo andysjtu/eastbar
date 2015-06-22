@@ -96,8 +96,9 @@ public class PolicyDldListener implements Listener {
                     }
                 }
             });
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+
         }
+        bossGroup.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
 }

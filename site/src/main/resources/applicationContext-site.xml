@@ -20,7 +20,6 @@
     </context:component-scan>
 
 
-
     <bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="jpaVendorAdapter">
@@ -44,14 +43,16 @@
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <jpa:repositories base-package="org.eastbar.site.policy,org.eastbar.site.log,org.eastbar.site.alert" transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>
+    <jpa:repositories base-package="org.eastbar.site.policy,org.eastbar.site.log,org.eastbar.site.alert"
+                      transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="false" location="file:/D:/root/netbar/sitecode,classpath:/application-site.properties"/>
+            ignore-resource-not-found="false"
+            location="file:/D:/root/netbar/sitecode,classpath:/application-site.properties"/>
 
     <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
@@ -71,6 +72,15 @@
         <property name="minEvictableIdleTimeMillis" value="1800000"/>
     </bean>
 
+    <bean id="loadbClient" class="org.eastbar.loadb.LoadbClient">
+        <property name="siteCode" value="${sitecode}"></property>
+    </bean>
+
+    <bean id="loadbConnector" class="org.eastbar.loadb.LoadbConnector">
+        <property name="remoteAddress" value="${loadb.ip}"/>
+        <property name="remotePort" value="${loadb.port}"/>
+        <property name="localPort" value="0"/>
+    </bean>
 
 
 </beans>

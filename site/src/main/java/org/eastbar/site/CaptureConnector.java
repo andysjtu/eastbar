@@ -9,6 +9,9 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.codec.*;
+import org.eastbar.comm.AbstractConnector;
+import org.eastbar.loadb.DomainAndPort;
+import org.eastbar.loadb.LoadbClient;
 import org.eastbar.site.handler.center.Center2ClientCmdHandler;
 import org.eastbar.site.handler.center.PolicyUpdateHandler;
 import org.eastbar.site.handler.center.StatusHandler;
@@ -28,107 +31,49 @@ import java.util.concurrent.TimeUnit;
  * Created by AndySJTU on 2015/6/10.
  */
 @Component
-public class CaptureConnector implements Connector {
+public class CaptureConnector extends AbstractConnector {
     public static final Logger logger = LoggerFactory.getLogger(CenterConnector.class);
-    @Value("${capture.server.ip}")
-    private String remoteAddr;
-    @Value("${capture.server.port}")
-    private int remotePort;
-    private int localPort = 19997;
+    public static final int DEFAULT_LOCAL_PORT = 19997;
+
 
     @Autowired
     private Site site;
-
-
-    private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
-
-    private volatile Channel remoteChannel;
-    private Bootstrap bootstrap;
+    @Autowired
+    private LoadbClient loadbClient;
 
 
     @PostConstruct
-    private void configBootstrap() {
-        bootstrap = new Bootstrap();
-        bootstrap.group(workerGroup)
-                .channel(NioSocketChannel.class)
-                .option(ChannelOption.SO_KEEPALIVE, true)
-                .option(ChannelOption.SO_REUSEADDR, true)
-                .option(ChannelOption.TCP_NODELAY, true)
-                .option(ChannelOption.RCVBUF_ALLOCATOR,new FixedRecvByteBufAllocator(1024*20))
-                .localAddress(localPort)
-                .remoteAddress(remoteAddr, remotePort)
-                .handler(new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("CON-TO-CAPTURE-SERVER", LogLevel.DEBUG));
-                        pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
-                        pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
-                        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
-                        pipeline.addLast("bentenHandler", new HeartBeatenHandler());
-                        pipeline.addLast("centerCmdHandler", new Center2ClientCmdHandler(site));
-
-                    }
-                });
-    }
-
-
-    public Channel channel() {
-        return this.remoteChannel;
-    }
-
-    public boolean isConnected() {
-        if (remoteChannel != null && remoteChannel.isActive()) {
-            return true;
+    public void init() throws Exception {
+        try {
+            DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
+            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            remoteAddress = domainAndPort.getDomain();
+            remotePort = domainAndPort.getPort();
+        } catch (Throwable t) {
+            throw new Exception("Center Server Address cannot found");
         }
-        return false;
+
     }
 
 
     @Override
-    public void connect() {
-        ChannelFuture future = bootstrap.connect();
-        future.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (future.isSuccess()) {
-                    logger.info("connect capture server success....");
-                    remoteChannel = future.channel();
-                    remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
-                        @Override
-                        public void operationComplete(ChannelFuture future) throws Exception {
-                            remoteChannel = null;
-                            scheduleNextConnect();
-                        }
-                    });
-                } else {
-                    scheduleNextConnect();
-                }
-            }
-        });
-    }
-
-
-
-    private void scheduleNextConnect() {
-        workerGroup.schedule(new Runnable() {
-            @Override
-            public void run() {
-                connect();
-            }
-        }, 10, TimeUnit.SECONDS);
+    protected Bootstrap configOptions(Bootstrap bootstrap) {
+        super.configOptions(bootstrap);
+        bootstrap.option(ChannelOption.RCVBUF_ALLOCATOR, new FixedRecvByteBufAllocator(1024 * 20));
+        return bootstrap;
     }
 
     @Override
-    public void disconnect() {
-        if (remoteChannel.isActive()) {
-            remoteChannel.close();
-            workerGroup.shutdownGracefully();
-        } else {
-            workerGroup.shutdownGracefully();
-        }
+    protected void registerHandler(ChannelPipeline pipeline) {
+        pipeline.addLast("logHandler", new LoggingHandler("CON-TO-CAPTURE-SERVER", LogLevel.DEBUG));
+        pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
+        pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
+        pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
+        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+        pipeline.addLast("bentenHandler", new HeartBeatenHandler());
+        pipeline.addLast("centerCmdHandler", new Center2ClientCmdHandler(site));
     }
+
 
     public Site getSite() {
         return site;
@@ -138,19 +83,4 @@ public class CaptureConnector implements Connector {
         this.site = site;
     }
 
-    public String getRemoteAddr() {
-        return remoteAddr;
-    }
-
-    public void setRemoteAddr(String remoteAddr) {
-        this.remoteAddr = remoteAddr;
-    }
-
-    public int getRemotePort() {
-        return remotePort;
-    }
-
-    public void setRemotePort(int remotePort) {
-        this.remotePort = remotePort;
-    }
 }

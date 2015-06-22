@@ -1,6 +1,8 @@
 package org.eastbar.site;
 
 import com.google.common.collect.Lists;
+import org.eastbar.loadb.DomainAndPort;
+import org.eastbar.loadb.LoadbClient;
 import org.eastbar.site.alert.dao.AlertService;
 import org.eastbar.comm.alert.entity.UrlBlockAlert;
 import org.eastbar.site.policy.PolicyManager;
@@ -26,10 +28,20 @@ public class SiteMain {
                 "applicationContext-site.xml"
         });
 
+        LoadbClient client = context.getBean(LoadbClient.class);
+
         SiteServer server = context.getBean(SiteServer.class);
-        System.out.println("Site Server is starting....");
-        server.start();
-       
+
+        try {
+            System.out.println("Site Server is starting....");
+            client.connect();
+            server.start();
+            System.out.println("Site Server started...");
+        } catch (Throwable t) {
+            t.printStackTrace();
+            server.stop();
+        }
+
 
     }
 

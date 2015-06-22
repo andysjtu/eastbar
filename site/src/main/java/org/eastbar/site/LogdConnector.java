@@ -14,6 +14,8 @@ import org.eastbar.codec.HeartBeatenHandler;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.AbstractConnector;
+import org.eastbar.loadb.DomainAndPort;
+import org.eastbar.loadb.LoadbClient;
 import org.eastbar.site.handler.center.Center2ClientCmdHandler;
 import org.eastbar.site.handler.center.PolicyUpdateHandler;
 import org.eastbar.site.policy.PolicySaver;
@@ -36,13 +38,23 @@ public class LogdConnector extends AbstractConnector {
     public static final Logger logger = LoggerFactory.getLogger(LogdConnector.class);
     public final static int DEFAULT_LOCAL_PORT = 19989;
 
-    public LogdConnector(String remoteAddress, int remotePort, int localPort) {
-        super(remoteAddress, remotePort, localPort);
+    @Autowired
+    private LoadbClient loadbClient;
+
+
+    @PostConstruct
+    public void init() throws Exception {
+        try {
+            DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
+            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            remoteAddress = domainAndPort.getDomain();
+            remotePort = domainAndPort.getPort();
+        } catch (Throwable t) {
+            throw new Exception("Center Server Address cannot found");
+        }
+
     }
 
-    public LogdConnector(String remoteAddress, int remotePort) {
-        this(remoteAddress, remotePort, DEFAULT_LOCAL_PORT);
-    }
 
 
     @Override
