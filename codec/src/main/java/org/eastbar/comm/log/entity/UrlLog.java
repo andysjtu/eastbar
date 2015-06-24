@@ -22,6 +22,7 @@ public class UrlLog {
     private String hostIp;
     private Timestamp recordTime;
     private boolean blocked =false;
+    @Column(length = 500)
     private String url;
 
 

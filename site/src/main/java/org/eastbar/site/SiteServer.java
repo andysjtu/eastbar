@@ -39,6 +39,7 @@ public class SiteServer {
 
     public void start() {
         bizProxyConnector.connect();
+        System.out.println("cenllllllllll");
         centerConnector.connect();
         captureConnector.connect();
 

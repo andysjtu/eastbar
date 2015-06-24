@@ -19,6 +19,7 @@ public class IllegalLog extends EntityObject{
     private Date recordTime;
     private boolean isBlock = false;
     private String keyword;
+    @Column(length = 500)
     private String url;
 
     public String getCustomerId() {

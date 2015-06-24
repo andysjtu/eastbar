@@ -20,6 +20,7 @@ public class PrgLog extends EntityObject{
     private boolean isBlock=false;
 
     private String progName;
+    @Column(length = 500)
     private String processName;
     private Date startTime;
     private Date endTime;
