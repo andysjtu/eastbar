@@ -34,7 +34,7 @@ public class SiteListener implements Listener {
     @Value("${managerCenterServerPort}")
     private int listenPort=0;
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(2);
-    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2000);
+    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(1000);
 
     private volatile Channel serverChannel;
 
@@ -50,7 +50,7 @@ public class SiteListener implements Listener {
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
-                .option(ChannelOption.SO_BACKLOG, 2000)
+                .option(ChannelOption.SO_BACKLOG, 1000)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
                 .childHandler(new ChannelInitializer<SocketChannel>() {

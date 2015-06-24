@@ -122,7 +122,7 @@ public class BizOuterHandler extends ChannelInboundHandlerAdapter {
             c1102.setLogoutTime(logout[9]);
             UserInfo userInfo = new UserInfo();
             DozerUtil.copyProperties(c1102, userInfo);
-            System.out.println("收到的消息1102是: " + userInfo);
+//            System.out.println("收到的消息1102是: " + userInfo);
             server.registerCustomerLogout(userInfo);
         }
     }
@@ -145,7 +145,7 @@ public class BizOuterHandler extends ChannelInboundHandlerAdapter {
             c1101.setLoginTime(login[8]);
             UserInfo userInfo = new UserInfo();
             DozerUtil.copyProperties(c1101, userInfo);
-            System.out.println("收到的消息1101是: " + userInfo);
+//            System.out.println("收到的消息1101是: " + userInfo);
             server.registerCustomerLogin(userInfo);
         }
     }

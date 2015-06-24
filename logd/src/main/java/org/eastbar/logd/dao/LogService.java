@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class LogService {
     @Autowired
     private SiteUrlLogDao siteUrlLogDao;

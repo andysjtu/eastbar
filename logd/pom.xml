@@ -97,6 +97,12 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-core</artifactId>
+            <version>5.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-spring</artifactId>
+            <version>5.11.1</version>
         </dependency>
         <!-- JMS end -->
 
@@ -188,6 +194,12 @@
             <artifactId>jaxen</artifactId>
         </dependency>
         <!-- XML end -->
+
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-core</artifactId>
+            <version>5.7.0</version>
+        </dependency>
 
         <!-- LOGGING begin -->
         <dependency>
@@ -407,5 +419,12 @@
 
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>mavenreport</id>
+            <url>http://mvnrepository.com/artifact</url>
+        </repository>
+    </repositories>
 
 </project>

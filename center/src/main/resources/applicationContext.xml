@@ -24,36 +24,5 @@
 		ignore-resource-not-found="true" location="classpath*:/application-center.properties" />
 
 
-	<!-- 调用StopWatch计时的Interceptor -->
-	<bean id="monitoringInterceptor" class="org.javasimon.spring.MonitoringInterceptor" />
-
-	<!-- 监控定义了@Monitored的方法 -->
-	<bean id="monitoringAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
-		<property name="advice" ref="monitoringInterceptor" />
-		<property name="pointcut">
-			<bean class="org.javasimon.spring.MonitoredMeasuringPointcut" />
-		</property>
-	</bean>
-	<bean
-		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
-		<property name="proxyTargetClass" value="true" />
-	</bean>
-	
-	<!-- 异步线程池 -->
-	<bean id="threadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">  
-    <!-- 核心线程数  -->
-		<property name="corePoolSize" value="${threadPool.corePoolSize}" />  
-    <!-- 最大线程数 -->
-		<property name="maxPoolSize" value="${threadPool.maxPoolSize}" />  
-    <!-- 队列最大长度 >=mainExecutor.maxSize -->
-		<property name="queueCapacity" value="${threadPool.queueCapacity}" />  
-    <!-- 线程池维护线程所允许的空闲时间 -->
-		<property name="keepAliveSeconds" value="${threadPool.keepAliveSeconds}" />  
-    <!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
-		<property name="rejectedExecutionHandler">
-			<bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
-		</property>
-	</bean>
-	
 
 </beans>

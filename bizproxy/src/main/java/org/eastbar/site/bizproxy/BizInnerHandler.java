@@ -2,6 +2,7 @@ package org.eastbar.site.bizproxy;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.UserInfo;
@@ -26,10 +27,12 @@ public class BizInnerHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
-         short type = msg.getMessageType();
-         if(type== SiteMsgType.GEN_RESP.shortValue()){
-             //do nothing
-         }
+        short type = msg.getMessageType();
+        if (type == SiteMsgType.GEN_RESP.shortValue()) {
+            //do nothing
+        } else {
+            ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
+        }
     }
 
     @Override

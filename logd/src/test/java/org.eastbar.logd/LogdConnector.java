@@ -118,7 +118,7 @@ public class LogdConnector {
         if (connector.isConnected()) {
             Channel channel = connector.channel();
             List<UrlLog> logList = Lists.newArrayList();
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 100; i++) {
                 UrlLog urlLog = new UrlLog();
                 urlLog.setId(null);
                 urlLog.setCustomerId("310107197902026432");

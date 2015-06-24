@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 public class BizProxyConnector extends AbstractConnector {
 
     public static String DEFALT_REMOTE_ADDRESS = "127.0.0.1";
-    public static int DEFAULT_LOCAL_PORT = 3006;
+    public static int DEFAULT_LOCAL_PORT = 3005;
 
 
     @Autowired
@@ -39,13 +39,13 @@ public class BizProxyConnector extends AbstractConnector {
     public void init(){
         remoteAddress=DEFALT_REMOTE_ADDRESS;
         remotePort=DEFAULT_LOCAL_PORT;
-        localPort=0;
+        localPort=3006;
     }
 
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("CON-TO-BIZ-PROXY", LogLevel.INFO));
+        pipeline.addLast("logHandler", new LoggingHandler("CON-TO-BIZ-PROXY", LogLevel.DEBUG));
         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60));
         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());

@@ -371,7 +371,7 @@
                     <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
                     <copyConfigurationDirectory>true</copyConfigurationDirectory>
                     <assembleDirectory>${project.build.directory}/loadb</assembleDirectory>
-                    <extraJvmArguments>-Xms2096m</extraJvmArguments>
+                    <extraJvmArguments>-Xms512m</extraJvmArguments>
                     <programs>
                         <program>
                             <mainClass>org.eastbar.loadb.LoadbMain</mainClass>

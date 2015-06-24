@@ -23,8 +23,8 @@
 
     <bean id="loadbConnector" class="org.eastbar.loadb.LoadbConnector">
         <property name="localPort" value="0"/>
-        <property name="remoteAddress" value="127.0.0.1"/>
-        <property name="remotePort" value="7888"/>
+        <property name="remoteAddress" value="status.nbscreen.com"/>
+        <property name="remotePort" value="9048"/>
     </bean>
 
     <bean id="loadbClient" class="org.eastbar.loadb.LoadbClient">

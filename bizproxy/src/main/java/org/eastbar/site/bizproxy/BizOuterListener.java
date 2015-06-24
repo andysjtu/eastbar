@@ -12,7 +12,6 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.site.biz.BizHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -130,7 +130,7 @@ public abstract class AbstractConnector {
 
 
     protected void doFailConnect(ChannelFuture future) {
-        //do nothing
+       logger.debug("connect fail");
     }
 
 

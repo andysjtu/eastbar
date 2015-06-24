@@ -34,7 +34,7 @@ public class LoadbConnector extends AbstractConnector {
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("connect-loadb", LogLevel.INFO));
+        pipeline.addLast("logHandler", new LoggingHandler("connect-loadb", LogLevel.DEBUG));
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());

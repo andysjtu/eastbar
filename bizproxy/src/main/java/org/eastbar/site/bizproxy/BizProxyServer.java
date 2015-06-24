@@ -1,14 +1,16 @@
 package org.eastbar.site.bizproxy;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.internal.ConcurrentSet;
-import org.assertj.core.util.Maps;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.UserInfo;
+import org.eastbar.codec.biz.CustomLoginMsg;
+import org.eastbar.codec.biz.CustomLogoutMsg;
 import org.eastbar.codec.biz.UserInfoMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ import java.util.Map;
 public class BizProxyServer {
     public final static Logger logger = LoggerFactory.getLogger(BizProxyServer.class);
 
-    private Map<String, UserInfo> ipHost = Maps.newConcurrentHashMap();
+    private Map<String, UserInfo> ipHost = Maps.newConcurrentMap();
 
     private ConcurrentSet<Channel> sets = new ConcurrentSet<>();
 
@@ -33,7 +35,7 @@ public class BizProxyServer {
 
     public void registerCustomerLogin(UserInfo userInfo) {
         ipHost.put(userInfo.getIp(), userInfo);
-        notifySite(userInfo);
+        notifySite(new CustomLoginMsg(userInfo));
         printSlef();
     }
 
@@ -42,12 +44,16 @@ public class BizProxyServer {
     }
 
     public void registerCustomerLogout(UserInfo userInfo) {
-        ipHost.remove(userInfo.getIp());
-        notifySite(userInfo);
+//        System.out.println("key is : "+userInfo.getIp());
+//        System.out.println("map is : "+ipHost);
+        UserInfo info = ipHost.remove(userInfo.getIp());
+//        System.out.println("info is : "+info);
+        notifySite(new CustomLogoutMsg(userInfo));
+        printSlef();
     }
 
-    private void notifySite(UserInfo userInfo) {
-        SocketMsg msg = new UserInfoMsg(Lists.newArrayList(userInfo));
+    private void notifySite(SocketMsg msg) {
+//        SocketMsg msg = new UserInfoMsg(Lists.newArrayList(userInfo));
         for (Channel channel : sets) {
             channel.writeAndFlush(msg);
         }

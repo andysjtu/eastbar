@@ -46,12 +46,12 @@ public class ConsoleListener implements Listener {
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childOption(ChannelOption.SO_BACKLOG, 2)
-                .handler(new LoggingHandler(LogLevel.INFO))
+                .handler(new LoggingHandler(LogLevel.DEBUG))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("连接命令窗口通道",LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CONN CONSOLE-CHANNEL",LogLevel.DEBUG));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
@@ -63,11 +63,11 @@ public class ConsoleListener implements Listener {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("开启侦听终端命令服务成功");
+                    logger.info("START LISTEN TO CONSOLE CMD SUCCESS");
                     serverChannel = future.channel();
 
                 } else {
-                    logger.error("开启侦听终端命令服务失败");
+                    logger.error("START LISTEN TO CONSOLE CMD SUCCESS");
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }
@@ -83,7 +83,7 @@ public class ConsoleListener implements Listener {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
-                        logger.info("关闭侦听终端命令服务成功");
+                        logger.info("STOP LISTENING TO CONSOLE CMD SUCCESS");
                     }
                 }
             });

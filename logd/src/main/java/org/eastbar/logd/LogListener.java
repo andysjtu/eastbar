@@ -10,7 +10,6 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
-import org.eastbar.codec.ProxyChannelHandler;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.comm.Listener;
@@ -20,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,14 +29,17 @@ public class LogListener implements Listener {
     public final static Logger logger = LoggerFactory.getLogger(LogListener.class);
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(2);
-    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2000);
+    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(1000);
 
-    @Autowired
-    private LogSaver logSaver;
+//    @Autowired
+//    private LogSaver logSaver;
 
     private volatile Channel serverChannel;
     @Value("${log.port}")
     private int listenPort = 9100;
+
+    @Autowired
+    private PrgLogSender logSender;
 
     @Override
     public void listen() {
@@ -67,7 +67,7 @@ public class LogListener implements Listener {
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
 
-                        pipeline.addLast("bizyLogHandler", new LogHandler(logSaver));
+                        pipeline.addLast("bizyLogHandler", new LogHandler(null, logSender));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

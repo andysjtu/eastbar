@@ -45,13 +45,16 @@ public class LogdConnector extends AbstractConnector {
     @PostConstruct
     public void init() throws Exception {
         try {
-            DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
-            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            DomainAndPort domainAndPort = loadbClient.getServerAddr("log");
+            logger.info("receive logd server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
-            throw new Exception("Center Server Address cannot found");
+            remoteAddress="log.nbscreen.com";
+            remotePort=9021;
         }
+
+        localPort=DEFAULT_LOCAL_PORT;
 
     }
 

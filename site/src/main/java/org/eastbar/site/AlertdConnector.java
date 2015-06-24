@@ -39,13 +39,16 @@ public class AlertdConnector extends AbstractConnector {
     @PostConstruct
     public void init() throws Exception {
         try {
-            DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
-            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            DomainAndPort domainAndPort = loadbClient.getServerAddr("alert");
+            logger.info("receive alert server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
-            throw new Exception("Center Server Address cannot found");
+            remoteAddress="alert.nbscreen.com";
+            remotePort=9001;
         }
+
+        localPort=DEFAULT_LOCAL_PORT;
 
     }
 

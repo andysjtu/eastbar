@@ -50,19 +50,22 @@ public class CenterConnector extends AbstractConnector {
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("status");
-            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            logger.info("receive status server address is {}/{}", domainAndPort.getDomain(), domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
-            throw new Exception("Center Server Address cannot found");
+            remoteAddress = "status.nbscreen.com";
+            remotePort = 9041;
         }
+
+        localPort=DEFAULT_LOCAL_PORT;
 
     }
 
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-CENTER", LogLevel.INFO));
+        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-CENTER", LogLevel.DEBUG));
         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());

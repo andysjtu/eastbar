@@ -81,7 +81,7 @@ public class ClientListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("客户端通道", LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CLIENT-CHANNEL", LogLevel.DEBUG));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
@@ -100,12 +100,12 @@ public class ClientListener implements Listener {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("开启侦听客户端服务成功");
+                    logger.info("START TO LISTEN TO CLIENT SUCCESS");
                     serverChannel = future.channel();
                     serverChannel.closeFuture().addListener(closeListener);
 
                 } else {
-                    logger.error("开启侦听客户端服务失败");
+                    logger.error("START TO LISTEN TO CLIENT FAIL");
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }
@@ -122,7 +122,7 @@ public class ClientListener implements Listener {
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
                         serverChannel = null;
-                        logger.info("关闭侦听客户端服务成功");
+                        logger.info("STOP LISTENING TO CLIENT SUCCESS");
                     }
                 }
             });

@@ -392,7 +392,6 @@
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>generate-daemons</goal>
 							<goal>assemble</goal>
 						</goals>
 					</execution>
@@ -403,8 +402,8 @@
 					<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
 					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
 					<copyConfigurationDirectory>true</copyConfigurationDirectory>
-					<assembleDirectory>${project.build.directory}/site</assembleDirectory>
-					<extraJvmArguments>-Xms512m</extraJvmArguments>
+					<assembleDirectory>${project.build.directory}/biz</assembleDirectory>
+					<extraJvmArguments>-Xms2056m -Xmx2056m</extraJvmArguments>
 					<programs>
 						<program>
 							<mainClass>org.eastbar.site.SiteMain</mainClass>
@@ -415,34 +414,9 @@
 							</platforms>
 						</program>
 					</programs>
-					<daemons>
-						<daemon>
-							<id>siteServiceDaemon</id>
-							<mainClass>org.eastbar.site.SiteMain</mainClass>
-							<generatorConfigurations>
-								<generatorConfiguration>
-									<generator>jsw</generator>
-									<includes>
-										<include>linux-x86-64</include>
-										<include>windows-x86-64</include>
-									</includes>
-									<configuration>
-										<property>
-											<name>wrapper.logfile</name>
-											<value>logs/wrapper.log</value>
-										</property>
-									</configuration>
-								</generatorConfiguration>
-							</generatorConfigurations>
-							<platforms>
-								<platform>jsw</platform>
-							</platforms>
-						</daemon>
-					</daemons>
+
 				</configuration>
 			</plugin>
-
-
 
 		</plugins>
 	</build>

@@ -46,12 +46,15 @@ public class CaptureConnector extends AbstractConnector {
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
-            logger.info("receive status server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            logger.info("receive capture server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
-            throw new Exception("Center Server Address cannot found");
+            remoteAddress="status.nbscreen.com";
+            remotePort=9056;
         }
+
+        localPort=DEFAULT_LOCAL_PORT;
 
     }
 

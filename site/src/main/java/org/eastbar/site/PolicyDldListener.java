@@ -50,7 +50,7 @@ public class PolicyDldListener implements Listener {
         bootstrap.group(bossGroup, workerGroup).
                 channel(NioServerSocketChannel.class)
                 .option(ChannelOption.TCP_NODELAY, true)
-                .handler(new LoggingHandler(LogLevel.INFO))
+                .handler(new LoggingHandler(LogLevel.DEBUG))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {

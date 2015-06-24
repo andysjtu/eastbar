@@ -1,5 +1,6 @@
 package org.eastbar.logd;
 
+import com.google.common.base.Charsets;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.eastbar.codec.SiteMsgType;
@@ -19,8 +20,11 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
     private final LogSaver service;
 
-    public LogHandler(LogSaver service) {
+    private final PrgLogSender logSender;
+
+    public LogHandler(LogSaver service, PrgLogSender logSender) {
         this.service = service;
+        this.logSender = logSender;
     }
 
     @Override
@@ -39,14 +43,15 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 service.saveEmailLogs(emailLogs);
                 break;
             case PROG_MSG_LOG:
-                ProgLogMsg progLogMsg = new ProgLogMsg(msg);
-                List<PrgLog> prgLogs = progLogMsg.getLogs();
-                service.saveProgLosg(prgLogs);
+//                ProgLogMsg progLogMsg = new ProgLogMsg(msg);
+//                List<PrgLog> prgLogs = progLogMsg.getLogs();
+                logSender.sendPrgLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             case URL_LOG:
-                UrlLogMsg logMsg = new UrlLogMsg(msg);
-                List<UrlLog> urlLogList = logMsg.getUrlLogs();
-                service.saveSiteUrlLog(urlLogList);
+//                UrlLogMsg logMsg = new UrlLogMsg(msg);
+//                List<UrlLog> urlLogList = logMsg.getUrlLogs();
+//                service.saveSiteUrlLog(urlLogList);
+                logSender.sendUrlLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             case ILLEGAL_LOG:
                 IllegalLogMsg illegalLogMsg = new IllegalLogMsg(msg);
