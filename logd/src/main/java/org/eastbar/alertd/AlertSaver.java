@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Component
+
 public class AlertSaver {
     public final static Logger logger = LoggerFactory.getLogger(AlertSaver.class);
 

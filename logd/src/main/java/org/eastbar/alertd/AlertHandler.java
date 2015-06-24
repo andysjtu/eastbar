@@ -1,5 +1,6 @@
 package org.eastbar.alertd;
 
+import com.google.common.base.Charsets;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.eastbar.codec.SiteMsgType;
@@ -23,9 +24,9 @@ public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(AlertHandler.class);
 
 
-    private final AlertSaver alertSaver;
+    private final JmsAlertSender alertSaver;
 
-    public AlertHandler(AlertSaver logSaver) {
+    public AlertHandler(JmsAlertSender logSaver) {
         this.alertSaver = logSaver;
     }
 
@@ -34,23 +35,26 @@ public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
         short typeValue = msg.getMessageType();
         SiteMsgType siteMsgType = SiteMsgType.valueOf(typeValue);
         switch (siteMsgType) {
-            case URL_ALERT:
-                UrlBlockAlertMsg urlBlockAlertMsg = new UrlBlockAlertMsg(msg);
-                List<UrlBlockAlert> urlBlockAlertList = urlBlockAlertMsg.getAlerts();
-                alertSaver.saveUrlAlert(urlBlockAlertList);
-                break;
-            case ILLEGAL_ALERT:
-                IllegalBlockAlertMsg illegalLogMsg = new IllegalBlockAlertMsg(msg);
-                List<IllegalBlockAlert> illegalBlockAlerts = illegalLogMsg.getAlerts();
-                alertSaver.saveIllegalAlert(illegalBlockAlerts);
-                break;
-            case PROG_ALERT:
-                ProgBlockAlertMsg progBlockAlertMsg = new ProgBlockAlertMsg(msg);
-                List<ProgBlockAlert> progBlockAlertList = progBlockAlertMsg.getAlerts();
-                alertSaver.saveProgAlert(progBlockAlertList);
+//            case URL_ALERT:
+//                UrlBlockAlertMsg urlBlockAlertMsg = new UrlBlockAlertMsg(msg);
+//                List<UrlBlockAlert> urlBlockAlertList = urlBlockAlertMsg.getAlerts();
+//                alertSaver.saveUrlAlert(urlBlockAlertList);
+//                break;
+//            case ILLEGAL_ALERT:
+//                IllegalBlockAlertMsg illegalLogMsg = new IllegalBlockAlertMsg(msg);
+//                List<IllegalBlockAlert> illegalBlockAlerts = illegalLogMsg.getAlerts();
+//                alertSaver.saveIllegalAlert(illegalBlockAlerts);
+//                break;
+//            case PROG_ALERT:
+//                ProgBlockAlertMsg progBlockAlertMsg = new ProgBlockAlertMsg(msg);
+//                List<ProgBlockAlert> progBlockAlertList = progBlockAlertMsg.getAlerts();
+//                alertSaver.saveProgAlert(progBlockAlertList);
+//                break;
+            case GENERAL_ALERT:
+                alertSaver.sendAlert(msg.data().content().toString(Charsets.UTF_8));
                 break;
             default:
-                logger.warn("收到未知告警类型的数据，请检查SocketMsg: {}", msg);
+                logger.warn("收到未知告警类型:{}的数据，请检查SocketMsg: {}", msg.getMessageType(), msg);
         }
     }
 }

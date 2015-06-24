@@ -31,15 +31,13 @@ public class LogListener implements Listener {
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(2);
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup(1000);
 
-//    @Autowired
-//    private LogSaver logSaver;
 
     private volatile Channel serverChannel;
     @Value("${log.port}")
     private int listenPort = 9100;
 
     @Autowired
-    private PrgLogSender logSender;
+    private JmsLogSender logSender;
 
     @Override
     public void listen() {
@@ -58,16 +56,15 @@ public class LogListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("log", new LoggingHandler("日志接受通道", LogLevel.INFO));
+                        pipeline.addLast("log", new LoggingHandler("日志接受通道", LogLevel.DEBUG));
                         pipeline.addLast("readTimeout", new ReadTimeoutHandler(120, TimeUnit.SECONDS));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
-                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
 
-                        pipeline.addLast("bizyLogHandler", new LogHandler(null, logSender));
+                        pipeline.addLast("bizyLogHandler", new LogHandler(logSender));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);

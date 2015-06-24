@@ -33,8 +33,8 @@ import java.util.concurrent.TimeUnit;
 public class LogdConnector {
     public final static Logger logger = LoggerFactory.getLogger(LogdConnector.class);
 
-    private String remoteAddr = "localhost";
-    private int remotePort = 9100;
+    private String remoteAddr = "log.nbscreen.com";
+    private int remotePort = 9021;
 
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -115,7 +115,9 @@ public class LogdConnector {
         LogdConnector connector = new LogdConnector();
         connector.configBootstrap();
         connector.connect();
+        Thread.sleep(5000);
         if (connector.isConnected()) {
+            System.out.println("------------------------");
             Channel channel = connector.channel();
             List<UrlLog> logList = Lists.newArrayList();
             for (int i = 0; i < 100; i++) {

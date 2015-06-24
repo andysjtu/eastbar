@@ -18,12 +18,10 @@ import java.util.List;
 public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(LogHandler.class);
 
-    private final LogSaver service;
 
-    private final PrgLogSender logSender;
+    private final JmsLogSender logSender;
 
-    public LogHandler(LogSaver service, PrgLogSender logSender) {
-        this.service = service;
+    public LogHandler(JmsLogSender logSender) {
         this.logSender = logSender;
     }
 
@@ -33,14 +31,10 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
         SiteMsgType msgType = SiteMsgType.valueOf(typeValue);
         switch (msgType) {
             case INST_MSG_LOG:
-                InstMsgLogMsg instMsgLogMsg = new InstMsgLogMsg(msg);
-                List<InstMsgLog> instMsgLogs = instMsgLogMsg.getLogs();
-                service.saveInstMsgLog(instMsgLogs);
+                logSender.sendInstMsgLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             case EMAIL_LOG:
-                EmailLogMsg emailLogMsg = new EmailLogMsg(msg);
-                List<EmailLog> emailLogs = emailLogMsg.getLogs();
-                service.saveEmailLogs(emailLogs);
+                logSender.sendEmailLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             case PROG_MSG_LOG:
 //                ProgLogMsg progLogMsg = new ProgLogMsg(msg);
@@ -54,9 +48,7 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 logSender.sendUrlLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             case ILLEGAL_LOG:
-                IllegalLogMsg illegalLogMsg = new IllegalLogMsg(msg);
-                List<IllegalLog> illegalLogs = illegalLogMsg.getLogs();
-                service.saveIllegalLogs(illegalLogs);
+                logSender.sendIllegalMsgLog(msg.data().content().toString(Charsets.UTF_8));
                 break;
             default:
                 logger.warn("收到未知日志类型的数据，请检查SocketMsg: {}", msg);

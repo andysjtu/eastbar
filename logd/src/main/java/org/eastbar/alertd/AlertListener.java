@@ -19,24 +19,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by AndySJTU on 2015/6/4.
  */
+@Component
 public class AlertListener implements Listener {
     public final static Logger logger = LoggerFactory.getLogger(AlertListener.class);
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(2);
-    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(2000);
+    private NioEventLoopGroup workerGroup = new NioEventLoopGroup(1000);
 
     @Autowired
-    private AlertSaver logSaver;
+    private JmsAlertSender alertSender;
 
     private volatile Channel serverChannel;
     @Value("${alert.port}")
-    private int listenPort=9100;
+    private int listenPort=9001;
 
     @Override
     public void listen() {
@@ -46,11 +48,11 @@ public class AlertListener implements Listener {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
-                .handler(new LoggingHandler(LogLevel.INFO))
                 .childOption(ChannelOption.RCVBUF_ALLOCATOR, AdaptiveRecvByteBufAllocator.DEFAULT)
                 .option(ChannelOption.SO_BACKLOG, 2000)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
@@ -59,11 +61,10 @@ public class AlertListener implements Listener {
                         pipeline.addLast("readTimeout", new ReadTimeoutHandler(120, TimeUnit.SECONDS));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
-                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("bizyAlertHandler", new AlertHandler(logSaver));
+                        pipeline.addLast("bizyAlertHandler", new AlertHandler(alertSender));
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);
