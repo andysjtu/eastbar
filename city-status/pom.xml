@@ -27,13 +27,13 @@
 		<dependency>
 			<groupId>org.eastbar</groupId>
 			<artifactId>common</artifactId>
-			<version>1.0</version>
+			<version>${eastbar.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.eastbar</groupId>
-			<artifactId>center</artifactId>
-			<version>1.0</version>
+			<artifactId>centers</artifactId>
+			<version>${eastbar.version}</version>
 		</dependency>
 
 		<!-- SPRING basic begin -->
