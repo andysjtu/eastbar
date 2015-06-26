@@ -5,13 +5,14 @@
     <parent>
         <groupId>org.eastbar</groupId>
         <artifactId>eastbar-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <relativePath>../parent/</relativePath>
     </parent>
     <groupId>org.eastbar</groupId>
     <artifactId>eastbar-codec</artifactId>
+    <version>${eastbar.version}</version>
     <packaging>jar</packaging>
-    <name>EastBar :: Application :: Codec</name>
+    <name>EastBar :: Module :: Codec</name>
 
 
     <!-- 依赖项定义 -->
@@ -49,24 +50,6 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
         </dependency>
         <!-- JAX-RS end -->
-
-
-        <!-- CACHE begin -->
-        <dependency>
-            <groupId>net.spy</groupId>
-            <artifactId>spymemcached</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.thimbleware.jmemcached</groupId>
-            <artifactId>jmemcached-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sf.ehcache</groupId>
-            <artifactId>ehcache-core</artifactId>
-        </dependency>
-        <!-- CACHE end -->
 
 
         <!-- JSR303 BeanValidator -->
@@ -156,12 +139,6 @@
             <artifactId>dozer</artifactId>
         </dependency>
 
-        <!-- email -->
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-        </dependency>
-        <!-- OTHER TOOLS end -->
 
         <!-- TEST begin -->
         <dependency>

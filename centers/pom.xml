@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eastbar</groupId>
+        <artifactId>eastbar-parent</artifactId>
+        <version>1.0</version>
+        <relativePath>../parent/</relativePath>
+    </parent>
+
+    <artifactId>centers</artifactId>
+    <version>${eastbar.version}</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <db.driver.groupid>mysql</db.driver.groupid>
+        <db.driver.artifact>mysql-connector-java</db.driver.artifact>
+        <db.driver.version>${db.mysql}</db.driver.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eastbar</groupId>
+            <artifactId>common</artifactId>
+            <version>${eastbar.version}</version>
+        </dependency>
+        <!-- DB begin -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>${db.driver.groupid}</groupId>
+            <artifactId>${db.driver.artifact}</artifactId>
+            <version>${db.driver.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- DB end -->
+        <!-- redis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${jedis.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.4.0.RELEASE</version>
+        </dependency>
+        <!-- redis end-->
+
+        <!-- JSON begin -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-jaxb-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <!-- JSON end -->
+    </dependencies>
+
+</project>

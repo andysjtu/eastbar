@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+	<parent>
+        <groupId>org.eastbar</groupId>
+        <artifactId>parent</artifactId>
+        <version>${eastbar.version}</version>
+        <relativePath>parent</relativePath>
+    </parent>
+	
+    <artifactId>eastbar2</artifactId>
+	  <packaging>pom</packaging>
+	
+    <modules>
+		<module>parent</module>
+        <module>codec</module>
+        <module>site-biz</module>
+        <module>site-app</module>
+        <module>city-status</module>
+        <module>city-loadb</module>
+        <module>city-capt</module>
+        <module>city-log2mq</module>
+        <module>center</module>
+        <module>common</module>
+    </modules>
+
+</project>
