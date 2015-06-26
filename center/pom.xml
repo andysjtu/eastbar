@@ -23,6 +23,18 @@
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.eastbar</groupId>
+			<artifactId>common</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eastbar</groupId>
+			<artifactId>center</artifactId>
+			<version>1.0</version>
+		</dependency>
+
 		<!-- SPRING basic begin -->
 		<!-- email/scheduler/freemarker -->
 		<dependency>

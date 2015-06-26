@@ -1,5 +1,6 @@
 package org.eastbar.center;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.sun.xml.internal.xsom.impl.Ref;
@@ -7,6 +8,8 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import org.eastbar.codec.*;
+import org.eastbar.codec.policy.PolicyUpdateMsg;
+import org.eastbar.codec.policy.PolicyUpdateRespMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -173,6 +176,15 @@ public class VSite {
         version.setPrgVersion(msg.getPrgVersion());
         version.setSmVersion(msg.getSmVersion());
         version.setUrlVersion(msg.getUrlVersion());
+
+        center.registerPolicyUpdate(this);
+    }
+
+    public void updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE type,String policyStr){
+        PolicyUpdateMsg msg = new PolicyUpdateMsg(type,policyStr.getBytes(Charsets.UTF_8));
+        if(siteChannel!=null&&siteChannel.isActive()){
+            siteChannel.writeAndFlush(msg);
+        }
     }
 
     public List<TermReport> getTermReport() {
@@ -187,5 +199,13 @@ public class VSite {
         }
         return termReports;
 
+    }
+
+    public PolicyVersion getVersion(){
+        return version;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
     }
 }

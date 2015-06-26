@@ -5,14 +5,21 @@ import com.sun.xml.internal.xsom.impl.Ref;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.ReferenceCountUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Maps;
 import org.eastbar.codec.*;
+import org.eastbar.codec.policy.PolicyUpdateMsg;
+import org.eastbar.common.redis.SiteRedisService;
+import org.eastbar.common.redis.util.Strategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by andysjtu on 2015/5/10.
@@ -23,6 +30,11 @@ public class Center {
     public final static Logger logger = LoggerFactory.getLogger(Center.class);
 
     private Map<String, VSite> sites = Maps.newConcurrentHashMap();
+
+    private ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
+
+//    @Autowired
+    private SiteRedisService redisService;
 
     @Autowired
     private HubConnector connector;
@@ -95,10 +107,10 @@ public class Center {
     public void updateSitePolicyStatus(SiteReport msg) {
         String siteCode = msg.getSiteCode();
         VSite vSite = getVSite(siteCode);
-        if(vSite==null){
+        if (vSite == null) {
             vSite = new VSite(siteCode);
             vSite.setCenter(this);
-            sites.put(siteCode,vSite);
+            sites.put(siteCode, vSite);
         }
         vSite.updatePolicyStatus(msg);
     }
@@ -144,22 +156,84 @@ public class Center {
     }
 
     public void notifySiteOnline(SiteReport siteReport, List<TermReport> termReport) {
-        Map<SiteReport,List<TermReport>> maps = Maps.newHashMap();
+        Map<SiteReport, List<TermReport>> maps = Maps.newHashMap();
         maps.put(siteReport, termReport);
         Channel channel = connector.channel();
-        if(channel!=null&&channel.isActive()){
+        if (channel != null && channel.isActive()) {
             //FIXME
             channel.writeAndFlush(new CenterInitReq(maps));
         }
     }
 
     public void notifySiteOffline(SiteReport siteReport, List<TermReport> termReport) {
-        Map<SiteReport,List<TermReport>> maps = Maps.newHashMap();
+        Map<SiteReport, List<TermReport>> maps = Maps.newHashMap();
         maps.put(siteReport, termReport);
         Channel channel = connector.channel();
-        if(channel!=null&&channel.isActive()){
+        if (channel != null && channel.isActive()) {
             //FIXME
             channel.writeAndFlush(new CenterInitReq(maps));
+        }
+    }
+
+    public void registerPolicyUpdate(final VSite vSite) {
+        service.schedule(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(vSite.isConnected()) {
+                        registerPolicyUpdate(vSite);
+                        updateSitePolicy(vSite);
+                    }
+                } catch (Throwable t) {
+                    t.printStackTrace();
+                }
+            }
+        }, 30, TimeUnit.SECONDS);
+    }
+
+    private void updateSitePolicy(VSite vSite) throws Exception {
+        PolicyVersion version = vSite.getVersion();
+        int siteUrlVersion = version.getUrlVersion();
+        String curUrlVersionStr = redisService.returnLastedVersion(Strategy.BANNEDURL);
+        int curVesionNum = Integer.parseInt(curUrlVersionStr);
+        if (siteUrlVersion < curVesionNum) {
+            String urlList = redisService.returnUrlVersionList(vSite.getSiteCode(), siteUrlVersion);
+            urlList = StringUtils.trimToNull(urlList);
+            if (urlList != null)
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.URL, urlList);
+        }
+
+        int siteKwVersion = version.getKwVersion();
+        String curKwVersionStr = redisService.returnLastedVersion(Strategy.KEYWORD);
+        int curKwVersionNum = Integer.parseInt(curKwVersionStr);
+        if(siteKwVersion<curKwVersionNum){
+            String kwList = redisService.returnKeyWordVersionList(vSite.getSiteCode(),siteKwVersion);
+            kwList = StringUtils.trimToNull(kwList);
+            if(kwList!=null){
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.KEYWORD,kwList);
+            }
+        }
+
+        int sitePrgVersion = version.getPrgVersion();
+        String curPrgVersionStr = redisService.returnLastedVersion(Strategy.BANNEDPROG);
+        int curPrgVersion = Integer.parseInt(curPrgVersionStr);
+        if(sitePrgVersion<curPrgVersion){
+            String prgList = redisService.returnProgVersionList(vSite.getSiteCode(),sitePrgVersion);
+            prgList = StringUtils.trimToNull(prgList);
+            if(prgList!=null){
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.PROGRAM,prgList);
+            }
+        }
+
+        int siteSpVersion = version.getSmVersion();
+        String curSpVerionStr = redisService.returnLastedVersion(Strategy.SPECIALCUSTOMER);
+        int curSpVersion = Integer.parseInt(curSpVerionStr);
+        if(siteSpVersion<curSpVersion){
+            String spList = redisService.returnSpecialCustomerVersionList(vSite.getSiteCode(),siteSpVersion);
+            spList =StringUtils.trimToNull(spList);
+            if(spList!=null){
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.SPEICAL_PERSON,spList);
+            }
         }
     }
 }

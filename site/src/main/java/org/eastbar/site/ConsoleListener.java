@@ -63,11 +63,11 @@ public class ConsoleListener implements Listener {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("START LISTEN TO CONSOLE CMD SUCCESS");
+                    logger.info("启动侦听控制台服务成功");
                     serverChannel = future.channel();
 
                 } else {
-                    logger.error("START LISTEN TO CONSOLE CMD SUCCESS");
+                    logger.error("启动侦听客户端服务失败");
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }
@@ -83,7 +83,7 @@ public class ConsoleListener implements Listener {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
-                        logger.info("STOP LISTENING TO CONSOLE CMD SUCCESS");
+                        logger.info("停止侦听客户端服务成功");
                     }
                 }
             });

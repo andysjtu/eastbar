@@ -100,12 +100,12 @@ public class ClientListener implements Listener {
             @Override
             public void operationComplete(ChannelFuture future) throws Exception {
                 if (future.isSuccess()) {
-                    logger.info("START TO LISTEN TO CLIENT SUCCESS");
+                    logger.info("启动侦听客户端服务成功");
                     serverChannel = future.channel();
                     serverChannel.closeFuture().addListener(closeListener);
 
                 } else {
-                    logger.error("START TO LISTEN TO CLIENT FAIL");
+                    logger.error("启动侦听客户端服务失败");
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }
@@ -122,7 +122,7 @@ public class ClientListener implements Listener {
                 public void operationComplete(ChannelFuture future) throws Exception {
                     if (future.isSuccess()) {
                         serverChannel = null;
-                        logger.info("STOP LISTENING TO CLIENT SUCCESS");
+                        logger.info("停止侦听客户端服务成功");
                     }
                 }
             });

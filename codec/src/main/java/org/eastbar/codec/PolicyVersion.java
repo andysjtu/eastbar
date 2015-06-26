@@ -4,10 +4,10 @@ package org.eastbar.codec;
  * Created by AndySJTU on 2015/5/27.
  */
 public class PolicyVersion {
-    private int urlVersion;
-    private int prgVersion;
-    private int kwVersion;
-    private int smVersion;
+    private int urlVersion=1;
+    private int prgVersion=1;
+    private int kwVersion=1;
+    private int smVersion=1;
 
     public int getKwVersion() {
         return kwVersion;
