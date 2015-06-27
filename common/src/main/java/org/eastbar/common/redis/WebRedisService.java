@@ -46,10 +46,10 @@ public interface WebRedisService {
 
     /**
      *根据场所ip集，获取场所内所有终端活动信息
-     * @param ips
+     * @param ip
      * @param siteCode
      * @return
      */
-    public List getTerminalHash(Set<String> ips, String siteCode);
+    public Map getTerminalHash(String ip, String siteCode);
 
 }

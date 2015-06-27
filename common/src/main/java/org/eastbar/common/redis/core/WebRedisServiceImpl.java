@@ -90,24 +90,18 @@ public class WebRedisServiceImpl implements WebRedisService {
 
     /**
      *根据场所ip集，获取场所内所有终端活动信息
-     * @param ips
+     * @param ip
      * @param siteCode
      * @return
      */
-    public List getTerminalHash(Set<String> ips,String siteCode){
+    public Map getTerminalHash(String ip,String siteCode){
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         Map<String,String> map=new HashMap<String,String>();
-        List<String> terminalLogs=new ArrayList<String>();
-        if(ips.size()>0 && siteCode!=null && !"".equals(siteCode)){
-            for(String ip:ips){
-                map=hashOperations.entries(RedisKey.createTerminalKey(siteCode, ip));
-                for(String key:map.keySet()){
-                    terminalLogs.add(map.get(key));
-                }
-            }
-            return terminalLogs;
+
+        if(!"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
+           map=hashOperations.entries(RedisKey.createTerminalKey(siteCode, ip));
         }
-        return null;
+        return map;
     }
 
 }
