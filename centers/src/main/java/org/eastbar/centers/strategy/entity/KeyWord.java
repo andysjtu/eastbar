@@ -2,7 +2,7 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy.entity;
+package org.eastbar.center.strategy.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -26,6 +26,8 @@ public class KeyWord implements Serializable {
     private int isBlock;
     private int deleted;
     private int verNum;
+    private int isPub;
+
 
     private String monitorCode;
     private String version;
@@ -100,6 +102,14 @@ public class KeyWord implements Serializable {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public int getIsPub() {
+        return isPub;
+    }
+
+    public void setIsPub(int isPub) {
+        this.isPub = isPub;
     }
 
     @Override

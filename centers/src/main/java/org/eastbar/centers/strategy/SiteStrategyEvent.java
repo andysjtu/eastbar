@@ -2,11 +2,12 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy;
+package org.eastbar.center.strategy;
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cindy-jia
@@ -46,25 +47,39 @@ public interface SiteStrategyEvent {
     public String returnSpecialCustomerList(String siteCode,int verNum) throws Exception;
 
     /**
+     * 根据场所提供的策略名称,返回当前redis或者数据库对应的最新版本号
+     * @param measure  通过帮助类Strategy常量获取,比如Strategy.BANNEDPROG
+     * @return
+     */
+    public int lastedVersion(String measure) throws Exception;
+
+    /**
+     * 一次获取所有的最新策略版本号
+     * @return
+     * @throws Exception
+     */
+    public Map lastedVersions() throws Exception;
+
+    /**
      *根据场所返回的操作结果，写库prog
      * @param
      */
     public int writeSiteProgVersion(String siteCode,int verNum);
 
     /**
-     *根据场所返回的操作结果，写库
+     *根据场所返回的操作结果，写库url
      * @param
      */
     public int writeSiteUrlVersion(String siteCode,int verNum);
 
     /**
-     *根据场所返回的操作结果，写库
+     *根据场所返回的操作结果，写库special
      * @param
      */
     public int writeSiteSpecialVersion(String siteCode,int verNum);
 
     /**
-     *根据场所返回的操作结果，写库
+     *根据场所返回的操作结果，写库keyword
      * @param
      */
     public int writeSiteKeywordVersion(String siteCode,int verNum);
