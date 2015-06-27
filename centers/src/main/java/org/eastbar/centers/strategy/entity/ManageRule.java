@@ -2,7 +2,7 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy.entity;
+package org.eastbar.center.strategy.entity;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,11 +20,11 @@ import java.io.Serializable;
 public class ManageRule implements Serializable{ //t_manage_rule
 
     private Integer id;//id
-    private Long hourVerNum;//hour_ver_num
-    private Long urlVerNum;//url_ver_num
-    private Long progVerNum;//prog_ver_num
-    private Long specialVerNum;//special_ver_num
-    private Long keywordVerNum;//keyword_ver_num
+    private Integer hourVerNum;//hour_ver_num
+    private Integer urlVerNum;//url_ver_num
+    private Integer progVerNum;//prog_ver_num
+    private Integer specialVerNum;//special_ver_num
+    private Integer keywordVerNum;//keyword_ver_num
     private String updateTime;//update_time
 
     public Integer getId() {
@@ -35,44 +35,52 @@ public class ManageRule implements Serializable{ //t_manage_rule
         this.id = id;
     }
 
-    public Long getProgVerNum() {
-        return progVerNum;
-    }
-
-    public void setProgVerNum(Long progVerNum) {
-        this.progVerNum = progVerNum;
-    }
-
-    public Long getHourVerNum() {
+    public Integer getHourVerNum() {
         return hourVerNum;
     }
 
-    public void setHourVerNum(Long hourVerNum) {
+    public void setHourVerNum(Integer hourVerNum) {
         this.hourVerNum = hourVerNum;
     }
 
-    public Long getUrlVerNum() {
+    public Integer getUrlVerNum() {
         return urlVerNum;
     }
 
-    public void setUrlVerNum(Long urlVerNum) {
+    public void setUrlVerNum(Integer urlVerNum) {
         this.urlVerNum = urlVerNum;
     }
 
-    public Long getSpecialVerNum() {
+    public Integer getProgVerNum() {
+        return progVerNum;
+    }
+
+    public void setProgVerNum(Integer progVerNum) {
+        this.progVerNum = progVerNum;
+    }
+
+    public Integer getSpecialVerNum() {
         return specialVerNum;
     }
 
-    public void setSpecialVerNum(Long specialVerNum) {
+    public void setSpecialVerNum(Integer specialVerNum) {
         this.specialVerNum = specialVerNum;
     }
 
-    public Long getKeywordVerNum() {
+    public Integer getKeywordVerNum() {
         return keywordVerNum;
     }
 
-    public void setKeywordVerNum(Long keywordVerNum) {
+    public void setKeywordVerNum(Integer keywordVerNum) {
         this.keywordVerNum = keywordVerNum;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override

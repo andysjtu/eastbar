@@ -2,16 +2,17 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy.service.impl;
+package org.eastbar.center.strategy.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.eastbar.centers.Po2Json;
-import org.eastbar.centers.strategy.dao.BannedProgDao;
-import org.eastbar.centers.strategy.entity.BannedProg;
-import org.eastbar.centers.strategy.service.BannedProgService;
-import org.eastbar.centers.strategy.service.biz.BannedProgBO;
-import org.eastbar.centers.strategy.util.BannedProgJson;
+import org.eastbar.center.Po2Json;
+import org.eastbar.center.strategy.dao.BannedProgDao;
+import org.eastbar.center.strategy.entity.BannedProg;
+import org.eastbar.center.strategy.service.BannedProgService;
+import org.eastbar.center.strategy.service.biz.BannedProgBO;
+import org.eastbar.center.strategy.util.BannedProgJson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BulkMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class BannedProgServiceImpl implements BannedProgService {
         if(removeBannedProgs.size()>0){
             for(int i=0;i<monitorCodes.size();i++){
                 //根据所给监管中心编码，将同一监管中心的数据保存到list中
-                String lists=getProgsByCondition(editBannedProgs, monitorCodes.get(i));
+                String lists=getProgsByCondition(removeBannedProgs, monitorCodes.get(i));
                 //再将monitorCode作为key，将list作为value存储
                 if(!lists.equals("")){
                     removeMap.put(monitorCodes.get(i),lists);

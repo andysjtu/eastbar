@@ -2,15 +2,15 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy.service.impl;
+package org.eastbar.center.strategy.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.eastbar.centers.Po2Json;
-import org.eastbar.centers.strategy.dao.KeyWordDao;
-import org.eastbar.centers.strategy.entity.KeyWord;
-import org.eastbar.centers.strategy.service.KeyWordService;
-import org.eastbar.centers.strategy.service.biz.KeyWordBO;
-import org.eastbar.centers.strategy.util.KeyWordJson;
+import org.eastbar.center.Po2Json;
+import org.eastbar.center.strategy.dao.KeyWordDao;
+import org.eastbar.center.strategy.entity.KeyWord;
+import org.eastbar.center.strategy.service.KeyWordService;
+import org.eastbar.center.strategy.service.biz.KeyWordBO;
+import org.eastbar.center.strategy.util.KeyWordJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class KeyWordServiceImpl implements KeyWordService{
     @Override
     public Map<String,Map<String, String>> control(Integer version) throws Exception{
         //根本版本号获取所有的add操作的keyword列表
-        List<KeyWord> addKeywordsProgs=keyWordDao.getAllAddKeywords(version);
+        List<KeyWord> addKeywords=keyWordDao.getAllAddKeywords(version);
 
         List<KeyWord> editKeywords=keyWordDao.getAllEditKeywords(version);
 
@@ -46,11 +46,10 @@ public class KeyWordServiceImpl implements KeyWordService{
         Map<String,String> removeMap=new HashMap<>();
         Map<String,Map<String,String>> operationMap=new HashMap<>();
         //将add操作的prog列表根据监管中心编码存进map中
-        if(addKeywordsProgs.size()>0){
+        if(addKeywords.size()>0){
             for(int i=0;i<monitorCodes.size();i++){
                 //根据所给监管中心编码，将同一监管中心的数据保存到list中
-                String lists=getKeyWordsByCondition(addKeywordsProgs, monitorCodes.get(i));
-                //再将monitorCode作为key，将list作为value存储
+                String lists=getKeyWordsByCondition(addKeywords, monitorCodes.get(i));
                 //再将monitorCode作为key，将list作为value存储
                  if(!lists.equals("")){
                     addMap.put(monitorCodes.get(i),lists);
@@ -62,8 +61,7 @@ public class KeyWordServiceImpl implements KeyWordService{
         if(editKeywords.size()>0){
             for(int i=0;i<monitorCodes.size();i++){
                 //根据所给监管中心编码，将同一监管中心的数据保存到list中
-                String lists=getKeyWordsByCondition(addKeywordsProgs, monitorCodes.get(i));
-                //再将monitorCode作为key，将list作为value存储
+                String lists=getKeyWordsByCondition(editKeywords, monitorCodes.get(i));
                 //再将monitorCode作为key，将list作为value存储
                 if(!lists.equals("")){
                     editMap.put(monitorCodes.get(i),lists);
@@ -75,8 +73,7 @@ public class KeyWordServiceImpl implements KeyWordService{
         if(removeKeywords.size()>0){
             for(int i=0;i<monitorCodes.size();i++){
                 //根据所给监管中心编码，将同一监管中心的数据保存到list中
-                String lists=getKeyWordsByCondition(addKeywordsProgs, monitorCodes.get(i));
-                //再将monitorCode作为key，将list作为value存储
+                String lists=getKeyWordsByCondition(removeKeywords, monitorCodes.get(i));
                 //再将monitorCode作为key，将list作为value存储
                 if(!lists.equals("")){
                     removeMap.put(monitorCodes.get(i),lists);

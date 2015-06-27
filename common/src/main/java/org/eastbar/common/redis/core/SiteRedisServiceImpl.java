@@ -30,10 +30,6 @@ public class SiteRedisServiceImpl implements SiteRedisService {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public void setRedisTemplate(RedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
-
     /**
      * 根据场所提供的编码和版本号返回需更新的list
      * @param siteCode
@@ -97,14 +93,17 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             if(!"".equals(add) && add!=null){
                 add=add.substring(1,add.length()-1);
                 addProgList+=add+",";
+                add="";
             }
             if(!"".equals(edit) && edit!=null){
                 edit=edit.substring(1,edit.length()-1);
-                editProgList+=add+",";
+                editProgList+=edit+",";
+                edit="";
             }
             if(!"".equals(remove) && remove!=null){
                 remove=remove.substring(1,remove.length()-1);
-                removeProgList+=add+",";
+                removeProgList+=remove+",";
+                remove="";
             }
         }
 
@@ -143,7 +142,7 @@ public class SiteRedisServiceImpl implements SiteRedisService {
      * @throws Exception
      */
     @Override
-    public String returnUrlVersionList(String siteCode, Integer version) throws Exception {
+    public String  returnUrlVersionList(String siteCode, Integer version) throws Exception {
         String list="{";
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         String hashValue=hashOperations.get(Strategy.URL_CODE_VERSION_INDEX, version + "");
@@ -198,14 +197,17 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             if(!"".equals(add) && add!=null){
                 add=add.substring(1,add.length()-1);
                 addUrlList+=add+",";
+                add="";
             }
             if(!"".equals(edit) && edit!=null){
                 edit=edit.substring(1,edit.length()-1);
-                editUrlList+=add+",";
+                editUrlList+=edit+",";
+                edit="";
             }
             if(!"".equals(remove) && remove!=null){
                 remove=remove.substring(1,remove.length()-1);
-                removeUrlList+=add+",";
+                removeUrlList+=remove+",";
+                remove="";
             }
         }
 
@@ -299,14 +301,17 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             if(!"".equals(add) && add!=null){
                 add=add.substring(1,add.length()-1);
                 addKeywordList+=add+",";
+                add="";
             }
             if(!"".equals(edit) && edit!=null){
                 edit=edit.substring(1,edit.length()-1);
-                editKeywordList+=add+",";
+                editKeywordList+=edit+",";
+                edit="";
             }
             if(!"".equals(remove) && remove!=null){
                 remove=remove.substring(1,remove.length()-1);
-                removeKeywordList+=add+",";
+                removeKeywordList+=remove+",";
+                remove="";
             }
         }
 
@@ -400,14 +405,17 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             if(!"".equals(add) && add!=null){
                 add=add.substring(1,add.length()-1);
                 addSpecialList+=add+",";
+                add="";
             }
             if(!"".equals(edit) && edit!=null){
                 edit=edit.substring(1,edit.length()-1);
-                editSpecialList+=add+",";
+                editSpecialList+=edit+",";
+                edit="";
             }
             if(!"".equals(remove) && remove!=null){
                 remove=remove.substring(1,remove.length()-1);
-                removeSpecialList+=add+",";
+                removeSpecialList+=remove+",";
+                remove="";
             }
         }
 

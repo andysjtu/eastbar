@@ -2,7 +2,7 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.centers.strategy;
+package org.eastbar.center.strategy;
 
 import org.springframework.stereotype.Service;
 
