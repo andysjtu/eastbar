@@ -1,6 +1,6 @@
 package org.eastbar.site.log.dao;
 
-import org.eastbar.comm.log.entity.InstMsgLog;
+import org.eastbar.net.log.entity.InstMsgLog;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**

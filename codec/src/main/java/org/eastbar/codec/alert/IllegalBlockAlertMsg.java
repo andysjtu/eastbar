@@ -5,8 +5,7 @@ import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.alert.entity.IllegalBlockAlert;
-import org.eastbar.comm.log.entity.EmailLog;
+import org.eastbar.net.alert.entity.IllegalBlockAlert;
 
 import java.util.List;
 

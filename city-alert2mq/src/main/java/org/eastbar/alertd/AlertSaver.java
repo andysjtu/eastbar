@@ -1,15 +1,13 @@
 package org.eastbar.alertd;
 
 import org.eastbar.alertd.dao.AlertService;
-import org.eastbar.comm.alert.entity.IllegalBlockAlert;
-import org.eastbar.comm.alert.entity.ProgBlockAlert;
-import org.eastbar.comm.alert.entity.UrlBlockAlert;
-import org.eastbar.comm.log.entity.IllegalLog;
+import org.eastbar.net.alert.entity.IllegalBlockAlert;
+import org.eastbar.net.alert.entity.ProgBlockAlert;
+import org.eastbar.net.alert.entity.UrlBlockAlert;
 import org.eastbar.logd.dao.LogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

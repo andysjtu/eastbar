@@ -1,13 +1,8 @@
 package org.eastbar.codec.policy;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.log.entity.EmailLog;
-
-import java.util.List;
 
 /**
  * Created by AndySJTU on 2015/6/8.

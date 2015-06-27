@@ -30,8 +30,11 @@ public class BanProg {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String progType;
+    @Column(length = 500)
     private String progName;
+    @Column(length = 500)
     private String progressName;
+    @Column(length = 1000)
     private String featureCode;
     private String alarmType;
     private String alarmRank;

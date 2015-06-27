@@ -1,6 +1,6 @@
 package org.eastbar.site.alert.dao;
 
-import org.eastbar.comm.alert.entity.UrlBlockAlert;
+import org.eastbar.net.alert.entity.UrlBlockAlert;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

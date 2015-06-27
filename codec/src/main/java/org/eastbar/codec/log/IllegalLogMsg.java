@@ -5,10 +5,9 @@ import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.log.entity.IllegalLog;
+import org.eastbar.net.log.entity.IllegalLog;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AndySJTU on 2015/6/4.

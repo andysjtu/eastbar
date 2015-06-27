@@ -1,6 +1,6 @@
 package org.eastbar.site.policy;
 
-import org.eastbar.codec.PolicyVersion;
+import org.eastbar.site.policy.dao.*;
 import org.eastbar.site.policy.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

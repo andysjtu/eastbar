@@ -1,6 +1,6 @@
 package org.eastbar.site.log.dao;
 
-import org.eastbar.comm.log.entity.IllegalLog;
+import org.eastbar.net.log.entity.IllegalLog;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 

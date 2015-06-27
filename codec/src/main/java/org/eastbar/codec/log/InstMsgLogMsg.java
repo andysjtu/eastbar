@@ -5,11 +5,9 @@ import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.log.entity.InstMsgLog;
-import org.eastbar.comm.log.entity.UrlLog;
+import org.eastbar.net.log.entity.InstMsgLog;
 
 import java.util.List;
-import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by AndySJTU on 2015/6/4.

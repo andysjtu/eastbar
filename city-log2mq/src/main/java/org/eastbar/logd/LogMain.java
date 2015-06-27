@@ -1,6 +1,5 @@
 package org.eastbar.logd;
 
-import org.eastbar.comm.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

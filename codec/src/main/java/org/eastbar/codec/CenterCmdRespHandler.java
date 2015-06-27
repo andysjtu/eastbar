@@ -19,13 +19,13 @@ public class CenterCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
 
     public final static Logger logger = LoggerFactory.getLogger(CenterCmdRespHandler.class);
 
-    private Map<EntryKey, CountDownLatch> locks = Maps.newConcurrentHashMap();
+    private Map<MsgKey, CountDownLatch> locks = Maps.newConcurrentHashMap();
 
-    private Map<EntryKey, ResultWrapper> results = Maps.newConcurrentHashMap();
+    private Map<MsgKey, ResultWrapper> results = Maps.newConcurrentHashMap();
 
 
     public void register(short messageId, short messageType, CountDownLatch latch) {
-        locks.put(new EntryKey(messageId, messageType), latch);
+        locks.put(new MsgKey(messageId, messageType), latch);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class CenterCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
             GenResp resp = new GenResp(msg);
             short recMsgId = resp.getRecMessageId();
             short recMsgType = resp.getRecMessageType();
-            EntryKey key = new EntryKey(recMsgId, recMsgType);
+            MsgKey key = new MsgKey(recMsgId, recMsgType);
             CountDownLatch latch = locks.get(key);
             if (latch != null) {
                 results.put(key, new ResultWrapper(1,resp.getStatus()));
@@ -46,7 +46,7 @@ public class CenterCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
             CaptureResp resp = new CaptureResp(msg);
             short recMsgId = resp.getRecMessageId();
             short recMsgType = resp.getRecMessageType();
-            EntryKey key = new EntryKey(recMsgId, recMsgType);
+            MsgKey key = new MsgKey(recMsgId, recMsgType);
             Object obj = locks.get(key);
             if (obj != null) {
                 results.put(key, new ResultWrapper(2,resp.getContent()));
@@ -61,11 +61,11 @@ public class CenterCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
     }
 
     public ResultWrapper getResult(short messageId, short messageType) {
-        return results.remove(new EntryKey(messageId, messageType));
+        return results.remove(new MsgKey(messageId, messageType));
     }
 
     public void unregister(short messageId, short messageType) {
-        locks.remove(new EntryKey(messageId, messageType));
+        locks.remove(new MsgKey(messageId, messageType));
     }
 
 

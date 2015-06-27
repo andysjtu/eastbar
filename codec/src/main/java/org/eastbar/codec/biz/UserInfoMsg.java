@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.alert.entity.GeneralAlert;
 
 import java.util.List;
 

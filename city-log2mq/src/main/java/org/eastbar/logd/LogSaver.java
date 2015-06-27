@@ -2,9 +2,8 @@ package org.eastbar.logd;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
 import org.eastbar.codec.DozerUtil;
-import org.eastbar.comm.log.entity.*;
+import org.eastbar.net.log.entity.*;
 import org.eastbar.logd.dao.LogService;
 import org.eastbar.logd.entity.*;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,6 +1,6 @@
 package org.eastbar.logd.entity;
 
-import org.eastbar.comm.EntityObject;
+import org.eastbar.net.EntityObject;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

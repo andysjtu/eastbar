@@ -9,23 +9,15 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.codec.*;
 import org.eastbar.codec.log.UrlLogMsg;
-import org.eastbar.comm.log.entity.UrlLog;
+import org.eastbar.net.log.entity.UrlLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.PostConstruct;
-import java.security.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by AndySJTU on 2015/6/4.

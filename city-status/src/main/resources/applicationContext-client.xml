@@ -15,13 +15,13 @@
 	<description>Spring公共配置</description>
 
 	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-	<context:component-scan base-package="org.eastbar.center.rmi">
+	<context:component-scan base-package="org.eastbar.city">
 	</context:component-scan>
 
 
 
 	<context:property-placeholder
-		ignore-resource-not-found="true" location="classpath*:/application-center.properties" />
+		ignore-resource-not-found="true" location="classpath*:/application-city.properties" />
 
 
 	<!-- 调用StopWatch计时的Interceptor -->

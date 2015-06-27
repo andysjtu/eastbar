@@ -22,7 +22,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> 
     public final static Logger logger = LoggerFactory.getLogger(ProxyChannelHandler.class);
 
     public final static String HANDLER_NAME = "proxyHandler";
-    private Map<EntryKey, Channel> targetChannels = Maps.newConcurrentMap();
+    private Map<MsgKey, Channel> targetChannels = Maps.newConcurrentMap();
 
     private Set<Short> keySet = Sets.newConcurrentHashSet();
 
@@ -55,7 +55,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> 
             ByteBuf buf = msg.data().content().duplicate();
             short recMessageId = buf.readShort();
             short recMessageType = buf.readShort();
-            EntryKey key = new EntryKey(recMessageId, recMessageType);
+            MsgKey key = new MsgKey(recMessageId, recMessageType);
             Channel targetChannel = targetChannels.remove(key);
             if (targetChannel != null) {
                 msg.changeSiteToCenterAttr();
@@ -69,7 +69,7 @@ public class ProxyChannelHandler extends SimpleChannelInboundHandler<SocketMsg> 
     }
 
     public void registerTarget(short recMessageId, short recMessageType, Channel targetChannel) {
-        EntryKey key = new EntryKey(recMessageId, recMessageType);
+        MsgKey key = new MsgKey(recMessageId, recMessageType);
         targetChannels.put(key, targetChannel);
     }
 }

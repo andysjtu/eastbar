@@ -12,7 +12,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
-import org.eastbar.comm.Listener;
+import org.eastbar.net.Listener;
 import org.eastbar.logd.LogHandler;
 import org.eastbar.logd.LogSaver;
 import org.slf4j.Logger;

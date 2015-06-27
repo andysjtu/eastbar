@@ -1,14 +1,11 @@
 package org.eastbar.site;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
 import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
 import org.eastbar.site.file.FileAppender;
-import org.eastbar.site.policy.PolicyManager;
+import org.eastbar.site.client.PolicyManager;
 import org.eastbar.site.policy.entity.SitePolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

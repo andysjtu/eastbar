@@ -5,7 +5,7 @@ import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.eastbar.codec.*;
-import org.eastbar.comm.log.entity.PrgLog;
+import org.eastbar.net.log.entity.PrgLog;
 
 import java.util.List;
 

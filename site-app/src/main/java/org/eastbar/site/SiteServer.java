@@ -1,11 +1,15 @@
 package org.eastbar.site;
 
-import org.eastbar.comm.Listener;
+import org.eastbar.site.alert.AlertdConnector;
 import org.eastbar.site.biz.BizProxyConnector;
+import org.eastbar.site.city.CityConnector;
+import org.eastbar.site.client.ClientListener;
+import org.eastbar.site.client.PolicyDldListener;
+import org.eastbar.site.console.ConsoleListener;
+import org.eastbar.site.log.LogUploader;
+import org.eastbar.site.log.LogdConnector;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Created by andysjtu on 2015/5/9.
@@ -24,7 +28,7 @@ public class SiteServer {
     private ConsoleListener consoleListener;
 
     @Autowired
-    private CenterConnector centerConnector;
+    private CityConnector centerConnector;
     @Autowired
     private CaptureConnector captureConnector;
     @Autowired

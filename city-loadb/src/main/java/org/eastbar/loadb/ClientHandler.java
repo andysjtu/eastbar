@@ -1,20 +1,15 @@
 package org.eastbar.loadb;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.DefaultChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Promise;
-import org.eastbar.codec.EntryKey;
 import org.eastbar.codec.GenResp;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.loadb.AddressResp;
-
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Created by AndySJTU on 2015/6/18.
