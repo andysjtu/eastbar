@@ -29,11 +29,6 @@
 			<artifactId>eastbar-codec</artifactId>
 			<version>${eastbar.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eastbar</groupId>
-			<artifactId>eastbar-loadb</artifactId>
-			<version>${eastbar.version}</version>
-		</dependency>
 
 		<!-- SPRING basic begin -->
 		<!-- email/scheduler/freemarker -->

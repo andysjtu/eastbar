@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Entity
-@Table(name = "illegal_alert")
+//@Entity
+//@Table(name = "illegal_alert")
 public class IllegalBlockAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

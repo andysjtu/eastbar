@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Entity
-@Table(name = "prog_alert")
+//@Entity
+//@Table(name = "prog_alert")
 public class ProgBlockAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

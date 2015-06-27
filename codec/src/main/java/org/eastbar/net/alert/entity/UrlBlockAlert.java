@@ -6,8 +6,8 @@ import java.sql.Timestamp;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Entity
-@Table(name = "url_alert")
+//@Entity
+//@Table(name = "url_alert")
 public class UrlBlockAlert {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

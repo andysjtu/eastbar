@@ -7,6 +7,7 @@ import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
 import org.eastbar.codec.loadb.AddressReq;
 import org.eastbar.codec.loadb.AddressResp;
+import org.eastbar.net.DomainAndPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

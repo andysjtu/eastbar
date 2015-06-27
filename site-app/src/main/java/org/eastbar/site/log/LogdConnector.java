@@ -8,8 +8,9 @@ import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.net.AbstractConnector;
-import org.eastbar.loadb.DomainAndPort;
-import org.eastbar.loadb.LoadbClient;
+import org.eastbar.net.DomainAndPort;
+import org.eastbar.site.loadb.LoadbClient;
+import org.eastbar.site.log.handler.LogUploadHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class LogdConnector extends AbstractConnector {
 
     @Autowired
     private LoadbClient loadbClient;
+
+
+    @Autowired
+    private LogService logService;
 
 
     @PostConstruct
@@ -55,6 +60,14 @@ public class LogdConnector extends AbstractConnector {
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+        pipeline.addLast("loguploadHandler",new LogUploadHandler(logService));
     }
 
+    public LogService getLogService() {
+        return logService;
+    }
+
+    public void setLogService(LogService logService) {
+        this.logService = logService;
+    }
 }

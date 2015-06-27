@@ -24,57 +24,58 @@ import java.util.List;
 @Service
 @Transactional
 public class AlertService {
-    @Autowired
-    private IllegalBlockAlertDao illegalBlockAlertDao;
-    @Autowired
-    private ProgBlockAlertDao progBlockAlertDao;
-    @Autowired
-    private UrlBlockAlertDao urlBlockAlertDao;
+    public static final int DEFAULT_RECORD_NUM=100;
+//    @Autowired
+//    private IllegalBlockAlertDao illegalBlockAlertDao;
+//    @Autowired
+//    private ProgBlockAlertDao progBlockAlertDao;
+//    @Autowired
+//    private UrlBlockAlertDao urlBlockAlertDao;
     @Autowired
     private GeneralAlertDao generalAlertDao;
 
-    public void saveUrlBlockAlert(UrlBlockAlert urlBlockAlert) {
-        urlBlockAlertDao.save(urlBlockAlert);
-    }
-
-    public void saveIllegalAlert(IllegalBlockAlert illegalBlockAlert) {
-        illegalBlockAlertDao.save(illegalBlockAlert);
-    }
-
-    public void saveProgBlockAlert(ProgBlockAlert progBlockAlert) {
-        progBlockAlertDao.save(progBlockAlert);
-    }
-
-    public List<UrlBlockAlert> getOldestUrlBlockRecord() {
-        PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
-        Page<UrlBlockAlert> page = urlBlockAlertDao.findAll(request);
-//        urlBlockAlertDao.delete(page.getContent());
-        return Lists.newArrayList(page.getContent());
-    }
-
-    public List<IllegalBlockAlert> getOldestIllegalBlockRecord() {
-        PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
-        Page<IllegalBlockAlert> page = illegalBlockAlertDao.findAll(request);
-
-//        illegalBlockAlertDao.delete(page.getContent());
-        return Lists.newArrayList(page.getContent());
-    }
-
-    public List<ProgBlockAlert> getOldestProgBlockRecord() {
-        PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
-        Page<ProgBlockAlert> page = progBlockAlertDao.findAll(request);
-//        progBlockAlertDao.delete(page.getContent());
-        return Lists.newArrayList(page.getContent());
-    }
+//    public void saveUrlBlockAlert(UrlBlockAlert urlBlockAlert) {
+//        urlBlockAlertDao.save(urlBlockAlert);
+//    }
+//
+//    public void saveIllegalAlert(IllegalBlockAlert illegalBlockAlert) {
+//        illegalBlockAlertDao.save(illegalBlockAlert);
+//    }
+//
+//    public void saveProgBlockAlert(ProgBlockAlert progBlockAlert) {
+//        progBlockAlertDao.save(progBlockAlert);
+//    }
+//
+//    public List<UrlBlockAlert> getOldestUrlBlockRecord() {
+//        PageRequest request = new PageRequest(0, DEFAULT_RECORD_NUM, Sort.Direction.ASC, "alertTime");
+//        Page<UrlBlockAlert> page = urlBlockAlertDao.findAll(request);
+//        return Lists.newArrayList(page.getContent());
+//    }
+//
+//    public List<IllegalBlockAlert> getOldestIllegalBlockRecord() {
+//        PageRequest request = new PageRequest(0, DEFAULT_RECORD_NUM, Sort.Direction.ASC, "alertTime");
+//        Page<IllegalBlockAlert> page = illegalBlockAlertDao.findAll(request);
+//
+//        return Lists.newArrayList(page.getContent());
+//    }
+//
+//    public List<ProgBlockAlert> getOldestProgBlockRecord() {
+//        PageRequest request = new PageRequest(0, DEFAULT_RECORD_NUM, Sort.Direction.ASC, "alertTime");
+//        Page<ProgBlockAlert> page = progBlockAlertDao.findAll(request);
+//        return Lists.newArrayList(page.getContent());
+//    }
 
     public List<GeneralAlert> getOldestGeneralAlarmRecord() {
-        PageRequest request = new PageRequest(0, 10, Sort.Direction.ASC, "alertTime");
+        PageRequest request = new PageRequest(0, DEFAULT_RECORD_NUM, Sort.Direction.ASC, "alertTime");
         Page<GeneralAlert> page = generalAlertDao.findAll(request);
-//        generalAlertDao.delete(page.getContent());
         return Lists.newArrayList(page.getContent());
     }
 
     public void saveGeneralAlert(List<GeneralAlert> alerts) {
         generalAlertDao.save(alerts);
+    }
+
+    public void deleteGeneralAlert(List<GeneralAlert> alerts) {
+        generalAlertDao.delete(alerts);
     }
 }

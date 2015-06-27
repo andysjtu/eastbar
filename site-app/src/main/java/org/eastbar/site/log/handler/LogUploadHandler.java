@@ -22,7 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(LogUploadHandler.class);
-
+    public static final int DEFAULT_UPLOAD_INTERVAL=3;
+    private int uploadInterval=DEFAULT_UPLOAD_INTERVAL;
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
 
@@ -42,7 +43,7 @@ public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
     }
 
     private void schduleUploadTask(Channel channel) {
-        ScheduledFuture future = service.schedule(new UploadEmailJob(channel), 3, TimeUnit.SECONDS);
+        ScheduledFuture future = service.schedule(new UploadLogJob(channel), uploadInterval, TimeUnit.SECONDS);
         futureSet.add(future);
     }
 
@@ -53,6 +54,12 @@ public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
         for (ScheduledFuture future : futureSet) {
             if (!future.isDone()) future.cancel(true);
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("连接日志服务器出现异常，将关闭通道，重新连接",cause);
+        ctx.close();
     }
 
     private void removeDoneFuture() {
@@ -75,11 +82,11 @@ public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
         }
     }
 
-    public class UploadEmailJob implements Runnable {
+    public class UploadLogJob implements Runnable {
 
         private Channel channel;
 
-        public UploadEmailJob(Channel channel) {
+        public UploadLogJob(Channel channel) {
             this.channel = channel;
         }
 

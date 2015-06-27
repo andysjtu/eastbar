@@ -12,7 +12,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.codec.*;
 import org.eastbar.codec.log.UrlLogMsg;
-import org.eastbar.comm.log.entity.UrlLog;
+import org.eastbar.net.log.entity.UrlLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

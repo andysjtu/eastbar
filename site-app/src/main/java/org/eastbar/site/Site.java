@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
-import org.eastbar.site.file.FileAppender;
 import org.eastbar.site.client.PolicyManager;
 import org.eastbar.site.policy.entity.SitePolicyVersion;
 import org.slf4j.Logger;
@@ -46,9 +45,6 @@ public class Site {
 
     @Autowired
     private SiteReportManager reportManager;
-
-
-    private FileAppender appender;
 
 
     public void setCenterChannel(Channel centerChannel) {
@@ -173,12 +169,7 @@ public class Site {
         this.reportManager = reportManager;
     }
 
-    @PostConstruct
-    public void initFileAppender() {
-        appender = new FileAppender();
-        appender.setFile(Paths.get("status", "status.log").toString());
-        appender.start();
-    }
+
 
 
     public String getSiteCode() {

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.netty.util.internal.ConcurrentSet;
+import org.eastbar.net.DomainAndPort;
 
 import java.util.Iterator;
 import java.util.List;

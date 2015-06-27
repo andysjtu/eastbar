@@ -1,9 +1,8 @@
 package org.eastbar.site;
 
 import org.assertj.core.util.Maps;
-import org.eastbar.loadb.DomainAndPort;
-import org.eastbar.loadb.LoadbClient;
-import org.eastbar.loadb.LoadbConnector;
+import org.eastbar.net.DomainAndPort;
+import org.eastbar.site.loadb.LoadbClient;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

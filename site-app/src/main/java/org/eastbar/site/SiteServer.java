@@ -2,6 +2,7 @@ package org.eastbar.site;
 
 import org.eastbar.site.alert.AlertdConnector;
 import org.eastbar.site.biz.BizProxyConnector;
+import org.eastbar.site.capt.CaptureConnector;
 import org.eastbar.site.city.CityConnector;
 import org.eastbar.site.client.ClientListener;
 import org.eastbar.site.client.PolicyDldListener;

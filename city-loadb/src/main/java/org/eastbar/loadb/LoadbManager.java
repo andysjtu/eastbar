@@ -1,14 +1,11 @@
 package org.eastbar.loadb;
 
 import com.google.common.collect.Sets;
-import org.assertj.core.util.Maps;
+import org.eastbar.net.DomainAndPort;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**

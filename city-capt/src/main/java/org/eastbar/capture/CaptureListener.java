@@ -11,7 +11,7 @@ import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
-import org.eastbar.comm.Listener;
+import org.eastbar.net.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

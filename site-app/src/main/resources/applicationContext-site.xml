@@ -72,11 +72,11 @@
         <property name="minEvictableIdleTimeMillis" value="1800000"/>
     </bean>
 
-    <bean id="loadbClient" class="org.eastbar.loadb.LoadbClient">
+    <bean id="loadbClient" class="org.eastbar.site.loadb.LoadbClient">
         <property name="siteCode" value="${sitecode}"></property>
     </bean>
 
-    <bean id="loadbConnector" class="org.eastbar.loadb.LoadbConnector">
+    <bean id="loadbConnector" class="org.eastbar.site.loadb.LoadbConnector">
         <property name="remoteAddress" value="${loadb.ip}"/>
         <property name="remotePort" value="${loadb.port}"/>
         <property name="localPort" value="0"/>

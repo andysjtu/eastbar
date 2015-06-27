@@ -18,13 +18,13 @@ import java.util.concurrent.*;
 /**
  * Created by AndySJTU on 2015/5/21.
  */
-@Component
+@Deprecated
 public class LogUploader {
 
-    @Autowired
+
     private LogdConnector logdConnector;
 
-    @Autowired
+
     private LogService logService;
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(1);

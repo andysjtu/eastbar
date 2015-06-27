@@ -21,13 +21,13 @@
     <context:property-placeholder
             ignore-resource-not-found="true" location="classpath:/application-loadbclient.properties"/>
 
-    <bean id="loadbConnector" class="org.eastbar.loadb.LoadbConnector">
+    <bean id="loadbConnector" class="org.eastbar.site.loadb.LoadbConnector">
         <property name="localPort" value="0"/>
         <property name="remoteAddress" value="status.nbscreen.com"/>
         <property name="remotePort" value="9048"/>
     </bean>
 
-    <bean id="loadbClient" class="org.eastbar.loadb.LoadbClient">
+    <bean id="loadbClient" class="org.eastbar.site.loadb.LoadbClient">
         <property name="connector" ref="loadbConnector"/>
         <property name="siteCode" value="${sitecode}"/>
     </bean>

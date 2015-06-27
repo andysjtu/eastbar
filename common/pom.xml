@@ -10,9 +10,10 @@
         <relativePath>../parent/</relativePath>
     </parent>
 
-    <artifactId>common</artifactId>
+    <artifactId>eastbar-common</artifactId>
     <version>${eastbar.version}</version>
     <packaging>jar</packaging>
+    <name>EastBar :: Module :: Common</name>
 
     <dependencies>
         <!-- redis -->
@@ -44,6 +45,11 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springside</groupId>
+            <artifactId>springside-extension</artifactId>
+            <version>${springside.version}</version>
         </dependency>
         <!-- JSON end -->
     </dependencies>

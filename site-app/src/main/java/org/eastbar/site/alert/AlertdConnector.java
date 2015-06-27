@@ -7,8 +7,8 @@ import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 import org.eastbar.net.AbstractConnector;
-import org.eastbar.loadb.DomainAndPort;
-import org.eastbar.loadb.LoadbClient;
+import org.eastbar.net.DomainAndPort;
+import org.eastbar.site.loadb.LoadbClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

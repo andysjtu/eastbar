@@ -4,18 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<parent>
+    <parent>
         <groupId>org.eastbar</groupId>
-        <artifactId>parent</artifactId>
-        <version>${eastbar.version}</version>
-        <relativePath>parent</relativePath>
+        <artifactId>eastbar-parent</artifactId>
+        <version>1.0</version>
+        <relativePath>./parent/</relativePath>
     </parent>
-	
+
     <artifactId>eastbar2</artifactId>
-	  <packaging>pom</packaging>
-	
+    <packaging>pom</packaging>
+    <name>EastBar :: Application :: All</name>
+
     <modules>
-		<module>parent</module>
+        <module>parent</module>
         <module>codec</module>
         <module>site-biz</module>
         <module>site-app</module>
@@ -23,7 +24,11 @@
         <module>city-loadb</module>
         <module>city-capt</module>
         <module>city-log2mq</module>
+        <module>city-log2db</module>
+        <module>city-alert2db</module>
+        <module>city-alert2mq</module>
         <module>center</module>
+        <module>centers</module>
         <module>common</module>
     </modules>
 

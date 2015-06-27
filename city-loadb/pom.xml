@@ -12,7 +12,7 @@
     <artifactId>eastbar-city-loadb</artifactId>
     <version>${eastbar.version}</version>
     <packaging>jar</packaging>
-    <name>EastBar :: Application ::City :: LoadbDaemon</name>
+    <name>EastBar :: Application :: City :: LoadbDaemon</name>
 
     
     <!-- 依赖项定义 -->

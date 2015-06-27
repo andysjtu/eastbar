@@ -79,7 +79,7 @@
         <property name="receiveTimeout" value="10000" />
     </bean>
 
-    <bean id="queueConsumer" class="org.eastbar.logd.MessageReceiver"/>
+    <bean id="queueConsumer" class="org.eastbar.log2db.MessageReceiver"/>
 
 
     <bean id="queueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">

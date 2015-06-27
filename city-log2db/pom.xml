@@ -95,15 +95,17 @@
             <artifactId>spring-jms</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>5.11.1</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-spring</artifactId>
             <version>5.11.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JMS end -->
 
@@ -330,12 +332,6 @@
         </dependency>
 
 
-        <!-- h2 如果生产数据库不是H2，解开下面的注释
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
-        -->
 
 
     </dependencies>
@@ -398,7 +394,7 @@
                     <extraJvmArguments>-Xms4096m -Xmx4096m</extraJvmArguments>
                     <programs>
                         <program>
-                            <mainClass>org.eastbar.logd.LogMain</mainClass>
+                            <mainClass>org.eastbar.log2db.LogMain</mainClass>
                             <id>logd-service</id>
                             <platforms>
                                 <platform>windows</platform>
@@ -421,11 +417,5 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>mavenreport</id>
-            <url>http://mvnrepository.com/artifact</url>
-        </repository>
-    </repositories>
 
 </project>

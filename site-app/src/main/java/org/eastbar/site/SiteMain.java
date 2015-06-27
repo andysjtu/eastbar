@@ -1,6 +1,6 @@
 package org.eastbar.site;
 
-import org.eastbar.loadb.LoadbClient;
+import org.eastbar.site.loadb.LoadbClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;

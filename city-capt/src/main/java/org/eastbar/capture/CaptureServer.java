@@ -1,7 +1,6 @@
 package org.eastbar.capture;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import sun.applet.Main;
 
 /**
  * Created by AndySJTU on 2015/6/10.

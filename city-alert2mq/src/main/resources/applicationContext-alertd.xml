@@ -16,59 +16,16 @@
     <description>Spring公共配置</description>
 
     <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-    <context:component-scan base-package="org.eastbar.alertd">
+    <context:component-scan base-package="org.eastbar.alert2mq">
     </context:component-scan>
 
 
-
-    <!--<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
-        <!--<property name="dataSource" ref="dataSource"/>-->
-        <!--<property name="jpaVendorAdapter">-->
-            <!--<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>-->
-        <!--</property>-->
-        <!--<property name="packagesToScan" value="org.eastbar.logd.entity"/>-->
-        <!--<property name="jpaProperties">-->
-            <!--<props>-->
-                <!--<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>-->
-                <!--<prop key="hibernate.max_fetch_depth">3</prop>-->
-                <!--<prop key="hibernate.jdbc.fetch_size">50</prop>-->
-                <!--<prop key="hibernate.jdbc.batch_size">10</prop>-->
-                <!--<prop key="hibernate.show_sql">true</prop>-->
-                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
-            <!--</props>-->
-        <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
-        <!--<property name="entityManagerFactory" ref="emf"/>-->
-    <!--</bean>-->
-
-    <!--<jpa:repositories base-package="org.eastbar.logd.dao" transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>-->
-
-    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
             ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
 
-    <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
-    <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"-->
-          <!--init-method="init" destroy-method="close">-->
-        <!--&lt;!&ndash; Connection Info &ndash;&gt;-->
-        <!--<property name="driverClassName" value="${jdbc.driver}"/>-->
-        <!--<property name="url" value="${jdbc.url}"/>-->
-        <!--<property name="username" value="${jdbc.username}"/>-->
-        <!--<property name="password" value="${jdbc.password}"/>-->
-        <!--<property name="maxActive" value="${jdbc.pool.maxActive}"/>-->
-        <!--<property name="defaultAutoCommit" value="false"/>-->
-        <!--<property name="validationQuery">-->
-            <!--<value>SELECT 'x'</value>-->
-        <!--</property>-->
-        <!--&lt;!&ndash; 连接Idle半个小时后超时，每15分钟检查一次 &ndash;&gt;-->
-        <!--<property name="timeBetweenEvictionRunsMillis" value="900000"/>-->
-        <!--<property name="minEvictableIdleTimeMillis" value="1800000"/>-->
-    <!--</bean>-->
 
 
     <!-- 配置JMS连接工厂 -->

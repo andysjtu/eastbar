@@ -2,6 +2,7 @@ package org.eastbar.net.alert.entity;
 
 import org.eastbar.net.EntityObject;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class GeneralAlert extends EntityObject {
     private boolean isBlock;
     private String alarmType;
     private String alarmRank;
-
+    @Column(length=1000)
     private String alarmContent;
 
     public String getAlarmContent() {
