@@ -2,14 +2,14 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.center.strategy.core;
+package org.eastbar.centers.strategy.core;
 
-import org.eastbar.center.strategy.SiteStrategyEvent;
-import org.eastbar.center.strategy.dao.*;
-import org.eastbar.center.strategy.entity.SiteInfo;
-import org.eastbar.center.strategy.service.*;
-import org.eastbar.center.strategy.util.Strategy;
-import org.eastbar.center.strategy.util.Times;
+import org.eastbar.centers.strategy.SiteStrategyEvent;
+import org.eastbar.centers.strategy.dao.*;
+import org.eastbar.centers.strategy.entity.SiteInfo;
+import org.eastbar.centers.strategy.service.*;
+import org.eastbar.centers.strategy.util.Strategy;
+import org.eastbar.centers.strategy.util.Times;
 import org.eastbar.common.redis.SiteRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

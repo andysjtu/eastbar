@@ -2,11 +2,11 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.center.strategy.core;
+package org.eastbar.centers.strategy.core;
 
-import org.eastbar.center.strategy.CenterStrategyEvent;
-import org.eastbar.center.strategy.dao.SiteDao;
-import org.eastbar.center.strategy.service.*;
+import org.eastbar.centers.strategy.CenterStrategyEvent;
+import org.eastbar.centers.strategy.dao.SiteDao;
+import org.eastbar.centers.strategy.service.*;
 import org.eastbar.common.redis.SiteRedisService;
 import org.eastbar.common.redis.util.Strategy;
 import org.eastbar.common.rmi.RmiService;

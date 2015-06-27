@@ -2,14 +2,14 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.center.rmi.core;
+package org.eastbar.centers.rmi.core;
 
 
-import org.eastbar.center.strategy.service.BannedProgService;
-import org.eastbar.center.strategy.service.BannedUrlService;
-import org.eastbar.center.strategy.service.KeyWordService;
-import org.eastbar.center.strategy.service.SpecialCustomerService;
-import org.eastbar.center.strategy.util.Strategy;
+import org.eastbar.centers.strategy.service.BannedProgService;
+import org.eastbar.centers.strategy.service.BannedUrlService;
+import org.eastbar.centers.strategy.service.KeyWordService;
+import org.eastbar.centers.strategy.service.SpecialCustomerService;
+import org.eastbar.centers.strategy.util.Strategy;
 import org.eastbar.common.rmi.RmiService;
 import org.eastbar.common.redis.CenterRedisService;
 import org.eastbar.common.redis.SiteRedisService;

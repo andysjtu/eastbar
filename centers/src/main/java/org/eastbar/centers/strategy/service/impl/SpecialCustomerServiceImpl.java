@@ -2,15 +2,15 @@
  * 上海交通大学-鹏越惊虹信息技术发展有限公司
  *         Copyright © 2003-2014
  */
-package org.eastbar.center.strategy.service.impl;
+package org.eastbar.centers.strategy.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
-import org.eastbar.center.Po2Json;
-import org.eastbar.center.strategy.dao.SpecialCustomerDao;
-import org.eastbar.center.strategy.entity.SpecialCustomer;
-import org.eastbar.center.strategy.service.SpecialCustomerService;
-import org.eastbar.center.strategy.service.biz.SpecialCustomerBO;
-import org.eastbar.center.strategy.util.SpecialCustomerJson;
+import org.eastbar.centers.Po2Json;
+import org.eastbar.centers.strategy.dao.SpecialCustomerDao;
+import org.eastbar.centers.strategy.entity.SpecialCustomer;
+import org.eastbar.centers.strategy.service.SpecialCustomerService;
+import org.eastbar.centers.strategy.service.biz.SpecialCustomerBO;
+import org.eastbar.centers.strategy.util.SpecialCustomerJson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
