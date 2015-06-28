@@ -195,6 +195,7 @@ public class CityCenter {
         PolicyVersion version = vSite.getVersion();
         int siteUrlVersion = version.getUrlVersion();
         int curVesionNum = redisService.lastedVersion(Strategy.BANNEDURL);
+        logger.info("发送策略前:siteVersion is {},currenVersionNum is : {}",version,siteUrlVersion);
         if (siteUrlVersion < curVesionNum) {
             String urlList = redisService.returnUrlList(vSite.getSiteCode(), siteUrlVersion);
             urlList = StringUtils.trimToNull(urlList);
@@ -237,6 +238,7 @@ public class CityCenter {
     public void updateSitePolicyVersion(String siteCode, short policyType, int curVersionNum) {
         VSite vSite = getVSite(siteCode);
         PolicyVersion version = vSite.getVersion();
+        logger.info("更新sitePolicyVesion,更新前是 {}",version);
         if(policyType==SiteMsgType.UPDATE_KW_POLICY.shortValue()){
             version.setKwVersion(curVersionNum);
         }else if(policyType==SiteMsgType.UPDATE_PROG_POLICY.shortValue()){
@@ -246,5 +248,6 @@ public class CityCenter {
         }else if(policyType==SiteMsgType.UPDATE_SP_POLICY.shortValue()){
              version.setSmVersion(curVersionNum);
         }
+        logger.info("更新后SitePolicyVersion是: {}",version);
     }
 }

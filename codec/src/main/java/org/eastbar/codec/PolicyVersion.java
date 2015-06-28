@@ -40,4 +40,14 @@ public class PolicyVersion {
     public void setUrlVersion(int urlVersion) {
         this.urlVersion = urlVersion;
     }
+
+    @Override
+    public String toString() {
+        return "PolicyVersion{" +
+                "urlVersion=" + urlVersion +
+                ", prgVersion=" + prgVersion +
+                ", kwVersion=" + kwVersion +
+                ", smVersion=" + smVersion +
+                '}';
+    }
 }

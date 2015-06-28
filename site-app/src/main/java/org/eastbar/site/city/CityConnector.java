@@ -61,7 +61,7 @@ public class CityConnector extends AbstractConnector {
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-CITY", LogLevel.DEBUG));
+        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-CITY", LogLevel.INFO));
         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
