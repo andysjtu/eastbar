@@ -1,10 +1,11 @@
-package org.eastbar.city.handler.site;
+package org.eastbar.city.site.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
-import org.eastbar.city.Center;
+import org.eastbar.city.CityCenter;
 import org.eastbar.codec.*;
+import org.eastbar.codec.policy.PolicyUpdateRespMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,10 +14,10 @@ import org.slf4j.LoggerFactory;
  */
 public class SiteStatusUpdateHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
-    private final Center center;
+    private final CityCenter center;
     public final static Logger logger = LoggerFactory.getLogger(SiteStatusUpdateHandler.class);
 
-    public SiteStatusUpdateHandler(Center center) {
+    public SiteStatusUpdateHandler(CityCenter center) {
         this.center = center;
     }
 
@@ -29,7 +30,17 @@ public class SiteStatusUpdateHandler extends SimpleChannelInboundHandler<SocketM
         } else if (type == SiteMsgType.POLICY_STATUS.shortValue()) {
             SiteReportMsg siteReportMsg = new SiteReportMsg(msg);
             center.updateSitePolicyStatus(siteReportMsg.getReport());
-        } else {
+        }else if(type==SiteMsgType.UPDATE_POLICY_RESP.shortValue()){
+            PolicyUpdateRespMsg respMsg = new PolicyUpdateRespMsg(msg);
+            short status = respMsg.getStatus();
+            if(status==1){
+                String siteCode =respMsg.getSiteCode();
+                int curVersionNum = respMsg.getCurVersion();
+                short policyType =respMsg.getPolicyType();
+                center.updateSitePolicyVersion(siteCode,policyType,curVersionNum);
+            }
+        }
+        else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
         }
     }

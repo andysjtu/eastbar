@@ -1,4 +1,4 @@
-package org.eastbar.city;
+package org.eastbar.city.site;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -8,9 +8,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
-import org.eastbar.city.handler.site.SiteHeatBeatenHandler;
-import org.eastbar.city.handler.site.SiteInitReqHandler;
-import org.eastbar.city.handler.site.SiteStatusUpdateHandler;
+import org.eastbar.city.CityCenter;
+import org.eastbar.city.site.handler.SiteHeatBeatenHandler;
+import org.eastbar.city.site.handler.SiteInitReqHandler;
+import org.eastbar.city.site.handler.SiteStatusUpdateHandler;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.ProxyChannelHandler;
 import org.eastbar.codec.SocketMsgDecoder;
@@ -39,7 +40,7 @@ public class SiteListener implements Listener {
     private volatile Channel serverChannel;
 
     @Autowired
-    private Center center;
+    private CityCenter center;
 
     @Override
     public void listen() {

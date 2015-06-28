@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Maps;
+import org.eastbar.city.center.HubConnector;
 import org.eastbar.codec.*;
 import org.eastbar.codec.policy.PolicyUpdateMsg;
 import org.eastbar.common.redis.SiteRedisService;
@@ -22,9 +23,9 @@ import java.util.concurrent.TimeUnit;
  * Created by andysjtu on 2015/5/10.
  */
 @Component
-public class Center {
+public class CityCenter {
 
-    public final static Logger logger = LoggerFactory.getLogger(Center.class);
+    public final static Logger logger = LoggerFactory.getLogger(CityCenter.class);
 
     private Map<String, VSite> sites = Maps.newConcurrentHashMap();
 
@@ -231,6 +232,20 @@ public class Center {
             if(spList!=null){
                 vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.SPEICAL_PERSON,spList);
             }
+        }
+    }
+
+    public void updateSitePolicyVersion(String siteCode, short policyType, int curVersionNum) {
+        VSite vSite = getVSite(siteCode);
+        PolicyVersion version = vSite.getVersion();
+        if(policyType==SiteMsgType.UPDATE_KW_POLICY.shortValue()){
+            version.setKwVersion(curVersionNum);
+        }else if(policyType==SiteMsgType.UPDATE_PROG_POLICY.shortValue()){
+            version.setPrgVersion(curVersionNum);
+        }else if(policyType==SiteMsgType.UPDATE_URL_POLICY.shortValue()){
+             version.setUrlVersion(curVersionNum);
+        }else if(policyType==SiteMsgType.UPDATE_SP_POLICY.shortValue()){
+             version.setSmVersion(curVersionNum);
         }
     }
 }

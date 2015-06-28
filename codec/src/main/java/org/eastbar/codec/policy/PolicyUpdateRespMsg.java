@@ -48,4 +48,36 @@ public class PolicyUpdateRespMsg extends SocketMsg {
         curVersion = buf.readInt();
         siteCode = buf.toString(Charsets.UTF_8);
     }
+
+    public short getPolicyType() {
+        return policyType;
+    }
+
+    public void setPolicyType(short policyType) {
+        this.policyType = policyType;
+    }
+
+    public short getStatus() {
+        return status;
+    }
+
+    public void setStatus(short status) {
+        this.status = status;
+    }
+
+    public int getCurVersion() {
+        return curVersion;
+    }
+
+    public void setCurVersion(int curVersion) {
+        this.curVersion = curVersion;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
 }

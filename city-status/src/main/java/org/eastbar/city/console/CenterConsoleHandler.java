@@ -1,4 +1,4 @@
-package org.eastbar.city.handler.console;
+package org.eastbar.city.console;
 
 import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
