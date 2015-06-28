@@ -66,6 +66,7 @@ public class CityCenter {
             sites.put(siteCode, vSite);
         }
         vSite.online(initReq, channel);
+        vSite.updatePolicyStatus(report);
 //        Channel hubChannel = connector.channel();
 
 //        if (hubChannel != null && hubChannel.isActive()) {

@@ -12,6 +12,7 @@ import org.eastbar.site.Site;
 import org.eastbar.site.SiteReportManager;
 import org.eastbar.site.city.handler.City2ClientCmdHandler;
 import org.eastbar.site.city.handler.PolicyUpdateHandler;
+import org.eastbar.site.city.handler.StatusHandler;
 import org.eastbar.site.loadb.LoadbClient;
 import org.eastbar.site.policy.PolicySaver;
 import org.slf4j.Logger;
@@ -65,7 +66,7 @@ public class CityConnector extends AbstractConnector {
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
-//      pipeline.addLast("siteInitHandler", new StatusHandler(site));
+      pipeline.addLast("siteInitHandler", new StatusHandler(site));
         pipeline.addLast("bentenHandler", new HeartBeatenHandler());
         pipeline.addLast("policyUpdater", new PolicyUpdateHandler(policySaver));
         pipeline.addLast("centerCmdHandler", new City2ClientCmdHandler(site));
