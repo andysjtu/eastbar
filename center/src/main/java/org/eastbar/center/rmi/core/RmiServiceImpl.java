@@ -82,39 +82,31 @@ public class RmiServiceImpl implements RmiService {
 
     @Override
     public int sendSpecialCustomerVersion(final int version) {
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    //获取redis中当前specialCustomer已更新的最新版本号
-                    String num=siteRedisService.returnUpdatedVersion(Strategy.SPECIALCUSTOMER);
-                    Integer redisVersion=0;
-                    if(num!=null && !"".equals(num)){//如果版本号不为空，转化成Integer
-                        redisVersion=Integer.parseInt(num);
-                    }
-                    for(int i=redisVersion;i<version;i++){
-                        //根据条件读取prog列表
-                        Map<String,Map<String,String>> specialCustomers= specialCustomerService.control(i + 1);
-                        //调用redis，把prog版本列表信息存储到redis中
-                        centerRedisService.saveSpecialCustomerVersionList(specialCustomers, i + 1 + "");
-                        //存redis版本总库
-                        centerRedisService.saveUpdatedVersion(Strategy.SPECIALCUSTOMER,i+1);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        boolean flag = false;
+        try {
+            //获取redis中当前specialCustomer已更新的最新版本号
+            String num = siteRedisService.returnUpdatedVersion(Strategy.SPECIALCUSTOMER);
+            Integer redisVersion = 0;
+            if (num != null && !"".equals(num)) {//如果版本号不为空，转化成Integer
+                redisVersion = Integer.parseInt(num);
             }
-        });
-        thread.start();
-        Boolean flag=false;
-        try{
-            centerRedisService.saveLastedVersion(Strategy.SPECIALCUSTOMER,version);
-            flag=true;
-        }catch (Exception e){
+            for (int i = redisVersion; i < version; i++) {
+                //根据条件读取prog列表
+                Map<String, Map<String, String>> specialCustomers = specialCustomerService.control(i + 1);
+                //调用redis，把prog版本列表信息存储到redis中
+                centerRedisService.saveSpecialCustomerVersionList(specialCustomers, i + 1 + "");
+                //存redis版本总库
+                centerRedisService.saveUpdatedVersion(Strategy.SPECIALCUSTOMER, i + 1);
+            }
+
+
+            centerRedisService.saveLastedVersion(Strategy.SPECIALCUSTOMER, version);
+            flag = true;
+        } catch (Exception e) {
             e.printStackTrace();
-            flag=false;
+            flag = false;
         }
-        if(!flag==true){
+        if (!flag) {
             return 1;
         }
         return 0;
@@ -124,44 +116,37 @@ public class RmiServiceImpl implements RmiService {
 
     /**
      * 发送keyword版本号的实现类
+     *
      * @param version
      * @return
      */
     @Override
     public int sendKeyWordVersion(final int version) {
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    //获取redis中当前keyword已更新的最新版本号
-                    String num=siteRedisService.returnUpdatedVersion(Strategy.KEYWORD);
-                    Integer redisVersion=0;
-                    if(num!=null && !"".equals(num)){//如果版本号不为空，转成Integer
-                        redisVersion=Integer.parseInt(num);
-                    }
-                    for(int i=redisVersion;i<version;i++){
-                        //根据条件读取prog列表
-                        Map<String,Map<String,String>> keywords= keyWordService.control(i + 1);
-                        //调用redis，把prog版本列表信息存储到redis中
-                        centerRedisService.saveKeyWordVersionList(keywords, i + 1 + "");
-                        //存redis版本总库
-                        centerRedisService.saveUpdatedVersion(Strategy.KEYWORD,i+1);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        boolean flag = false;
+        try {
+            //获取redis中当前keyword已更新的最新版本号
+            String num = siteRedisService.returnUpdatedVersion(Strategy.KEYWORD);
+            Integer redisVersion = 0;
+            if (num != null && !"".equals(num)) {//如果版本号不为空，转成Integer
+                redisVersion = Integer.parseInt(num);
             }
-        });
-        thread.start();
-        Boolean flag=false;
-        try{
-            centerRedisService.saveLastedVersion(Strategy.KEYWORD,version);
-            flag=true;
-        }catch (Exception e){
+            for (int i = redisVersion; i < version; i++) {
+                //根据条件读取prog列表
+                Map<String, Map<String, String>> keywords = keyWordService.control(i + 1);
+                //调用redis，把prog版本列表信息存储到redis中
+                centerRedisService.saveKeyWordVersionList(keywords, i + 1 + "");
+                //存redis版本总库
+                centerRedisService.saveUpdatedVersion(Strategy.KEYWORD, i + 1);
+            }
+
+
+            centerRedisService.saveLastedVersion(Strategy.KEYWORD, version);
+            flag = true;
+        } catch (Exception e) {
             e.printStackTrace();
-            flag=false;
+            flag = false;
         }
-        if(!flag){
+        if (!flag) {
             return 1;
         }
         return 0;
@@ -171,35 +156,36 @@ public class RmiServiceImpl implements RmiService {
 
     /**
      * 发送url版本号的实现类
+     *
      * @param version
      * @return int 1 代表成功  0 代表失败
      */
     @Override
     public int sendBannedUrlVersion(final int version) {
-        boolean flag=false;
-                try{
-                    //获取redis中当前bannedurl已更新的最新版本号
-                    String num=siteRedisService.returnUpdatedVersion(Strategy.BANNEDURL);
-                    Integer redisVersion=0;
-                    if(num!=null && !"".equals(num)){//如果版本号不为空，就转成Integer
-                        redisVersion=Integer.parseInt(num);
-                    }
-                    for(int i=redisVersion;i<version;i++){
-                        //根据条件读取prog列表
-                        Map<String,Map<String,String>> bannedUrlList= bannedUrlService.control(i + 1);
-                        //调用redis，把prog版本列表信息存储到redis中
-                        centerRedisService.saveUrlVersionList(bannedUrlList, i + 1 + "");
-                        //存redis版本总库
-                        centerRedisService.saveUpdatedVersion(Strategy.BANNEDURL,i+1);
-                    }
+        boolean flag = false;
+        try {
+            //获取redis中当前bannedurl已更新的最新版本号
+            String num = siteRedisService.returnUpdatedVersion(Strategy.BANNEDURL);
+            Integer redisVersion = 0;
+            if (num != null && !"".equals(num)) {//如果版本号不为空，就转成Integer
+                redisVersion = Integer.parseInt(num);
+            }
+            for (int i = redisVersion; i < version; i++) {
+                //根据条件读取prog列表
+                Map<String, Map<String, String>> bannedUrlList = bannedUrlService.control(i + 1);
+                //调用redis，把prog版本列表信息存储到redis中
+                centerRedisService.saveUrlVersionList(bannedUrlList, i + 1 + "");
+                //存redis版本总库
+                centerRedisService.saveUpdatedVersion(Strategy.BANNEDURL, i + 1);
+            }
 
-            centerRedisService.saveLastedVersion(Strategy.BANNEDURL,version);
-            flag=true;
-        }catch (Exception e){
+            centerRedisService.saveLastedVersion(Strategy.BANNEDURL, version);
+            flag = true;
+        } catch (Exception e) {
             e.printStackTrace();
-            flag=false;
+            flag = false;
         }
-        if(!flag){
+        if (!flag) {
             return 1;
         }
         return 0;
@@ -208,46 +194,39 @@ public class RmiServiceImpl implements RmiService {
 
     /**
      * 发送prog版本号的实现类
+     *
      * @param version
-     * @return   int 1  代表成功 0 代表失败
+     * @return int 1  代表成功 0 代表失败
      */
     @Override
-    public int sendBannedProgVersion(final int version){
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    //获取redis中当前bannedprog已更新的最新版本号
-                    String num=siteRedisService.returnUpdatedVersion(Strategy.BANNEDPROG);
-                    Integer redisVersion=0;
-                    if(num!=null && !"".equals(num)){//如果版本号不为空，则转成Integer
-                        redisVersion=Integer.parseInt(num);
-                    }
-                    for(int i=redisVersion;i<version;i++){
-                        //根据条件读取prog列表
-                        Map<String,Map<String,String>> bannedProgs= bannedProgService.control(i+1);
-                           // if(bannedProgs.size()>0){
-                                //调用redis，把prog版本列表信息存储到redis中
-                                centerRedisService.saveProgVersionList(bannedProgs,i+1+"");
-                                //存redis版本总库
-                                centerRedisService.saveUpdatedVersion(Strategy.BANNEDPROG,i+1);
-                          //  }
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+    public int sendBannedProgVersion(final int version) {
+        boolean flag = false;
+        try {
+            //获取redis中当前bannedprog已更新的最新版本号
+            String num = siteRedisService.returnUpdatedVersion(Strategy.BANNEDPROG);
+            Integer redisVersion = 0;
+            if (num != null && !"".equals(num)) {//如果版本号不为空，则转成Integer
+                redisVersion = Integer.parseInt(num);
             }
-        });
-        thread.start();
-        Boolean flag=false;
-        try{
-            centerRedisService.saveLastedVersion(Strategy.BANNEDPROG,version);
-            flag=true;
-        }catch (Exception e){
+            for (int i = redisVersion; i < version; i++) {
+                //根据条件读取prog列表
+                Map<String, Map<String, String>> bannedProgs = bannedProgService.control(i + 1);
+                // if(bannedProgs.size()>0){
+                //调用redis，把prog版本列表信息存储到redis中
+                centerRedisService.saveProgVersionList(bannedProgs, i + 1 + "");
+                //存redis版本总库
+                centerRedisService.saveUpdatedVersion(Strategy.BANNEDPROG, i + 1);
+                //  }
+            }
+
+
+            centerRedisService.saveLastedVersion(Strategy.BANNEDPROG, version);
+            flag = true;
+        } catch (Exception e) {
             e.printStackTrace();
-            flag=false;
+            flag = false;
         }
-        if(!flag){
+        if (!flag) {
             return 1;
         }
         return 0;

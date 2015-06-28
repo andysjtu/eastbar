@@ -1,4 +1,4 @@
-package org.eastbar.center;
+package org.eastbar;
 
 import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.center.statusMachine.core.EventPipe;
