@@ -72,7 +72,7 @@
         <property name="minEvictableIdleTimeMillis" value="600000"/>
     </bean>
     <!--</beans>-->
-    <bean class="org.eastbar.centers.utils.SpringContextHolder" lazy-init="false" />
+    <bean class="org.eastbar.center.utils.SpringContextHolder" lazy-init="false" />
 
     <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
         <constructor-arg index="0" ref="sqlSessionFactory"/>

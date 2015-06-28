@@ -28,7 +28,6 @@
         <module>city-alert2db</module>
         <module>city-alert2mq</module>
         <module>center</module>
-        <module>centers</module>
         <module>common</module>
     </modules>
 
