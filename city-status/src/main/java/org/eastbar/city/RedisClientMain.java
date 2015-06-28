@@ -12,7 +12,7 @@ public class RedisClientMain {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "classpath:/applicationContext.xml"
+                "classpath:/applicationContext-city.xml"
         });
 
         RedisClient redisClient = context.getBean(RedisClient.class);

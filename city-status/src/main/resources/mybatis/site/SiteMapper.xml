@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
-<mapper namespace="org.eastbar.centers.strategy.dao.SiteDao">
+<mapper namespace="org.eastbar.center.strategy.dao.SiteDao">
     <resultMap id="siteResult" type="Site">
         <id property="siteCode" column="site_code" />
         <result property="monitorCode" column="monitor_code" />

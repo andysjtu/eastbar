@@ -43,7 +43,8 @@
         <property name="entityManagerFactory" ref="emf"/>
     </bean>
 
-    <jpa:repositories base-package="org.eastbar.site.policy.dao,org.eastbar.site.log,org.eastbar.site.alert"
+    <jpa:repositories base-package="org.eastbar.site.policy.dao,org.eastbar.site.log.dao
+    ,org.eastbar.site.alert.dao"
                       transaction-manager-ref="transactionManager" entity-manager-factory-ref="emf"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>

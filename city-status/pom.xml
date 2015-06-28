@@ -32,7 +32,7 @@
 
 		<dependency>
 			<groupId>org.eastbar</groupId>
-			<artifactId>centers</artifactId>
+			<artifactId>eastbar-center</artifactId>
 			<version>${eastbar.version}</version>
 		</dependency>
 
@@ -371,7 +371,7 @@
 					<extraJvmArguments>-Xms2056m -Xmx2056m</extraJvmArguments>
 					<programs>
 						<program>
-							<mainClass>org.eastbar.city.CenterMain</mainClass>
+							<mainClass>org.eastbar.city.CityCenterMain</mainClass>
 							<id>center-service</id>
 							<platforms>
 								<platform>windows</platform>

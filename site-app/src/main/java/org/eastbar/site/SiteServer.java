@@ -39,12 +39,10 @@ public class SiteServer {
 
     @Autowired
     private Site site;
-    @Autowired
-    private LogUploader uploader;
+
 
     public void start() {
         bizProxyConnector.connect();
-        System.out.println("cenllllllllll");
         centerConnector.connect();
         captureConnector.connect();
 
@@ -55,7 +53,6 @@ public class SiteServer {
         logdConnector.connect();
         alertdConnector.connect();
 
-        uploader.start();
     }
 
     public void stop() {
@@ -70,7 +67,6 @@ public class SiteServer {
         logdConnector.disconnect();
         alertdConnector.disconnect();
 
-        uploader.stop();
         site.disconnectAll();
     }
 

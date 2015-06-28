@@ -99,7 +99,7 @@ public abstract class AbstractConnector {
                                @Override
                                public void operationComplete(ChannelFuture future) throws Exception {
                                    if (future.isSuccess()) {
-                                       logger.info("CONNECT TO ServerAddress {}/{}", remoteAddress, remotePort);
+                                       logger.info("连接远端服务器成功: {}/{}", remoteAddress, remotePort);
                                        remoteChannel = future.channel();
                                        doSuccessConnect(future);
                                        remoteChannel.closeFuture().addListener(new ChannelFutureListener() {
