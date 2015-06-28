@@ -21,7 +21,7 @@
 
 
 	<context:property-placeholder
-		ignore-resource-not-found="true" location="classpath:/application-hub.properties" />
+		ignore-resource-not-found="true" location="classpath:/application.properties" />
 
 
 

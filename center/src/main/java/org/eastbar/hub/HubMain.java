@@ -8,7 +8,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class HubMain {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext.xml"
+                "applicationContext-hub.xml"
         });
 
         CenterListener listener = context.getBean(CenterListener.class);

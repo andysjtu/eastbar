@@ -35,7 +35,7 @@
     <!-- MyBatis配置 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="org.eastbar.centers"/>
+        <property name="typeAliasesPackage" value="org.eastbar.center"/>
         <property name="mapperLocations" value="classpath*:/mybatis/**/*Mapper.xml"/>
     </bean>
 
