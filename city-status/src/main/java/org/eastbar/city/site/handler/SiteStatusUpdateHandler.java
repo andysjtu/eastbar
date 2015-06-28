@@ -24,6 +24,7 @@ public class SiteStatusUpdateHandler extends SimpleChannelInboundHandler<SocketM
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
         short type = msg.getMessageType();
+        logger.info("收到消息类似是:{}",type);
         if (type == SiteMsgType.TERM_STATUS.shortValue()) {
             TermReportMsg reportMsg = new TermReportMsg(msg);
             center.updateTermStatus(reportMsg.getReport());
@@ -31,6 +32,7 @@ public class SiteStatusUpdateHandler extends SimpleChannelInboundHandler<SocketM
             SiteReportMsg siteReportMsg = new SiteReportMsg(msg);
             center.updateSitePolicyStatus(siteReportMsg.getReport());
         }else if(type==SiteMsgType.UPDATE_POLICY_RESP.shortValue()){
+            logger.info("收到策略更新的响应");
             PolicyUpdateRespMsg respMsg = new PolicyUpdateRespMsg(msg);
             short status = respMsg.getStatus();
             if(status==1){
