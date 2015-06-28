@@ -114,7 +114,7 @@ public class RmiServiceImpl implements RmiService {
             e.printStackTrace();
             flag=false;
         }
-        if(flag==true){
+        if(!flag==true){
             return 1;
         }
         return 0;
@@ -161,7 +161,7 @@ public class RmiServiceImpl implements RmiService {
             e.printStackTrace();
             flag=false;
         }
-        if(flag==true){
+        if(!flag){
             return 1;
         }
         return 0;
@@ -176,9 +176,7 @@ public class RmiServiceImpl implements RmiService {
      */
     @Override
     public int sendBannedUrlVersion(final int version) {
-        Thread thread=new Thread(new Runnable() {
-            @Override
-            public void run() {
+        boolean flag=false;
                 try{
                     //获取redis中当前bannedurl已更新的最新版本号
                     String num=siteRedisService.returnUpdatedVersion(Strategy.BANNEDURL);
@@ -194,21 +192,14 @@ public class RmiServiceImpl implements RmiService {
                         //存redis版本总库
                         centerRedisService.saveUpdatedVersion(Strategy.BANNEDURL,i+1);
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        Boolean flag=false;
-        try{
+
             centerRedisService.saveLastedVersion(Strategy.BANNEDURL,version);
             flag=true;
         }catch (Exception e){
             e.printStackTrace();
             flag=false;
         }
-        if(flag==true){
+        if(!flag){
             return 1;
         }
         return 0;
@@ -256,7 +247,7 @@ public class RmiServiceImpl implements RmiService {
             e.printStackTrace();
             flag=false;
         }
-        if(flag==true){
+        if(!flag){
             return 1;
         }
         return 0;

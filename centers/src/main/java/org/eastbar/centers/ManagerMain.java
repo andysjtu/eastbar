@@ -95,6 +95,6 @@ public class ManagerMain {
 //        System.out.println( Times.now()+"-------------增加Event3-空闲----------------");
 
 
-        Center.getInstance().toString();
+    //    Center.getInstance().toString();
 	}
 }
