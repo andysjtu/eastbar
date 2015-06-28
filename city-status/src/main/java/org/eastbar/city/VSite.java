@@ -34,7 +34,7 @@ public class VSite {
 
     private volatile boolean connected = false;
 
-    private Center center;
+    private CityCenter center;
 
     public VSite(String siteCode) {
         this.siteCode = siteCode;
@@ -145,7 +145,7 @@ public class VSite {
         }
     }
 
-    public void setCenter(Center center) {
+    public void setCenter(CityCenter center) {
         this.center = center;
     }
 

@@ -1,4 +1,4 @@
-package org.eastbar.city.handler.site;
+package org.eastbar.city.site.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

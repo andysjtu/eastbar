@@ -1,9 +1,9 @@
-package org.eastbar.city.handler.site;
+package org.eastbar.city.site.handler;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
-import org.eastbar.city.Center;
+import org.eastbar.city.CityCenter;
 import org.eastbar.codec.SiteInitReq;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 public class SiteInitReqHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(SiteInitReqHandler.class);
 
-    private final Center center;
+    private final CityCenter center;
 
-    public SiteInitReqHandler(Center center) {
+    public SiteInitReqHandler(CityCenter center) {
         this.center = center;
     }
 

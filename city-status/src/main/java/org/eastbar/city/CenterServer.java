@@ -1,5 +1,6 @@
 package org.eastbar.city;
 
+import org.eastbar.city.center.HubConnector;
 import org.eastbar.net.Listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ public class CenterServer {
     @Autowired
     private List<Listener> listeners;
     @Autowired
-    private Center center;
+    private CityCenter center;
 
     @Autowired
     private HubConnector connector;
@@ -43,11 +44,11 @@ public class CenterServer {
         this.listeners = listeners;
     }
 
-    public Center getCenter() {
+    public CityCenter getCenter() {
         return center;
     }
 
-    public void setCenter(Center center) {
+    public void setCenter(CityCenter center) {
         this.center = center;
     }
 }

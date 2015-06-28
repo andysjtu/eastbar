@@ -1,4 +1,4 @@
-package org.eastbar.city;
+package org.eastbar.city.center;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import org.eastbar.city.CityCenter;
 import org.eastbar.codec.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class HubConnector {
     private Bootstrap bootstrap;
 
     @Autowired
-    private Center center;
+    private CityCenter center;
 
 
     @PostConstruct

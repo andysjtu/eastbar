@@ -1,4 +1,4 @@
-package org.eastbar.city;
+package org.eastbar.city.console;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -7,7 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.city.handler.console.CenterConsoleHandler;
+import org.eastbar.city.CenterServer;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Component;
  * Created by andysjtu on 2015/5/10.
  */
 @Component
-public class CenterConsoleListener implements Listener {
-    public static final  Logger logger = LoggerFactory.getLogger(CenterConsoleListener.class);
+public class CityConsoleListener implements Listener {
+    public static final  Logger logger = LoggerFactory.getLogger(CityConsoleListener.class);
     @Autowired
     private CenterServer centerServer;
 
