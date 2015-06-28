@@ -191,7 +191,7 @@
             <scope>runtime</scope>
         </dependency>
         <!-- aop end -->
-        <!-- JSON begin -->
+        <!-- JSON begin e -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
