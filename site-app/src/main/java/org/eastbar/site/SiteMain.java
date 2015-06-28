@@ -21,7 +21,7 @@ public class SiteMain {
         LoadbClient client = context.getBean(LoadbClient.class);
 
         try {
-            System.out.println("-------------------------");
+            System.out.println("连接远程Loadb服务...");
             client.connect();
         } catch (Throwable e) {
             logger.warn("cannot connect to loadb server,enable default settings");

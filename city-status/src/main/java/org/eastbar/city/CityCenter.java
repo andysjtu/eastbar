@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Maps;
+import org.eastbar.centers.strategy.SiteStrategyEvent;
 import org.eastbar.city.center.HubConnector;
 import org.eastbar.codec.*;
 import org.eastbar.codec.policy.PolicyUpdateMsg;
@@ -31,8 +32,8 @@ public class CityCenter {
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(5);
 
-//    @Autowired
-    private SiteRedisService redisService;
+    @Autowired
+    private SiteStrategyEvent redisService;
 
     @Autowired
     private HubConnector connector;
@@ -192,20 +193,18 @@ public class CityCenter {
     private void updateSitePolicy(VSite vSite) throws Exception {
         PolicyVersion version = vSite.getVersion();
         int siteUrlVersion = version.getUrlVersion();
-        String curUrlVersionStr = redisService.returnLastedVersion(Strategy.BANNEDURL);
-        int curVesionNum = Integer.parseInt(curUrlVersionStr);
+        int curVesionNum = redisService.lastedVersion(Strategy.BANNEDURL);
         if (siteUrlVersion < curVesionNum) {
-            String urlList = redisService.returnUrlVersionList(vSite.getSiteCode(), siteUrlVersion);
+            String urlList = redisService.returnUrlList(vSite.getSiteCode(), siteUrlVersion);
             urlList = StringUtils.trimToNull(urlList);
             if (urlList != null)
                 vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.URL, urlList);
         }
 
         int siteKwVersion = version.getKwVersion();
-        String curKwVersionStr = redisService.returnLastedVersion(Strategy.KEYWORD);
-        int curKwVersionNum = Integer.parseInt(curKwVersionStr);
+        int curKwVersionNum = redisService.lastedVersion(Strategy.KEYWORD);
         if(siteKwVersion<curKwVersionNum){
-            String kwList = redisService.returnKeyWordVersionList(vSite.getSiteCode(),siteKwVersion);
+            String kwList = redisService.returnKeyWordList(vSite.getSiteCode(), siteKwVersion);
             kwList = StringUtils.trimToNull(kwList);
             if(kwList!=null){
                 vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.KEYWORD,kwList);
@@ -213,10 +212,10 @@ public class CityCenter {
         }
 
         int sitePrgVersion = version.getPrgVersion();
-        String curPrgVersionStr = redisService.returnLastedVersion(Strategy.BANNEDPROG);
-        int curPrgVersion = Integer.parseInt(curPrgVersionStr);
+
+        int curPrgVersion = redisService.lastedVersion(Strategy.BANNEDPROG);
         if(sitePrgVersion<curPrgVersion){
-            String prgList = redisService.returnProgVersionList(vSite.getSiteCode(),sitePrgVersion);
+            String prgList = redisService.returnProgList(vSite.getSiteCode(), sitePrgVersion);
             prgList = StringUtils.trimToNull(prgList);
             if(prgList!=null){
                 vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.PROGRAM,prgList);
@@ -224,10 +223,9 @@ public class CityCenter {
         }
 
         int siteSpVersion = version.getSmVersion();
-        String curSpVerionStr = redisService.returnLastedVersion(Strategy.SPECIALCUSTOMER);
-        int curSpVersion = Integer.parseInt(curSpVerionStr);
+        int curSpVersion = redisService.lastedVersion(Strategy.SPECIALCUSTOMER);
         if(siteSpVersion<curSpVersion){
-            String spList = redisService.returnSpecialCustomerVersionList(vSite.getSiteCode(),siteSpVersion);
+            String spList = redisService.returnSpecialCustomerList(vSite.getSiteCode(),siteSpVersion);
             spList =StringUtils.trimToNull(spList);
             if(spList!=null){
                 vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.SPEICAL_PERSON,spList);

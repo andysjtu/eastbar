@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by AndySJTU on 2015/6/4.
  */
 //@Repository
-public interface ProgBlockAlertDao extends PagingAndSortingRepository<ProgBlockAlert,Long>{
+public interface ProgBlockAlertDao {
+//        extends PagingAndSortingRepository<ProgBlockAlert,Long>{
 }
