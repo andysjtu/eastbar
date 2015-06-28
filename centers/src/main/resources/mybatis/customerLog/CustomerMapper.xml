@@ -4,7 +4,7 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="org.eastbar.centers.customerLog.dao.CustomerDao">
     <resultMap id="customerResult" type="Customer">
-        <id property="id" column="id" />
+        <id property="id" column="seq_id" />
         <result property="accountId" column="account_id" />
         <result property="siteCode" column="site_code" />
         <result property="provinceCode" column="province_code" />
@@ -25,16 +25,19 @@
     </sql>
 
     <select id="getCustomer" parameterType="Customer" resultMap="customerResult">
-        select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and open_time=#{openTime}
+        select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and to_char(open_time,'yyyy-mm-dd hh24:mi:ss')=#{openTime}
     </select>
 
     <!--插入信息 -->
     <insert id="saveCustomer" parameterType="Customer" keyProperty="id" useGeneratedKeys="true">
-        insert into t_customer(account_id,site_code,province_code,city_code,county_code,name,cert_type,
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_CUSTOMER_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_customer(seq_id,account_id,site_code,province_code,city_code,county_code,name,cert_type,
         cert_id,auth_org,nationality,status,open_time,close_time)
-        select #{accountId},#{siteCode},#{provinceCode},#{cityCode},#{countyCode},#{name},#{certType},
+        select #{id},#{accountId},#{siteCode},#{provinceCode},#{cityCode},#{countyCode},#{name},#{certType},
         #{certId},#{authOrg},#{nationality},#{status},#{openTime},#{closeTime} from dual
-        where not exists (select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and open_time=#{openTime})
+        where not exists (select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and to_char(open_time,'yyyy-mm-dd hh24:mi:ss')=#{openTime})
     </insert>
 
     <!-- 修改营业时间信息 -->
@@ -55,7 +58,7 @@
             <if test="closeTime!=null">t.close_time=#{closeTime},</if>
             <if test="status!=null">t.status=#{status}</if>
         </set>
-        where t.site_code=#{siteCode} and t.account_id=#{accountId} and t.open_time=#{openTime}
+        where t.site_code=#{siteCode} and t.account_id=#{accountId} and to_char(t.open_time,'yyyy-mm-dd hh24:mi:ss')=#{openTime}
     </update>
 
 </mapper>

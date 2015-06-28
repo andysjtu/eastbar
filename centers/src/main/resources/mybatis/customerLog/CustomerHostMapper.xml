@@ -4,7 +4,7 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="org.eastbar.centers.customerLog.dao.CustomerHostDao">
     <resultMap id="customerHostResult" type="CustomerHost">
-        <id property="id" column="id" />
+        <id property="id" column="seq_id" />
         <result property="cid" column="customer_id" />
         <result property="ipAdd" column="ip_add" />
         <result property="macAddress" column="mac_add" />
@@ -25,14 +25,17 @@
          and t.offline_time is null
         </if>
         <if test="onlineTime!=null">
-            and t.online_time=#{onlineTime}
+            and to_char(t.online_time,'yyyy-mm-dd hh24:mi:ss')=#{onlineTime}
         </if>
     </select>
 
     <!--插入信息 -->
     <insert id="saveHost" parameterType="CustomerHost" keyProperty="id" useGeneratedKeys="true">
-        insert into t_customer_host(customer_id,ip_add,mac_add,online_time,offline_time,os_system,version)
-        values(#{cid},#{ipAdd},#{macAddress},#{onlineTime},#{offlineTime},#{osSystem},#{version})
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_CUSTOMER_HOST_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_customer_host(seq_id,customer_id,ip_add,mac_add,online_time,offline_time,os_system,version)
+        values(#{id},#{cid},#{ipAdd},#{macAddress},to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),to_date(#{offlineTime},'yyyy-mm-dd hh24:mi:ss'),#{osSystem},#{version})
     </insert>
 
     <!-- 修改信息 -->
@@ -42,8 +45,8 @@
             <if test="cid!=null"> t.customer_id=#{cid},</if>
             <if test="ipAdd!=null">t.ip_add=#{ipAdd},</if>
             <if test="macAddress!=null">t.mac_add=#{macAddress},</if>
-            <if test="onlineTime!=null">t.online_time=#{onlineTime},</if>
-            <if test="offlineTime!=null">t.offline_time=#{offlineTime},</if>
+            <if test="onlineTime!=null">t.online_time=to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),</if>
+            <if test="offlineTime!=null">t.offline_time=to_date(#{offlineTime},'yyyy-mm-dd hh24:mi:ss'),</if>
             <if test="osSystem!=null">t.os_system=#{osSystem},</if>
             <if test="version!=null">t.version=#{version}</if>
         </set>

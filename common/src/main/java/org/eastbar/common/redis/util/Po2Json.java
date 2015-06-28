@@ -4,7 +4,6 @@
  */
 package org.eastbar.common.redis.util;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springside.modules.mapper.JsonMapper;
 
 /**
