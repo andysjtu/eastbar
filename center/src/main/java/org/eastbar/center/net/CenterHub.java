@@ -1,4 +1,4 @@
-package org.eastbar.hub;
+package org.eastbar.center.net;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -7,8 +7,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelPipeline;
+import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.codec.*;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -16,7 +18,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 /**
  * Created by AndySJTU on 2015/5/27.
@@ -32,6 +33,9 @@ public class CenterHub {
 
     private Map<SiteReport, List<TermReport>> siteTermMaps = Maps.newConcurrentMap();
 
+    @Autowired
+    private IEventPipe eventPipe;
+
     public void check() {
         checkUpdateService.submit(new Runnable() {
             @Override
@@ -41,41 +45,41 @@ public class CenterHub {
         });
     }
 
-    public void updateUrlPolicy(Channel channel, String siteCode, int newVersion) {
-        List<SiteReport> reports = centerChannels.get(channel);
-        for (SiteReport siteReport : reports) {
-            if (siteCode.equals(siteReport.getSiteCode())) {
-                siteReport.setUrlVersion(newVersion);
-            }
-        }
-    }
-
-    public void updateKwPolicy(Channel channel, String siteCode, int newVersion) {
-        List<SiteReport> reports = centerChannels.get(channel);
-        for (SiteReport siteReport : reports) {
-            if (siteCode.equals(siteReport.getSiteCode())) {
-                siteReport.setKwVersion(newVersion);
-            }
-        }
-    }
-
-    public void updateSmPolicy(Channel channel, String siteCode, int newVersion) {
-        List<SiteReport> reports = centerChannels.get(channel);
-        for (SiteReport siteReport : reports) {
-            if (siteCode.equals(siteReport.getSiteCode())) {
-                siteReport.setSmVersion(newVersion);
-            }
-        }
-    }
-
-    public void updatePrgPolicy(Channel channel, String siteCode, int newVersion) {
-        List<SiteReport> reports = centerChannels.get(channel);
-        for (SiteReport siteReport : reports) {
-            if (siteCode.equals(siteReport.getSiteCode())) {
-                siteReport.setPrgVersion(newVersion);
-            }
-        }
-    }
+//    public void updateUrlPolicy(Channel channel, String siteCode, int newVersion) {
+//        List<SiteReport> reports = centerChannels.get(channel);
+//        for (SiteReport siteReport : reports) {
+//            if (siteCode.equals(siteReport.getSiteCode())) {
+//                siteReport.setUrlVersion(newVersion);
+//            }
+//        }
+//    }
+//
+//    public void updateKwPolicy(Channel channel, String siteCode, int newVersion) {
+//        List<SiteReport> reports = centerChannels.get(channel);
+//        for (SiteReport siteReport : reports) {
+//            if (siteCode.equals(siteReport.getSiteCode())) {
+//                siteReport.setKwVersion(newVersion);
+//            }
+//        }
+//    }
+//
+//    public void updateSmPolicy(Channel channel, String siteCode, int newVersion) {
+//        List<SiteReport> reports = centerChannels.get(channel);
+//        for (SiteReport siteReport : reports) {
+//            if (siteCode.equals(siteReport.getSiteCode())) {
+//                siteReport.setSmVersion(newVersion);
+//            }
+//        }
+//    }
+//
+//    public void updatePrgPolicy(Channel channel, String siteCode, int newVersion) {
+//        List<SiteReport> reports = centerChannels.get(channel);
+//        for (SiteReport siteReport : reports) {
+//            if (siteCode.equals(siteReport.getSiteCode())) {
+//                siteReport.setPrgVersion(newVersion);
+//            }
+//        }
+//    }
 
 
 

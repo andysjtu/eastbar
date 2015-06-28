@@ -1,12 +1,9 @@
-package org.eastbar.hub;
+package org.eastbar.center.net;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.*;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by AndySJTU on 2015/6/1.

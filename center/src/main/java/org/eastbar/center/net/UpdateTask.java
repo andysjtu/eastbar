@@ -1,4 +1,4 @@
-package org.eastbar.hub;
+package org.eastbar.center.net;
 
 import io.netty.channel.Channel;
 import org.eastbar.codec.SiteReport;
