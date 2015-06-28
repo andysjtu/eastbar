@@ -66,7 +66,7 @@ public class CenterListener implements Listener {
                     serverChannel = future.channel();
                     logger.info("开启RMI侦听中心服务成功");
                 } else {
-                    logger.error("开启RMI侦听中心服务失败");
+                    logger.error("开启RMI侦听中心服务失败",future.cause());
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }

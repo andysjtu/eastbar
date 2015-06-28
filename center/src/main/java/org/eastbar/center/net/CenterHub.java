@@ -7,7 +7,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelPipeline;
+import org.eastbar.center.statusMachine.EventUtil;
+import org.eastbar.center.statusMachine.HostEvent;
 import org.eastbar.center.statusMachine.IEventPipe;
+import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.codec.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +92,11 @@ public class CenterHub {
         Set<SiteReport> reportSet = reportListMap.keySet();
         for(SiteReport siteReport:reportSet){
             siteTermMaps.put(siteReport,reportListMap.get(siteReport));
+            List<TermReport> termReports = reportListMap.get(siteReport);
+            for(TermReport termReport:termReports){
+                HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
+                eventPipe.addEvents(hostEvent);
+            }
         }
 
         channel.closeFuture().addListener(new ChannelFutureListener() {
@@ -102,7 +110,15 @@ public class CenterHub {
     }
 
     public void unregisterCenter(Channel channel) {
-        centerChannels.remove(channel);
+        List<SiteReport> siteReports =centerChannels.remove(channel);
+        if(siteReports!=null){
+            for (SiteReport siteReport:siteReports){
+                ResetEvent resetEvent = new ResetEvent();
+                resetEvent.setSiteCode(siteReport.getSiteCode());
+                eventPipe.addEvents(resetEvent);
+            }
+        }
+
         printStatus();
     }
 

@@ -115,9 +115,4 @@ public class PolicySaver {
         return verNum;
     }
 
-    private void sendSuccessResp(short type,short suc){
-
-
-
-    }
 }

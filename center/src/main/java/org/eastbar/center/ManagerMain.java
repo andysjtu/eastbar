@@ -1,5 +1,6 @@
-package org.eastbar;
+package org.eastbar.center;
 
+import org.eastbar.center.net.CenterListener;
 import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
@@ -40,6 +41,11 @@ public class ManagerMain {
         StatusMachine sm = (StatusMachine)ctx.getBean("statusMachine");
 	    sm.onStart();
         System.out.println("--------------start manager-----------------");
+
+
+        System.out.println("------启动网络侦听-------");
+        CenterListener listener = ctx.getBean(CenterListener.class);
+        listener.listen();
 
 //        //启动事件模拟 器
 //        Thread.sleep(10000);
