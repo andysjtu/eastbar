@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.assertj.core.util.Maps;
-import org.eastbar.centers.strategy.SiteStrategyEvent;
+import org.eastbar.center.strategy.SiteStrategyEvent;
 import org.eastbar.city.center.HubConnector;
 import org.eastbar.codec.*;
 import org.eastbar.codec.policy.PolicyUpdateMsg;

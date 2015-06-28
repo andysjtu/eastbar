@@ -32,7 +32,7 @@
 
 		<dependency>
 			<groupId>org.eastbar</groupId>
-			<artifactId>centers</artifactId>
+			<artifactId>eastbar-center</artifactId>
 			<version>${eastbar.version}</version>
 		</dependency>
 

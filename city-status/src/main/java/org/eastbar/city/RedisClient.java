@@ -1,11 +1,8 @@
 package org.eastbar.city;
 
 import org.apache.commons.lang3.StringUtils;
-import org.eastbar.centers.strategy.SiteStrategyEvent;
-import org.eastbar.common.redis.SiteRedisService;
-import org.eastbar.common.redis.util.Strategy;
+import org.eastbar.center.strategy.SiteStrategyEvent;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
