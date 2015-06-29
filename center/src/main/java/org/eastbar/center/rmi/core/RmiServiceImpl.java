@@ -5,6 +5,7 @@
 package org.eastbar.center.rmi.core;
 
 
+import org.eastbar.center.net.CenterHub;
 import org.eastbar.center.strategy.service.KeyWordService;
 import org.eastbar.center.strategy.service.biz.BannedProgBO;
 import org.eastbar.center.strategy.util.Strategy;
@@ -47,39 +48,37 @@ public class RmiServiceImpl implements RmiService {
     @Autowired
     private SiteRedisService siteRedisService;
 
+    @Autowired
+    private CenterHub centerHub;
+
     @Override
     public int shutDown(String siteCode, String ip) {
-        //TODO
         //对客户端执行关机操作
-        return 0;
+        return centerHub.shutdown(siteCode, ip);
     }
 
     @Override
     public int restart(String siteCode, String ip) {
-        //TODO
         //对客户端执行重启操作
-        return 0;
+        return centerHub.restart(siteCode, ip);
     }
 
     @Override
     public int locking(String siteCode, String ip) {
-        //TODO
         //对客户端执行锁定操作
-        return 0;
+        return centerHub.lockScreen(siteCode, ip);
     }
 
     @Override
     public int Unlock(String siteCode, String ip) {
-        //TODO
         //对客户端执行解锁操作
-        return 0;
+        return centerHub.unlockScreen(siteCode, ip);
     }
 
     @Override
     public byte[] Screenshot(String siteCode, String ip) {
-        //TODO
         //对客户端执行截图操作
-        return new byte[0];
+        return centerHub.capture(siteCode, ip);
     }
 
     @Override

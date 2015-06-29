@@ -176,6 +176,15 @@ public class CenterHub {
     public int lockScreen(String siteCode, String hostIp) {
         return operate(OPERATE_METHOD.LOCK, siteCode, hostIp);
     }
+    public int unlockScreen(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.UNLOCK, siteCode, hostIp);
+    }
+    public int shutdown(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.SHUTDOWN, siteCode, hostIp);
+    }
+    public int restart(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.RESTART, siteCode, hostIp);
+    }
 
     private void sendCmdAndWait(Channel channel, final CountDownLatch latch, final SocketMsg msg, final CenterCmdRespHandler handler) {
         handler.register(msg.getMessageId(), msg.getMessageType(), latch);
@@ -267,6 +276,6 @@ public class CenterHub {
     }
 
     public static enum OPERATE_METHOD {
-        LOCK, UNLOCK, SHUTDOWN;
+        LOCK, UNLOCK, SHUTDOWN,RESTART;
     }
 }
