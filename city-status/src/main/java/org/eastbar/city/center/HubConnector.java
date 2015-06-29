@@ -9,6 +9,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.eastbar.city.CityCenter;
+import org.eastbar.city.center.handler.Center2ClientCmdHandler;
 import org.eastbar.city.center.handler.CityCenterInitHandler;
 import org.eastbar.codec.*;
 import org.slf4j.Logger;
@@ -69,7 +70,9 @@ public class HubConnector {
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("heartBeaten", new HeartBeatenHandler());
                         pipeline.addLast("initReqHandler",new CityCenterInitHandler(center));
-                        pipeline.addLast(CenterCmdRespHandler.DEFAULT_HANDLER_NAME, new CenterCmdRespHandler());
+                        pipeline.addLast("cmdRespHandler",new Center2ClientCmdHandler(center));
+//                        pipeline.addLast(CenterCmdRespHandler.DEFAULT_HANDLER_NAME, new CenterCmdRespHandler());
+
 
                     }
                 });

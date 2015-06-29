@@ -15,12 +15,12 @@ import java.util.concurrent.Executors;
 public class ConsoleCmdHandler extends SimpleChannelInboundHandler<SocketMsg> {
     private Executor executor = Executors.newSingleThreadExecutor();
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    public void channelActive(final ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         executor.execute(new Runnable() {
             @Override
             public void run() {
-
+                processCmd(ctx);
             }
         });
 
