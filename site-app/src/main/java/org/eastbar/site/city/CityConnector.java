@@ -50,7 +50,7 @@ public class CityConnector extends AbstractConnector {
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
 //            remoteAddress = "status.nbscreen.com";
-            remoteAddress="192.168.9.119";
+            remoteAddress="127.0.0.1";
             remotePort = 9041;
         }
 

@@ -1,6 +1,7 @@
 package org.eastbar.city;
 
 import org.eastbar.city.center.HubConnector;
+import org.eastbar.city.console.CityConsoleListener;
 import org.eastbar.city.site.SiteListener;
 import org.eastbar.net.Listener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class CenterServer {
     @Autowired
     private SiteListener siteListener;
     @Autowired
+    private CityConsoleListener cityConsoleListener;
+    @Autowired
     private CityCenter center;
 
     @Autowired
@@ -26,14 +29,14 @@ public class CenterServer {
 //            listener.listen();
 //        }
         siteListener.listen();
+        cityConsoleListener.listen();
         connector.connect();
     }
 
     public void stop() {
-//        for (Listener listener : listeners) {
-//            listener.stopListen();
-//        }
-        siteListener.listen();
+
+        siteListener.stopListen();
+        cityConsoleListener.stopListen();
         connector.disconnect();
 
         center.disconnectAllSites();

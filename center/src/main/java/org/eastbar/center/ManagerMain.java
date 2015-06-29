@@ -1,6 +1,6 @@
 package org.eastbar.center;
 
-import org.eastbar.center.net.CenterListener;
+import org.eastbar.center.net.CityCenterListener;
 import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
@@ -44,7 +44,7 @@ public class ManagerMain {
 
 
         System.out.println("------启动网络侦听-------");
-        CenterListener listener = ctx.getBean(CenterListener.class);
+        CityCenterListener listener = ctx.getBean(CityCenterListener.class);
         listener.listen();
 
 //        //启动事件模拟 器
