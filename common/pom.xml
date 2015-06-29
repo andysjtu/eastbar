@@ -51,6 +51,11 @@
             <artifactId>springside-extension</artifactId>
             <version>${springside.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springside</groupId>
+            <artifactId>springside-core</artifactId>
+            <version>${springside.version}</version>
+        </dependency>
         <!-- JSON end -->
     </dependencies>
 </project>

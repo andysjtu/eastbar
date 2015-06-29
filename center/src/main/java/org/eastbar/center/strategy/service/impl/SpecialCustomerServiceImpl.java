@@ -6,13 +6,18 @@ package org.eastbar.center.strategy.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.eastbar.center.Po2Json;
+import org.eastbar.center.strategy.dao.ManageRuleDao;
 import org.eastbar.center.strategy.dao.SpecialCustomerDao;
+import org.eastbar.center.strategy.entity.ManageRule;
 import org.eastbar.center.strategy.util.SpecialCustomerJson;
 import org.eastbar.center.strategy.entity.SpecialCustomer;
 import org.eastbar.center.strategy.service.SpecialCustomerService;
 import org.eastbar.center.strategy.service.biz.SpecialCustomerBO;
+import org.eastbar.center.strategy.util.Times;
+import org.eastbar.center.utils.Versions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +35,10 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
 
     @Autowired
     private SpecialCustomerDao specialCustomerDao;
+
+    @Autowired
+    private ManageRuleDao manageRuleDao;
+
     @Override
     public Map<String,Map<String, String>> control(Integer version) throws Exception{
         //根本版本号获取所有的add操作的prog列表
@@ -183,4 +192,27 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
        return specialCustomerList;
 
     }
+
+    public Boolean update(Integer[] ids){
+        ManageRule manageRule=manageRuleDao.get();
+        for(int i=0;i<ids.length;i++){
+            SpecialCustomer specialCustomer=specialCustomerDao.get(ids[i]);
+            specialCustomer.setUpdator("center");
+            specialCustomer.setUpdateTime(Times.now());
+            specialCustomer.setOperation("edit");
+            specialCustomer.setIsPub(1);
+            specialCustomer.setVersion(Versions.computeVersion(manageRule.getSpecialPersonVer()));
+            specialCustomer.setVerNum(manageRule.getSpecialVerNum() + 1);
+            specialCustomerDao.update(specialCustomer);
+            if(i==0){
+                ManageRule manageRule1=manageRule;
+                manageRule1.setSpecialVerNum(specialCustomer.getVerNum());
+                manageRule1.setSpecialPersonVer(specialCustomer.getVersion());
+                manageRule1.setUpdateTime(Times.now());
+                manageRuleDao.update(manageRule1);
+            }
+        }
+        return true;
+    }
+
 }

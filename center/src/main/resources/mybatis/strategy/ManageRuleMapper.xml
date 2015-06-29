@@ -4,8 +4,11 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="org.eastbar.center.strategy.dao.ManageRuleDao">
     <resultMap id="manageRuleResult" type="ManageRule">
-        <id property="id" column="id" />
-        <result property="hourVerNum" column="hour_ver_num" />
+        <id property="id" column="seq_id" />
+        <result property="banUrlVer" column="ban_url_ver" />
+        <result property="banProgVer" column="ban_prog_ver" />
+        <result property="specialPersonVer" column="special_person_ver" />
+        <result property="keywordVer" column="keyword_ver"/>
         <result property="urlVerNum" column="url_ver_num" />
         <result property="progVerNum" column="prog_ver_num" />
         <result property="specialVerNum" column="special_ver_num" />
@@ -17,5 +20,46 @@
     <select id="getAll" resultMap="manageRuleResult">
         select * from t_manage_rule
     </select>
+
+    <!--根据id查找表信息-->
+    <select id="get" resultMap="manageRuleResult">
+        select * from t_manage_rule
+    </select>
+
+
+    <!-- 修改信息 -->
+    <update id="updateManageRule" parameterType="ManageRule">
+        update t_manage_rule t
+        <set>
+            <if test="banUrlVer!=null">
+                t.ban_url_ver=#{banUrlVer},
+            </if>
+            <if test="banProgVer!=null">
+                t.ban_prog_ver=#{banProgVer},
+            </if>
+            <if test="specialPersonVer!=null">
+                t.special_person_ver=#{specialPersonVer},
+            </if>
+            <if test="keywordVer!=null">
+                t.keyword_ver=#{keywordVer},
+            </if>
+            <if test="urlVerNum!=null">
+                t.url_ver_num=#{urlVerNum},
+            </if>
+            <if test="progVerNum!=null">
+                t.prog_ver_num=#{progVerNum},
+            </if>
+            <if test="specialVerNum!=null">
+                t.special_ver_num=#{specialVerNum},
+            </if>
+            <if test="keywordVerNum!=null">
+                t.keyword_ver_num=#{keywordVerNum},
+            </if>
+            <if test="updateTime!=null">
+                t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
 
 </mapper>

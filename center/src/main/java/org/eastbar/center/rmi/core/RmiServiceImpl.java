@@ -6,6 +6,7 @@ package org.eastbar.center.rmi.core;
 
 
 import org.eastbar.center.strategy.service.KeyWordService;
+import org.eastbar.center.strategy.service.biz.BannedProgBO;
 import org.eastbar.center.strategy.util.Strategy;
 import org.eastbar.center.strategy.service.BannedProgService;
 import org.eastbar.center.strategy.service.BannedUrlService;
@@ -15,6 +16,7 @@ import org.eastbar.common.redis.CenterRedisService;
 import org.eastbar.common.redis.SiteRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -81,6 +83,16 @@ public class RmiServiceImpl implements RmiService {
     }
 
     @Override
+    public int sendSpecialCustomerVersion(final int version,Integer[] ids) {
+        if(specialCustomerService.update(ids)){
+           return  sendSpecialCustomerVersion(version);
+        }else{
+            return 0;
+        }
+
+    }
+
+    @Override
     public int sendSpecialCustomerVersion(final int version) {
         boolean flag = false;
         try {
@@ -98,7 +110,6 @@ public class RmiServiceImpl implements RmiService {
                 //存redis版本总库
                 centerRedisService.saveUpdatedVersion(Strategy.SPECIALCUSTOMER, i + 1);
             }
-
 
             centerRedisService.saveLastedVersion(Strategy.SPECIALCUSTOMER, version);
             flag = true;
@@ -120,6 +131,17 @@ public class RmiServiceImpl implements RmiService {
      * @param version
      * @return
      */
+    @Override
+    public int sendKeyWordVersion(final int version,Integer[] ids) {
+
+       if(keyWordService.update(ids)){
+           return sendKeyWordVersion(version);
+       }else{
+           return 0;
+       }
+
+    }
+
     @Override
     public int sendKeyWordVersion(final int version) {
         boolean flag = false;
@@ -161,6 +183,16 @@ public class RmiServiceImpl implements RmiService {
      * @return int 1 代表成功  0 代表失败
      */
     @Override
+    public int sendBannedUrlVersion(final int version,Integer[] ids) {
+        if(bannedUrlService.update(ids)){
+            return sendBannedUrlVersion(version);
+        }else{
+            return 0;
+        }
+    }
+
+
+    @Override
     public int sendBannedUrlVersion(final int version) {
         boolean flag = false;
         try {
@@ -199,33 +231,39 @@ public class RmiServiceImpl implements RmiService {
      * @return int 1  代表成功 0 代表失败
      */
     @Override
+    public int sendBannedProgVersion(final int version,Integer[] ids) {
+        if( bannedProgService.update(ids)){
+            return sendBannedProgVersion(version);
+        }else{
+            return 0;
+        }
+    }
+
     public int sendBannedProgVersion(final int version) {
         boolean flag = false;
-        try {
-            //获取redis中当前bannedprog已更新的最新版本号
-            String num = siteRedisService.returnUpdatedVersion(Strategy.BANNEDPROG);
-            Integer redisVersion = 0;
-            if (num != null && !"".equals(num)) {//如果版本号不为空，则转成Integer
-                redisVersion = Integer.parseInt(num);
+            try {
+                //获取redis中当前bannedprog已更新的最新版本号
+                String num = siteRedisService.returnUpdatedVersion(Strategy.BANNEDPROG);
+                Integer redisVersion = 0;
+                if (num != null && !"".equals(num)) {//如果版本号不为空，则转成Integer
+                    redisVersion = Integer.parseInt(num);
+                }
+                for (int i = redisVersion; i < version; i++) {
+                    //根据条件读取prog列表
+                    Map<String, Map<String, String>> bannedProgs = bannedProgService.control(i + 1);
+                    // if(bannedProgs.size()>0){
+                    //调用redis，把prog版本列表信息存储到redis中
+                    centerRedisService.saveProgVersionList(bannedProgs, i + 1 + "");
+                    //存redis版本总库
+                    centerRedisService.saveUpdatedVersion(Strategy.BANNEDPROG, i + 1);
+                    //  }
+                }
+                centerRedisService.saveLastedVersion(Strategy.BANNEDPROG, version);
+                flag = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                flag = false;
             }
-            for (int i = redisVersion; i < version; i++) {
-                //根据条件读取prog列表
-                Map<String, Map<String, String>> bannedProgs = bannedProgService.control(i + 1);
-                // if(bannedProgs.size()>0){
-                //调用redis，把prog版本列表信息存储到redis中
-                centerRedisService.saveProgVersionList(bannedProgs, i + 1 + "");
-                //存redis版本总库
-                centerRedisService.saveUpdatedVersion(Strategy.BANNEDPROG, i + 1);
-                //  }
-            }
-
-
-            centerRedisService.saveLastedVersion(Strategy.BANNEDPROG, version);
-            flag = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            flag = false;
-        }
         if (!flag) {
             return 1;
         }

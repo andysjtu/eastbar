@@ -4,6 +4,8 @@
  */
 package org.eastbar.center.strategy.service;
 
+import org.eastbar.center.strategy.service.biz.BannedProgBO;
+
 import java.util.Map;
 
 /**
@@ -19,5 +21,6 @@ public interface BannedProgService {
     //场所端从数据库拉版本信息时，使用这个方法，返回版本列表信息
     String siteControl(String siteCode,Integer version) throws Exception;
 
+    Boolean update(Integer[]  ids);
 
 }

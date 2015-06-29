@@ -7,6 +7,7 @@ package org.eastbar.common.redis.test;
 import org.eastbar.common.redis.CenterRedisService;
 import org.eastbar.common.redis.SiteRedisService;
 import org.eastbar.common.redis.WebRedisService;
+import org.eastbar.common.rmi.RmiService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,8 +30,11 @@ public class RedisTest {
         CenterRedisService centerRedisService= (CenterRedisService) ctx.getBean("centerRedisServiceImpl");
         WebRedisService webRedisService=(WebRedisService)ctx.getBean("webRedisServiceImpl");
         SiteRedisService siteRedisService=(SiteRedisService)ctx.getBean("siteRedisServiceImpl");
+        RmiService rmiService=(RmiService)ctx.getBean("rmiServiceImpl");
         //redis测试begin
         Map<String,String> center=new HashMap<>();
+
+        //rmiService.sendBannedProgVersion(3,143);
 //        center.put("monitorCode","1234");
 //        center.put("totalSite","231");
 //        centerRedisService.centerHashPut(center);

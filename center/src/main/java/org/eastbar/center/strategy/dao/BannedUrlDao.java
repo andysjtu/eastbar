@@ -5,6 +5,7 @@
 package org.eastbar.center.strategy.dao;
 
 
+import org.eastbar.center.strategy.entity.BannedProg;
 import org.eastbar.center.strategy.entity.BannedUrl;
 
 import java.util.List;
@@ -29,6 +30,10 @@ public interface BannedUrlDao {
     List<String> getMonitorCodesByVersion(Integer params);
 
     String getUrlssByCondition(List<BannedUrl> bannedUrls,String monitorCode);
+
+    void update(BannedUrl bannedUrl);
+
+    BannedUrl get(Integer id);
 
 
 }

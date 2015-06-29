@@ -20,6 +20,10 @@ import java.io.Serializable;
 public class ManageRule implements Serializable{ //t_manage_rule
 
     private Integer id;//id
+    private String banUrlVer;//ban_url_ver
+    private String banProgVer;//ban_prog_ver
+    private String specialPersonVer;
+    private String keywordVer;//keyword_ver
     private Integer hourVerNum;//hour_ver_num
     private Integer urlVerNum;//url_ver_num
     private Integer progVerNum;//prog_ver_num
@@ -81,6 +85,38 @@ public class ManageRule implements Serializable{ //t_manage_rule
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getBanUrlVer() {
+        return banUrlVer;
+    }
+
+    public void setBanUrlVer(String banUrlVer) {
+        this.banUrlVer = banUrlVer;
+    }
+
+    public String getBanProgVer() {
+        return banProgVer;
+    }
+
+    public void setBanProgVer(String banProgVer) {
+        this.banProgVer = banProgVer;
+    }
+
+    public String getSpecialPersonVer() {
+        return specialPersonVer;
+    }
+
+    public void setSpecialPersonVer(String specialPersonVer) {
+        this.specialPersonVer = specialPersonVer;
+    }
+
+    public String getKeywordVer() {
+        return keywordVer;
+    }
+
+    public void setKeywordVer(String keywordVer) {
+        this.keywordVer = keywordVer;
     }
 
     @Override

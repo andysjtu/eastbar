@@ -39,4 +39,9 @@ public class ManageRuleServiceImpl implements ManageRuleService {
         map.put(Strategy.SPECIALCUSTOMER,manageRule.getSpecialVerNum());
         return map;
     }
+
+    @Override
+    public ManageRule get() {
+        return manageRuleDao.get();
+    }
 }

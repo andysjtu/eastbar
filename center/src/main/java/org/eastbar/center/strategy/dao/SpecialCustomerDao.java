@@ -30,4 +30,8 @@ public interface SpecialCustomerDao {
 
     String getSpecialCustomersByCondition(List<SpecialCustomer> specialCustomers,String monitorCode);
 
+    void update(SpecialCustomer specialCustomer);
+
+    SpecialCustomer get(Integer id);
+
 }

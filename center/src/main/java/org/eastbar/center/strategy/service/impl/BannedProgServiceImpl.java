@@ -7,12 +7,17 @@ package org.eastbar.center.strategy.service.impl;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eastbar.center.Po2Json;
 import org.eastbar.center.strategy.dao.BannedProgDao;
+import org.eastbar.center.strategy.dao.ManageRuleDao;
 import org.eastbar.center.strategy.entity.BannedProg;
+import org.eastbar.center.strategy.entity.ManageRule;
 import org.eastbar.center.strategy.service.BannedProgService;
 import org.eastbar.center.strategy.service.biz.BannedProgBO;
 import org.eastbar.center.strategy.util.BannedProgJson;
+import org.eastbar.center.strategy.util.Times;
+import org.eastbar.center.utils.Versions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +35,9 @@ public class BannedProgServiceImpl implements BannedProgService {
 
     @Autowired
     private BannedProgDao bannedProgDao;
+
+    @Autowired
+    private ManageRuleDao manageRuleDao;
 
     /**
      * 中心端往redis存储版本信息时，使用这个方法，返回版本列表信息
@@ -193,4 +201,27 @@ public class BannedProgServiceImpl implements BannedProgService {
         }
        return bannedProgBOList;
     }
+
+    @Override
+    @Transactional
+    public Boolean update(Integer[]  ids){
+        ManageRule manageRule=manageRuleDao.get();
+        for(int i=0;i<ids.length;i++){
+            BannedProg bannedProg=bannedProgDao.get(ids[i]);
+            bannedProg.setVersion(Versions.computeVersion(manageRule.getBanProgVer()));
+            bannedProg.setOperation("edit");
+            bannedProg.setVerNum(manageRule.getProgVerNum() + 1);
+            bannedProg.setIsPub(1);
+            bannedProgDao.update(bannedProg);
+            if(i==0){
+                ManageRule manageRule1=manageRule;
+                manageRule1.setBanProgVer(bannedProg.getVersion());
+                manageRule1.setProgVerNum(bannedProg.getVerNum());
+                manageRule1.setUpdateTime(Times.now());
+                manageRuleDao.update(manageRule1);
+            }
+        }
+           return true;
+    }
+
 }

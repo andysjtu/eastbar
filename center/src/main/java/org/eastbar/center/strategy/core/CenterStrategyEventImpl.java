@@ -37,23 +37,23 @@ public class CenterStrategyEventImpl implements CenterStrategyEvent {
     private RmiService rmiService;
 
     @Override
-    public int sendSpecialCustomerVersion(int version) {
-        return rmiService.sendSpecialCustomerVersion(version);
+    public int sendSpecialCustomerVersion(int version,Integer[] ids) {
+        return rmiService.sendSpecialCustomerVersion(version,ids);
     }
 
     @Override
-    public int sendKeyWordVersion(int version) {
-        return rmiService.sendKeyWordVersion(version);
+    public int sendKeyWordVersion(int version,Integer[] ids) {
+        return rmiService.sendKeyWordVersion(version,ids);
     }
 
     @Override
-    public int sendBannedUrlVersion(int version) {
-        return rmiService.sendBannedUrlVersion(version);
+    public int sendBannedUrlVersion(int version,Integer[] ids) {
+        return rmiService.sendBannedUrlVersion(version,ids);
     }
 
     @Override
-    public int sendBannedProgVersion(int version) {
-        return rmiService.sendBannedProgVersion(version);
+    public int sendBannedProgVersion(int version,Integer[] ids) {
+        return rmiService.sendBannedProgVersion(version,ids);
     }
 
     //定期检查redis的版本是否是最新，需要更新就拉取列表
@@ -133,7 +133,7 @@ public class CenterStrategyEventImpl implements CenterStrategyEvent {
         //从数据库获取keyword当前最新的版本号
         Integer keywordVersion=Integer.parseInt(map.get(Strategy.KEYWORD)+"");
         if(keywordVersion>redisVersion){//如果数据库的最新版本号大于redis的最新版本号，则进行更新
-            result=rmiService.sendSpecialCustomerVersion(keywordVersion);
+            result=rmiService.sendKeyWordVersion(keywordVersion);
         }else{//否则不更新
             result=-1;
         }

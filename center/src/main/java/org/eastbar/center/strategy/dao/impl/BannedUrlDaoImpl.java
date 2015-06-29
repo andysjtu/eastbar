@@ -76,4 +76,13 @@ public class BannedUrlDaoImpl implements BannedUrlDao {
 
     }
 
+    @Override
+    public void update(BannedUrl bannedUrl) {
+        sqlSession.update("updateUrl",bannedUrl);
+    }
+
+    @Override
+    public BannedUrl get(Integer id) {
+        return sqlSession.selectOne("getUrl",id);
+    }
 }

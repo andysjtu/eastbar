@@ -31,4 +31,8 @@ public interface BannedProgDao {
     //根据条件
     String getProgsByCondition(List<BannedProg> bannedProgs,String monitorCode);
 
+    void update(BannedProg bannedProg);
+
+    BannedProg get(Integer id);
+
 }

@@ -57,32 +57,49 @@ public interface RmiService {
      */
     public byte[] Screenshot(String siteCode, String ip);
 
+
+
     /**
      * 发送特殊人员版本号
      * @param version
      * @return
      */
+    public int sendSpecialCustomerVersion(int version,Integer[] id)throws RuntimeException;
+
     public int sendSpecialCustomerVersion(int version)throws RuntimeException;
+
+
 
     /**
      * 发送关键字版本号
      * @param version
      * @return
      */
+    public int sendKeyWordVersion(int version,Integer[] id)throws RuntimeException;
+
     public int sendKeyWordVersion(int version)throws RuntimeException;
+
+
 
     /**
      * 发送禁止url版本号
      * @param version
      * @return
      */
+    public int sendBannedUrlVersion(int version,Integer[] id)throws RuntimeException;
+
     public int sendBannedUrlVersion(int version)throws RuntimeException;
+
+
 
     /**
      * 发送禁止程序版本号
      * @param version
      * @return
      */
+    public int sendBannedProgVersion(int version,Integer[] id)throws RuntimeException;
+
     public int sendBannedProgVersion(int version)throws RuntimeException;
+
 }
 

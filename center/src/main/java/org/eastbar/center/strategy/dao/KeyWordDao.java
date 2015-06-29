@@ -28,4 +28,8 @@ public interface KeyWordDao {
 
     String getKeyWordsByCondition(List<KeyWord> keyWords,String monitorCode);
 
+    void update(KeyWord keyWord);
+
+    KeyWord get(Integer id);
+
 }

@@ -7,12 +7,17 @@ package org.eastbar.center.strategy.service.impl;
 import org.apache.commons.beanutils.BeanUtils;
 import org.eastbar.center.Po2Json;
 import org.eastbar.center.strategy.dao.KeyWordDao;
+import org.eastbar.center.strategy.dao.ManageRuleDao;
 import org.eastbar.center.strategy.entity.KeyWord;
+import org.eastbar.center.strategy.entity.ManageRule;
 import org.eastbar.center.strategy.service.KeyWordService;
 import org.eastbar.center.strategy.service.biz.KeyWordBO;
 import org.eastbar.center.strategy.util.KeyWordJson;
+import org.eastbar.center.strategy.util.Times;
+import org.eastbar.center.utils.Versions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +35,9 @@ public class KeyWordServiceImpl implements KeyWordService{
 
     @Autowired
     private KeyWordDao keyWordDao;
+
+    @Autowired
+    private ManageRuleDao manageRuleDao;
 
     @Override
     public Map<String,Map<String, String>> control(Integer version) throws Exception{
@@ -175,5 +183,29 @@ public class KeyWordServiceImpl implements KeyWordService{
             }
         }
        return keyWorBOdList;
+    }
+
+    @Override
+    @Transactional
+    public Boolean update(Integer[] ids) {
+        ManageRule manageRule=manageRuleDao.get();
+        for(int i=0;i<ids.length;i++){
+            KeyWord keyWord=keyWordDao.get(ids[i]);
+            keyWord.setUpdator("center");
+            keyWord.setUpdateTime(Times.now());
+            keyWord.setVersion(Versions.computeVersion(manageRule.getKeywordVer()));
+            keyWord.setVerNum(manageRule.getKeywordVerNum() + 1);
+            keyWord.setOperation("edit");
+            keyWord.setIsPub(1);
+            keyWordDao.update(keyWord);
+            if(i==0){
+                ManageRule manageRule1=manageRule;
+                manageRule1.setKeywordVer(keyWord.getVersion());
+                manageRule1.setKeywordVerNum(keyWord.getVerNum());
+                manageRule1.setUpdateTime(Times.now());
+                manageRuleDao.update(manageRule1);
+            }
+        }
+        return true;
     }
 }

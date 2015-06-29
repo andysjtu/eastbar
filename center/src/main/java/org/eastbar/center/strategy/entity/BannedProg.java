@@ -31,6 +31,8 @@ public class BannedProg implements Serializable {//t_banned_prog
     private int deleted;
     private int isPub;
 
+    private String operation;
+
     private String monitorCode;
     private String version;
 
@@ -136,6 +138,14 @@ public class BannedProg implements Serializable {//t_banned_prog
 
     public void setIsPub(int isPub) {
         this.isPub = isPub;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     @Override

@@ -29,6 +29,10 @@ public class BannedUrl implements Serializable { //banned_url
     private int deleted;
     private int isPub;
 
+    private String updator;
+    private String updateTime;
+    private String operation;
+
 
     private String monitorCode;
     private String version;
@@ -127,6 +131,30 @@ public class BannedUrl implements Serializable { //banned_url
 
     public void setIsPub(int isPub) {
         this.isPub = isPub;
+    }
+
+    public String getUpdator() {
+        return updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
+    }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     @Override

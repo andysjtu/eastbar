@@ -4,6 +4,8 @@
  */
 package org.eastbar.center.strategy.service;
 
+import org.eastbar.center.strategy.entity.ManageRule;
+
 import java.util.Map;
 
 /**
@@ -15,4 +17,6 @@ import java.util.Map;
 public interface ManageRuleService {
 
     public Map<String,Object> getAll();
+
+    ManageRule get();
 }

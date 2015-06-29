@@ -12,9 +12,19 @@
         <result property="alarmRank" column="alarm_rank" />
         <result property="deleted" column="delete_flag"/>
         <result property="verNum" column="ver_num"/>
+        <result property="updator" column="updator"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="operation" column="operation"/>
         <result property="monitorCode" column="monitor_code"/>
         <result property="isPub" column="is_pub"/>
     </resultMap>
+
+    <!--根据id查找表信息-->
+    <select id="getUrl" parameterType="int" resultMap="bannedUrlResult">
+        select * from t_banned_url t
+        where t.seq_id=#{id}
+    </select>
+
 
     <!--查找表的全部信息-->
     <select id="getAllUrl" resultMap="bannedUrlResult" parameterType="java.lang.Integer">
@@ -61,5 +71,32 @@
             and is_pub=1
         </where>
     </select>
+
+    <!-- 修改信息 -->
+    <update id="updateUrl" parameterType="BannedUrl">
+        update t_banned_url t
+        <set>
+            <if test="isPub!=null">
+                t.is_pub=#{isPub},
+            </if>
+            <if test="updator!=null">
+                t.updator=#{updator},
+            </if>
+            <if test="updateTime!=null">
+                t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss'),
+            </if>
+            <if test="version!=null">
+                t.version=#{version},
+            </if>
+            <if test="operation!=null">
+                t.operation=#{operation},
+            </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
 
 </mapper>

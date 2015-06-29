@@ -74,4 +74,14 @@ public class BannedProgDaoImpl implements BannedProgDao {
         List<BannedProg> bannedProgs=sqlSession.selectList("getAllRemoveProgs",version);
         return bannedProgs;
     }
+
+    @Override
+    public void update(BannedProg bannedProg) {
+        sqlSession.update("updateProg",bannedProg);
+    }
+
+    @Override
+    public BannedProg get(Integer id) {
+        return sqlSession.selectOne("getProg",id);
+    }
 }

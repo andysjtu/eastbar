@@ -5,14 +5,19 @@
 package org.eastbar.center.strategy.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.eastbar.center.strategy.dao.ManageRuleDao;
+import org.eastbar.center.strategy.entity.ManageRule;
 import org.eastbar.center.strategy.service.biz.BannedUrlBO;
 import org.eastbar.center.Po2Json;
 import org.eastbar.center.strategy.dao.BannedUrlDao;
 import org.eastbar.center.strategy.entity.BannedUrl;
 import org.eastbar.center.strategy.service.BannedUrlService;
 import org.eastbar.center.strategy.util.BannedUrlJson;
+import org.eastbar.center.strategy.util.Times;
+import org.eastbar.center.utils.Versions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +34,9 @@ import java.util.Map;
 public class BannedUrlServiceImpl implements BannedUrlService {
     @Autowired
     private BannedUrlDao bannedUrlDao;
+
+    @Autowired
+    private ManageRuleDao manageRuleDao;
     /**
      * 中心端往redis存储版本信息时，使用这个方法，返回版本列表信息
      * @param  version
@@ -189,5 +197,29 @@ public class BannedUrlServiceImpl implements BannedUrlService {
             }
         }
         return bannedUrlList;
+    }
+
+    @Override
+    @Transactional
+    public Boolean update(Integer[] ids){
+        ManageRule manageRule=manageRuleDao.get();
+        for(int i=0;i<ids.length;i++){
+            BannedUrl bannedUrl=bannedUrlDao.get(ids[i]);
+            bannedUrl.setUpdator("center");
+            bannedUrl.setUpdateTime(Times.now());
+            bannedUrl.setOperation("edit");
+            bannedUrl.setVersion(Versions.computeVersion(manageRule.getBanUrlVer()));
+            bannedUrl.setVerNum(manageRule.getUrlVerNum() + 1);
+            bannedUrl.setIsPub(1);
+            bannedUrlDao.update(bannedUrl);
+            if(i==0){
+                ManageRule manageRule1=manageRule;
+                manageRule1.setBanUrlVer(bannedUrl.getVersion());
+                manageRule1.setUrlVerNum(bannedUrl.getVerNum());
+                manageRule1.setUpdateTime(Times.now());
+                manageRuleDao.update(manageRule1);
+            }
+        }
+            return true;
     }
 }

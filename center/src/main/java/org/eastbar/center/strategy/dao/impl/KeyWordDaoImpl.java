@@ -75,5 +75,13 @@ public class KeyWordDaoImpl implements KeyWordDao {
 
     }
 
+    @Override
+    public void update(KeyWord keyWord) {
+        sqlSession.update("updateKeyWord",keyWord);
+    }
 
+    @Override
+    public KeyWord get(Integer id) {
+        return sqlSession.selectOne("getKeyWord",id);
+    }
 }

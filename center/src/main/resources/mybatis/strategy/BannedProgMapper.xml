@@ -11,8 +11,9 @@
         <result property="featureCode" column="feature_code" />
         <result property="alarmType" column="alarm_type" />
         <result property="alarmRank" column="alarm_rank" />
-        <result property="isBlock" column="is_block" />
         <result property="deleted" column="delete_flag"/>
+        <result property="version" column="version"/>
+        <result property="operation" column="operation"/>
         <result property="verNum" column="ver_num"/>
         <result property="monitorCode" column="monitor_code"/>
         <result property="isPub" column="is_pub"/>
@@ -22,9 +23,15 @@
         select * from t_banned_prog t
     </sql>
 
+    <!--根据id查找信息-->
+    <select id="getProg" parameterType="int" resultMap="bannedProgResult">
+        <include refid="bannedProg"/>
+        where t.seq_id=#{id}
+    </select>
+
     <!--查找表的全部信息-->
     <select id="getAllAddProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select * from t_banned_prog i
+        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='add'
             and  i.ver_num=#{verNum}
@@ -34,7 +41,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllEditProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select * from t_banned_prog i
+        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='edit'
             and  i.ver_num=#{verNum}
@@ -44,7 +51,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllRemoveProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select * from t_banned_prog i
+        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='remove'
             and  i.ver_num=#{verNum}
@@ -54,7 +61,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select * from t_banned_prog i
+        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.is_block,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             and  i.ver_num=#{verNum}
             and is_pub=1
@@ -70,4 +77,23 @@
         </where>
     </select>
 
+    <!-- 修改信息 -->
+    <update id="updateProg" parameterType="BannedProg">
+        update t_banned_prog t
+        <set>
+            <if test="isPub!=null">
+                t.is_pub=#{isPub},
+            </if>
+            <if test="version!=null">
+                t.version=#{version},
+            </if>
+            <if test="operation!=null">
+                t.operation=#{operation},
+            </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
 </mapper>

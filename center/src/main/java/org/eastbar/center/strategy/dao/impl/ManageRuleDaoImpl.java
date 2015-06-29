@@ -28,4 +28,14 @@ public class ManageRuleDaoImpl implements ManageRuleDao {
     public List<ManageRule> getAll() {
         return sqlSession.selectList("getAll");
     }
+
+    @Override
+    public ManageRule get() {
+        return sqlSession.selectOne("get");
+    }
+
+    @Override
+    public void update(ManageRule manageRule) {
+        sqlSession.update("updateManageRule",manageRule);
+    }
 }

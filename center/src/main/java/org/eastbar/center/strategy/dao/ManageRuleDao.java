@@ -17,4 +17,7 @@ import java.util.List;
 public interface ManageRuleDao {
 
     List<ManageRule> getAll();
+    ManageRule get();
+    void update(ManageRule manageRule);
+
 }

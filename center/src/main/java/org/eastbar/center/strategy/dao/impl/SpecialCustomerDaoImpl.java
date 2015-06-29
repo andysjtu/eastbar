@@ -74,4 +74,14 @@ public class SpecialCustomerDaoImpl implements SpecialCustomerDao {
         }
 
     }
+
+    @Override
+    public void update(SpecialCustomer specialCustomer) {
+        sqlSession.update("updateSpecial",specialCustomer);
+    }
+
+    @Override
+    public SpecialCustomer get(Integer id) {
+        return sqlSession.selectOne("getSpecial",id);
+    }
 }
