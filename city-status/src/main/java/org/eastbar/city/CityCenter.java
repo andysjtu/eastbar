@@ -160,8 +160,6 @@ public class CityCenter {
         maps.put(siteReport, termReport);
         Channel channel = connector.channel();
         if (channel != null && channel.isActive()) {
-            //FIXME
-//            channel.writeAndFlush(new CenterInitReq(maps));
             channel.writeAndFlush(new SiteInitReq(siteReport,termReport));
         }
     }

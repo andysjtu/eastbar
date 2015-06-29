@@ -78,7 +78,7 @@ public class SiteListener implements Listener {
                     serverChannel = future.channel();
                     logger.info("开启侦听场所端服务成功");
                 } else {
-                    logger.error("开启侦听客户端服务失败");
+                    logger.error("开启侦听客户端服务失败:",future.cause());
                     bossGroup.shutdownGracefully();
                     workerGroup.shutdownGracefully();
                 }

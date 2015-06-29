@@ -92,7 +92,7 @@ public class VSite {
                 }
             });
             init(req.getSiteReport(), req.getTermReport());
-            center.notifySiteOffline(getSiteReport(), getTermReport());
+            center.notifySiteOnline(getSiteReport(), getTermReport());
         } else {
             logger.warn("不允许重复siteCode :{}上报,关闭通道", siteCode);
             channel.close();
