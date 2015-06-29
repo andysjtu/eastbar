@@ -1,5 +1,6 @@
 package org.eastbar.center;
 
+import org.eastbar.center.customerLog.service.CustomerService;
 import org.eastbar.center.net.CenterListener;
 import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.center.statusMachine.core.EventPipe;
