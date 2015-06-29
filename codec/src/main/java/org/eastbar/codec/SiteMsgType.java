@@ -7,6 +7,7 @@ public enum SiteMsgType {
     GEN_RESP((short) 0x0001),
     BEATEN((short) 0x0002),
     SITE_INIT_CONN((short) 0x4000),
+    SITE_DISC_CONN((short)0x4010),
     LOGIN((short) 0x4001),
     ONLINE((short) 0x4002),
     OFFLINE((short) 0x4003),

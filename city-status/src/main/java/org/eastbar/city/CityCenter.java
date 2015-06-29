@@ -161,7 +161,8 @@ public class CityCenter {
         Channel channel = connector.channel();
         if (channel != null && channel.isActive()) {
             //FIXME
-            channel.writeAndFlush(new CenterInitReq(maps));
+//            channel.writeAndFlush(new CenterInitReq(maps));
+            channel.writeAndFlush(new SiteInitReq(siteReport,termReport));
         }
     }
 
@@ -169,11 +170,8 @@ public class CityCenter {
         Map<SiteReport, List<TermReport>> maps = Maps.newHashMap();
         maps.put(siteReport, termReport);
         Channel channel = connector.channel();
-        logger.info("Site下线 : {}",siteReport);
         if (channel != null && channel.isActive()) {
-            //FIXME
-            logger.info("向Hub端报告",siteReport);
-            channel.writeAndFlush(new CenterInitReq(maps));
+            channel.writeAndFlush(new SiteDiscReq(siteReport));
         }
     }
 
