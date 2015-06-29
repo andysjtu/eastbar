@@ -206,21 +206,20 @@ public class BannedProgServiceImpl implements BannedProgService {
     @Transactional
     public Boolean update(Integer[]  ids){
         ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getBanProgVer());
+        Integer num=manageRule.getProgVerNum()+1;
         for(int i=0;i<ids.length;i++){
             BannedProg bannedProg=bannedProgDao.get(ids[i]);
-            bannedProg.setVersion(Versions.computeVersion(manageRule.getBanProgVer()));
+            bannedProg.setVersion(version);
             bannedProg.setOperation("edit");
-            bannedProg.setVerNum(manageRule.getProgVerNum() + 1);
+            bannedProg.setVerNum(num);
             bannedProg.setIsPub(1);
             bannedProgDao.update(bannedProg);
-            if(i==0){
-                ManageRule manageRule1=manageRule;
-                manageRule1.setBanProgVer(bannedProg.getVersion());
-                manageRule1.setProgVerNum(bannedProg.getVerNum());
-                manageRule1.setUpdateTime(Times.now());
-                manageRuleDao.update(manageRule1);
-            }
         }
+        manageRule.setBanProgVer(version);
+        manageRule.setProgVerNum(num);
+        manageRule.setUpdateTime(Times.now());
+        manageRuleDao.update(manageRule);
            return true;
     }
 
