@@ -14,7 +14,7 @@ public class RedisClient {
     private SiteStrategyEvent siteStrategyEvent;
 
     public void testGetPolicyVersion(){
-        String sitecode = "3102011001";
+        String sitecode = "3101011001";
         int version=0;
         for(int i=0;;i++)
         try {

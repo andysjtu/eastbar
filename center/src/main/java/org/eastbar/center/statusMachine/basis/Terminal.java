@@ -157,12 +157,12 @@ class Terminal2Redis implements Runnable{
 
         //siteCode、hostIp、customerName、certId、siteState、onlineTime
         Map<String,String> termap = Maps.newHashMap();
-        termap.put("siteCode",terminal.getSiteCode());
-        termap.put("hostIp",terminal.getIp());
-        termap.put("customerName",terminal.getName());
-        termap.put("certId",terminal.getCertId());
+        termap.put("siteCode",terminal.getSiteCode()!=null?terminal.getSiteCode():"");
+        termap.put("hostIp",terminal.getIp()!=null?terminal.getIp():"");
+        termap.put("customerName",terminal.getName()!=null?terminal.getName():"");
+        termap.put("certId",terminal.getCertId()!=null?terminal.getCertId():"");
         termap.put("siteState",terminal.getStatus().toString());
-        termap.put("onlineTime",terminal.getLoginTime());
+        termap.put("onlineTime",terminal.getLoginTime()!=null?terminal.getLoginTime():"");
 
         cs.terminalDataPut(termap);
         //cs.terminalSetPut(terminal.getSiteCode(),terminal.getIp());
