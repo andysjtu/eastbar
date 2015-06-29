@@ -111,10 +111,12 @@ public class VSite {
     }
 
     private void disAllTerm() {
-        Collection<VTerminal> vTerminals =terminalMap.values();
-        for(VTerminal vt : vTerminals){
-            vt.setConnected(false);
-        }
+//        Collection<VTerminal> vTerminals =terminalMap.values();
+//        for(VTerminal vt : vTerminals){
+//            vt.setConnected(false);
+//            vt.setOnline(false);
+//        }
+        terminalMap.clear();
     }
 
     public void init(SiteReport report, List<TermReport> termReportLis) {
