@@ -18,7 +18,7 @@ public class RedisClient {
         int version=0;
         for(int i=0;;i++)
         try {
-            String urlPolicyStr = siteStrategyEvent.returnUrlList(sitecode,i);
+            String urlPolicyStr = siteStrategyEvent.returnSpecialCustomerList(sitecode,i);
             System.out.println("urlPolicyStr is "+urlPolicyStr);
             if(StringUtils.trimToNull(urlPolicyStr)==null)break;
         } catch (Exception e) {
