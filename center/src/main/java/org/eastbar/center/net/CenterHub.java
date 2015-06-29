@@ -274,29 +274,33 @@ public class CenterHub {
 
     /**
      * site conn
+     *
      * @param termReport
      * @param channel
      */
     public void updateTermStatus(TermReport termReport, Channel channel) {
         List<SiteReport> siteReports = centerChannels.get(channel);
+
+        outer:
         for (SiteReport siteReport : siteReports) {
             if (siteReport.getSiteCode().equals(termReport.getSiteCode())) {
                 List<TermReport> termReports = siteTermMaps.get(siteReport);
                 for (TermReport t : termReports) {
                     if (t.getIp().equals(termReport.getIp())) {
                         t.changeStatus(termReport);
-                        return;
+                        logger.info("break outer");
+                        break outer;
                     }
                 }
             }
         }
-        HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
-        eventPipe.addEvents(hostEvent);
+
         printStatus();
     }
 
     /**
      * site disconnect
+     *
      * @param req
      * @param channel
      */
@@ -305,7 +309,7 @@ public class CenterHub {
         siteTermMaps.remove(siteReport);
 
         List<SiteReport> siteReports = centerChannels.get(channel);
-        if(siteReports!=null) {
+        if (siteReports != null) {
             siteReports.remove(siteReport);
         }
 
