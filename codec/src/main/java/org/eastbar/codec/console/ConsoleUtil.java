@@ -1,6 +1,4 @@
-package org.eastbar.city.console;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
+package org.eastbar.codec.console;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -73,18 +73,19 @@ public class Terminal {
 
 
     public void loginCustomer(UserInfo loginEvent) {
-        online=true;
-        if(loginEvent.isSameLoginInfo(userInfo)){
+        if (loginEvent.isSameLoginInfo(userInfo)) {
             return;
         }
+        online = true;
         userInfo = new UserInfo(loginEvent);
-
-        if (connected) {//如果客户端还保持连接，可能是比业务信息早到，可能是业务信息中断
-            if (termChannel != null) {
-                termChannel.close();
-            }
-        }
         notifyStatusUpdate();
+
+//        if (connected) {//如果客户端还保持连接，可能是比业务信息早到，可能是业务信息中断
+//            if (termChannel != null) {
+//                termChannel.close();
+//            }
+//        }
+
     }
 
     private void notifyStatusUpdate() {
@@ -92,22 +93,21 @@ public class Terminal {
     }
 
     public void logoutCustomer(UserInfo logoutEvent) {
-        if(logoutEvent.isSameLogoutInfo(userInfo)){
+        if (logoutEvent.isSameLogoutInfo(userInfo)) {
             return;
         }
-        online=false;
+        online = false;
         if (isSameCustomer(logoutEvent)) {//same one
             DozerUtil.copyProperties(logoutEvent, userInfo);
             userInfo.setLogoutTime(logoutEvent.getLogoutTime());
-            if (connected) {
-                termChannel.close();
-            }
         } else {//not same one
+            logger.warn("不是同一个人上下机，可能出现信息中断,人工产生上一个人退出登录事件");
             generateLogoutEvent(logoutEvent);
             DozerUtil.copyProperties(logoutEvent, userInfo);
-            if (connected) {
-                termChannel.close();
-            }
+        }
+
+        if (connected) {
+            termChannel.close();
         }
         notifyStatusUpdate();
 
@@ -127,52 +127,57 @@ public class Terminal {
     }
 
     public void active(ClientInitReq initReq, final Channel channel) {
-        this.termChannel = channel;
-        this.connected = true;
-        ClientAuthScheme authScheme = initReq.getAuthSchme();
-        DozerUtil.copyProperties(authScheme, termInfo);
-
-        ClientAuthResp authResp = new ClientAuthResp();
         if (online) {
-            logger.warn("向客户端推送客户信息,推送地址是:{}", channel.remoteAddress());
+            this.termChannel = channel;
+            this.connected = true;
+            ClientAuthScheme authScheme = initReq.getAuthSchme();
+            DozerUtil.copyProperties(authScheme, termInfo);
+
+            ClientAuthResp authResp = new ClientAuthResp();
+            logger.info("向客户端推送客户信息,推送地址是:{}", channel.remoteAddress());
+
             authResp.setVersion(authScheme.getVersion());
             authResp.setIdType(userInfo.getIdType());
             authResp.setId(userInfo.getId());
             authResp.setName(userInfo.getName());
             authResp.setAccount(userInfo.getAccount());
+
+            channel.closeFuture().addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if (future.isSuccess()) {
+                        termChannel = null;
+                        connected = false;
+                        notifyStatusUpdate();
+                    }
+                }
+            });
+
+            ClientInitResp resp = new ClientInitResp(initReq.getMessageId(), authResp);
+
+            channel.writeAndFlush(resp).addListener(new ChannelFutureListener() {
+                @Override
+                public void operationComplete(ChannelFuture future) throws Exception {
+                    if (!future.isSuccess()) {
+                        logger.warn("向客户端推送注册信息失败，请检查");
+                        future.channel().close();
+                    }
+                }
+            });
+            notifyStatusUpdate();
         } else {
-            logger.warn("没有收到业务系统的登录信息，将向客户端推送模拟测试信息,推送地址是:{}", channel.remoteAddress());
-            authResp.setIdType("1");
-            authResp.setVersion("1");
-            authResp.setId("310101197902026432");
-            authResp.setName("张三");
-            authResp.setAccount("testAccount");
+            logger.warn("没有收到业务系统的登录信息，将关闭通道:{}", channel.remoteAddress());
+            channel.close();
         }
 
-        ClientInitResp resp = new ClientInitResp(initReq.getMessageId(), authResp);
 
+//        this.termChannel = channel;
+//        this.connected = true;
+//        ClientAuthScheme authScheme = initReq.getAuthSchme();
+//        DozerUtil.copyProperties(authScheme, termInfo);
+//
+//        ClientAuthResp authResp = new ClientAuthResp();
 
-        channel.closeFuture().addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (future.isSuccess()) {
-                    termChannel = null;
-                    connected = false;
-                    notifyStatusUpdate();
-                }
-            }
-        });
-
-        channel.writeAndFlush(resp).addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (!future.isSuccess()) {
-                    logger.warn("向客户端推送注册信息失败，请检查");
-                    future.channel().close();
-                }
-            }
-        });
-        notifyStatusUpdate();
     }
 
     public Channel channel() {

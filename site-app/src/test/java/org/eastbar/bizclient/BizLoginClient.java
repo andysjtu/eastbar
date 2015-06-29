@@ -5,7 +5,7 @@ import io.netty.channel.*;
 /**
  * Created by AndySJTU on 2015/6/17.
  */
-public class BizLoginClient extends AbstractClient{
+public class BizLoginClient extends AbstractClient {
 
 
     public static void main(String[] args) {

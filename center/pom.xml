@@ -252,16 +252,7 @@
             <artifactId>aspectjrt</artifactId>
             <version>${aspectj.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.springside</groupId>
-            <artifactId>springside-extension</artifactId>
-            <version>${springside.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springside</groupId>
-            <artifactId>springside-metrics</artifactId>
-            <version>${springside.version}</version>
-        </dependency>
+
         <!-- SPRINGSIDE end -->
 
         <!-- aop -->
@@ -439,21 +430,6 @@
                     <artifactId>mockito-all</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <!-- springside -->
-        <dependency>
-            <groupId>org.springside</groupId>
-            <artifactId>springside-core</artifactId>
-            <version>${springside.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springside</groupId>
-            <artifactId>springside-extension</artifactId>
-            <version>${springside.version}</version>
-            <classifier>tests</classifier>
-            <scope>test</scope>
         </dependency>
 
         <!-- spring -->
