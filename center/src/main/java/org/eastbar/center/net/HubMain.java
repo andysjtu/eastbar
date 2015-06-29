@@ -11,7 +11,7 @@ public class HubMain {
                 "applicationContext-hub.xml"
         });
 
-        CenterListener listener = context.getBean(CenterListener.class);
+        CityCenterListener listener = context.getBean(CityCenterListener.class);
         listener.listen();
     }
 }

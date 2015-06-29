@@ -19,8 +19,8 @@ import org.springframework.stereotype.Component;
  * Created by AndySJTU on 2015/5/27.
  */
 @Component
-public class CenterListener implements Listener {
-    public final static Logger logger = LoggerFactory.getLogger(CenterListener.class);
+public class CityCenterListener implements Listener {
+    public final static Logger logger = LoggerFactory.getLogger(CityCenterListener.class);
 
 
     @Value("${rmi.center.port}")
@@ -53,7 +53,6 @@ public class CenterListener implements Listener {
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("CenterInitHandlerler", new CenterInitReqHandler(centerHub));
-
                         pipeline.addLast("centerHeartBeatenHandler", new HeartBeatenHandler());
                         pipeline.addLast(ProxyChannelHandler.HANDLER_NAME, new ProxyChannelHandler());
                     }

@@ -92,7 +92,7 @@ public class VSite {
                 }
             });
             init(req.getSiteReport(), req.getTermReport());
-            center.notifySiteOffline(getSiteReport(), getTermReport());
+            center.notifySiteOnline(getSiteReport(), getTermReport());
         } else {
             logger.warn("不允许重复siteCode :{}上报,关闭通道", siteCode);
             channel.close();
@@ -111,10 +111,12 @@ public class VSite {
     }
 
     private void disAllTerm() {
-        Collection<VTerminal> vTerminals =terminalMap.values();
-        for(VTerminal vt : vTerminals){
-            vt.setConnected(false);
-        }
+//        Collection<VTerminal> vTerminals =terminalMap.values();
+//        for(VTerminal vt : vTerminals){
+//            vt.setConnected(false);
+//            vt.setOnline(false);
+//        }
+        terminalMap.clear();
     }
 
     public void init(SiteReport report, List<TermReport> termReportLis) {

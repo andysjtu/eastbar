@@ -38,9 +38,9 @@ public class MockBizHandler extends ChannelInboundHandlerAdapter {
         buf.writeByte('\0');
         buf.writeBytes(new BASE64Encoder().encode("徐汇公安局".getBytes("GBK")).getBytes());
         buf.writeByte('\0');
-        buf.writeBytes("192.168.9.150".getBytes());
+        buf.writeBytes("192.168.9.156".getBytes());
         buf.writeByte('\0');
-        buf.writeBytes("201506171340".getBytes());
+        buf.writeBytes("201506291340".getBytes());
         buf.writeByte('\0');
 
         return buf;

@@ -34,17 +34,18 @@ public class BizHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (type == SiteMsgType.CUSTOMER_LOGIN.shortValue()) {
             CustomLoginMsg userInfoMsg = new CustomLoginMsg(msg);
             UserInfo userInfo = userInfoMsg.getUserInfo();
-            logger.info("收到注册信息");
+            logger.info("收到注册信息 : "+userInfo);
             site.registerCustomerLogin(userInfo);
 
         } else if (type == SiteMsgType.CUSTOMER_LOGOUT.shortValue()) {
             CustomLogoutMsg userInfoMsg = new CustomLogoutMsg(msg);
             UserInfo userInfo = userInfoMsg.getUserInfo();
+            logger.info("收到注销信息 : "+userInfo);
             site.registerCustomerLogout(userInfo);
         } else if (type == SiteMsgType.USER_INFO_MSG.shortValue()) {
             UserInfoMsg userInfoMsg = new UserInfoMsg(msg);
             List<UserInfo> userInfoList = userInfoMsg.getUserInfos();
-            logger.info("收到全部信息");
+            logger.info("收到全部信息 : "+userInfoList);
             site.initTermInfos(userInfoList);
         } else {
             logger.warn("receive some package: {} that is not recognized,please check ", type);

@@ -156,7 +156,7 @@ public class Site {
         report.setKwVersion(version.getKwVersion());
         report.setPrgVersion(version.getPrgVersion());
         report.setSiteCode(siteCode);
-        report.setUrlVersion(version.getUrlVersion());
+        report.setSmVersion(version.getSmVersion());
         report.setConnected(true);
         return report;
     }

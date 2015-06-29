@@ -25,6 +25,8 @@ public class StatusHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
+        site.getReportManager().registerChannel(ctx.channel(),true);
+        logger.info("上报Site系统初始化");
         SiteReport siteReport = site.getSiteReport();
         List<TermReport> termReports = site.getTermReportList();
         SiteInitReq msg = new SiteInitReq(siteReport,termReports);

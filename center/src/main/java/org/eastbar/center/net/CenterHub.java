@@ -85,15 +85,14 @@ public class CenterHub {
 //    }
 
 
-
     public void registerCenter(Channel channel, CenterInitReq initReq) {
         Map<SiteReport, List<TermReport>> reportListMap = initReq.getSiteTermReports();
         centerChannels.put(channel, Lists.newArrayList(reportListMap.keySet().iterator()));
         Set<SiteReport> reportSet = reportListMap.keySet();
-        for(SiteReport siteReport:reportSet){
-            siteTermMaps.put(siteReport,reportListMap.get(siteReport));
+        for (SiteReport siteReport : reportSet) {
+            siteTermMaps.put(siteReport, reportListMap.get(siteReport));
             List<TermReport> termReports = reportListMap.get(siteReport);
-            for(TermReport termReport:termReports){
+            for (TermReport termReport : termReports) {
                 HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
                 eventPipe.addEvents(hostEvent);
             }
@@ -110,9 +109,9 @@ public class CenterHub {
     }
 
     public void unregisterCenter(Channel channel) {
-        List<SiteReport> siteReports =centerChannels.remove(channel);
-        if(siteReports!=null){
-            for (SiteReport siteReport:siteReports){
+        List<SiteReport> siteReports = centerChannels.remove(channel);
+        if (siteReports != null) {
+            for (SiteReport siteReport : siteReports) {
                 ResetEvent resetEvent = new ResetEvent();
                 resetEvent.setSiteCode(siteReport.getSiteCode());
                 eventPipe.addEvents(resetEvent);
@@ -177,6 +176,18 @@ public class CenterHub {
         return operate(OPERATE_METHOD.LOCK, siteCode, hostIp);
     }
 
+    public int unlockScreen(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.UNLOCK, siteCode, hostIp);
+    }
+
+    public int shutdown(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.SHUTDOWN, siteCode, hostIp);
+    }
+
+    public int restart(String siteCode, String hostIp) {
+        return operate(OPERATE_METHOD.RESTART, siteCode, hostIp);
+    }
+
     private void sendCmdAndWait(Channel channel, final CountDownLatch latch, final SocketMsg msg, final CenterCmdRespHandler handler) {
         handler.register(msg.getMessageId(), msg.getMessageType(), latch);
         channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
@@ -234,6 +245,17 @@ public class CenterHub {
             centerChannels.put(channel, siteReports);
         }
         siteReports.add(siteReport);
+        //submit event
+        if (siteReport.isConnected()) {
+            for (TermReport termReport : termReports) {
+                HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
+                eventPipe.addEvents(hostEvent);
+            }
+        } else {
+            ResetEvent resetEvent = new ResetEvent();
+            resetEvent.setSiteCode(siteReport.getSiteCode());
+            eventPipe.addEvents(resetEvent);
+        }
         printStatus();
     }
 
@@ -246,10 +268,15 @@ public class CenterHub {
 
     private void printStatus() {
         logger.info("status is : {} ", siteTermMaps);
-        logger.info("channelMap is {}",centerChannels);
+        logger.info("channelMap is {}", centerChannels);
 
     }
 
+    /**
+     * site conn
+     * @param termReport
+     * @param channel
+     */
     public void updateTermStatus(TermReport termReport, Channel channel) {
         List<SiteReport> siteReports = centerChannels.get(channel);
         for (SiteReport siteReport : siteReports) {
@@ -266,7 +293,27 @@ public class CenterHub {
         printStatus();
     }
 
+    /**
+     * site disconnect
+     * @param req
+     * @param channel
+     */
+    public void unregisterSite(SiteDiscReq req, Channel channel) {
+        SiteReport siteReport = req.getSiteReport();
+        siteTermMaps.remove(siteReport);
+
+        List<SiteReport> siteReports = centerChannels.get(channel);
+        if(siteReports!=null) {
+            siteReports.remove(siteReport);
+        }
+
+        ResetEvent resetEvent = new ResetEvent();
+        resetEvent.setSiteCode(siteReport.getSiteCode());
+        eventPipe.addEvents(resetEvent);
+
+    }
+
     public static enum OPERATE_METHOD {
-        LOCK, UNLOCK, SHUTDOWN;
+        LOCK, UNLOCK, SHUTDOWN, RESTART;
     }
 }

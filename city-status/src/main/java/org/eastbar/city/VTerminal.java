@@ -23,6 +23,25 @@ public class VTerminal {
     private String os;
     private String version;
 
+    private String loginTime;
+    private String logoutTime;
+
+    public String getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(String loginTime) {
+        this.loginTime = loginTime;
+    }
+
+    public String getLogoutTime() {
+        return logoutTime;
+    }
+
+    public void setLogoutTime(String logoutTime) {
+        this.logoutTime = logoutTime;
+    }
+
     public String getAccount() {
         return account;
     }
