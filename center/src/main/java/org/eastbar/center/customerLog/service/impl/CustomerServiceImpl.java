@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
     public Boolean saveOrUpdate(HostEvent hostEvent) {
         Boolean flag=false;
         try{
-            if(hostEvent!=null){
+            if(hostEvent!=null && hostEvent.getLoginTime()!=null && !"".equals(hostEvent.getLoginTime())){
                 Customer customer=new Customer();
                 customer.setAccountId(hostEvent.getAccount());
                 String siteCode=hostEvent.getSiteCode();
@@ -46,7 +46,12 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setName(hostEvent.getName());
                 customer.setNationality(hostEvent.getName());
                 customer.setCertId(hostEvent.getCertId());
-                customer.setCertType(Integer.parseInt(hostEvent.getIdType()));
+                if(hostEvent.getIdType()!=null && !"".equals(hostEvent.getIdType())){
+                    Integer idType=Integer.parseInt(hostEvent.getIdType());
+                    customer.setCertType(idType);
+                }else{
+                    customer.setCertType(-1);
+                }
                 customer.setAuthOrg(hostEvent.getAuthOrg());
                 customer.setOpenTime(hostEvent.getLoginTime());
                 customer.setCloseTime(hostEvent.getLogoutTime());
