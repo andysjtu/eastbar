@@ -32,14 +32,14 @@ public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (type == ClientMsgType.CLIENT_ALERT) {
             ByteBuf buf = msg.data().content();
             byte alertType = buf.readByte();
-            logger.info("收到来自{}的告警信息",ctx.channel().remoteAddress());
-            logger.info("-----------------------------------------------------");
+            logger.debug("收到来自{}的告警信息", ctx.channel().remoteAddress());
+            logger.debug("-----------------------------------------------------");
 
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
-            logger.info("告警类型是: " + alertType);
-            logger.info("告警内容是:" + new String(content));
-            logger.info("--------------------------------------------------");
+            logger.debug("告警类型是: " + alertType);
+            logger.debug("告警内容是:" + new String(content));
+            logger.debug("--------------------------------------------------");
             alertServer.appendAlert(alertType, new String(content));
             sendResp(ctx, msg);
         } else {

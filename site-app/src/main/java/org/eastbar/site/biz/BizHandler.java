@@ -44,7 +44,7 @@ public class BizHandler extends SimpleChannelInboundHandler<SocketMsg> {
         } else if (type == SiteMsgType.USER_INFO_MSG.shortValue()) {
             UserInfoMsg userInfoMsg = new UserInfoMsg(msg);
             List<UserInfo> userInfoList = userInfoMsg.getUserInfos();
-            logger.info("收到全部信息");
+            logger.info("收到全部信息 : "+userInfoList);
             site.initTermInfos(userInfoList);
         } else {
             logger.warn("receive some package: {} that is not recognized,please check ", type);
