@@ -63,7 +63,7 @@ public class HubConnector {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("连接中心Hub端", LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("连接中心Hub端", LogLevel.INFO));
                         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
                         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
                         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
