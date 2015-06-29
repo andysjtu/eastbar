@@ -115,12 +115,16 @@ public class KeyWordServiceImpl implements KeyWordService{
         if(removeKeywords.size()>0){
             removeList=restructString(removeKeywords, monitorCodes, siteCode);
         }
-        KeyWordJson keyWordJson=new KeyWordJson();
-        keyWordJson.setVerNum(version);
-        keyWordJson.setAdd(addList);
-        keyWordJson.setEdit(editList);
-        keyWordJson.setRemove(removeList);
-        String json=Po2Json.toJson(keyWordJson);
+
+        String json="";
+        if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
+            KeyWordJson keyWordJson=new KeyWordJson();
+            keyWordJson.setVerNum(version);
+            keyWordJson.setAdd(addList);
+            keyWordJson.setEdit(editList);
+            keyWordJson.setRemove(removeList);
+            json=Po2Json.toJson(keyWordJson);
+        }
         return json;
     }
 

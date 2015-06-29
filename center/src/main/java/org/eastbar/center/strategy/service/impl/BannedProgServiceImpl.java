@@ -127,13 +127,15 @@ public class BannedProgServiceImpl implements BannedProgService {
         if(removeBannedProgs.size()>0){
             removeList=restructString(removeBannedProgs,monitorCodes,siteCode);
         }
-
-        BannedProgJson bannedProgJson=new BannedProgJson();
-        bannedProgJson.setVerNum(version);
-        bannedProgJson.setAdd(addList);
-        bannedProgJson.setEdit(editList);
-        bannedProgJson.setRemove(removeList);
-        String json= Po2Json.toJson(bannedProgJson);
+        String json="";
+        if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
+           BannedProgJson bannedProgJson=new BannedProgJson();
+           bannedProgJson.setVerNum(version);
+           bannedProgJson.setAdd(addList);
+           bannedProgJson.setEdit(editList);
+           bannedProgJson.setRemove(removeList);
+           json= Po2Json.toJson(bannedProgJson);
+        }
         return json;
     }
 

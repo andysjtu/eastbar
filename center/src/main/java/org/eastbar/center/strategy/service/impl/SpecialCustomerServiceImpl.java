@@ -117,14 +117,16 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
         if(removeSpecials.size()>0){
             removeList=restructString(removeSpecials,monitorCodes,siteCode);
         }
+        String json="";
+        if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
+            SpecialCustomerJson specialCustomerJson=new SpecialCustomerJson();
+            specialCustomerJson.setVerNum(version);
+            specialCustomerJson.setAdd(addList);
+            specialCustomerJson.setEdit(editList);
+            specialCustomerJson.setRemove(removeList);
 
-        SpecialCustomerJson specialCustomerJson=new SpecialCustomerJson();
-        specialCustomerJson.setVerNum(version);
-        specialCustomerJson.setAdd(addList);
-        specialCustomerJson.setEdit(editList);
-        specialCustomerJson.setRemove(removeList);
-
-        String json= Po2Json.toJson(specialCustomerJson);
+             json= Po2Json.toJson(specialCustomerJson);
+        }
         return json;
 
     }
