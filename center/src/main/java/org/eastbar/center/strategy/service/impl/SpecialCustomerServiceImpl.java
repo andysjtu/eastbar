@@ -195,23 +195,23 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
 
     public Boolean update(Integer[] ids){
         ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getSpecialPersonVer());
+        Integer num=manageRule.getSpecialVerNum()+1;
         for(int i=0;i<ids.length;i++){
             SpecialCustomer specialCustomer=specialCustomerDao.get(ids[i]);
             specialCustomer.setUpdator("center");
             specialCustomer.setUpdateTime(Times.now());
             specialCustomer.setOperation("edit");
             specialCustomer.setIsPub(1);
-            specialCustomer.setVersion(Versions.computeVersion(manageRule.getSpecialPersonVer()));
-            specialCustomer.setVerNum(manageRule.getSpecialVerNum() + 1);
+            specialCustomer.setVersion(version);
+            specialCustomer.setVerNum(num);
             specialCustomerDao.update(specialCustomer);
-            if(i==0){
-                ManageRule manageRule1=manageRule;
-                manageRule1.setSpecialVerNum(specialCustomer.getVerNum());
-                manageRule1.setSpecialPersonVer(specialCustomer.getVersion());
-                manageRule1.setUpdateTime(Times.now());
-                manageRuleDao.update(manageRule1);
-            }
         }
+            manageRule.setSpecialVerNum(num);
+            manageRule.setSpecialPersonVer(version);
+            manageRule.setUpdateTime(Times.now());
+            manageRuleDao.update(manageRule);
+
         return true;
     }
 

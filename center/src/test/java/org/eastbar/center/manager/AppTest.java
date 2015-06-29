@@ -16,12 +16,13 @@ public class AppTest
                new String[] {"classpath:applicationContext.xml","classpath:applicationContext-eastbar.xml"});
 
        RmiService rmiService=(RmiService)ctx.getBean("rmiServiceImpl");
-     //  rmiService.sendBannedProgVersion(6,145);
-      // rmiService.sendSpecialCustomerVersion(2,143);
-      // rmiService.sendKeyWordVersion(2,142);
+       Integer[] ids={144,143};
+       //rmiService.sendBannedProgVersion(7,ids);  已测
+      // rmiService.sendSpecialCustomerVersion(3,ids);已测
+      rmiService.sendKeyWordVersion(3,ids);
 
-       Integer[] ids={181,182};
-       rmiService.sendBannedUrlVersion(20,ids);
+
+     ///  rmiService.sendBannedUrlVersion(23,ids);  已测
 
    }
 }
