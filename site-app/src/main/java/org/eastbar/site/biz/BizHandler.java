@@ -34,12 +34,13 @@ public class BizHandler extends SimpleChannelInboundHandler<SocketMsg> {
         if (type == SiteMsgType.CUSTOMER_LOGIN.shortValue()) {
             CustomLoginMsg userInfoMsg = new CustomLoginMsg(msg);
             UserInfo userInfo = userInfoMsg.getUserInfo();
-            logger.info("收到注册信息");
+            logger.info("收到注册信息 : "+userInfo);
             site.registerCustomerLogin(userInfo);
 
         } else if (type == SiteMsgType.CUSTOMER_LOGOUT.shortValue()) {
             CustomLogoutMsg userInfoMsg = new CustomLogoutMsg(msg);
             UserInfo userInfo = userInfoMsg.getUserInfo();
+            logger.info("收到注销信息 : "+userInfo);
             site.registerCustomerLogout(userInfo);
         } else if (type == SiteMsgType.USER_INFO_MSG.shortValue()) {
             UserInfoMsg userInfoMsg = new UserInfoMsg(msg);
