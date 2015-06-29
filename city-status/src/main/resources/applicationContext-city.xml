@@ -17,7 +17,7 @@
     <description>Spring公共配置</description>
 
     <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-    <context:component-scan base-package="org.eastbar.city,org.eastbar.centers,org.eastbar.common">
+    <context:component-scan base-package="org.eastbar.city,org.eastbar.center,org.eastbar.common">
     </context:component-scan>
 
 
@@ -81,7 +81,7 @@
     <!-- MyBatis配置 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="typeAliasesPackage" value="org.eastbar.centers"/>
+        <property name="typeAliasesPackage" value="org.eastbar.center"/>
         <property name="mapperLocations" value="classpath:/mybatis/**/*Mapper.xml"/>
     </bean>
 

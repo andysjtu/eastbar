@@ -1,6 +1,7 @@
 package org.eastbar.city;
 
 import org.eastbar.city.center.HubConnector;
+import org.eastbar.city.site.SiteListener;
 import org.eastbar.net.Listener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.List;
 @Component
 public class CenterServer {
     @Autowired
-    private List<Listener> listeners;
+    private SiteListener siteListener;
     @Autowired
     private CityCenter center;
 
@@ -21,28 +22,30 @@ public class CenterServer {
     private HubConnector connector;
 
     public void start() {
-        for (Listener listener : listeners) {
-            listener.listen();
-        }
+//        for (Listener listener : listeners) {
+//            listener.listen();
+//        }
+        siteListener.listen();
         connector.connect();
     }
 
     public void stop() {
-        for (Listener listener : listeners) {
-            listener.stopListen();
-        }
+//        for (Listener listener : listeners) {
+//            listener.stopListen();
+//        }
+        siteListener.listen();
         connector.disconnect();
 
         center.disconnectAllSites();
     }
 
-    public List<Listener> getListeners() {
-        return listeners;
-    }
-
-    public void setListeners(List<Listener> listeners) {
-        this.listeners = listeners;
-    }
+//    public List<Listener> getListeners() {
+//        return listeners;
+//    }
+//
+//    public void setListeners(List<Listener> listeners) {
+//        this.listeners = listeners;
+//    }
 
     public CityCenter getCenter() {
         return center;
@@ -50,5 +53,21 @@ public class CenterServer {
 
     public void setCenter(CityCenter center) {
         this.center = center;
+    }
+
+    public SiteListener getSiteListener() {
+        return siteListener;
+    }
+
+    public void setSiteListener(SiteListener siteListener) {
+        this.siteListener = siteListener;
+    }
+
+    public HubConnector getConnector() {
+        return connector;
+    }
+
+    public void setConnector(HubConnector connector) {
+        this.connector = connector;
     }
 }
