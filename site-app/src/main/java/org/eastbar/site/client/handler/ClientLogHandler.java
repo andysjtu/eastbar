@@ -1,5 +1,6 @@
 package org.eastbar.site.client.handler;
 
+import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -37,10 +38,10 @@ public class ClientLogHandler extends SimpleChannelInboundHandler<SocketMsg> {
             logger.debug("日志类型是 : " + logType);
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
-            logger.debug("日志内容是 : " + new String(content));
+            logger.debug("日志内容是 : " + new String(content, Charsets.UTF_8));
             logger.debug("----------------------------------------------------");
 
-            logServer.appendLog(logType,new String(content));
+            logServer.appendLog(logType,new String(content,Charsets.UTF_8));
 
             sendResp(ctx,msg);
         }

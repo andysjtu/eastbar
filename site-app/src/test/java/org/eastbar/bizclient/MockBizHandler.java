@@ -22,42 +22,10 @@ public class MockBizHandler extends ChannelInboundHandlerAdapter {
     }
 
     public ByteBuf buildConnect() throws UnsupportedEncodingException {
-        ByteBuf buf = Unpooled.buffer();
-        buf.writeInt(1101);
-        buf.writeBytes("1.0".getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes("netbar".getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes("1234567".getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes(new BASE64Encoder().encode("林超".getBytes("GBK")).getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes("1".getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes(new BASE64Encoder().encode("410107197902026432".getBytes("GBK")).getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes(new BASE64Encoder().encode("徐汇公安局".getBytes("GBK")).getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes("192.168.9.100".getBytes());
-        buf.writeByte('\0');
-        buf.writeBytes("201506291340".getBytes());
-        buf.writeByte('\0');
-
-        return buf;
+//        return LoginUtil.mockLogin("林超", "410107197902025432", "192.168.9.155", "201506291023");
+        return LoginUtil.mockLogin("林超", "410107197902025432", "192.168.9.155", "201506291023");
     }
-    /**
-     * C1101 c1101 = new C1101();
-     c1101.setVersion(login[0]);
-     c1101.setSessionId(login[1]);
-     c1101.setAccount(login[2]);
-     c1101.setName(new String(
-     new BASE64Decoder().decodeBuffer(login[3]), "GBK"));
-     c1101.setIdType(login[4]);
-     c1101.setId(new String(new BASE64Decoder()
-     .decodeBuffer(login[5]), "GBK"));
-     c1101.setAuthOrg(new String(new BASE64Decoder()
-     .decodeBuffer(login[6]), "GBK"));
-     c1101.setIp(login[7]);
-     c1101.setLoginTime(login[8]);
-     */
+
+
+
 }
