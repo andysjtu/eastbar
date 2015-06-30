@@ -15,6 +15,6 @@ public class BizLoginClient extends AbstractClient {
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast(new MockBizHandler());
+        pipeline.addLast(new MockLoginHandler());
     }
 }

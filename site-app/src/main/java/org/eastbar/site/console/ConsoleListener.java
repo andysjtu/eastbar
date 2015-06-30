@@ -52,7 +52,7 @@ public class ConsoleListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("CONN CONSOLE-CHANNEL",LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CONN CONSOLE-CHANNEL",LogLevel.INFO));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
