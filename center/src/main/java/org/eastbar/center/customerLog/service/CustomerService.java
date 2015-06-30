@@ -17,4 +17,6 @@ import org.springframework.stereotype.Service;
 public interface CustomerService {
 
     public Boolean saveOrUpdate(HostEvent hostEvent);
+
+    public void resetOfflineTime(String siteCode);
 }

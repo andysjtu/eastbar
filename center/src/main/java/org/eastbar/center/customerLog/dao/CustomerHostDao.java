@@ -7,6 +7,8 @@ package org.eastbar.center.customerLog.dao;
 import org.eastbar.center.customerLog.entity.CustomerHost;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 /**
  * @author cindy-jia
  * @date 2014年10月21
@@ -21,4 +23,6 @@ public interface CustomerHostDao {
     void update(CustomerHost customerHost);
 
     CustomerHost get(CustomerHost customerHost);
+
+    int reset(Map<String,String> map);
 }

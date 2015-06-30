@@ -8,6 +8,8 @@ package org.eastbar.center.customerLog.dao;
 import org.eastbar.center.customerLog.entity.Customer;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 /**
  * @author cindy-jia
  * @date 2014年10月17
@@ -22,4 +24,6 @@ public interface CustomerDao {
     int save(Customer customer);
 
     int update(Customer customer);
+
+    int reset(Map<String,String> map);
 }

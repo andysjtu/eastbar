@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
-<mapper namespace="org.eastbar.centers.customerLog.dao.CustomerDao">
+<mapper namespace="org.eastbar.center.customerLog.dao.CustomerDao">
     <resultMap id="customerResult" type="Customer">
         <id property="id" column="seq_id" />
         <result property="accountId" column="account_id" />
@@ -61,6 +61,14 @@
             <if test="status!=null">t.status=#{status}</if>
         </set>
         where t.site_code=#{siteCode} and t.account_id=#{accountId} and to_char(t.open_time,'yyyy-mm-dd hh24:mi:ss')=#{openTime}
+    </update>
+
+    <update id="resetCustomer"  parameterType="java.util.Map">
+        update t_customer t
+        <set>
+            <if test="closeTime!=null">t.close_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss')</if>
+        </set>
+        where t.site_code=#{siteCode}
     </update>
 
 </mapper>
