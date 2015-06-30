@@ -35,7 +35,15 @@ public class CenterConsoleHandler extends SimpleChannelInboundHandler<SocketMsg>
                 Set<Channel> channelSet = channelListMap.keySet();
                 for (Channel channel : channelSet) {
                     builder.append("Channel is ").append(channel.remoteAddress()).append("\n");
-                    builder.append("Channel对应SiteReport is :" + channelListMap.get(channel)).append("\n");
+                    List<SiteReport> siteReports = channelListMap.get(channel);
+                    builder.append("Channel对应SiteReport个数 :" + siteReports.size()).append("\n");
+                    for(SiteReport siteReport:siteReports) {
+                        builder.append("siteReport is :"+siteReport+"\n");
+                        List<TermReport> termReports = centerHub.getSiteTermMaps().get(siteReport);
+                        for(TermReport termReport:termReports){
+                            builder.append("termReport is :"+termReport+"\n");
+                        }
+                    }
                 }
                 cmdResp = builder.toString();
                 ConsoleCmdMsg respMsg = new ConsoleCmdMsg(cmdResp);
@@ -44,7 +52,7 @@ public class CenterConsoleHandler extends SimpleChannelInboundHandler<SocketMsg>
                 String siteCodeAndIP = cmd.replace("lock", "").trim();
                 String siteCode = siteCodeAndIP.split(":")[0];
                 String ip = siteCodeAndIP.split(":")[1];
-                SiteCmd actionCmd = new SiteCmd.LockClientCmd(ip);
+                CenterCmd actionCmd = new CenterCmd.LockClientCmd(siteCode,ip);
                 Channel siteChannel = centerHub.getCenterChannelBySiteCode(siteCode);
                 if (siteChannel == null || !siteChannel.isActive()) {
                     cmdResp = "SiteCode:" + siteCode + " 对应Channel没有建立，请检查";
@@ -53,7 +61,27 @@ public class CenterConsoleHandler extends SimpleChannelInboundHandler<SocketMsg>
                 } else {
                     siteChannel.writeAndFlush(actionCmd);
                 }
-            } else {
+            }else if (cmd.startsWith("unlock")) {
+                String siteCodeAndIP = cmd.replace("unlock", "").trim();
+                String siteCode = siteCodeAndIP.split(":")[0];
+                String ip = siteCodeAndIP.split(":")[1];
+                CenterCmd actionCmd = new CenterCmd.UnlockClientCmd(siteCode,ip);
+                Channel siteChannel = centerHub.getCenterChannelBySiteCode(siteCode);
+                if (siteChannel == null || !siteChannel.isActive()) {
+                    cmdResp = "SiteCode:" + siteCode + " 对应Channel没有建立，请检查";
+                    ConsoleCmdMsg respMsg = new ConsoleCmdMsg(cmdResp);
+                    ctx.channel().writeAndFlush(respMsg);
+                } else {
+                    siteChannel.writeAndFlush(actionCmd);
+                }
+            }else if(cmd.startsWith("test")){
+                String siteCodeAndIP = cmd.replace("test", "").trim();
+                String siteCode = siteCodeAndIP.split(":")[0];
+                String ip = siteCodeAndIP.split(":")[1];
+                System.out.println("操作结果是 ："+centerHub.lockScreen(siteCode,ip));
+            }
+
+            else {
                 cmdResp = "未知命令，请检查： " + cmd;
                 ConsoleCmdMsg respMsg = new ConsoleCmdMsg(cmdResp);
                 ctx.channel().writeAndFlush(respMsg);

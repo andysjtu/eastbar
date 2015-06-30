@@ -117,12 +117,11 @@ public class CityCenter {
 
     public void notifyTermEvent(List<TermReport> termReport) {
         Channel channel = connector.channel();
+        logger.info("上报Term事件。。。");
         if (channel != null && channel.isActive()) {
             TermReportMsg termReportMsg = new TermReportMsg(Lists.newArrayList(termReport));
-            Channel hubChannel = connector.channel();
-            if (hubChannel != null && hubChannel.isActive()) {
-                hubChannel.writeAndFlush(termReportMsg);
-            }
+            channel.writeAndFlush(termReportMsg);
+
         }
     }
 
@@ -160,7 +159,7 @@ public class CityCenter {
         maps.put(siteReport, termReport);
         Channel channel = connector.channel();
         if (channel != null && channel.isActive()) {
-            channel.writeAndFlush(new SiteInitReq(siteReport,termReport));
+            channel.writeAndFlush(new SiteInitReq(siteReport, termReport));
         }
     }
 
@@ -178,7 +177,7 @@ public class CityCenter {
             @Override
             public void run() {
                 try {
-                    if(vSite.isConnected()) {
+                    if (vSite.isConnected()) {
                         registerPolicyUpdate(vSite);
                         updateSitePolicy(vSite);
                     }
@@ -203,32 +202,32 @@ public class CityCenter {
 
         int siteKwVersion = version.getKwVersion();
         int curKwVersionNum = redisService.lastedVersion(Strategy.KEYWORD);
-        if(siteKwVersion<curKwVersionNum){
+        if (siteKwVersion < curKwVersionNum) {
             String kwList = redisService.returnKeyWordList(vSite.getSiteCode(), siteKwVersion);
             kwList = StringUtils.trimToNull(kwList);
-            if(kwList!=null){
-                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.KEYWORD,kwList);
+            if (kwList != null) {
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.KEYWORD, kwList);
             }
         }
 
         int sitePrgVersion = version.getPrgVersion();
 
         int curPrgVersion = redisService.lastedVersion(Strategy.BANNEDPROG);
-        if(sitePrgVersion<curPrgVersion){
+        if (sitePrgVersion < curPrgVersion) {
             String prgList = redisService.returnProgList(vSite.getSiteCode(), sitePrgVersion);
             prgList = StringUtils.trimToNull(prgList);
-            if(prgList!=null){
-                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.PROGRAM,prgList);
+            if (prgList != null) {
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.PROGRAM, prgList);
             }
         }
 
         int siteSpVersion = version.getSmVersion();
         int curSpVersion = redisService.lastedVersion(Strategy.SPECIALCUSTOMER);
-        if(siteSpVersion<curSpVersion){
-            String spList = redisService.returnSpecialCustomerList(vSite.getSiteCode(),siteSpVersion);
-            spList =StringUtils.trimToNull(spList);
-            if(spList!=null){
-                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.SPEICAL_PERSON,spList);
+        if (siteSpVersion < curSpVersion) {
+            String spList = redisService.returnSpecialCustomerList(vSite.getSiteCode(), siteSpVersion);
+            spList = StringUtils.trimToNull(spList);
+            if (spList != null) {
+                vSite.updateSitePolicy(PolicyUpdateMsg.POLICY_TYPE.SPEICAL_PERSON, spList);
             }
         }
     }
@@ -237,15 +236,15 @@ public class CityCenter {
         VSite vSite = getVSite(siteCode);
         PolicyVersion version = vSite.getVersion();
         logger.debug("更新sitePolicyVesion,更新前是 {}", version);
-        if(policyType==SiteMsgType.UPDATE_KW_POLICY.shortValue()){
+        if (policyType == SiteMsgType.UPDATE_KW_POLICY.shortValue()) {
             version.setKwVersion(curVersionNum);
-        }else if(policyType==SiteMsgType.UPDATE_PROG_POLICY.shortValue()){
+        } else if (policyType == SiteMsgType.UPDATE_PROG_POLICY.shortValue()) {
             version.setPrgVersion(curVersionNum);
-        }else if(policyType==SiteMsgType.UPDATE_URL_POLICY.shortValue()){
-             version.setUrlVersion(curVersionNum);
-        }else if(policyType==SiteMsgType.UPDATE_SP_POLICY.shortValue()){
-             version.setSmVersion(curVersionNum);
+        } else if (policyType == SiteMsgType.UPDATE_URL_POLICY.shortValue()) {
+            version.setUrlVersion(curVersionNum);
+        } else if (policyType == SiteMsgType.UPDATE_SP_POLICY.shortValue()) {
+            version.setSmVersion(curVersionNum);
         }
-        logger.debug("更新后SitePolicyVersion是: {}",version);
+        logger.debug("更新后SitePolicyVersion是: {}", version);
     }
 }

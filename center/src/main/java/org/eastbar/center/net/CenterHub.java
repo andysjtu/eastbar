@@ -149,6 +149,8 @@ public class CenterHub {
             case SHUTDOWN:
                 msg = new CenterCmd.ShutdownClientCmd(siteCode, hostIp);
                 break;
+            case RESTART:
+                msg = new CenterCmd.RestartClientCmd(siteCode, hostIp);
             default:
                 throw new RuntimeException("NOT SUPPORT");
         }
@@ -157,6 +159,9 @@ public class CenterHub {
 
     private int operate(OPERATE_METHOD method, String siteCode, String hostIp) {
         Channel channel = getCenterChannelBySiteCode(siteCode);
+        if (channel == null || !channel.isActive()) {
+            logger.warn("SiteCode : {} 通道还没有建立，请检查", siteCode);
+        }
         if (channel != null && channel.isActive()) {
             final CountDownLatch latch = new CountDownLatch(1);
             final SocketMsg msg = createOperateSocketMsg(method, siteCode, hostIp);
@@ -292,6 +297,8 @@ public class CenterHub {
                         break outer;
                     }
                 }
+                logger.info("添加");
+                termReports.add(termReport);
             }
         }
         HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);

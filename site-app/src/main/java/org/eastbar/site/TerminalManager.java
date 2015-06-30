@@ -28,8 +28,10 @@ public class TerminalManager {
     private Map<String, Terminal> terminalMap = Maps.newConcurrentMap();
 
     public Terminal getTerminalOrCreated(String ip) {
+        logger.info("terminalMap is : "+terminalMap);
         Terminal terminal = terminalMap.get(ip);
         if (terminal == null) {
+            logger.info("创建新的终端");
             terminal = new Terminal(site, ip);
             terminalMap.put(ip, terminal);
         }
