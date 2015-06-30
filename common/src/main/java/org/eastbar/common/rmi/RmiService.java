@@ -64,7 +64,7 @@ public interface RmiService {
      * @param version
      * @return
      */
-    public int sendSpecialCustomerVersion(int version,Integer[] id)throws RuntimeException;
+    public int sendSpecialCustomerVersion(int version,Integer[] id,String operation)throws RuntimeException;
 
     public int sendSpecialCustomerVersion(int version)throws RuntimeException;
 
@@ -75,7 +75,7 @@ public interface RmiService {
      * @param version
      * @return
      */
-    public int sendKeyWordVersion(int version,Integer[] id)throws RuntimeException;
+    public int sendKeyWordVersion(int version,Integer[] id,String operation)throws RuntimeException;
 
     public int sendKeyWordVersion(int version)throws RuntimeException;
 
@@ -86,7 +86,7 @@ public interface RmiService {
      * @param version
      * @return
      */
-    public int sendBannedUrlVersion(int version,Integer[] id)throws RuntimeException;
+    public int sendBannedUrlVersion(int version,Integer[] id,String operation)throws RuntimeException;
 
     public int sendBannedUrlVersion(int version)throws RuntimeException;
 
@@ -97,7 +97,7 @@ public interface RmiService {
      * @param version
      * @return
      */
-    public int sendBannedProgVersion(int version,Integer[] id)throws RuntimeException;
+    public int sendBannedProgVersion(int version,Integer[] id,String operation)throws RuntimeException;
 
     public int sendBannedProgVersion(int version)throws RuntimeException;
 

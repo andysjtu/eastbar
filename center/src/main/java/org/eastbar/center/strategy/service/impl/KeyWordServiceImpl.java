@@ -201,7 +201,31 @@ public class KeyWordServiceImpl implements KeyWordService{
             keyWord.setUpdateTime(Times.now());
             keyWord.setVersion(version);
             keyWord.setVerNum(num);
+            //keyWord.setOperation("edit");
+            keyWord.setIsPub(1);
+            keyWordDao.update(keyWord);
+        }
+        manageRule.setKeywordVer(version);
+        manageRule.setKeywordVerNum(num);
+        manageRule.setUpdateTime(Times.now());
+        manageRuleDao.update(manageRule);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean delete(Integer[] ids) {
+        ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getKeywordVer());
+        Integer num=manageRule.getKeywordVerNum()+1;
+        for(int i=0;i<ids.length;i++){
+            KeyWord keyWord=keyWordDao.get(ids[i]);
+            keyWord.setUpdator("center");
+            keyWord.setUpdateTime(Times.now());
+            keyWord.setVersion(version);
+            keyWord.setVerNum(num);
             keyWord.setOperation("edit");
+            keyWord.setDeleted(1);
             keyWord.setIsPub(1);
             keyWordDao.update(keyWord);
         }

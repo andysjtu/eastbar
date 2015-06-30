@@ -37,23 +37,23 @@ public class CenterStrategyEventImpl implements CenterStrategyEvent {
     private RmiService rmiService;
 
     @Override
-    public int sendSpecialCustomerVersion(int version,Integer[] ids) {
-        return rmiService.sendSpecialCustomerVersion(version,ids);
+    public int sendSpecialCustomerVersion(int version,Integer[] ids,String operation) {
+        return rmiService.sendSpecialCustomerVersion(version,ids,operation);
     }
 
     @Override
-    public int sendKeyWordVersion(int version,Integer[] ids) {
-        return rmiService.sendKeyWordVersion(version,ids);
+    public int sendKeyWordVersion(int version,Integer[] ids,String operation) {
+        return rmiService.sendKeyWordVersion(version,ids,operation);
     }
 
     @Override
-    public int sendBannedUrlVersion(int version,Integer[] ids) {
-        return rmiService.sendBannedUrlVersion(version,ids);
+    public int sendBannedUrlVersion(int version,Integer[] ids,String operation) {
+        return rmiService.sendBannedUrlVersion(version,ids,operation);
     }
 
     @Override
-    public int sendBannedProgVersion(int version,Integer[] ids) {
-        return rmiService.sendBannedProgVersion(version,ids);
+    public int sendBannedProgVersion(int version,Integer[] ids,String operation) {
+        return rmiService.sendBannedProgVersion(version,ids,operation);
     }
 
     //定期检查redis的版本是否是最新，需要更新就拉取列表
