@@ -1,5 +1,6 @@
 package org.eastbar.site.console;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.google.common.base.Charsets;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +13,7 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
+import org.eastbar.codec.console.ConsoleCmdMsg;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -26,6 +28,7 @@ import java.util.concurrent.*;
 /**
  * Created by andysjtu on 2015/5/10.
  */
+@Deprecated
 public class ConsoleClient {
     private volatile Channel channel;
     NioEventLoopGroup worker = new NioEventLoopGroup();
@@ -243,11 +246,14 @@ public class ConsoleClient {
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, SocketMsg msg) throws Exception {
-            if(msg.getMessageType()==SiteMsgType.TERM_STATUS.shortValue()){
+            if (msg.getMessageType() == SiteMsgType.CONSOLE_CMD_MSG.shortValue()) {
+                ConsoleCmdMsg cmdMsg = new ConsoleCmdMsg(msg);
+                System.out.println("响应结果是 : " + cmdMsg.getCmdStr());
+            } else if (msg.getMessageType() == SiteMsgType.TERM_STATUS.shortValue()) {
                 TermReportMsg termReportMsg = new TermReportMsg(msg);
                 System.out.println(termReportMsg.getReport());
                 return;
-            }else if(msg.getMessageType()==SiteMsgType.POLICY_STATUS.shortValue()){
+            } else if (msg.getMessageType() == SiteMsgType.POLICY_STATUS.shortValue()) {
                 SiteReportMsg siteReportMsg = new SiteReportMsg(msg);
                 System.out.println(siteReportMsg.getReport());
                 return;

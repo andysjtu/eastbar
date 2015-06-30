@@ -27,6 +27,10 @@ public class ConsoleCmdMsg extends SocketMsg {
         parseContent(oldMsg.data().content());
     }
 
+    public String getCmdStr() {
+        return cmdStr;
+    }
+
     protected void parseContent(ByteBuf buf) {
         this.cmdStr = buf.toString(Charsets.UTF_8);
     }

@@ -39,7 +39,7 @@ public class MockLoginHandler extends ChannelInboundHandlerAdapter {
         buf.writeByte('\0');
         buf.writeBytes("192.168.9.100".getBytes());
         buf.writeByte('\0');
-        buf.writeBytes("201506291340".getBytes());
+        buf.writeBytes("20150629134045".getBytes());
         buf.writeByte('\0');
 
         return buf;
