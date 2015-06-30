@@ -6,6 +6,7 @@ import org.eastbar.center.customerLog.service.CustomerService;
 import org.eastbar.center.net.CityCenterListener;
 import org.eastbar.center.statusMachine.HostEvent;
 import org.eastbar.center.statusMachine.IEventPipe;
+import org.eastbar.center.statusMachine.basis.Center;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
 import org.eastbar.center.statusMachine.StatusMachine;
@@ -70,59 +71,8 @@ public class ManagerMain {
 //        event2.setVersion("2");
 //        pipe.addEvents(event2);
 //        System.out.println( Times.now()+"-------------增加Event2-上机----------------");
-/**
- *
- *
- *
- hostEvent = org.eastbar.center.statusMachine.HostEvent@7deb98f6[
- account=1234567
- name=林超
- certId=410107197902026432
- idType=1
- authOrg=徐汇公安局
- loginTime=<null>
- logoutTime=<null>
- nation=<null>
- version=1.0.0.1
- os=Microsoft Windows 7
- macAddress=64.5A.04.CF.BB.90
- ip=192.168.9.100
- status=3
- siteCode=3101010001
 
- hostEvent = org.eastbar.center.statusMachine.HostEvent@76877f0f[
- account=1234567
- name=梁琳
- certId=310107197902026432
- idType=1
- authOrg=徐汇公安局
- loginTime=<null>
- logoutTime=<null>
- nation=<null>
- version=<null>
- os=<null>
- macAddress=<null>
- ip=192.168.9.156
- status=1
- siteCode=3101010001
 
- hostEvent = org.eastbar.center.statusMachine.HostEvent@39a6ee94[
- account=<null>
- name=<null>
- certId=<null>
- idType=<null>
- authOrg=<null>
- loginTime=<null>
- logoutTime=<null>
- nation=<null>
- version=1.0.0.1
- os=Microsoft Windows 7
- macAddress=00.05.9A.3C.78.00
- ip=172.17.0.5
- status=2
- siteCode=3101010001
- */
-//
 //        Thread.sleep(10000);
 //        HostEvent event3 = new HostEvent();
 //        event3.setAccount("qazxsw");
@@ -156,6 +106,5 @@ public class ManagerMain {
 //        System.out.println( Times.now()+"-------------增加Event3-空闲----------------");
 
 
-    //    Center.getInstance().toString();
 	}
 }

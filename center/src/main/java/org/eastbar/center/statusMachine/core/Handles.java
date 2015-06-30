@@ -32,12 +32,12 @@ public class Handles extends Thread {
     Center center;
 
     public void run(){
+        center = Center.getInstance();
         while(true){
             Event event = pipe.getEvents();
             if(event!=null){
-                center = Center.getInstance();
-                pools.execute(new EventAnalysis(event,center));
 
+                pools.execute(new EventAnalysis(event,center));
                 if(event instanceof HostEvent){
                     dbPools.execute(new DbAnalysis((HostEvent)event));
                 }

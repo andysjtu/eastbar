@@ -33,7 +33,7 @@ public class Site implements Serializable {
     private boolean isActive = false;
     private Map<String,Terminal> terminalMap = new ConcurrentHashMap<>();
 
-    private void addTerminal(Terminal terminal){
+    private synchronized void addTerminal(Terminal terminal){
         terminalMap.put(terminal.getIp(),terminal);
     }
     public Terminal findTerminal(String ip){
