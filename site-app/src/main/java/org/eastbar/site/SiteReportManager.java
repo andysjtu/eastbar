@@ -6,10 +6,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.internal.ConcurrentSet;
-import org.eastbar.codec.SiteReport;
-import org.eastbar.codec.SiteReportMsg;
-import org.eastbar.codec.TermReport;
-import org.eastbar.codec.TermReportMsg;
+import org.eastbar.codec.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +24,7 @@ public class SiteReportManager {
     @Autowired
     private Site site;
 
-    public void registerChannel(Channel channel, boolean wholeReport) {
+    public void registerChannel(Channel channel) {
         channels.add(channel);
         channel.closeFuture().addListener(new ChannelFutureListener() {
             @Override
@@ -39,12 +36,16 @@ public class SiteReportManager {
     }
 
     private void reportWholeSiteStatus(Channel channel) {
+//        SiteReport siteReport = site.getSiteReport();
+//        List<TermReport> termReports = site.getTermReportList();
+//        SiteReportMsg siteReportMsg = new SiteReportMsg(siteReport);
+//        channel.writeAndFlush(siteReportMsg);
+//        TermReportMsg termReportMsg = new TermReportMsg(termReports);
+//        channel.writeAndFlush(termReportMsg);
         SiteReport siteReport = site.getSiteReport();
         List<TermReport> termReports = site.getTermReportList();
-        SiteReportMsg siteReportMsg = new SiteReportMsg(siteReport);
-        channel.writeAndFlush(siteReportMsg);
-        TermReportMsg termReportMsg = new TermReportMsg(termReports);
-        channel.writeAndFlush(termReportMsg);
+        SiteInitReq msg = new SiteInitReq(siteReport,termReports);
+        channel.writeAndFlush(msg);
     }
 
     public void report(TermReport termReport) {

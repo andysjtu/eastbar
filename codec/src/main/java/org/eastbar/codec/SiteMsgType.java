@@ -23,7 +23,7 @@ public enum SiteMsgType {
     UPDATE_POLICY_RESP((short) 0x6010),
 
     USER_INFO_MSG((short)0x6020),
-
+    CONSOLE_CMD_MSG((short)0x6021),
 
     TERM_STATUS((short) 0x6004),
     POLICY_STATUS((short) 0x6005),

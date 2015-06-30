@@ -1,4 +1,4 @@
-package org.eastbar.city.console;
+package org.eastbar.codec.console;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -14,6 +14,10 @@ import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by andyliang on 6/29/15.
  */
@@ -23,8 +27,10 @@ public class CmdClient {
 
     NioEventLoopGroup worker = new NioEventLoopGroup();
 
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public void connect() throws InterruptedException {
+
+    public void connect() {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(worker)
                 .channel(NioSocketChannel.class)
@@ -37,7 +43,7 @@ public class CmdClient {
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("ConsoleCmdHandler",new ConsoleCmdHandler());
+                        pipeline.addLast("ConsoleCmdHandler",new ConsoleCmdHandler(executor));
                     }
                 });
         ChannelFuture future = bootstrap.connect();
@@ -49,6 +55,7 @@ public class CmdClient {
                         @Override
                         public void operationComplete(ChannelFuture future) throws Exception {
                             worker.shutdownGracefully();
+                            executor.shutdownNow();
                         }
                     });
                 } else {
@@ -72,5 +79,12 @@ public class CmdClient {
 
     public void setRemotePort(int remotePort) {
         this.remotePort = remotePort;
+    }
+
+    public static void main(String[] args) {
+        CmdClient client = new CmdClient();
+        client.setRemoteAddress("127.0.0.1");
+        client.setRemotePort(9999);
+        client.connect();
     }
 }

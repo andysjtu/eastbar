@@ -38,7 +38,7 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
-        siteServer.getSite().getReportManager().registerChannel(ctx.channel(),true);
+        siteServer.getSite().getReportManager().registerChannel(ctx.channel());
     }
 
     @Override

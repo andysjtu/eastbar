@@ -91,26 +91,20 @@ public class Site {
 
     public void registerChannel(final Channel channel, ClientInitReq initReq) {
         ClientAuthScheme authScheme = initReq.getAuthSchme();
-        logger.info("authScheme is : " + authScheme);
+        logger.debug("authScheme is : " + authScheme);
 
         String host = getAddress(channel);
-        logger.info("上传通道地址是 : " + getAddress(channel));
+        logger.debug("上传通道地址是 : " + getAddress(channel));
         String reportHost = authScheme.getIp();
 
         if (!host.equalsIgnoreCase(reportHost)) {
             logger.warn("上传IP信息{}和Socket通道信息{}不一致，以上传IP信息为准 ", reportHost, host);
         }
-//        reportToCenter(ReferenceCountUtil.retain(initReq));
         terminalManager.monitorActive(initReq, channel);
 
     }
 
-//    private void reportToCenter(ClientInitReq initReq) {
-//        if (centerChannel != null && centerChannel.isActive()) {
-//            OnOffLineEvent event = new OnOffLineEvent(initReq.getAuthSchme(), true);
-//            centerChannel.writeAndFlush(event);
-//        }
-//    }
+
 
 
     private String getAddress(Channel channel) {
@@ -126,27 +120,6 @@ public class Site {
     public Channel getTerminalChannel(String hostIp) {
         Terminal terminal = terminalManager.getTerminalOrCreated(hostIp);
         return terminal.channel();
-//        return channelMap.get(hostIp);
-    }
-
-
-    public void reportOnLine(final TermReport report) {
-//        if (centerChannel != null && centerChannel.isActive()) {
-//            SocketMsg msg = new TermReportMsg(Lists.newArrayList(report));
-//            centerChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-//                @Override
-//                public void operationComplete(ChannelFuture future) throws Exception {
-//                    if (!future.isSuccess()) {
-//                        writeDown(report);
-//                    }
-//                }
-//            });
-//        }
-        notifyEvent(report);
-    }
-
-    public void reportOffline() {
-
     }
 
 
