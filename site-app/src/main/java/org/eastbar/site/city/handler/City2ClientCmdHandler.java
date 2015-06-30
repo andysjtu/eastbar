@@ -7,6 +7,8 @@ import io.netty.channel.*;
 import io.netty.util.ReferenceCountUtil;
 import org.eastbar.codec.*;
 import org.eastbar.site.Site;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
@@ -16,6 +18,7 @@ import java.util.Set;
  */
 public class City2ClientCmdHandler extends SimpleChannelInboundHandler<SocketMsg> {
     private final Site site;
+    public final static Logger logger= LoggerFactory.getLogger(City2ClientCmdHandler.class);
 
 
     public City2ClientCmdHandler(Site site) {
@@ -85,5 +88,11 @@ public class City2ClientCmdHandler extends SimpleChannelInboundHandler<SocketMsg
     private void sendErrorResponse(short messageId, short messageType, Channel channel) {
         GenResp resp = new GenResp.S2CenterGenResp(messageId, messageType, GenResp.Status.Failure);
         channel.writeAndFlush(resp);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("出现异常，连接City通道将关闭，异常原因是",cause);
+        ctx.close();
     }
 }

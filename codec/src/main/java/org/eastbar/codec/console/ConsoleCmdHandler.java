@@ -37,7 +37,10 @@ public class ConsoleCmdHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketMsg msg) throws Exception {
-        if (msg.getMessageType() == SiteMsgType.SITE_INIT_CONN.shortValue()) {
+        if (msg.getMessageType() == SiteMsgType.CONSOLE_CMD_MSG.shortValue()) {
+            ConsoleCmdMsg cmdMsg = new ConsoleCmdMsg(msg);
+            System.out.println("响应结果是 : " + cmdMsg.getCmdStr());
+        } else if (msg.getMessageType() == SiteMsgType.SITE_INIT_CONN.shortValue()) {
             SiteInitReq initReq = new SiteInitReq(msg);
             System.out.println("收到Site端初始化数据 ");
             System.out.println("Site Report is :" + initReq.getSiteReport());

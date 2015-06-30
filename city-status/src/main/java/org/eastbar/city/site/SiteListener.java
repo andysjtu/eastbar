@@ -7,15 +7,13 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.eastbar.city.CityCenter;
 import org.eastbar.city.site.handler.SiteHeatBeatenHandler;
 import org.eastbar.city.site.handler.SiteInitReqHandler;
 import org.eastbar.city.site.handler.SiteStatusUpdateHandler;
-import org.eastbar.codec.EastbarFrameDecoder;
-import org.eastbar.codec.ProxyChannelHandler;
-import org.eastbar.codec.SocketMsgDecoder;
-import org.eastbar.codec.SocketMsgEncoder;
+import org.eastbar.codec.*;
 import org.eastbar.net.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +58,12 @@ public class SiteListener implements Listener {
 
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log",new LoggingHandler("连接场所端通道",LogLevel.INFO));
-                        pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
+                        pipeline.addLast("idle", new IdleStateHandler(0,0,60, TimeUnit.SECONDS));
                         pipeline.addLast("eastFrameDecoder",new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder",new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder",new SocketMsgEncoder());
                         pipeline.addLast("siteInitHandler",new SiteInitReqHandler(center));
-                        pipeline.addLast("siteHeatbeaten",new SiteHeatBeatenHandler());
+                        pipeline.addLast("siteHeatbeaten",new HeartBeatenHandler());
                         pipeline.addLast("siteStatusUpdater",new SiteStatusUpdateHandler(center));
                         pipeline.addLast(ProxyChannelHandler.HANDLER_NAME, new ProxyChannelHandler());
                     }

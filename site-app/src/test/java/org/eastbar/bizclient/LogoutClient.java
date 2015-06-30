@@ -51,9 +51,9 @@ public class LogoutClient extends AbstractClient {
             buf.writeByte('\0');
             buf.writeBytes("192.168.9.100".getBytes());
             buf.writeByte('\0');
-            buf.writeBytes("201506171340".getBytes());
+            buf.writeBytes("20150617134045".getBytes());
             buf.writeByte('\0');
-            buf.writeBytes("201506171345".getBytes());
+            buf.writeBytes("20150617134545".getBytes());
             buf.writeByte('\0');
 
             return buf;
