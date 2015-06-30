@@ -1,6 +1,8 @@
 package org.eastbar.center;
 
 
+import org.eastbar.center.net.CenterConsoleHandler;
+import org.eastbar.center.net.CenterConsoleListener;
 import org.eastbar.center.net.CityCenterListener;
 import org.eastbar.center.customerLog.service.CustomerService;
 import org.eastbar.center.net.CityCenterListener;
@@ -52,6 +54,9 @@ public class ManagerMain {
         System.out.println("------启动网络侦听-------");
         CityCenterListener listener = ctx.getBean(CityCenterListener.class);
         listener.listen();
+
+        CenterConsoleListener consoleListener = ctx.getBean(CenterConsoleListener.class);
+        consoleListener.listen();
 
 //        //启动事件模拟 器
 //        Thread.sleep(10000);
