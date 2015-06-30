@@ -23,6 +23,15 @@ public class CustomerHost implements Serializable {//t_customer_host
     private String version;//version
     private String status;
     private String macAddress;//mac_add
+    private String siteCode;
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
 
     public Integer getId() {
         return id;

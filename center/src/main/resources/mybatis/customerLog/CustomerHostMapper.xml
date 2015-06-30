@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- namespace必须指向Dao接口 -->
-<mapper namespace="org.eastbar.centers.customerLog.dao.CustomerHostDao">
+<mapper namespace="org.eastbar.center.customerLog.dao.CustomerHostDao">
     <resultMap id="customerHostResult" type="CustomerHost">
         <id property="id" column="seq_id" />
         <result property="cid" column="customer_id" />
@@ -12,6 +12,7 @@
         <result property="offlineTime" column="offline_time" />
         <result property="osSystem" column="os_system" />
         <result property="version" column="version" />
+        <result property="siteCode" column="site_code" />
     </resultMap>
 
     <sql id="customerHost">
@@ -34,8 +35,8 @@
         <selectKey resultType="int" keyProperty="id" order="BEFORE">
             select SEQ_T_CUSTOMER_HOST_ID.nextVal as seq_id from dual
         </selectKey>
-        insert into t_customer_host(seq_id,customer_id,ip_add,mac_add,online_time,offline_time,os_system,version)
-        values(#{id,jdbcType=INTEGER},#{cid,jdbcType=INTEGER},#{ipAdd,jdbcType=VARCHAR},#{macAddress,jdbcType=VARCHAR},to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),to_date(#{offlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),#{osSystem},#{version})
+        insert into t_customer_host(seq_id,customer_id,ip_add,mac_add,online_time,offline_time,os_system,version,site_code)
+        values(#{id,jdbcType=INTEGER},#{cid,jdbcType=INTEGER},#{ipAdd,jdbcType=VARCHAR},#{macAddress,jdbcType=VARCHAR},to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),to_date(#{offlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),#{osSystem},#{version},#{siteCode})
     </insert>
 
     <!-- 修改信息 -->
@@ -48,9 +49,18 @@
             <if test="onlineTime!=null">t.online_time=to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),</if>
             <if test="offlineTime!=null">t.offline_time=to_date(#{offlineTime},'yyyy-mm-dd hh24:mi:ss'),</if>
             <if test="osSystem!=null">t.os_system=#{osSystem},</if>
+            <if test="siteCode!=null">t.site_code=#{siteCode},</if>
             <if test="version!=null">t.version=#{version}</if>
         </set>
         where t.ip_add=#{ipAdd} and t.mac_add=#{macAddress} and t.offline_time is null
+    </update>
+
+    <update id="resetCustomerHost"  parameterType="java.util.Map">
+        update t_customer_host t
+        <set>
+            <if test="closeTime!=null">t.offline_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss')</if>
+        </set>
+        where t.site_code=#{siteCode}
     </update>
 
 </mapper>

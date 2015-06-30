@@ -6,9 +6,13 @@ package org.eastbar.center.customerLog.dao.impl;
 
 import org.eastbar.center.customerLog.dao.CustomerDao;
 import org.eastbar.center.customerLog.entity.Customer;
+import org.eastbar.center.strategy.util.Times;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author cindy-jia
@@ -40,4 +44,8 @@ public class CustomerDaoImpl implements CustomerDao {
         return result;
     }
 
+    @Override
+    public int reset(Map<String,String> map) {
+        return sqlSession.update("resetCustomer",map);
+    }
 }

@@ -38,9 +38,7 @@ public class Handles extends Thread {
             if(event!=null){
 
                 pools.execute(new EventAnalysis(event,center));
-                if(event instanceof HostEvent){
-                    dbPools.execute(new DbAnalysis((HostEvent)event));
-                }
+                dbPools.execute(new DbAnalysis(event));
             }
         }
     }
@@ -76,16 +74,20 @@ class EventAnalysis implements Runnable{
 
 class DbAnalysis implements Runnable{
 
-    private HostEvent event;
+    private Event event;
 
-    DbAnalysis(HostEvent event){
+    DbAnalysis(Event event){
         this.event = event;
     }
     @Override
     public void run() {
-
-        //入库t_customer顾客上网信息  t_customer_host顾客上网记录
         CustomerServiceImpl csi = SpringContextHolder.getBean("customerServiceImpl");
-        csi.saveOrUpdate(event);
+        if(event instanceof HostEvent){
+        //入库t_customer顾客上网信息  t_customer_host顾客上网记录
+            csi.saveOrUpdate((HostEvent)event);
+        }
+        if(event instanceof ResetEvent){
+            csi.resetOfflineTime(event.getSiteCode());
+        }
     }
 }

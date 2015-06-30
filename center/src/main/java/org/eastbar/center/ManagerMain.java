@@ -8,6 +8,7 @@ import org.eastbar.center.customerLog.service.CustomerService;
 import org.eastbar.center.net.CityCenterListener;
 import org.eastbar.center.statusMachine.HostEvent;
 import org.eastbar.center.statusMachine.IEventPipe;
+import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.basis.Center;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
@@ -111,5 +112,10 @@ public class ManagerMain {
 //        System.out.println( Times.now()+"-------------增加Event3-空闲----------------");
 
 
+        Thread.sleep(10000);
+        ResetEvent resetEvent = new ResetEvent();
+        resetEvent.setSiteCode("3101010001");
+        pipe.addEvents(resetEvent);
+        System.out.println( Times.now()+"-------------增加ResetEvent----------------");
 	}
 }
