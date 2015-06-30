@@ -5,6 +5,7 @@
 package org.eastbar.common.redis.core;
 
 import org.eastbar.common.redis.CenterRedisService;
+import org.eastbar.common.redis.util.Dates;
 import org.eastbar.common.redis.util.RedisKey;
 import org.eastbar.common.redis.util.Strategy;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -14,6 +15,8 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +84,7 @@ public class CenterRedisServiceImpl implements CenterRedisService {
 
     /**
      * 终端计算机活动数据的添加操作
-     * @param terminalLog 包含siteCode、hostIp、customerName、certId、siteState、onlineTime
+     * @param terminalLog 包含siteCode、hostIp、customerName、customerId、siteState、onlineTime、authOrg、customerIdType、nationality
      */
     public  void terminalDataPut(Map<String,String> terminalLog){
 
@@ -94,6 +97,9 @@ public class CenterRedisServiceImpl implements CenterRedisService {
             String ip=terminalLog.get("hostIp");
             String key= RedisKey.createTerminalKey(siteCode, ip);
             String setKey= RedisKey.createSetTerminalKey(siteCode);
+            String onlineTime=terminalLog.get("onlineTime");
+            Dates.dateTransfer(onlineTime);
+            terminalLog.put("onlineTime",onlineTime);
             hashOperations.putAll(key,terminalLog);
             setOperations.add(setKey,ip);
         }
