@@ -320,6 +320,22 @@ public class CenterHub {
 
     }
 
+    public Map<Channel, List<SiteReport>> getCenterChannels() {
+        return centerChannels;
+    }
+
+    public void setCenterChannels(Map<Channel, List<SiteReport>> centerChannels) {
+        this.centerChannels = centerChannels;
+    }
+
+    public Map<SiteReport, List<TermReport>> getSiteTermMaps() {
+        return siteTermMaps;
+    }
+
+    public void setSiteTermMaps(Map<SiteReport, List<TermReport>> siteTermMaps) {
+        this.siteTermMaps = siteTermMaps;
+    }
+
     public static enum OPERATE_METHOD {
         LOCK, UNLOCK, SHUTDOWN, RESTART;
     }

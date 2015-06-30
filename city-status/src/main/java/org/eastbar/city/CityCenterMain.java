@@ -13,7 +13,7 @@ public class CityCenterMain {
                 "applicationContext-city.xml"
         });
 
-        CenterServer server = context.getBean(CenterServer.class);
+        CityCenterServer server = context.getBean(CityCenterServer.class);
 
         server.start();
     }

@@ -22,11 +22,11 @@
 
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath*:/application-city.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-city.properties"/>
     <bean id="configBean"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
-            <value>classpath*:application-city.properties</value>
+            <value>classpath:application-city.properties</value>
         </property>
     </bean>
     <!--  配置Jedis的 缓冲池  -->

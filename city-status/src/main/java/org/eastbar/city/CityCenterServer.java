@@ -13,7 +13,7 @@ import java.util.List;
  * Created by andysjtu on 2015/5/10.
  */
 @Component
-public class CenterServer {
+public class CityCenterServer {
     @Autowired
     private SiteListener siteListener;
     @Autowired

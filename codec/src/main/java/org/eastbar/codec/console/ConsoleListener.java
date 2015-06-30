@@ -1,4 +1,4 @@
-package org.eastbar.city.console;
+package org.eastbar.codec.console;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -7,7 +7,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.city.CityCenterServer;
 import org.eastbar.codec.EastbarFrameDecoder;
 import org.eastbar.codec.SocketMsgDecoder;
 import org.eastbar.codec.SocketMsgEncoder;
@@ -15,18 +14,12 @@ import org.eastbar.net.Listener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
- * Created by andysjtu on 2015/5/10.
+ * Created by andysjtu on 2015/6/30.
  */
-@Component
-public class CityConsoleListener implements Listener {
-    public static final  Logger logger = LoggerFactory.getLogger(CityConsoleListener.class);
-    @Autowired
-    private CityCenterServer centerServer;
-
-
+public class ConsoleListener implements Listener {
+    public static final Logger logger = LoggerFactory.getLogger(ConsoleListener.class);
 
 
     private NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -45,12 +38,7 @@ public class CityConsoleListener implements Listener {
                 .childHandler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
-                        ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("连接命令窗口通道",LogLevel.INFO));
-                        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
-                        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
-                        pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
-                        pipeline.addLast("cmdDecoder",new CityConsoleHandler(centerServer));
+                        configHandler(ch);
                     }
                 });
         ChannelFuture future = bootstrap.bind(listenPort);
@@ -70,6 +58,14 @@ public class CityConsoleListener implements Listener {
         });
     }
 
+    protected void configHandler(SocketChannel ch) {
+        ChannelPipeline pipeline = ch.pipeline();
+        pipeline.addLast("logHandler", new LoggingHandler("连接命令窗口通道", LogLevel.INFO));
+        pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
+        pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+        pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());
+    }
+
     @Override
     public void stopListen() {
         if(serverChannel!=null) {
@@ -87,9 +83,6 @@ public class CityConsoleListener implements Listener {
         }
     }
 
-    public void setCenterServer(CityCenterServer centerServer) {
-        this.centerServer = centerServer;
-    }
 
     public int getListenPort() {
         return listenPort;

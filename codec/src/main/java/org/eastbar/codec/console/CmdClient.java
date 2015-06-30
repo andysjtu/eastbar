@@ -84,7 +84,8 @@ public class CmdClient {
     public static void main(String[] args) {
         CmdClient client = new CmdClient();
         client.setRemoteAddress("127.0.0.1");
-        client.setRemotePort(9999);
+//        client.setRemotePort(9999);
+        client.setRemotePort(7777);
         client.connect();
     }
 }
