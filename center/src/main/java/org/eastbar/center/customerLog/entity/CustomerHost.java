@@ -53,7 +53,7 @@ public class CustomerHost implements Serializable {//t_customer_host
     }
 
     public void setOnlineTime(String onlineTime) {
-        this.onlineTime = onlineTime.substring(0,19);
+        this.onlineTime = onlineTime;
     }
 
     public String getOfflineTime() {
@@ -61,7 +61,7 @@ public class CustomerHost implements Serializable {//t_customer_host
     }
 
     public void setOfflineTime(String offlineTime) {
-        this.offlineTime = offlineTime.substring(0,19);
+        this.offlineTime = offlineTime;
     }
 
     public String getOsSystem() {
