@@ -56,15 +56,15 @@ public class ManagerMain {
 //        //启动事件模拟 器
 //        Thread.sleep(10000);
 //        HostEvent event2 = new HostEvent();
-//        event2.setAccount("12132456789");
+//        event2.setAccount("JG9876543121");
 //        event2.setAuthOrg("中国公安");
 //        event2.setCertId("2132789");
 //        event2.setIdType("2");
 //        event2.setIp("196.186.3.125");
 //        event2.setLoginTime(Times.now());
 //        event2.setMacAddress("21-02-2-34");
-//        event2.setName("");
-//        event2.setNation("中国");
+//        event2.setName("C");
+//        event2.setNation("中国");  //not null
 //        event2.setOs("win 7");
 //        event2.setSiteCode("3101010001");
 //        event2.setStatus(3);
