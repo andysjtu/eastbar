@@ -20,7 +20,7 @@
     </bean>
     <!--redis工厂 -->
     <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-        <property name="hostName" value="127.0.0.1"/>
+        <property name="hostName" value="${redis.ip}"/>
         <property name="port" value="${redis.port}"/>
     </bean>
     <!-- 配置 redisTemplate 利用Stringserializer -->
