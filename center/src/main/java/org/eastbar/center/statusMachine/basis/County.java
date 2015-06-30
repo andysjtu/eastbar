@@ -34,7 +34,7 @@ public class County implements Serializable {
     private AtomicInteger openSite = new AtomicInteger(0);
     private Map<String,Site> siteMap = new ConcurrentHashMap<>();
 
-    private void addSite(Site site){
+    private synchronized void addSite(Site site){
         siteMap.put(site.getCode(),site);
     }
     public Site findSite(String code){

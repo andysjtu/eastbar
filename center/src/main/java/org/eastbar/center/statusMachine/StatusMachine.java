@@ -4,6 +4,7 @@
  */
 package org.eastbar.center.statusMachine;
 
+import org.eastbar.center.statusMachine.basis.Center;
 import org.eastbar.center.statusMachine.core.Handles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

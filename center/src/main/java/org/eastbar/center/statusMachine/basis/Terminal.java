@@ -41,7 +41,7 @@ public class Terminal implements Serializable {
     private String macAddress;
     private String loginTime; //开户时间、上机时间
 
-    public int[] analysis(Event event){
+    public synchronized int[] analysis(Event event){
         int[] offset = {0,0,0,0};
         if(event instanceof HostEvent){
             Status status = int2Eunm(((HostEvent)event).getStatus());

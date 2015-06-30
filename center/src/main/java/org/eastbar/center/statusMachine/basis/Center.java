@@ -43,7 +43,7 @@ public class Center implements Serializable {
         return center;
     }
 
-    private void addCity(City city){
+    private synchronized void addCity(City city){
         cityMap.put(city.getCode(), city);
     }
 

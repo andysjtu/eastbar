@@ -35,7 +35,7 @@ public class City implements Serializable {
     private AtomicInteger totalSite = new AtomicInteger(0);
     private Map<String,County> countyMap = new ConcurrentHashMap<>();
 
-    private void addCounty(County county){
+    private synchronized void addCounty(County county){
         countyMap.put(county.getCode(),county);
     }
 
