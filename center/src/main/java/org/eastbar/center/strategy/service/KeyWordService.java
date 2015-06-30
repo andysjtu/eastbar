@@ -23,4 +23,6 @@ public interface KeyWordService {
     String siteControl(String siteCode,Integer version) throws Exception;
 
     Boolean update(Integer[]  ids);
+
+    Boolean delete(Integer[] ids);
 }

@@ -213,7 +213,7 @@ public class BannedProgServiceImpl implements BannedProgService {
         for(int i=0;i<ids.length;i++){
             BannedProg bannedProg=bannedProgDao.get(ids[i]);
             bannedProg.setVersion(version);
-            bannedProg.setOperation("edit");
+           // bannedProg.setOperation("edit");
             bannedProg.setVerNum(num);
             bannedProg.setIsPub(1);
             bannedProgDao.update(bannedProg);
@@ -224,5 +224,29 @@ public class BannedProgServiceImpl implements BannedProgService {
         manageRuleDao.update(manageRule);
            return true;
     }
+
+    @Override
+    @Transactional
+    public Boolean delete(Integer[]  ids){
+        ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getBanProgVer());
+        Integer num=manageRule.getProgVerNum()+1;
+        for(int i=0;i<ids.length;i++){
+            BannedProg bannedProg=bannedProgDao.get(ids[i]);
+            bannedProg.setVersion(version);
+            bannedProg.setOperation("remove");
+            bannedProg.setDeleted(1);
+            bannedProg.setVerNum(num);
+            bannedProg.setIsPub(1);
+            bannedProgDao.update(bannedProg);
+        }
+        manageRule.setBanProgVer(version);
+        manageRule.setProgVerNum(num);
+        manageRule.setUpdateTime(Times.now());
+        manageRuleDao.update(manageRule);
+        return true;
+    }
+
+
 
 }

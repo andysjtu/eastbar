@@ -157,5 +157,25 @@ public class ManagerMain {
 
 
     //    Center.getInstance().toString();
-	}
+//        CustomerService customerHistoryService=(CustomerService)ctx.getBean("customerServiceImpl");
+//
+//        HostEvent hostEvent=new HostEvent();
+//        hostEvent.setAccount("62132456789");
+//        hostEvent.setAuthOrg("中国公安");
+//        hostEvent.setCertId("2132789");
+//        hostEvent.setIdType("2");
+//        hostEvent.setIp("196.186.4.135");
+//        hostEvent.setLoginTime("2015-06-03 15:05:27");
+//        hostEvent.setMacAddress("21-02-2-34");
+//        hostEvent.setName("兰");
+//        hostEvent.setNation("中国");
+//        hostEvent.setOs("win 7");
+//        hostEvent.setSiteCode("3101010003");
+//        hostEvent.setStatus(1);
+//        hostEvent.setVersion("2");
+//        hostEvent.setLogoutTime("2015-06-03 20:45:54");
+//
+//        customerHistoryService.saveOrUpdate(hostEvent);
+
+    }
 }

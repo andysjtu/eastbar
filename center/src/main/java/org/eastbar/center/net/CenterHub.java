@@ -294,7 +294,8 @@ public class CenterHub {
                 }
             }
         }
-
+        HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
+        eventPipe.addEvents(hostEvent);
         printStatus();
     }
 

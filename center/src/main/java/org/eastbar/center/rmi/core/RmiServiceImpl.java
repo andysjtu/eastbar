@@ -82,9 +82,23 @@ public class RmiServiceImpl implements RmiService {
     }
 
     @Override
-    public int sendSpecialCustomerVersion(final int version,Integer[] ids) {
-        if(specialCustomerService.update(ids)){
-           return  sendSpecialCustomerVersion(version);
+    public int sendSpecialCustomerVersion(final int version,Integer[] ids,String operation) {
+        if(operation!=null && !"".equals(operation)){
+            if("release".equals(operation)){
+                if(specialCustomerService.update(ids)){
+                    return  sendSpecialCustomerVersion(version);
+                }else{
+                    return 0;
+                }
+            }else if("remove".equals(operation)){
+                if(specialCustomerService.delete(ids)){
+                    return  sendSpecialCustomerVersion(version);
+                }else{
+                    return 0;
+                }
+            }else {
+                return 0;
+            }
         }else{
             return 0;
         }
@@ -131,10 +145,23 @@ public class RmiServiceImpl implements RmiService {
      * @return
      */
     @Override
-    public int sendKeyWordVersion(final int version,Integer[] ids) {
-
-       if(keyWordService.update(ids)){
-           return sendKeyWordVersion(version);
+    public int sendKeyWordVersion(final int version,Integer[] ids,String operation) {
+       if(operation!=null && !"".equals(operation)){
+           if("release".equals(operation)){
+               if(keyWordService.update(ids)){
+                   return sendKeyWordVersion(version);
+               }else{
+                   return 0;
+               }
+           }else if("remove".equals(operation)){
+               if(keyWordService.delete(ids)){
+                   return sendKeyWordVersion(version);
+               }else{
+                   return 0;
+               }
+           }else{
+               return 0;
+           }
        }else{
            return 0;
        }
@@ -182,12 +209,27 @@ public class RmiServiceImpl implements RmiService {
      * @return int 1 代表成功  0 代表失败
      */
     @Override
-    public int sendBannedUrlVersion(final int version,Integer[] ids) {
-        if(bannedUrlService.update(ids)){
-            return sendBannedUrlVersion(version);
+    public int sendBannedUrlVersion(final int version,Integer[] ids,String operation) {
+        if(operation!=null && !"".equals(operation)){
+            if("release".equals(operation)){
+                if(bannedUrlService.update(ids)){
+                    return sendBannedUrlVersion(version);
+                }else{
+                    return 0;
+                }
+            }else if("remove".equals(operation)){
+                if(bannedUrlService.delete(ids)){
+                    return sendBannedUrlVersion(version);
+                }else{
+                    return 0;
+                }
+            }else{
+               return 0;
+            }
         }else{
             return 0;
         }
+
     }
 
 
@@ -230,12 +272,27 @@ public class RmiServiceImpl implements RmiService {
      * @return int 1  代表成功 0 代表失败
      */
     @Override
-    public int sendBannedProgVersion(final int version,Integer[] ids) {
-        if( bannedProgService.update(ids)){
-            return sendBannedProgVersion(version);
+    public int sendBannedProgVersion(final int version,Integer[] ids,String operation) {
+        if(operation!=null && !"".equals(operation)){
+            if("release".equals(operation)){
+                if( bannedProgService.update(ids)){
+                    return sendBannedProgVersion(version);
+                }else{
+                    return 0;
+                }
+            }else if("remove".equals(operation)){
+                if( bannedProgService.delete(ids)){
+                    return sendBannedProgVersion(version);
+                }else{
+                    return 0;
+                }
+            }else{
+                return 0;
+            }
         }else{
             return 0;
         }
+
     }
 
     public int sendBannedProgVersion(final int version) {

@@ -37,12 +37,14 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setAccountId(hostEvent.getAccount());
                 String siteCode=hostEvent.getSiteCode();
                 customer.setSiteCode(siteCode);
-                String cityCode=siteCode.substring(0,4);
-                customer.setCityCode(cityCode);
-                String provinceCode=siteCode.substring(0,3);
-                customer.setProvinceCode(provinceCode);
-                String countyCode=siteCode.substring(0,6);
-                customer.setCountyCode(countyCode);
+                if(siteCode!=null && !"".equals(siteCode)){
+                    String cityCode=siteCode.substring(0,4);
+                    customer.setCityCode(cityCode);
+                    String provinceCode=siteCode.substring(0,3);
+                    customer.setProvinceCode(provinceCode);
+                    String countyCode=siteCode.substring(0,6);
+                    customer.setCountyCode(countyCode);
+                }
                 customer.setName(hostEvent.getName());
                 customer.setNationality(hostEvent.getName());
                 customer.setCertId(hostEvent.getCertId());
