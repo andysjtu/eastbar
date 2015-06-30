@@ -31,7 +31,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllAddProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
+        select i.seq_id,i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='add'
             and  i.ver_num=#{verNum}
@@ -41,7 +41,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllEditProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
+        select i.seq_id,i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='edit'
             and  i.ver_num=#{verNum}
@@ -51,7 +51,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllRemoveProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
+        select i.seq_id,i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             i.operation='remove'
             and  i.ver_num=#{verNum}
@@ -61,7 +61,7 @@
 
     <!--查找表的全部信息-->
     <select id="getAllProgs" resultMap="bannedProgResult" parameterType="java.lang.Integer">
-        select i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.is_block,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
+        select i.seq_id,i.prog_type,i.prog_name,i.progress_name,i.feature_code,i.alarm_type,i.alarm_rank,i.is_block,i.delete_flag,i.ver_num,i.monitor_code from t_banned_prog i
         <where>
             and  i.ver_num=#{verNum}
             and is_pub=1

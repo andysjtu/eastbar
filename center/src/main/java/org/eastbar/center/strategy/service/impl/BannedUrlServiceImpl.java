@@ -209,10 +209,34 @@ public class BannedUrlServiceImpl implements BannedUrlService {
             BannedUrl bannedUrl=bannedUrlDao.get(ids[i]);
             bannedUrl.setUpdator("center");
             bannedUrl.setUpdateTime(Times.now());
-            bannedUrl.setOperation("edit");
+           // bannedUrl.setOperation("edit");
             bannedUrl.setVersion(version);
             bannedUrl.setVerNum(num);
             bannedUrl.setIsPub(1);
+            bannedUrlDao.update(bannedUrl);
+        }
+        manageRule.setBanUrlVer(version);
+        manageRule.setUrlVerNum(num);
+        manageRule.setUpdateTime(Times.now());
+        manageRuleDao.update(manageRule);
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public Boolean delete(Integer[] ids){
+        ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getBanUrlVer());
+        Integer num=manageRule.getUrlVerNum()+1;
+        for(int i=0;i<ids.length;i++){
+            BannedUrl bannedUrl=bannedUrlDao.get(ids[i]);
+            bannedUrl.setUpdator("center");
+            bannedUrl.setUpdateTime(Times.now());
+            bannedUrl.setOperation("remove");
+            bannedUrl.setVersion(version);
+            bannedUrl.setVerNum(num);
+            bannedUrl.setIsPub(1);
+            bannedUrl.setDeleted(1);
             bannedUrlDao.update(bannedUrl);
         }
         manageRule.setBanUrlVer(version);

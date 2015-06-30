@@ -23,4 +23,6 @@ public interface BannedProgService {
 
     Boolean update(Integer[]  ids);
 
+    Boolean delete(Integer[] ids);
+
 }

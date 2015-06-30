@@ -23,4 +23,6 @@ public interface BannedUrlService {
 
     Boolean update(Integer[]  ids);
 
+    Boolean delete(Integer[] ids);
+
 }

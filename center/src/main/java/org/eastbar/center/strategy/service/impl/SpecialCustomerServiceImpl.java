@@ -203,7 +203,7 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
             SpecialCustomer specialCustomer=specialCustomerDao.get(ids[i]);
             specialCustomer.setUpdator("center");
             specialCustomer.setUpdateTime(Times.now());
-            specialCustomer.setOperation("edit");
+           // specialCustomer.setOperation("edit");
             specialCustomer.setIsPub(1);
             specialCustomer.setVersion(version);
             specialCustomer.setVerNum(num);
@@ -213,6 +213,29 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
             manageRule.setSpecialPersonVer(version);
             manageRule.setUpdateTime(Times.now());
             manageRuleDao.update(manageRule);
+
+        return true;
+    }
+
+    public Boolean delete(Integer[] ids){
+        ManageRule manageRule=manageRuleDao.get();
+        String version= Versions.computeVersion(manageRule.getSpecialPersonVer());
+        Integer num=manageRule.getSpecialVerNum()+1;
+        for(int i=0;i<ids.length;i++){
+            SpecialCustomer specialCustomer=specialCustomerDao.get(ids[i]);
+            specialCustomer.setUpdator("center");
+            specialCustomer.setUpdateTime(Times.now());
+            specialCustomer.setOperation("remove");
+            specialCustomer.setDeleted(1);
+            specialCustomer.setIsPub(1);
+            specialCustomer.setVersion(version);
+            specialCustomer.setVerNum(num);
+            specialCustomerDao.update(specialCustomer);
+        }
+        manageRule.setSpecialVerNum(num);
+        manageRule.setSpecialPersonVer(version);
+        manageRule.setUpdateTime(Times.now());
+        manageRuleDao.update(manageRule);
 
         return true;
     }

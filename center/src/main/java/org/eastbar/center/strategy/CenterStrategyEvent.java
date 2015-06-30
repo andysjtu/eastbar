@@ -20,28 +20,28 @@ public interface CenterStrategyEvent {
      * @param version
      * @return
      */
-    public int sendSpecialCustomerVersion(int version,Integer[] ids);
+    public int sendSpecialCustomerVersion(int version,Integer[] ids,String operation);
 
     /**
      * 发送关键字版本号
      * @param version
      * @return
      */
-    public int sendKeyWordVersion(int version,Integer[] ids);
+    public int sendKeyWordVersion(int version,Integer[] ids,String operation);
 
     /**
      * 发送禁止url版本号
      * @param version
      * @return
      */
-    public int sendBannedUrlVersion(int version,Integer[] ids);
+    public int sendBannedUrlVersion(int version,Integer[] ids,String operation);
 
     /**
      * 发送禁止程序版本号
      * @param version
      * @return
      */
-    public int sendBannedProgVersion(int version,Integer[] ids);
+    public int sendBannedProgVersion(int version,Integer[] ids,String operations);
 
 
     /**
