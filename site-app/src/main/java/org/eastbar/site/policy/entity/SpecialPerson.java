@@ -30,7 +30,6 @@ import javax.persistence.*;
 @Table(name="sp_person")
 public class SpecialPerson {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private int certType;
     private String certId;

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.netty.channel.Channel;
 import org.eastbar.codec.*;
+import org.eastbar.site.policy.PolicyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,16 @@ public class TerminalManager {
     @Autowired
     private Site site;
 
+    @Autowired
+    private PolicyService policyService;
+
     private Map<String, Terminal> terminalMap = Maps.newConcurrentMap();
 
     public Terminal getTerminalOrCreated(String ip) {
-        logger.info("terminalMap is : "+terminalMap);
+//        logger.info("terminalMap is : "+terminalMap);
         Terminal terminal = terminalMap.get(ip);
         if (terminal == null) {
-            logger.info("创建新的终端");
+//            logger.info("创建新的终端");
             terminal = new Terminal(site, ip);
             terminalMap.put(ip, terminal);
         }
@@ -59,13 +63,17 @@ public class TerminalManager {
             e.printStackTrace();
             ip = eip;
         }
+        String certId = loginEvent.getId();
+
+        boolean isSpecial = policyService.isSpecail(certId);
+
         if (terminalMap.containsKey(ip)) {
             Terminal terminal = terminalMap.get(ip);
-            terminal.loginCustomer(loginEvent);
+            terminal.loginCustomer(loginEvent,isSpecial);
         } else {
             Terminal terminal = new Terminal(site, ip);
             terminalMap.put(ip, terminal);
-            terminal.loginCustomer(loginEvent);
+            terminal.loginCustomer(loginEvent,isSpecial);
         }
     }
 

@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SpecialPersonDao extends PagingAndSortingRepository<SpecialPerson, Integer> {
+    public SpecialPerson findBycertId(String certId);
 }

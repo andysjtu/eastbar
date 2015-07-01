@@ -95,5 +95,11 @@ public class PolicyService {
             specialPersonDao.delete(deleteList);
     }
 
+    public boolean isSpecail(String certId) {
+        SpecialPerson person = specialPersonDao.findBycertId(certId);
+        if (person != null) return true;
+        return false;
+    }
+
 
 }

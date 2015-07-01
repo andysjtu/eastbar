@@ -18,7 +18,7 @@ public class RmiClientTest{
     public static void main(String[] args) {
         RmiProxyFactoryBean factory = new RmiProxyFactoryBean();
         factory.setServiceInterface(RmiService.class);
-        factory.setServiceUrl("rmi://192.168.9.156:1199/RMIService");
+        factory.setServiceUrl("rmi://192.168.9.119:1199/RMIService");
         factory.afterPropertiesSet();
 
         RmiService userService = (RmiService)factory.getObject();
