@@ -41,20 +41,24 @@ public class City2ClientCmdHandler extends SimpleChannelInboundHandler<SocketMsg
             String ip = msg.getHost().toRegularIpFormat();
             Channel channel = site.getTerminalChannel(ip);
             if (channel != null && channel.isActive()) {
+                logger.info("找到对应的终端");
                 final ProxyChannelHandler proxyChannelHandler = (ProxyChannelHandler) channel.pipeline().get(ProxyChannelHandler.HANDLER_NAME);
                 msg.changeSiteToClientAttr();
                 channel.writeAndFlush(ReferenceCountUtil.retain(msg)).addListener(new ChannelFutureListener() {
                     @Override
                     public void operationComplete(ChannelFuture future) throws Exception {
                         if (future.isSuccess()) {
+                            logger.info("输出到终端");
                             proxyChannelHandler.registerTarget(msg.getMessageId(), msg.getMessageType(), ctx.channel());
                         } else {
+                            logger.info("没有输出到终端");
                             sendErrorResponse(msg.getMessageId(), msg.getMessageType(), ctx.channel());
                         }
                     }
                 });
 
             } else {
+                logger.warn("没有找到对应的终端");
                 sendErrorResponse(msg.getMessageId(), msg.getMessageType(), ctx.channel());
             }
             return;

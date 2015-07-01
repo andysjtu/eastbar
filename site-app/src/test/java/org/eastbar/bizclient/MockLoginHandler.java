@@ -29,7 +29,7 @@ public class MockLoginHandler extends ChannelInboundHandlerAdapter {
         buf.writeByte('\0');
         buf.writeBytes("1234567".getBytes());
         buf.writeByte('\0');
-        buf.writeBytes(new BASE64Encoder().encode("梁琳2".getBytes("GBK")).getBytes());
+        buf.writeBytes(new BASE64Encoder().encode("梁琳".getBytes("GBK")).getBytes());
         buf.writeByte('\0');
         buf.writeBytes("1".getBytes());
         buf.writeByte('\0');

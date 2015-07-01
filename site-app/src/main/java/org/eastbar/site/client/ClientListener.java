@@ -83,7 +83,7 @@ public class ClientListener implements Listener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("CLIENT-CHANNEL", LogLevel.DEBUG));
+                        pipeline.addLast("logHandler", new LoggingHandler("CLIENT-CHANNEL", LogLevel.INFO));
                         pipeline.addLast("readTimeoutHandler", new ReadTimeoutHandler(2, TimeUnit.MINUTES));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("skmsgDecoder", new SocketMsgDecoder());
