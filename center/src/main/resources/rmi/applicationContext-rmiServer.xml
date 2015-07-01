@@ -12,7 +12,7 @@
         <property name="service" ref="rmiServiceImpl" />
         <property name="serviceInterface" value="org.eastbar.common.rmi.RmiService" />
         <property name="serviceName" value="RMIService" />
-        <!--<property name="registryHost"  value="192.168.9.119" />-->
+        <!--<property name="registryHost"  value="${rmi.ip}" />-->
         <property name="registryPort" value="1199" />
     </bean>
     <!--<bean id="rmiServiceImpl" class="org.eastbar.center.rmi.core.RmiServiceImpl"/>-->

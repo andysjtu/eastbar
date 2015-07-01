@@ -15,6 +15,8 @@ import org.eastbar.center.statusMachine.core.Event;
 import org.eastbar.center.statusMachine.core.Status2RedisExecutors;
 import org.eastbar.center.utils.SpringContextHolder;
 import org.eastbar.common.redis.CenterRedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -29,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class County implements Serializable {
 
+    public final static Logger log = LoggerFactory.getLogger(County.class);
     private String code;
     private int[] runStatus = {0,0,0,0};
     private AtomicInteger openSite = new AtomicInteger(0);
@@ -47,6 +50,12 @@ public class County implements Serializable {
         Offset offset = new Offset();
         String siteCode = event.getSiteCode();
         Site site = findSite(siteCode);
+        if(event instanceof ResetEvent){
+            if(site==null){
+                log.info("编号:Site-{}未上报过状态，无法Reset.",siteCode);
+                return null;
+            }
+        }
         if(event instanceof HostEvent){
             if(site==null){
                 site = new Site();
@@ -59,6 +68,10 @@ public class County implements Serializable {
                 offset.setOpen(1);
             }
         }else if (event instanceof ResetEvent){
+            if(site==null){
+                log.info("编号:Site-{} 未上报过状态，无法Reset.",siteCode);
+                return null;
+            }
             if(site.isActive()){
                 this.openSite.getAndDecrement();
                 offset.setOpen(-1);

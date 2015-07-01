@@ -14,6 +14,8 @@ import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
 import org.eastbar.center.statusMachine.StatusMachine;
 import org.eastbar.center.strategy.util.Times;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -40,7 +42,7 @@ public class ManagerMain {
             System.exit(1);
         }
 
-        System.setProperty("java.rmi.server.hostname","192.168.9.119");//建议从配置文件加载。
+//        System.setProperty("java.rmi.server.hostname","192.168.9.119");//建议从配置文件加载。
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext(
                 new String[] { "classpath:applicationContext.xml","classpath:applicationContext-eastbar.xml"
@@ -111,11 +113,10 @@ public class ManagerMain {
 //        pipe.addEvents(event3);
 //        System.out.println( Times.now()+"-------------增加Event3-空闲----------------");
 
-
-        Thread.sleep(10000);
-        ResetEvent resetEvent = new ResetEvent();
-        resetEvent.setSiteCode("3101010001");
-        pipe.addEvents(resetEvent);
-        System.out.println( Times.now()+"-------------增加ResetEvent----------------");
+//        Thread.sleep(10000);
+//        ResetEvent resetEvent = new ResetEvent();
+//        resetEvent.setSiteCode("3101990001");
+//        pipe.addEvents(resetEvent);
+//        System.out.println( Times.now()+"-------------增加ResetEvent----------------");
 	}
 }

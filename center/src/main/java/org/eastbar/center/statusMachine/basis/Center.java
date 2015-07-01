@@ -7,10 +7,13 @@ package org.eastbar.center.statusMachine.basis;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eastbar.center.statusMachine.HostEvent;
+import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.core.Count;
 import org.eastbar.center.statusMachine.core.Event;
 import org.eastbar.center.statusMachine.core.Offset;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -25,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @description :
  */
 public class Center implements Serializable {
+
+    public final static Logger log = LoggerFactory.getLogger(Center.class);
 
     private int[] runStatus = {0,0,0,0};
     private AtomicInteger openSite = new AtomicInteger(0);
@@ -57,6 +62,12 @@ public class Center implements Serializable {
     public  void analysis(Event event){
             String cityCode = event.getSiteCode().substring(0,4);
             City city = findCity(cityCode);
+            if(event instanceof ResetEvent){
+                if(city==null){
+                    log.info("编号:City-{} 未上报过状态，无法Reset.",cityCode);
+                    return;
+                }
+            }
             if(event instanceof HostEvent){
                 if(city==null){
                     city = new City();
@@ -65,14 +76,16 @@ public class Center implements Serializable {
                 }
             }
             Offset offset = city.analysis(event);
-            this.openSite.getAndAdd(offset.getOpen());
-            this.totalSite.getAndAdd(offset.getTotal());
-            synchronized (this.runStatus){
-                Count.runStatus(this.runStatus, offset.getRun());
-            }
-            this.lastUpDate = new Timestamp(System.currentTimeMillis());
+            if(offset!=null){
+                this.openSite.getAndAdd(offset.getOpen());
+                this.totalSite.getAndAdd(offset.getTotal());
+                synchronized (this.runStatus){
+                    Count.runStatus(this.runStatus, offset.getRun());
+                }
+                this.lastUpDate = new Timestamp(System.currentTimeMillis());
 
-            StatusSnapshotFactory.getInstance().saveToFile(center);
+                StatusSnapshotFactory.getInstance().saveToFile(center);
+            }
     }
 
     public int[] getRunStatus() {
