@@ -41,7 +41,7 @@ public class ManagerMain {
         }catch(Throwable t){
             System.exit(1);
         }
-
+//-Djava.rmi.server.hostname=192.168.9.219
 //        System.setProperty("java.rmi.server.hostname","192.168.9.119");//建议从配置文件加载。
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext(
