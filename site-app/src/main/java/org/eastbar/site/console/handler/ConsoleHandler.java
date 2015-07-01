@@ -86,10 +86,10 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
 //
 //        }
         short type = msg.getMessageType();
-        if(type==SiteMsgType.CONSOLE_CMD_MSG.shortValue()){
+        if (type == SiteMsgType.CONSOLE_CMD_MSG.shortValue()) {
             ConsoleCmdMsg cmdMsg = new ConsoleCmdMsg(msg);
             String cmd = cmdMsg.getCmdStr();
-            if("list".equals(cmd)){
+            if ("list".equals(cmd)) {
                 SiteReport siteReport = siteServer.getSite().getSiteReport();
                 StringBuilder builder = new StringBuilder();
                 builder.append("siteReport : ");
@@ -98,17 +98,19 @@ public class ConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
                 List<TermReport> termReportList = siteServer.getSite().getTermReportList();
                 builder.append("Term Size is :").append(termReportList.size()).append("\n");
-                for(TermReport termReport:termReportList){
+                for (TermReport termReport : termReportList) {
                     builder.append("tempReport is ").append(termReport).append("\n");
                 }
 
                 ConsoleCmdMsg respMsg = new ConsoleCmdMsg(builder.toString());
                 ctx.channel().writeAndFlush(respMsg);
-            }else  if("lock".startsWith(cmd)){
-                String ip = cmd.replace("lock","");
-            }
-            else{
-                ConsoleCmdMsg respMsg = new ConsoleCmdMsg("未知命令，请检查 "+cmd);
+            } else if (cmd.startsWith("lock")) {
+                String ip = cmd.replace("lock", "").trim();
+                ClientCmd actioncmd = new ClientCmd.LockClientCmd();
+                Channel channel = siteServer.getSite().getTerminalChannel(ip);
+                siteServer.getSite().findTerminal(ip).redirect(actioncmd, ctx.channel());
+            } else {
+                ConsoleCmdMsg respMsg = new ConsoleCmdMsg("未知命令，请检查 " + cmd);
                 ctx.channel().writeAndFlush(respMsg);
             }
         }

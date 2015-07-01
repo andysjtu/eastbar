@@ -9,12 +9,15 @@ import com.google.common.collect.Maps;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eastbar.center.statusMachine.HostEvent;
+import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.core.Count;
 import org.eastbar.center.statusMachine.core.Offset;
 import org.eastbar.center.statusMachine.core.Event;
 import org.eastbar.center.statusMachine.core.Status2RedisExecutors;
 import org.eastbar.center.utils.SpringContextHolder;
 import org.eastbar.common.redis.CenterRedisService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -28,6 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @description :
  */
 public class City implements Serializable {
+    public final static Logger log = LoggerFactory.getLogger(City.class);
 
     private String code;
     private int[] runStatus = {0,0,0,0};
@@ -49,6 +53,12 @@ public class City implements Serializable {
     public Offset analysis(Event event){
         String countyCode = event.getSiteCode().substring(0,6);
         County county = findCounty(countyCode);
+        if(event instanceof ResetEvent){
+            if(county==null){
+                log.info("编号:County-{} 未上报过状态，无法Reset.",countyCode);
+                return null;
+            }
+        }
         if(event instanceof HostEvent){
             if(county==null){
                 county = new County();
@@ -57,11 +67,13 @@ public class City implements Serializable {
             }
         }
         Offset offset = county.analysis(event);
-        this.openSite.getAndAdd(offset.getOpen());
-        this.totalSite.getAndAdd(offset.getTotal());
-        synchronized (this.runStatus){
-            Count.runStatus(this.runStatus, offset.getRun());
-            Status2RedisExecutors.getInstance().push(new City2Redis(this));
+        if(offset!=null){
+            this.openSite.getAndAdd(offset.getOpen());
+            this.totalSite.getAndAdd(offset.getTotal());
+            synchronized (this.runStatus){
+                Count.runStatus(this.runStatus, offset.getRun());
+                Status2RedisExecutors.getInstance().push(new City2Redis(this));
+            }
         }
         return offset;
     }

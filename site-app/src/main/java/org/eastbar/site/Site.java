@@ -78,7 +78,9 @@ public class Site {
     }
 
     public Terminal findTerminal(String ip) {
-        return terminalManager.getTerminalOrCreated(ip);
+        logger.info("hostip is :"+ip);
+        logger.info("terminalMagerStatus is "+terminalManager.getTerminalReport());
+        return terminalManager.getTerminalOrCreated(ip.trim());
     }
 
     public void registerCustomerLogin(UserInfo loginEvent) {

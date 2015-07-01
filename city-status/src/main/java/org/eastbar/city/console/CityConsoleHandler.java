@@ -47,6 +47,7 @@ public class CityConsoleHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 cmdResp = builder.toString();
                 ConsoleCmdMsg respMsg = new ConsoleCmdMsg(cmdResp);
                 ctx.channel().writeAndFlush(respMsg);
+
             } else if (cmd.startsWith("lock")) {
                 String siteCodeAndIP = cmd.replace("lock", "").trim();
                 String siteCode = siteCodeAndIP.split(":")[0];

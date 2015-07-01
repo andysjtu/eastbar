@@ -3,6 +3,7 @@ package org.eastbar.center.net;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import org.eastbar.codec.console.ConsoleListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CenterConsoleListener extends ConsoleListener {
+    @Autowired
     private CenterHub centerHub;
 
     public CenterConsoleListener() {

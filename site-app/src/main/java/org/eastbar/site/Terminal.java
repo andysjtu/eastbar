@@ -39,6 +39,7 @@ public class Terminal {
     }
 
     public void redirect(final SocketMsg msg, final Channel respChannel) {
+        logger.debug("Term 当前状态是 con : {},onlie : {}",connected,online);
         if (termChannel != null && termChannel.isActive()) {
             termChannel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
                 @Override

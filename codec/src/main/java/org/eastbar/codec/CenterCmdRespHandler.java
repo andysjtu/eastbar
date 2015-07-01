@@ -1,9 +1,9 @@
 package org.eastbar.codec;
 
+import com.google.common.collect.Maps;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
-import org.assertj.core.util.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +19,9 @@ public class CenterCmdRespHandler extends SimpleChannelInboundHandler<SocketMsg>
 
     public final static Logger logger = LoggerFactory.getLogger(CenterCmdRespHandler.class);
 
-    private Map<MsgKey, CountDownLatch> locks = Maps.newConcurrentHashMap();
+    private Map<MsgKey, CountDownLatch> locks = Maps.newConcurrentMap();
 
-    private Map<MsgKey, ResultWrapper> results = Maps.newConcurrentHashMap();
+    private Map<MsgKey, ResultWrapper> results = Maps.newConcurrentMap();
 
 
     public void register(short messageId, short messageType, CountDownLatch latch) {
