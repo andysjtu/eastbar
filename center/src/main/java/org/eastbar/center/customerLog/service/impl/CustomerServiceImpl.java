@@ -13,6 +13,7 @@ import org.eastbar.center.customerLog.service.CustomerService;
 import org.eastbar.center.strategy.util.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -70,14 +71,13 @@ public class CustomerServiceImpl implements CustomerService {
                     customerHost.setMacAddress(hostEvent.getMacAddress());
                     customerHost.setOnlineTime(hostEvent.getLoginTime());
                     if(hostEvent.getStatus()==3||hostEvent.getStatus()==0){
-                        int result = customerDao.update(customer);
+                        int result = this.update(customer);
                         if (result == 0) {
-                            customerDao.save(customer);
+                            this.save(customer);
                         }
                         customerHost.setOfflineTime(hostEvent.getLogoutTime());
                         if (customerHostDao.get(customerHost) == null) {
-                            Customer c = customerDao.getCustomer(customer);
-                            customerHost.setCid(c.getId());
+                            customerHost.setCid(customer.getId());
                             customerHostDao.save(customerHost);
                         } else {
                             customerHostDao.update(customerHost);
@@ -105,6 +105,16 @@ public class CustomerServiceImpl implements CustomerService {
 
         customerDao.reset(map);
         customerHostDao.reset(map);
+    }
+
+    @Transactional
+    private int update(Customer customer){
+        return customerDao.update(customer);
+    }
+
+    @Transactional
+    private int save(Customer customer){
+        return customerDao.save(customer);
     }
 
 }
