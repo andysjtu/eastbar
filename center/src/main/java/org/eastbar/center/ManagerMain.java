@@ -1,21 +1,12 @@
 package org.eastbar.center;
 
 
-import org.eastbar.center.net.CenterConsoleHandler;
 import org.eastbar.center.net.CenterConsoleListener;
 import org.eastbar.center.net.CityCenterListener;
-import org.eastbar.center.customerLog.service.CustomerService;
-import org.eastbar.center.net.CityCenterListener;
-import org.eastbar.center.statusMachine.HostEvent;
 import org.eastbar.center.statusMachine.IEventPipe;
-import org.eastbar.center.statusMachine.ResetEvent;
-import org.eastbar.center.statusMachine.basis.Center;
+import org.eastbar.center.statusMachine.StatusMachine;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
-import org.eastbar.center.statusMachine.StatusMachine;
-import org.eastbar.center.strategy.util.Times;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
