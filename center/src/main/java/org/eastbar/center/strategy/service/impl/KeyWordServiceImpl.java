@@ -224,7 +224,7 @@ public class KeyWordServiceImpl implements KeyWordService{
             keyWord.setUpdateTime(Times.now());
             keyWord.setVersion(version);
             keyWord.setVerNum(num);
-            keyWord.setOperation("edit");
+            keyWord.setOperation("remove");
             keyWord.setDeleted(1);
             keyWord.setIsPub(1);
             keyWordDao.update(keyWord);
