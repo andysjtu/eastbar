@@ -27,8 +27,8 @@ import javax.persistence.*;
 @Table(name="key_word")
 public class KeyWord {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(length = 500)
     private String keyword;
     private int alarmType;
     private int alarmRank;

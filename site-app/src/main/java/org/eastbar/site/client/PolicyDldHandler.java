@@ -43,7 +43,7 @@ public class PolicyDldHandler extends SimpleChannelInboundHandler<FullHttpReques
 
         final String uri = request.getUri();
 
-        logger.info("uri is : " + uri);
+//        logger.info("uri is : " + uri);
 
         if ("/url".equals(uri)) {
             sendUrl(ctx);
