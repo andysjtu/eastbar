@@ -398,7 +398,7 @@
 					<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
 					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
 					<copyConfigurationDirectory>true</copyConfigurationDirectory>
-					<assembleDirectory>${project.build.directory}/biz</assembleDirectory>
+					<assembleDirectory>${project.build.directory}/site</assembleDirectory>
 					<extraJvmArguments>-Xms2056m -Xmx2056m</extraJvmArguments>
 					<programs>
 						<program>

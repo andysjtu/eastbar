@@ -1,5 +1,6 @@
 package org.eastbar.site.client.handler;
 
+import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -38,9 +39,9 @@ public class ClientAlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
             byte[] content = new byte[buf.readableBytes()];
             buf.readBytes(content);
             logger.debug("告警类型是: " + alertType);
-            logger.debug("告警内容是:" + new String(content));
+            logger.debug("告警内容是:" + new String(content, Charsets.UTF_8));
             logger.debug("--------------------------------------------------");
-            alertServer.appendAlert(alertType, new String(content));
+            alertServer.appendAlert(alertType, new String(content,Charsets.UTF_8));
             sendResp(ctx, msg);
         } else {
             ctx.fireChannelRead(ReferenceCountUtil.retain(msg));

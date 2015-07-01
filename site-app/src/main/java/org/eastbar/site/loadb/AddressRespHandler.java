@@ -58,7 +58,7 @@ public class AddressRespHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 return;
             }
         } else {
-            logger.info("不是命令响应类型的包");
+            logger.warn("不是命令响应类型的包");
         }
         ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
     }

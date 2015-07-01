@@ -45,7 +45,7 @@ public class BizInnerListener {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
-                        pipeline.addLast("logHandler", new LoggingHandler("CONN TO SITE-SERVER", LogLevel.INFO));
+                        pipeline.addLast("logHandler", new LoggingHandler("CONN TO SITE-SERVER", LogLevel.DEBUG));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());
                         pipeline.addLast("sockMsgDecoder", new SocketMsgDecoder());
                         pipeline.addLast("socketMsgEncoder", new SocketMsgEncoder());

@@ -59,7 +59,8 @@ public abstract class AbstractConnector {
     protected Bootstrap configOptions(Bootstrap bootstrap) {
         return bootstrap.option(ChannelOption.SO_KEEPALIVE, Boolean.TRUE)
                 .option(ChannelOption.TCP_NODELAY, Boolean.TRUE)
-                .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE);
+                .option(ChannelOption.SO_REUSEADDR, Boolean.TRUE)
+                .option(ChannelOption.RCVBUF_ALLOCATOR,AdaptiveRecvByteBufAllocator.DEFAULT);
     }
 
     private void checkParameter() {
