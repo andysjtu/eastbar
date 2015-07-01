@@ -11,6 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class ManagerMain {
 
@@ -21,15 +24,18 @@ public class ManagerMain {
 
         //初始化Status快照
         try{
-            String OS = System.getProperty("os.name").toLowerCase();
-            System.out.println("os:"+OS);
-            if(OS.indexOf("windows")!=-1){
-                StatusSnapshotFactory.init(new File("d:/status.res"));
-            }else if(OS.indexOf("linux")!=-1){
-                StatusSnapshotFactory.init(new File("/usr/local/eastbar/status.res"));
+            Path path = Paths.get("/usr/local/eastbar/status.res");
+            File file= path.toFile();
+            if(!file.exists()){
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
+            }else if(file.isFile()){
+                StatusSnapshotFactory.init(file);
+            }else{
+                throw new RuntimeException("系统重要文件/usr/local/eastbar/status.res遭到恶意破坏，请手动移除status.res");
             }
-
         }catch(Throwable t){
+            t.printStackTrace();
             System.exit(1);
         }
 //-Djava.rmi.server.hostname=192.168.9.219
