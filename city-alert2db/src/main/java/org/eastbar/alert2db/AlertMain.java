@@ -14,9 +14,6 @@ public class AlertMain {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
                 "applicationContext-alertd.xml"
         });
-
-        AlertListener listener = context.getBean(AlertListener.class);
-        logger.info("开始启动告警接受服务器......");
-        listener.listen();
+        
     }
 }
