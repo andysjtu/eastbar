@@ -1,35 +1,44 @@
 package org.eastbar.alert2db.entity;
 
 
-import org.eastbar.net.EntityObject;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 /**
  * Created by AndySJTU on 2015/6/4.
  */
 @Entity
 @Table(name="t_alarm_history")
-public class SiteAlert extends EntityObject {
+public class SiteAlert  {
     @Column(name="customer_id")
     private String customerId;
+    
     @Column(name="customer_name")
     private String customerName;
+    
     @Column(name = "host_ip")
     private String hostIp;
+    
     @Column(name = "alarm_time")
-    private Timestamp recordTime;
+    private Date recordTime;
+    
     @Column(name = "is_block")
-    private boolean blocked = false;
+    private String blocked;
+    
     @Column(name = "customer_type")
     private String customerType;
+    
     @Column(name = "alarm_type")
     private String alarmType;
+    
     @Column(name = "alarm_level")
     private String alarmLevel;
+    
     @Column(name="alarm_content")
     private String alarmContent;
 
@@ -57,11 +66,11 @@ public class SiteAlert extends EntityObject {
         this.alarmType = alarmType;
     }
 
-    public boolean isBlocked() {
+    public String isBlocked() {
         return blocked;
     }
 
-    public void setBlocked(boolean blocked) {
+    public void setBlocked(String blocked) {
         this.blocked = blocked;
     }
 
@@ -97,11 +106,11 @@ public class SiteAlert extends EntityObject {
         this.hostIp = hostIp;
     }
 
-    public Timestamp getRecordTime() {
+    public Date getRecordTime() {
         return recordTime;
     }
 
-    public void setRecordTime(Timestamp recordTime) {
+    public void setRecordTime(Date recordTime) {
         this.recordTime = recordTime;
     }
 }

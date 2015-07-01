@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.eastbar.log2db.dao.SiteIllegalLogDao">
+
+	<insert id="saveListLegalHistory" parameterType="java.util.List">
+		INSERT INTO t_illegal_history (customer_id,customer_name,host_ip,access_time,is_block,customer_type)SELECT AA.* FROM(
+		<foreach collection="list" item="item" index="index" separator="union all">
+			(select #{item.customerId},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.blocked},#{item.customerType} from dual)
+		</foreach>) AA
+	</insert>  
+
+</mapper> 

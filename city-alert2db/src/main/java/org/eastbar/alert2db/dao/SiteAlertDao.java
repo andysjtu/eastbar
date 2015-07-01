@@ -1,12 +1,15 @@
 package org.eastbar.alert2db.dao;
 
+import java.util.List;
+
 import org.eastbar.alert2db.entity.SiteAlert;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+
 
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Repository
-public interface SiteAlertDao extends CrudRepository<SiteAlert,Long> {
+@MyBatisRepository
+public interface SiteAlertDao  {
+	
+	public void saveListAlarmHistory(List<SiteAlert> alertList);
 }

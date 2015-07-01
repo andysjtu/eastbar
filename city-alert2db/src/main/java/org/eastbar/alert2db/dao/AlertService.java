@@ -16,11 +16,7 @@ public class AlertService {
     @Autowired
     private SiteAlertDao siteAlertDao;
 
-    public void saveSiteAlert(SiteAlert siteAlert){
-        siteAlertDao.save(siteAlert);
-    }
-
     public void saveSiteAlet(List<SiteAlert> siteAlertList){
-        siteAlertDao.save(siteAlertList);
+        siteAlertDao.saveListAlarmHistory(siteAlertList);
     }
 }

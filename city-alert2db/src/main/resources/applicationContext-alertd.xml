@@ -14,12 +14,50 @@
        default-lazy-init="true">
 
     <description>Spring公共配置</description>
+    
+     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+    <context:property-placeholder
+            ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
+
+	<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
+		destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="defaultAutoCommit" value="false" />
+		<!-- 连接Idle半个小时后超时，每15分钟检查一次 -->
+		<property name="timeBetweenEvictionRunsMillis" value="900000" />
+		<property name="minEvictableIdleTimeMillis" value="1800000" />
+	</bean>
+	
+	<!-- MyBatis配置 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+		<property name="typeAliasesPackage" value="org.eastbar.alert2db.entity" />
+		<!-- 显式指定Mapper文件位置 -->
+		<property name="mapperLocations" value="classpath:/mybatis/orcale/*Mapper.xml" />
+	</bean>
+	<!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.eastbar.alert2db.dao" />
+		<property name="annotationClass"
+			value="org.eastbar.alert2db.dao.MyBatisRepository" />
+	</bean>
+	
+    <!-- 配置事务管理 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 
     <context:component-scan base-package="org.eastbar.alert2db">
-    </context:component-scan>
-
-
+    </context:component-scan>-->
 
     <!--<bean id="emf" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
         <!--<property name="dataSource" ref="dataSource"/>-->
@@ -47,11 +85,6 @@
 
     <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
 
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
-
-    <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
-
     <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
     <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"-->
           <!--init-method="init" destroy-method="close">-->
@@ -70,7 +103,6 @@
         <!--<property name="minEvictableIdleTimeMillis" value="1800000"/>-->
     <!--</bean>-->
 
-
     <!-- 配置JMS连接工厂 -->
     <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="${activemq.url}" />
@@ -83,7 +115,6 @@
             <value>alert</value>
         </constructor-arg>
     </bean>
-
 
     <!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">

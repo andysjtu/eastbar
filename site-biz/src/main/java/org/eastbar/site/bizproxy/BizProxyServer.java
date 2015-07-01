@@ -40,7 +40,7 @@ public class BizProxyServer {
     }
 
     private void printSlef() {
-        logger.info("iphost is {}", ipHost);
+        logger.debug("iphost is {}", ipHost);
     }
 
     public void registerCustomerLogout(UserInfo userInfo) {
