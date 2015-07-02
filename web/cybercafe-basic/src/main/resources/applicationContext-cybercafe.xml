@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<description>导入Cybercafe中的applicationContext文件列表</description>
+
+	<!-- required -->
+	<import resource="security/applicationContext-shiro.xml" />
+	<import resource="rmi/applicationContext-rmiClient.xml" />
+    <import resource="redis/applicationContext-redis.xml"/>
+	<!-- optional -->
+	<import resource="cache/applicationContext-ehcache.xml" />
+
+
+    <!-- standby
+    <import resource="*/applicationContext-**.xml" />-->
+
+</beans>

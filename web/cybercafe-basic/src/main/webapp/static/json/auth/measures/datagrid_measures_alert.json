@@ -1,0 +1,7 @@
+{"total":4,"rows":[
+	{"id":"1","alertType":"在规定的营业时间外营业","alertGrade":"一般报警"},
+    {"id":"2","alertType":"同一时段有同一身份的顾客在不同客户端登录","alertGrade":"一般报警"},
+    {"id":"3","alertType":"访问禁止的游戏网站","alertGrade":"一般报警"},
+    {"id":"4","alertType":"其他","alertGrade":"一般报警"}
+
+]}

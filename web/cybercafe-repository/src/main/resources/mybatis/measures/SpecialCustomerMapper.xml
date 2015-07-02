@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.measures.dao.SpecialCustomerDao">
+    <resultMap id="specialCustomerResult" type="SpecialCustomer">
+        <id property="id" column="seq_id" />
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="name" column="name" />
+        <result property="certType" column="cert_type" />
+        <result property="certId" column="cert_id" />
+        <result property="nationality" column="nationality" />
+        <result property="alarmType" column="alarm_type" />
+        <result property="alarmRank" column="alarm_rank" />
+        <result property="isPub" column="is_pub" />
+        <result property="createTime" column="create_time" />
+        <result property="creator" column="creator" />
+        <result property="updateTime" column="update_time" />
+        <result property="updator" column="updator" />
+        <result property="version" column="version"/>
+        <result property="operation" column="operation"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="verNum" column="ver_num"/>
+    </resultMap>
+
+    <sql id="specialCustomer">
+        select * from t_special_customer t
+    </sql>
+
+    <!--根据id表信息-->
+    <select id="getSpecialCustomer" parameterType="int" resultMap="specialCustomerResult">
+      <include refid="specialCustomer"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllSpecialCustomer" resultMap="specialCustomerResult" parameterType="java.util.Map">
+        select * from t_special_customer i
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('name')">
+                i.name like '%${name}%'
+            </if>
+            <if test="_parameter.containsKey('alarmRank')">
+                and i.alarm_rank=#{alarmRank}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and i.create_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and i.create_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and i.monitor_code like '${monitorCode}%'
+            </if>
+            and i.delete_flag=0
+        </trim>
+        order by i.create_time desc
+    </select>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="SpecialCustomer" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_SPECIAL_CUSTOMER_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_special_customer(seq_id,name,monitor_code,cert_type,cert_id,nationality,alarm_type,alarm_rank,is_pub,create_time,creator,version,operation,delete_flag,ver_num)
+        values(#{id,jdbcType=INTEGER},#{name,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{certType,jdbcType=INTEGER},#{certId,jdbcType=VARCHAR},#{nationality,jdbcType=VARCHAR},#{alarmType,jdbcType=INTEGER},#{alarmRank,jdbcType=INTEGER},#{isPub,jdbcType=INTEGER},to_date(#{createTime},'yyyy-mm-dd hh24:mi:ss'),#{creator,jdbcType=VARCHAR},#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="int">
+	     delete from t_special_customer where seq_id=#{id}
+	</delete>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="SpecialCustomer">
+        update t_special_customer t
+        <set>
+          <if test="name!=null">
+            t.name=#{name},
+          </if>
+          <if test="certType!=null">
+            t.cert_type=#{certType},
+          </if>
+          <if test="certId!=null">
+            t.cert_id=#{certId},
+          </if>
+          <if test="nationality!=null">
+            t.nationality=#{nationality},
+          </if>
+          <if test="alarmType!=null">
+              t.alarm_type=#{alarmType},
+          </if>
+          <if test="alarmRank!=null">
+            t.alarm_rank=#{alarmRank},
+          </if>
+          <if test="isPub!=null">
+            t.is_pub=#{isPub},
+          </if>
+          <if test="updateTime!=null">
+            t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss'),
+          </if>
+          <if test="updator!=null">
+            t.updator=#{updator},
+          </if>
+          <if test="version!=null">
+            t.version=#{version},
+          </if>
+          <if test="operation!=null">
+            t.operation=#{operation},
+          </if>
+          <if test="deleteFlag!=null">
+            t.delete_flag=#{deleteFlag},
+          </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>

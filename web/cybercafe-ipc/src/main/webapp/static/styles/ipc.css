@@ -1,0 +1,91 @@
+@charset "utf-8";
+/* for account.css defined */
+.ipm input {
+    width: 200px;
+}
+.ipm>span {
+    min-width: 212px;
+}
+.sub{
+    margin-top: 30px;
+}
+
+.terBox {
+    margin:10px 5px;
+    min-height: 100%;
+}
+.ter{
+    background:#186AB3;
+    float:left;
+    margin:0 5px 10px 5px;
+    text-align:center;
+    font-weight:300;
+    overflow:hidden;
+    padding:1em;
+    cursor:pointer;
+    opacity: 0.8;
+    transition:all 0.3s ease-out;
+}
+.ter:hover{
+    background:white;
+}
+.terBox .ter{
+    width:187px;
+    height:112px;
+}
+
+@media screen and (min-width: 43.75em){/*700px*/
+    .terBox .ter{
+        width:185px;
+        height:112px;
+    }
+}
+@media screen and (min-width: 64em){
+    .terBox .ter{
+        width:185px;
+        height:112px;
+    }
+}
+
+.dropdown-menu >  .li {
+    padding: 3px 20px;
+    white-space: nowrap;
+}
+
+.capture .imgbox {
+    float: left;
+    text-align: center;
+    border-right: 1px dotted #d4d4d4;
+}
+.capture .big{
+    width: 1044px;
+    height: 798px;
+}
+.capture .small{
+    width: 1044px;
+    height: 495px;
+}
+.imgbox>img {
+    margin: 20px 10px;
+    background: #FFF url(../images/ipc/46.jpg) center no-repeat;
+}
+.imgbox>.big{
+    width: 1024px;
+    height: 768px;
+}
+.imgbox>.small{
+    width: 660px;
+    height: 460px;
+}
+.capture .tools {
+    margin: 80px 10px;
+    right: 15px;
+    width: 145px;
+    text-align: center;
+    border:1px solid #d4d4d4;
+    position: absolute;
+}
+.tools button {
+    min-width: 100px;
+    margin: 10px;
+}

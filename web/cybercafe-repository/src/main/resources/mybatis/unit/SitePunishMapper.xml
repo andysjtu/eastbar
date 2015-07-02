@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.SitePunishDao">
+    <resultMap id="sitePunishResult" type="SitePunish">
+        <id property="id" column="seq_id" />
+        <result property="siteCode" column="site_code" />
+        <result property="siteName" column="site_name" />
+        <result property="punishTime" column="punish_time" />
+        <result property="punishReason" column="punish_reason" />
+        <result property="punishType" column="punish_type" />
+        <result property="punishPerson" column="punish_person"/>
+        <result property="permitPerson" column="permit_person" />
+        <result property="punishOrg" column="punish_org" />
+        <result property="punishResult" column="punish_result" />
+        <result property="createTime" column="create_time" />
+        <result property="creator" column="creator" />
+    </resultMap>
+
+    <sql id="sitePunish">
+        select * from t_site_punish t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getSitePunish" parameterType="int" resultMap="sitePunishResult">
+      <include refid="sitePunish"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllSitePunish" resultMap="sitePunishResult" parameterType="java.util.Map">
+        select * from t_site_punish t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('siteCode')">
+                t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('punishReason')">
+                and t.punish_reason =#{punishReason}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.create_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.create_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('monitor')">
+                and t.site_code like '${monitor}%'
+            </if>
+        </trim>
+        order by create_time desc
+    </select>
+
+    <select id="getPunishReasonResult" parameterType="SitePunish" resultType="java.util.Map">
+        select punish_reason,count(*) as total from t_site_punish
+        <where>
+            <if test="siteCode!=null and siteCode!=''">site_code=#{siteCode} </if>
+            <if test="btime!=null and btime!=''">and punish_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')</if>
+            <if test="etime!=null and etime!=''">and punish_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss') </if>
+        </where>
+        group by punish_reason
+    </select>
+
+    <select id="getPunishTypeResult" parameterType="SitePunish" resultType="java.util.Map">
+        select punish_type,count(*) as total from t_site_punish
+        <where>
+            <if test="siteCode!=null and siteCode!=''">site_code=#{siteCode} </if>
+            <if test="btime!=null and btime!=''">and punish_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')</if>
+            <if test="etime!=null and etime!=''">and punish_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')</if>
+        </where>
+        group by punish_type
+    </select>
+</mapper>

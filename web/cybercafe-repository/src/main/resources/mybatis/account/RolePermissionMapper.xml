@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.account.dao.RolePermissionDao">
+	<!--
+		获取权限: 输出直接映射到对象, per_desc列要"as perDes"以方便映射 ,team_id as "team.id"创建team对象并赋值
+	-->
+	<insert id="save" parameterType="RolePermission" >
+		insert into t_role_permission (role_id,per_id,createtime)
+		values(#{roleId,jdbcType=INTEGER},#{perId,jdbcType=INTEGER},to_date(#{createtime},'yyyy-mm-dd hh24:mi:ss'))
+	</insert>
+
+    <delete id="delete" parameterType="int">
+        delete from t_role_permission where role_id=#{roleId}
+    </delete>
+
+    <update id="update" parameterType="RolePermission">
+        update t_role_permission
+        set per_id=#{perId}
+        where role_id=#{roleId}
+    </update>
+
+</mapper> 

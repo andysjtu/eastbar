@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.CustomerHostDao">
+    <resultMap id="customerHostResult" type="CustomerHost">
+        <id property="id" column="seq_id" />
+        <result property="cid" column="customer_id" />
+        <result property="ipAdd" column="ip_add" />
+        <result property="onlineTime" column="online_time" />
+        <result property="offlineTime" column="offline_time" />
+        <result property="osSystem" column="os_system" />
+        <result property="version" column="version" />
+    </resultMap>
+    <resultMap id="customerHostTotalResult" type="CustomerHost" extends="customerHostResult">
+        <collection property="customer" ofType="CustomerHistory">
+            <result property="name" column="name"/>
+            <result property="accountId" column="account_id"/>
+        </collection>
+    </resultMap>
+
+    <sql id="customerHost">
+        select * from t_customer_host t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getCustomerHost" parameterType="int" resultMap="customerHostResult">
+      <include refid="customerHost"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllCustomerHost" resultMap="customerHostTotalResult" parameterType="java.util.Map">
+        select t.*,c.account_id as account_id,c.name  as name
+        from t_customer_host t left join t_customer c on t.customer_id=c.seq_id
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('name')">
+                c.name like '%${name}%'
+            </if>
+            <if test="_parameter.containsKey('ipAdd')">
+                and t.ip_add like '%${ipAdd}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.online_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.online_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </trim>
+        order by t.online_time desc
+    </select>
+
+</mapper>

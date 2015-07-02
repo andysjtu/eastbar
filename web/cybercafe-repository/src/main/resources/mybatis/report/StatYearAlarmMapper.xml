@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.report.dao.StatYearAlarmDao">
+    <resultMap id="statYearAlarmResult" type="StatYearAlarm">
+        <id property="id" column="seq_id" />
+        <result property="staYear" column="sta_year" />
+        <result property="staMonth" column="sta_month" />
+        <result property="staTime" column="sta_time"/>
+        <result property="siteCode" column="site_code"/>
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="alarmCount" column="alarm_count"/>
+        <result property="punishCount" column="punish_count"/>
+        <result property="customerCount" column="customer_count"/>
+    </resultMap>
+
+    <sql id="StatYearAlarm">
+        select * from t_stat_year_alarm t
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="statYearAlarmResult" parameterType="java.util.Map">
+        <include refid="StatYearAlarm"/>
+        <where>
+            <if test="startYear!=null and startYear!=''">
+                t.sta_year>=#{startYear}
+            </if>
+            <if test="endYear!=null and endYear!=''">
+                and t.sta_year&lt;=#{endYear}
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and t.monitor_code like '%${monitorCode}%'
+            </if>
+            <if test="siteCode!=null and siteCode!=''">
+                and t.site_code like '%${siteCode}%'
+            </if>
+        </where>
+    </select>
+</mapper>

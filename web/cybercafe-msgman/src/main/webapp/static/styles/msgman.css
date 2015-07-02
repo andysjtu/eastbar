@@ -1,0 +1,11 @@
+@charset "utf-8";
+/* for account.css defined */
+.ipm input {
+    width: 200px;
+}
+.ipm>span {
+    min-width: 212px;
+}
+.sub{
+    margin-top: 30px;
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.log.dao.OperLogDao">
+    <resultMap id="operLogResult" type="OperLog">
+        <id property="id" column="seq_id" />
+        <result property="userId" column="user_id" />
+        <result property="operTime" column="oper_time" />
+        <result property="operLog" column="oper_log"/>
+        <result property="operType" column="oper_type"/>
+        <result property="userName" column="user_name"/>
+        <result property="cmdId" column="cmd_id"/>
+        <association property="monitorCmd" javaType="MonitorCmd">
+            <id property="id" column="cid"/>
+            <result property="hostIp" column="host_ip"/>
+            <result property="siteCode" column="site_code"/>
+            <result property="commander" column="commander"/>
+            <result property="cmdTime" column="cmd_time"/>
+            <result property="isSuccess" column="is_success"/>
+        </association>
+    </resultMap>
+
+    <sql id="OperLog">
+        select * from t_oper_log l
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="operLogResult" parameterType="java.util.Map">
+        select l.*,u.common_name as user_name,c.seq_id as cid,c.host_ip as host_ip,c.site_code as site_code,c. commander as commander,c.cmd_time as cmd_time,c.is_success as is_success
+        from t_oper_log l
+        left join t_user u on l.user_id=u.seq_id
+        left join t_monitor_cmd c on l.cmd_id=c.seq_id
+        <where>
+            <if test="userName!=null and userName!=''">
+                  u.common_name like '%${userName}%'
+            </if>
+            <if test="operType!=null and operType!=''">
+                and l.oper_type =#{operType}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and l.oper_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and l.oper_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllAdmin" resultMap="operLogResult" parameterType="java.util.Map">
+        select l.*,u.common_name as user_name from t_oper_log l left join t_user u on l.user_id=u.seq_id
+        <where>
+            l.oper_type>4
+            <if test="userName!=null and userName!=''">
+                u.common_name like '%${userName}%'
+            </if>
+            <if test="operType!=null and operType!=''">
+                and l.oper_type =#{operType}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and l.oper_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and l.oper_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:sss')
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" parameterType="OperLog" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_OPER_LOG_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_oper_log(seq_id,user_id,oper_time,oper_log,oper_type) values
+         (#{id},#{userId,jdbcType=INTEGER},to_date(#{operTime},'yyyy-mm-dd hh24:mi:ss'),#{operLog,jdbcType=VARCHAR},#{operType,jdbcType=INTEGER})
+    </insert>
+
+</mapper>

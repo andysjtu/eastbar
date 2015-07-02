@@ -1,0 +1,6 @@
+{"total":3,"rows":[
+	{"id":"1","date":"2014年9月21日","alertTotalNum":"768","charged":"0","gameAlert":"30","urlAlert":"19201","overBusiness":0,"reLogin":"6","otherAlert":"12"},
+	{"id":"2","date":"2014年9月22日","alertTotalNum":"750","charged":"0","gameAlert":"26","urlAlert":"16855","overBusiness":0,"reLogin":"4","otherAlert":"0"},
+	{"id":"3","date":"2014年9月23日","alertTotalNum":"736","charged":"0","gameAlert":"28","urlAlert":"20107","overBusiness":0,"reLogin":"0","otherAlert":"8"},
+    {"id":"4","date":"2014年9月24日","alertTotalNum":"752","charged":"0","gameAlert":"28","urlAlert":"20107","overBusiness":0,"reLogin":"0","otherAlert":"8"}
+]}

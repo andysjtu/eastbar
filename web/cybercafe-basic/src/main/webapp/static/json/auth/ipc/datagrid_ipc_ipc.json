@@ -1,0 +1,12 @@
+{"total":8,"rows":[
+	{"id":"1","no":"31","name":"上海网吧监管中心","charger":"上海网吧监管中心","registerNum":"1670","businessNum":"928","terminaNum":"240810","alertNum":"90141868","punishNum":"1328","isOnline":"是"},
+    {"id":"2","no":"3101","name":"上海市网吧监管中心","charger":"上海市网吧监管中心","registerNum":"1643","businessNum":"912","terminaNum":"237153","alertNum":"88453043","punishNum":"1322","isOnline":"是"},
+    {"id":"3","no":"310101","name":"黄浦区监管中心","charger":"黄浦区监管中心","registerNum":"36","businessNum":"20","terminaNum":"4835","alertNum":"2146350","punishNum":"48","isOnline":"是"},
+    {"id":"4","no":"310103","name":"卢湾区监管中心","charger":"卢湾区监管中心","registerNum":"8","businessNum":"3","terminaNum":"1126","alertNum":"781940","punishNum":"26","isOnline":"是"},
+    {"id":"5","no":"310104","name":"徐汇区监管中心","charger":"徐汇","registerNum":"76","businessNum":"45","terminaNum":"10697","alertNum":"5185382","punishNum":"150","isOnline":"是"},
+    {"id":"6","no":"310105","name":"长宁区监管中心","charger":"长宁文化","registerNum":"29","businessNum":"23","terminaNum":"2860","alertNum":"2631700","punishNum":"96","isOnline":"是"},
+    {"id":"7","no":"310106","name":"静安区监管中心","charger":"静安区监管中心","registerNum":"17","businessNum":"9","terminaNum":"2106","alertNum":"1116958","punishNum":"1328","isOnline":"是"},
+    {"id":"8","no":"310107","name":"普陀区监管中心","charger":"普陀区监管中心","registerNum":"93","businessNum":"62","terminaNum":"12332","alertNum":"5138297","punishNum":"19","isOnline":"是"},
+    {"id":"9","no":"310108","name":"闸北区监管中心","charger":"闸北区监管中心","registerNum":"60","businessNum":"30","terminaNum":"7775","alertNum":"3610208","punishNum":"169","isOnline":"是"},
+    {"id":"10","no":"310109","name":"虹口区监管中心","charger":"虹口区监管中心","registerNum":"74","businessNum":"45","terminaNum":"10801","alertNum":"4466036","punishNum":"67","isOnline":"是"}
+]}

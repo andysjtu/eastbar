@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.msgman.dao.NoticeRecoveryDao">
+    <resultMap id="noticeRecoveryResult" type="NoticeRecovery">
+        <id property="id" column="seq_id" />
+        <result property="siteCode" column="site_code" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="noticeId" column="notice_id"/>
+        <result property="responseCode" column="response_code"/>
+        <result property="responseContent" column="response_content"/>
+        <result property="responseTime" column="response_time"/>
+        <result property="siteName" column="site_name"/>
+    </resultMap>
+
+    <sql id="NoticeRecovery">
+        select * from t_notice_recovery r
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="int" resultMap="noticeRecoveryResult">
+      <include refid="NoticeRecovery"/>
+      where r.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="noticeRecoveryResult" parameterType="java.util.Map">
+        select r.*,i.name as site_name from t_notice_recovery r left join t_site_info i on r.site_code=i.site_code
+        <where>
+            r.notice_id=#{noticeId}
+            <if test="siteCode!=null and siteCode!=''">
+                and  r.site_code like '%${siteCode}%'
+            </if>
+            <if test="responseCode!=null and responseCode!=''">
+                and r.response_code =#{responseCode}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and r.response_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and r.response_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+
+    </select>
+</mapper>

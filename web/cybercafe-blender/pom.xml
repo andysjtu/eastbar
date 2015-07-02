@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eastbar.web</groupId>
+        <artifactId>cybercafe-parent</artifactId>
+        <version>${cybercafe.version}</version>
+        <relativePath>../cybercafe-parent/</relativePath>
+    </parent>
+
+    <artifactId>cybercafe-blender</artifactId>
+    <packaging>war</packaging>
+
+    <build>
+        <finalName>cybercafe</finalName>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-report</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-ipc</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-log</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-measures</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-msgman</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-sys</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-unit</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+
+</project>

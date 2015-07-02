@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.measures.dao.KeyWordDao">
+    <resultMap id="keyWordResult" type="KeyWord">
+        <id property="id" column="seq_id" />
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="keyword" column="keyword" />
+        <result property="alarmType" column="alarm_type" />
+        <result property="alarmRank" column="alarm_rank" />
+        <result property="isBlock" column="is_block" />
+        <result property="isPub" column="is_pub" />
+        <result property="creator" column="creator" />
+        <result property="createTime" column="create_time" />
+        <result property="updator" column="updator" />
+        <result property="updateTime" column="update_time" />
+        <result property="version" column="version"/>
+        <result property="operation" column="operation"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="verNum" column="ver_num"/>
+    </resultMap>
+
+    <sql id="keyWord">
+        select * from t_keyword t
+    </sql>
+    <!--根据id查找表信息-->
+    <select id="getKeyWord" parameterType="int" resultMap="keyWordResult">
+      <include refid="keyWord"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllKeyWord" resultMap="keyWordResult" parameterType="java.util.Map">
+        select * from t_keyword i
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('keyword')">
+                i.keyword like '%${keyword}%'
+            </if>
+            <if test="_parameter.containsKey('alarmRank')">
+                and i.alarm_rank =#{alarmRank}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and i.create_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and i.create_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and i.monitor_code like '${monitorCode}%'
+            </if>
+            and delete_flag=0
+        </trim>
+        order by i.create_time desc
+    </select>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="KeyWord" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_KEYWORD_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_keyword(seq_id,keyword,monitor_code,alarm_type,is_block,alarm_rank,is_pub,creator,create_time,version,operation,delete_flag,ver_num)
+        values(#{id,jdbcType=INTEGER},#{keyword,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{alarmType,jdbcType=INTEGER},#{isBlock,jdbcType=INTEGER},#{alarmRank,jdbcType=INTEGER},#{isPub,jdbcType=INTEGER},#{creator,jdbcType=VARCHAR},to_date(#{createTime},'yyyy-mm-dd hh24:mi:ss'),#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="int">
+	     delete from t_keyword where seq_id=#{id}
+	</delete>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="KeyWord">
+        update t_keyword t
+        <set>
+           <if test="keyword!=null">
+            t.keyword=#{keyword},
+           </if>
+           <if test="alarmType!=null">
+                t.alarm_type=#{alarmType},
+           </if>
+           <if test="alarmRank!=null">
+            t.alarm_rank=#{alarmRank},
+           </if>
+           <if test="isPub!=null">
+            t.is_pub=#{isPub},
+           </if>
+           <if test="isBlock!=null">
+            t.is_block=#{isBlock},
+           </if>
+           <if test="updator!=null">
+            t.updator=#{updator},
+           </if>
+           <if test="updateTime!=null">
+            t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss'),
+           </if>
+           <if test="version!=null">
+               t.version=#{version},
+           </if>
+           <if test="operation!=null">
+               t.operation=#{operation},
+           </if>
+           <if test="deleteFlag!=null">
+               t.delete_flag=#{deleteFlag},
+           </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>

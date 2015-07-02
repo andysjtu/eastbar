@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.report.dao.StatMonthAlarmDao">
+    <resultMap id="statMonthAlarmResult" type="StatMonthAlarm">
+        <id property="id" column="seq_id" />
+        <result property="staYear" column="sta_year" />
+        <result property="staMonth" column="sta_month" />
+        <result property="staTime" column="sta_time"/>
+        <result property="siteCode" column="site_code"/>
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="alarmCount" column="alarm_count"/>
+        <result property="punishCount" column="punish_count"/>
+        <result property="customerCount" column="customer_count"/>
+    </resultMap>
+
+    <sql id="StatMonthAlarm">
+        select * from t_stat_month_alarm l
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="statMonthAlarmResult" parameterType="java.util.Map">
+        <include refid="StatMonthAlarm"/>
+        <where>
+            <if test="btime!=null and btime!=''">
+                l.sta_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="etime!=null and etime!=''">
+                and l.sta_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and l.monitor_code like '${monitorCode}%'
+            </if>
+            <if test="siteCode!=null and siteCode!=''">
+                and l.site_code like '${siteCode}%'
+            </if>
+        </where>
+    </select>
+</mapper>

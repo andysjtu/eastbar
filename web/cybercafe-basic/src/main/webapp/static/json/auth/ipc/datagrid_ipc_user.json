@@ -1,0 +1,12 @@
+{"total":8,"rows":[
+	{"id":"1","placeNo":"3101010007","customerNo":"72616","customerName":"王建","cardType":"身份证","cardNo":" 152102197509131252","cardBornPlace":"","startDate":"2014-09-29 12:57:38","marchineIp":"192.168.000.001"},
+    {"id":"2","placeNo":"3101010007","customerNo":"72243","customerName":"谢伟发","cardType":"身份证","cardNo":" 445221198705245637","cardBornPlace":"","startDate":"2014-09-29 12:41:06","marchineIp":"192.168.000.009"},
+    {"id":"3","placeNo":"3101010007","customerNo":"7218","customerName":"朱鹏","cardType":"身份证","cardNo":" 362322199012124895","cardBornPlace":"","startDate":"2014-09-29 11:52:33","marchineIp":"192.168.000.012"},
+    {"id":"4","placeNo":"3101010007","customerNo":"70854","customerName":"徐金海","cardType":"身份证","cardNo":" 429006199008067695","cardBornPlace":"","startDate":"2014-09-29 11:51:46","marchineIp":"192.168.000.016"},
+    {"id":"5","placeNo":"3101010007","customerNo":"62817","customerName":"宋洋洋","cardType":"身份证","cardNo":" 152102197509131296","cardBornPlace":"","startDate":"2014-09-29 11:42:35","marchineIp":"192.168.000.013"},
+    {"id":"6","placeNo":"3101010007","customerNo":"4517","customerName":"于雷","cardType":"身份证","cardNo":" 152103297509131252","cardBornPlace":"","startDate":"2014-09-29 10:51:33","marchineIp":"192.168.000.017"},
+    {"id":"7","placeNo":"3101010007","customerNo":"4579","customerName":"付道成","cardType":"身份证","cardNo":" 158102197509131252","cardBornPlace":"","startDate":"2014-09-29 10:23:03","marchineIp":"192.168.000.018"},
+    {"id":"8","placeNo":"3101010007","customerNo":"5415","customerName":"周俊海","cardType":"身份证","cardNo":" 320402197806140055","cardBornPlace":"","startDate":"2014-09-29 09:11:30","marchineIp":"192.168.000.019"},
+    {"id":"9","placeNo":"3101010007","customerNo":"70414","customerName":"徐攀浩","cardType":"身份证","cardNo":" 152102197509131252","cardBornPlace":"","startDate":"2014-09-29 08:55:33","marchineIp":"192.168.000.021"},
+    {"id":"10","placeNo":"3101010007","customerNo":"71643","customerName":"李多多","cardType":"身份证","cardNo":" 320882199108104818","cardBornPlace":"","startDate":"2014-09-29 08:51:33","marchineIp":"192.168.000.012"}
+]}

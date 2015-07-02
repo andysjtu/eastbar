@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.ipc.dao.SiteLiveDataDao">
+    <resultMap id="siteLiveDataResult" type="SiteLiveData">
+        <id property="id" column="seq_id" />
+        <result property="siteCode" column="site_code" />
+        <result property="connectTerm" column="connect_term" />
+        <result property="activeCustomerCount" column="active_customer_count" />
+        <result property="runStatus" column="run_status" />
+        <result property="totalAlarm" column="total_alarm" />
+        <result property="totalPunish" column="total_punish" />
+        <result property="lastUpdateTime" column="last_update_time" />
+    </resultMap>
+    <resultMap id="allSiteLiveDataResult" type="SiteLiveData">
+        <id property="id" column="seq_id" />
+        <result property="siteCode" column="site_code" />
+        <result property="connectTerm" column="connect_term" />
+        <result property="activeCustomerCount" column="active_customer_count" />
+        <result property="runStatus" column="run_status" />
+        <result property="totalAlarm" column="total_alarm" />
+        <result property="totalPunish" column="total_punish" />
+        <result property="lastUpdateTime" column="last_update_time" />
+
+        <result property="lname" column="name"/>
+        <result property="mname" column="mname"/>
+    </resultMap>
+
+    <sql id="siteLiveData">
+        select * from t_site_live t
+    </sql>
+
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="String" resultMap="siteLiveDataResult">
+      <include refid="siteLiveData"/>
+      where t.site_code=#{siteCode}
+    </select>
+
+    <select id="getAllLatest" resultMap="siteLiveDataResult">
+        <include refid="siteLiveData"/>
+    </select>
+
+    <select id="getAll" resultMap="allSiteLiveDataResult" parameterType="java.util.Map">
+        SELECT l.*,t.name AS lname,i.name AS mname FROM t_site_live l
+        LEFT JOIN t_site_info t ON l.site_code=t.site_code
+        LEFT JOIN t_monitor_info  i ON t.monitor_code=i.monitor_code
+        <where>
+            <if test="lname!=null and lname!=''">
+                t.name like '%${lname}%'
+            </if>
+            <if test="mname!=null and mname!=''">
+                i.name like '%${mname}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and l.last_update_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and l.last_update_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,5 @@
+{"total":3,"rows":[
+	{"id":"1","date":"2014年9月21日","realBarNum":"768","realTerminalTotal":"66","terminaAveage":"3.23","terminaTime":"13.36"},
+	{"id":"2","date":"2014年9月22日","realBarNum":"750","realTerminalTotal":"64","terminaAveage":"3.20","terminaTime":"11.31"},
+	{"id":"3","date":"2014年9月24日","realBarNum":"736","realTerminalTotal":"64","terminaAveage":"3.32","terminaTime":"13.61"}
+]}

@@ -1,0 +1,165 @@
+/* CSS Public Document */
+html, body, div, p, ul, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, form, input, select, button, textarea, iframe, table, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0 none;
+    vertical-align: top;
+    outline: none;
+}
+
+ol, ul, li {
+    list-style-type: none;
+}
+
+#center input, select, button, textarea {
+    font-size: 12px;
+    font-family: Tahoma, Geneva, sans-serif;
+}
+
+i, em, cite, u {
+    font-style: normal;
+}
+
+input:focus {
+    outline: none;
+}
+.dp{
+    border-top: 1px dotted #d4d4d4;
+}
+
+#center a {
+    color: #666;
+    text-decoration: none;
+    outline: none;
+    cursor: pointer;
+}
+
+#center a:hover {
+    text-decoration: none;
+    color: #eb6c00;
+}
+
+#center a:focus {
+    outline: none;
+}
+
+#center a.blue {
+    color: #0382e5;
+}
+
+#center a.orange {
+    color: #eb6c00;
+}
+hr {
+    margin: 20px 30px 2px 15px;
+}
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.normals {
+    font-style: normal;
+    font-weight: normal;
+}
+
+.mr5 {
+    margin-right: 5px;
+}
+
+.mr10 {
+    margin-right: 10px;
+}
+
+.mr15 {
+    margin-right: 15px;
+}
+
+.mr25 {
+    margin-right: 26px;
+}
+
+.mr45 {
+    margin-right: 48px;
+}
+
+.mr35p {
+    width: 35%;
+}
+
+.mb15 {
+    margin-bottom: 15px;
+}
+
+.mt1 {
+    margin-top: 1px;
+}
+
+.mt5 {
+    margin-top: 5px;
+}
+
+.mlr2 {
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.mlr8 {
+    margin: 8px;
+}
+.pt5 {
+    padding-top: 5px
+}
+.pt10 {
+    padding-top: 10px
+}
+
+.pt15 {
+    padding-top: 18px
+}
+
+.pt20 {
+    padding-top: 22px
+}
+
+.pb15 {
+    padding-bottom: 15px
+}
+
+.pb20 {
+    padding-bottom: 20px
+}
+
+.pb30 {
+    padding-bottom: 30px
+}
+
+.pl3 {
+    padding-left: 4px;
+}
+
+.pl5 {
+    padding-left: 8px;
+}
+
+.pl25 {
+    padding-left: 25px;
+}
+
+.pr25 {
+    padding-right: 28px;
+}
+
+.odd {
+    background-color: #fff;
+}
+
+.even {
+    background-color: #CCC;
+}

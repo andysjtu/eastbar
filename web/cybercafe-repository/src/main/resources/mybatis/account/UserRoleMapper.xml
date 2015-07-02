@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.account.dao.UserRoleDao">
+    <resultMap id="userResult" type="UserRole">
+        <result property="userId" column="user_id" />
+        <result property="roleId" column="role_id" />
+        <result property="createtime" column="createtime" />
+    </resultMap>
+
+    <sql id="user">
+        select * from t_user_role
+    </sql>
+
+    <select id="get" parameterType="int" resultMap="userResult">
+        select * from t_user_role where user_id=#{userId}
+    </select>
+
+    <!-- 插入信息 -->
+    <insert id="save" parameterType="UserRole">
+        insert into t_user_role(
+        user_id,role_id,createtime
+        ) values(
+        #{userId,jdbcType=INTEGER},#{roleId,jdbcType=INTEGER},to_date(#{createtime},'yyyy-mm-dd hh24:mi:ss')
+        )
+    </insert>
+
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="UserRole">
+	     delete from t_user_role where user_id=#{userId}
+	</delete>
+
+</mapper> 

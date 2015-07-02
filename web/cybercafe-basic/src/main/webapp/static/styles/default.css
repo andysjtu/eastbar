@@ -1,0 +1,270 @@
+@import "public.css";
+@charset "utf-8";
+/* for main.css defined */
+* {
+    margin:0px;
+    padding:0px;
+    font-family:Arial, Helvetica, sans-serif,"微软雅黑";
+    font-size:12px;
+    color:#333;
+    letter-spacing:1px;
+}
+html,body{
+    background-color:#12609e;
+    height: 100%;
+
+}
+a{
+    text-decoration:none;
+    outline: none;
+    color: #000000;
+}
+a:hover,a:active {
+    color:#000000;
+    text-decoration:none;
+}
+body > #login {height:auto; min-height:100%;}
+body > #cybercafe {height:auto; min-height:100%; overflow: hidden;}
+/* for login.css defined */
+#login{
+    background:url(../images/login_bg_01.gif) repeat-x fixed!important;
+    width: 100%;
+    overflow: hidden;
+}
+#outline{
+    margin-top: 5%;
+}
+.lg_mid{
+    width:649px;
+    height:477px;
+    padding-left:30px;
+    padding-top:45px;
+}
+.log_bg{
+    background:url(../images/login_img_02.png) no-repeat;
+    width:481px;
+    height:169px;
+    margin-top:40px;
+    padding-top:90px;
+}
+.lg_tit{
+    width:300px;
+}
+.lg_tit td{
+    height:35px;
+}
+.lg_txet{
+    padding-left:10px;
+}
+.lg_txet input{
+    height:20px;
+}
+.lg_btn{
+    width:83px;
+    height:27px;
+    display:block;
+    color:#fff;
+    line-height:25px;
+    text-align:center;
+    background:url(../images/btn_bg01.gif) no-repeat;
+    float:right;
+}
+.ind_footer{
+    background:url(../images/login_bg_02.png) no-repeat center;
+    text-align:center;
+    line-height:20px;
+    width: 100%;
+    z-index: 2;position:absolute;bottom: 0;
+}
+
+/* for header.css defined */
+#header{
+    background: #2ae8fe;
+}
+.slogan{
+    background: url(../images/mc_img_01.gif) no-repeat #2ae8fe;
+    height:83px;
+    padding-right: 30px;
+}
+.slogan #close{
+    background:url(../images/mc1.gif) no-repeat;
+    width:47px;
+    height:56px;
+    display:block;
+}
+.slogan #close:hover{
+    background:url(../images/mc1_2.gif) no-repeat;
+}
+.title_bg{
+    background:url(../images/mc_img_02.gif) repeat-x 0 2px;
+    height:34px;
+    line-height:34px;
+    overflow:hidden;
+    width:100%;
+}
+.title_bg ul{
+    margin: 0;
+}
+.title_bg li{
+    display:block;
+    height:34px;
+    float:left;
+    line-height:36px;
+    margin-left:-3px;
+    background:url(../images/mc_img_05.gif) no-repeat right 8px;
+}
+.tit_btn{
+    background:url(../images/mc_img_04.gif) repeat-x;
+    display:block;
+    float:left;
+    height:34px;
+    padding-left:35px;
+    padding-right:35px;
+    margin: 0 4px;
+}
+.tit_bg01{
+    /*background:url(../images/mc_img_03.gif) no-repeat;*/
+    width:4px;
+    height:34px;
+    display:block;
+    float:left;
+}
+.tit_btn02{
+    background:none;
+    display:block;
+    float:left;
+    height:34px;
+    text-align:center;
+    padding-right:35px;
+}
+.tit_btn02 .tit_bg01{
+    background:none;
+    margin-right:30px;
+}
+.tit_btn02:hover{
+    background:url(../images/mc_img_04.gif) repeat-x;
+    margin: 0 4px;
+}
+.content{
+    padding-bottom:5px;
+    border-top:4px #11abbc solid;
+}
+.cont_left{
+    background:url(../images/mc9.gif) repeat-y;
+    height:100%;
+}
+.tit_bg{
+    background:url(../images/mc12.gif) repeat-y;
+}
+/* for left.css defined */
+/*.layout-panel-west .panel-title {*/
+    /*display: none;*/
+/*}*/
+/*.layout-panel-west .panel-header {*/
+    /*min-width: 10px;*/
+    /*position: absolute;*/
+    /*background: none;*/
+    /*border: none;*/
+/*}*/
+/*.layout-panel-west .panel-tool {*/
+    /*margin: 5px 0 0 2px;*/
+/*}*/
+#levelmenu{margin:8px 0 0 8px;}
+#levelmenu div.unit ul{width:127px;padding:8px 0 8px 0px;}
+#levelmenu h5{width:170px;height:31px;line-height:31px;overflow:hidden;background: url(../images/mc4.gif) no-repeat;text-indent:30px;font-weight:normal;color:#444;margin:0;font-size:100%;cursor:default;}
+#levelmenu h5:hover{background:url(../images/mc4_1.gif) no-repeat;}
+#levelmenu div.unit ul{display:none;line-height:23px; }
+#levelmenu div.unit ul li{margin-left:28px;width:140px;list-style-type: circle;}
+#levelmenu div.unit ul li:hover{background:#bcecf1;}
+#levelmenu div.current ul{display:block;}
+#levelmenu div.current ul li a{color:#3B475F;text-decoration:none;}
+#levelmenu div.current ul li a:hover{text-decoration:underline;}
+#levelmenu div.current h5{background-position:left bottom;height:31px;line-height:31px;background:url(../images/mc4_1.gif) no-repeat;}
+li.left_on{background:#bcecf1;}
+
+.left_top{
+    background:url(../images/mc2.gif) no-repeat;
+    height:66px;
+}
+.left_top02{
+    background:url(../images/um1.gif) no-repeat;
+    height:66px;
+}
+.left_top03{
+    background:url(../images/sc1.gif) no-repeat;
+    height:66px;
+}
+.left_top04{
+    background:url(../images/is1.gif) no-repeat;
+    height:66px;
+}
+.left_top05{
+    background:url(../images/sr1.gif) no-repeat;
+    height:66px;
+}
+.left_top06{
+    background:url(../images/lm1.gif) no-repeat;
+    height:66px;
+}
+.left_bg{
+    background:url(../images/mc10.gif) no-repeat #1c77ad;
+}
+/* center crumbs plugins  */
+#center {
+    background: url(../images/58.jpg) #EEFFFE;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: right bottom;
+}
+#center>div:last-of-type{
+    background:rgba(255, 255, 255, 0.8) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
+    filter:Alpha(opacity=80); background:#fff;/*实现IE背景透明*/
+}
+.right_top{
+    margin-top:1px;
+    background:#f2f2f2;
+    color:#000;
+    height:25px;
+    line-height:25px;
+    text-indent:30px;
+    border-bottom: 1px solid #d4d4d4;
+}
+.result .panel-header,.search .panel-header{
+    background: #777;
+    filter:none;
+}
+.search .panel-title{
+    padding: 5px;
+    color: #FFF;
+}
+.panel-title {
+    color: #FFF;
+}
+.mlr8 .ipm {
+    margin: 0 30px 0 20px;
+}
+.ipm input {
+    margin: 3px 3px;
+    height: 16px;
+}
+.ipm span {
+    margin: 3px 3px;
+    min-height: 24px;
+}
+.mlr8 p{
+    margin: 0 3px 3px 0;
+}
+.searchContext .mlr8 {
+    float: left;
+    border-right: 1px dotted #d4d4d4;
+}
+.datebox input{
+    background: #FFFFFF;
+    height: 24px;
+}
+.datagrid-view{
+    min-height: 200px;
+}
+.dropdown-menu{
+    display: block;
+}

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.account.dao.UserDao">
+    <resultMap id="userResult" type="User">
+        <id property="id" column="seq_id" />
+        <result property="loginName" column="login_name" />
+        <result property="password" column="password" />
+        <result property="commonName" column="common_name" />
+        <result property="idCard" column="id_card" />
+        <result property="mobile" column="mobile" />
+        <result property="email" column="email" />
+        <result property="createtime" column="createtime" />
+        <result property="lastlogin" column="lastlogin" />
+        <result property="status" column="status" />
+        <result property="salt" column="salt" />
+        <result property="failCount" column="fail_count" />
+    </resultMap>
+    <resultMap id="userRoleResult" type="User" extends="userResult">
+        <collection property="roles" ofType="Role">
+            <id property="id" column="rid"/>
+            <result property="commonName" column="cname"/>
+            <result property="roleName" column="role_name"/>
+            <result property="roleDesc" column="role_desc"/>
+        </collection>
+    </resultMap>
+
+    <sql id="user">
+        SELECT u.*,r.*,r.seq_id as rid
+		FROM t_user  u LEFT JOIN t_user_role  ur ON ur.user_id=u.seq_id
+		LEFT JOIN t_role  r ON ur.role_id=r.seq_id
+    </sql>
+    <!-- 根据user表中的id查询用户和角色信息 -->
+    <select id="getUserRole" parameterType="int" resultMap="userRoleResult">
+		SELECT u.*,r.role_name,r.common_name as cname,r.role_desc,r.seq_id as rid
+        FROM t_user  u LEFT JOIN t_user_role  ur ON ur.user_id=u.seq_id
+        LEFT JOIN t_role  r ON ur.role_id=r.seq_id
+		WHERE u.seq_id=#{id}
+	</select>
+    <!-- 按登录名查询用户. -->
+    <select id="findByLoginName" parameterType="String" resultMap="userRoleResult">
+        <include refid="user"/>
+		WHERE u.login_name=#{lgoinName}
+    </select>
+    <!-- 根据user表中的id查询用户信息 -->
+    <select id="getUser" parameterType="int" resultMap="userResult">
+		SELECT u.*
+		FROM t_user u WHERE u.seq_id=#{id}
+	</select>
+
+    <!-- 插入用户信息 -->
+    <insert id="save" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+        insert into t_user(
+        seq_id,login_name,password,common_name,id_card,mobile,email,createtime,salt
+        ) values(
+        #{id,jdbcType=INTEGER},#{loginName,jdbcType=INTEGER},#{password,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{idCard,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},to_date(#{createtime},'yyyy-mm-dd hh24:mi:ss'),#{salt,jdbcType=VARCHAR}
+        )
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_USER_ID.nextVal as seq_id from dual
+        </selectKey>
+    </insert>
+
+    <!-- 保存用户和组之间的关系信息 -->
+    <insert id="saveRelativity" parameterType="int">
+        insert into t_user_role(user_id,role_id)
+        values(#{userId},#{groupId})
+    </insert>
+
+    <select id="getAllUser" resultMap="userRoleResult" parameterType="java.util.Map">
+        SELECT s.*,r.*,r.seq_id as rid,r.common_name as cname
+        FROM (select * from(
+        select t.*,rownum rn from
+         (select us.* from t_user us
+         <trim prefix="WHERE" prefixOverrides="AND | OR">
+
+           <if test="_parameter.containsKey('loginName')">
+               us.login_name like '%${loginName}%'
+           </if>
+           <if test="_parameter.containsKey('commonName')">
+               and us.common_name like '%${commonName}%'
+           </if>
+           <if test="_parameter.containsKey('btime')">
+               and us.createtime>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+           </if>
+           <if test="_parameter.containsKey('etime')">
+                and us.createtime&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+           </if>
+           </trim>
+         )t where rownum&lt;=#{endRow}
+      ) u where u.rn>#{startRow}
+     ) s
+        LEFT JOIN t_user_role  ur ON ur.user_id=s.seq_id
+        LEFT JOIN t_role r ON ur.role_id=r.seq_id
+        <if test="monitorCode!=null and monitorCode!=''">
+        where r.monitor_code like '${monitorCode}%'
+        </if>
+    </select>
+
+    <select id="getAllUserCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT COUNT(DISTINCT(u.login_name)) FROM t_user u
+        LEFT JOIN t_user_role  ur ON ur.user_id=u.seq_id
+        LEFT JOIN t_role  r ON ur.role_id=r.seq_id
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+
+            <if test="_parameter.containsKey('loginName')">
+                u.login_name like '%${loginName}%'
+            </if>
+            <if test="_parameter.containsKey('commonName')">
+                and u.common_name like '%${commonName}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and u.createtime>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and u.createtime&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and r.monitor_code like '${monitorCode}%'
+            </if>
+        </trim>
+    </select>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="int">
+	     delete from t_user where seq_id=#{id}
+	</delete>
+
+    <update id="update" parameterType="User">
+        update t_user
+        <set>
+        <if test="loginName!=null">login_name=#{loginName},</if>
+        <if test="commonName!=null">common_name=#{commonName},</if>
+        <if test="password!=null">password=#{password},</if>
+        <if test="salt!=null">salt=#{salt},</if>
+        <if test="idCard!=null">id_card=#{idCard},</if>
+        <if test="mobile!=null">mobile=#{mobile},</if>
+        <if test="email!=null">email=#{email},</if>
+        <if test="lastlogin!=null">lastlogin=to_date(#{lastlogin},'yyyy-mm-dd hh24:mi:ss'),</if>
+        <if test="failCount!=null">fail_count=#{failCount},</if>
+        <if test="status!=null">status=#{status}</if>
+        </set>
+        where seq_id=#{id}
+    </update>
+
+    <update id="updateRole" parameterType="UserRole">
+        update t_user_role
+        set role_id=#{roleId}
+        where user_id=#(userId)
+    </update>
+</mapper> 

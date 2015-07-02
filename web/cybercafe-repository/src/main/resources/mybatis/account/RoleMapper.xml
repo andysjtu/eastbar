@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.account.dao.RoleDao">
+    <resultMap id="roleResult" type="Role">
+        <id property="id" column="seq_id" />
+        <result property="roleName" column="role_name" />
+        <result property="roleDesc" column="role_desc" />
+        <result property="commonName" column="common_name" />
+        <collection property="monitor" ofType="Monitor">
+            <id property="monitorCode" column="mmc"/>
+            <result property="name" column="name"/>
+        </collection>
+        <collection property="permissions" ofType="Permission">
+            <id property="id" column="pid"/>
+            <result property="permission" column="permission"/>
+            <result property="perDesc" column="perDesc"/>
+        </collection>
+        <collection property="shrioPermissions" ofType="String">
+            <result property="permission" column="permission"/>
+        </collection>
+    </resultMap>
+    <resultMap id="role" type="Role">
+        <id property="id" column="seq_id" />
+        <result property="commonName" column="common_name" />
+        <result property="roleName" column="role_name" />
+        <result property="roleDesc" column="role_desc" />
+        <collection property="monitor" ofType="Monitor">
+            <id property="monitorCode" column="mmc"/>
+            <result property="name" column="name"/>
+        </collection>
+    </resultMap>
+    <!--
+        获取角色: 输出直接映射到对象, login_name列要"as loginName"以方便映射 ,team_id as "team.id"创建team对象并赋值
+    -->
+    <select id="get" parameterType="int" resultMap="roleResult">
+		select r.*,p.*,p.seq_id pid
+		from t_role  r left join t_role_permission  rp on rp.role_id=r.seq_id
+		left join t_permission  p on rp.per_id=p.seq_id
+		where r.seq_id=#{id}
+	</select>
+
+    <select id="getRoleMonitor" parameterType="int" resultMap="role">
+		select r.*,m.monitor_code mmc ,m.name from t_role r left join t_monitor_info m on r.monitor_code=m.monitor_code
+		where r.seq_id=#{id}
+	</select>
+
+     <!--获取所有角色 -->
+    <select id="getAllRole"  resultMap="roleResult" parameterType="java.util.Map">
+        SELECT s.*,p.permission permission,p.per_desc perDesc,p.seq_id pid,m.monitor_code mmc,m.name
+        FROM (select * from(
+        SELECT t.* ,rownum rn FROM
+        (select tr.* from t_role tr
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+
+            <if test="_parameter.containsKey('commonName')">
+                tr.common_name like '%${commonName}%'
+            </if>
+        </trim>
+         ) t where rownum&lt;=#{endRow}
+        ) r where r.rn>#{startRow}
+        )s
+        left join t_role_permission  rp on rp.role_id=s.seq_id
+        left join t_permission  p on rp.per_id=p.seq_id
+        left join t_monitor_info m on s.monitor_code=m.monitor_code
+        <if test="monitorCode!=null and monitorCode!=''">
+            where s.monitor_code like '${monitorCode}%'
+        </if>
+    </select>
+
+    <select id="getAllRoleCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(*) FROM t_role r
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+
+            <if test="_parameter.containsKey('commonName')">
+                r.common_name like '%${commonName}%'
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and r.monitor_code like '${monitorCode}%'
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="byMonitorCode" parameterType="String" resultMap="role">
+        select * from t_role where monitor_code=#{monitorCode}
+    </select>
+
+    <insert id="save">
+        insert into t_role(seq_id,role_name,common_name,role_desc,monitor_code)
+        values(#{id},#{roleName,jdbcType=VARCHAR},#{commonName,jdbcType=VARCHAR},#{roleDesc,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR})
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_ROLE_ID.nextVal as seq_id from dual
+        </selectKey>
+    </insert>
+
+    <select id="getRoles"  resultMap="role" >
+        select * from t_role
+    </select>
+
+	<!-- 删除角色 -->
+	<delete id="delete" parameterType="int">
+	     delete from t_role where seq_id=#{id}
+	</delete>
+
+    <delete id="deleteByMonitorCode" parameterType="String">
+	     delete from t_role where monitor_code=#{monitorCode}
+	</delete>
+
+    <update id="update" parameterType="Role">
+        update t_role
+        <set>
+            <if test="roleName!=null">
+                role_name=#{roleName},
+            </if>
+            <if test="commonName!=null">
+                common_name=#{commonName},
+            </if>
+            <if test="roleDesc!=null">
+                role_desc=#{roleDesc},
+            </if>
+            <if test="monitorCode!=null">
+                monitor_code=#{monitorCode}
+            </if>
+        </set>
+        where seq_id=#{id}
+    </update>
+</mapper> 

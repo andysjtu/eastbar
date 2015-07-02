@@ -1,0 +1,27 @@
+@charset "utf-8";
+/* for account.css defined */
+.ipm input {
+    width: 200px;
+}
+.ipm>span {
+    min-width: 212px;
+}
+.sub{
+    margin-top: 30px;
+}
+
+.tab_top_title02{
+    text-indent:20px;
+    background:#808080;
+    height:20px;
+    line-height:25px;
+    color:#ffffff;
+    font-size: 10;
+    font-weight:bold;
+}
+
+.tab_line{
+    text-align: center;
+    border: 1px solid silver;
+    line-height: 2;
+}

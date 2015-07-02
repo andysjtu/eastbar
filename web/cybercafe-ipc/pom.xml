@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+      <groupId>org.eastbar.web</groupId>
+      <artifactId>cybercafe-parent</artifactId>
+      <version>${cybercafe.version}</version>
+      <relativePath>../cybercafe-parent/</relativePath>
+  </parent>
+
+  <artifactId>cybercafe-ipc</artifactId>
+  <packaging>war</packaging>
+
+  <build>
+    <finalName>cybercafe-ipc</finalName>
+  </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-basic</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-utils</artifactId>
+        </dependency>
+        <!-- WEB begin -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <!-- WEB end -->
+        <!-- SECURITY begin -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+        </dependency>
+        <!-- SECURITY end -->
+    </dependencies>
+
+</project>

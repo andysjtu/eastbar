@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.msgman.dao.NoticeDao">
+    <resultMap id="noticeResult" type="Notice">
+        <id property="id" column="seq_id" />
+        <result property="noteRangeType" column="note_range_type" />
+        <result property="siteCode" column="site_code" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="provinceCode" column="province_code" />
+        <result property="cityCode" column="city_code" />
+        <result property="countyCode" column="county_code"/>
+        <result property="noticeTitle" column="notice_title" />
+        <result property="noticeContent" column="notice_content"/>
+        <result property="noticeTime" column="notice_time"/>
+        <result property="noticeType" column="notice_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <sql id="Notice">
+        select * from t_notice t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="int" resultMap="noticeResult">
+      <include refid="Notice"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部发布信息-->
+    <select id="getAllPublic" resultMap="noticeResult" parameterType="java.util.Map">
+        <include refid="Notice"/>
+        <where>
+            <if test="noticeTitle!=null  and noticeTitle != ''">
+                t.notice_title like '%${noticeTitle}%'
+            </if>
+            <if test="noticeType!=null and noticeType!=''">
+                and t.notice_type = #{noticeType}
+            </if>
+            <if test="creator!=null and creator!=''">
+                and t.creator ='${creator}'
+            </if>
+            <if test="monitor!=null and monitor!=''">
+                and t.monitor_code =#{monitor}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.create_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.create_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+    </select>
+
+    <!--查找表的全部收到信息-->
+    <select id="getAllReceive" resultMap="noticeResult" parameterType="java.util.Map">
+        <include refid="Notice"/>
+        <where>
+            <if test="noticeTitle!=null  and noticeTitle != ''">
+                t.notice_title like '%${noticeTitle}%'
+            </if>
+            <if test="noticeType!=null and noticeType!=''">
+                and t.notice_type = #{noticeType}
+            </if>
+            <if test="monitor!=null and monitor!=''">
+                and t.monitor_code = #{monitor}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.create_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.create_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            and t.status=1
+        </where>
+    </select>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="Notice">
+        update t_notice t
+        <set>
+            <if test="noteRangeType!=null">t.note_range_type=#{noteRangeType},</if>
+            <if test="siteCode!=null">t.site_code=#{siteCode},</if>
+            <if test="monitorCode!=null">t.monitor_code=#{monitorCode}, </if>
+            <if test="provinceCode!=null">t.province_code=#{provinceCode},</if>
+            <if test="cityCode!=null">t.city_code=#{cityCode},</if>
+            <if test="countyCode!=null">t.county_code=#{countyCode},</if>
+            <if test="noticeTitle!=null">t.notice_title=#{noticeTitle},</if>
+            <if test="noticeContent!=null">t.notice_content=#{noticeContent},</if>
+            <if test="noticeTime!=null">t.notice_time=to_date(#{noticeTime},'yyyy-mm-dd hh24:mi:ss'),</if>
+            <if test="noticeType!=null">t.notice_type=#{noticeType},</if>
+            <if test="status!=null">t.status=#{status}</if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="Notice" keyProperty="id" useGeneratedKeys="true">
+        insert into t_notice(seq_id,note_range_type,site_code,monitor_code,province_code,city_code,county_code,notice_title,notice_content,notice_time,notice_type,create_time,creator,status)
+        values(#{id},#{noteRangeType,jdbcType=INTEGER},#{siteCode,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{provinceCode,jdbcType=VARCHAR},#{cityCode,jdbcType=VARCHAR},#{countyCode,jdbcType=VARCHAR},#{noticeTitle,jdbcType=VARCHAR},#{noticeContent,jdbcType=VARCHAR},to_date(#{noticeTime},'yyyy-mm-dd hh24:mi:ss'),#{noticeType,jdbcType=INTEGER},to_date(#{createTime},'yyyy-mm-dd hh24:mi:ss'),#{creator,jdbcType=VARCHAR},#{status,jdbcType=INTEGER})
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_NOTICE_ID.nextVal as seq_id from dual
+        </selectKey>
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="int">
+	     delete from t_notice where seq_id=#{id}
+	</delete>
+
+</mapper>

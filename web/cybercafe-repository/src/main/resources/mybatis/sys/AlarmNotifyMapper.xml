@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.sys.dao.AlarmNotifyDao">
+    <resultMap id="alarmNotifyResult" type="AlarmNotify">
+        <id property="id" column="seq_id" />
+        <result property="notifierType" column="notifier_type" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="receiver" column="receiver" />
+        <result property="sender" column="sender" />
+        <result property="senderPass" column="sender_pass" />
+        <result property="smtpAddress" column="smtp_address"/>
+        <result property="smtpPort" column="smtp_port" />
+    </resultMap>
+
+    <sql id="AlarmNotify">
+        select * from t_alarm_notify t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getAlarmNotify" parameterType="int" resultMap="alarmNotifyResult">
+      <include refid="AlarmNotify"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllAlarmNotify" resultMap="alarmNotifyResult">
+        select * from t_alarm_notify t;
+    </select>
+
+    <select id="getAlarmNotifysByCondition" parameterType="AlarmNotify" resultMap="alarmNotifyResult">
+        select * from t_alarm_notify t
+        where
+        t.notifier_type=#{notifierType}
+        and t.seq_id not in(1,2)
+    </select>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="AlarmNotify" keyProperty="id" useGeneratedKeys="true">
+        insert into t_alarm_notify(seq_id,notifier_type,monitor_code,receiver,sender,sender_pass,smtp_address,smtp_port)
+        values(#{id},#{notifierType,jdbcType=INTEGER},#{monitorCode,jdbcType=VARCHAR},#{receiver,jdbcType=VARCHAR},#{sender,jdbcType=VARCHAR},#{senderPass,jdbcType=VARCHAR},#{smtpAddress,jdbcType=VARCHAR},#{smtpPort,jdbcType=VARCHAR})
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_ALARM_NOTIFY_ID.nextVal as seq_id from dual
+        </selectKey>
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="int">
+	     delete from t_alarm_notify where seq_id=#{id}
+	</delete>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="AlarmNotify">
+        update t_alarm_notify t
+        <set>
+            <if test="notifierType!=null"> t.notifier_type=#{notifierType},</if>
+            <if test="monitorCode!=null">t.monitor_code=#{monitorCode},</if>
+            <if test="receiver!=null">t.receiver=#{receiver},</if>
+            <if test="sender!=null">t.sender=#{sender},</if>
+            <if test="senderPass!=null">t.sender_pass=#{senderPass},</if>
+            <if test="smtpAddress!=null">t.smtp_address=#{smtpAddress},</if>
+            <if test="smtpPort!=null">t.smtp_port=#{smtpPort}</if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>
