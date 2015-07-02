@@ -46,6 +46,8 @@ public class PolicyManager {
     }
 
 
+
+
     public String getBanUrlString() {
         StringBuilder builder = new StringBuilder();
         urlList = Lists.newArrayList(banUrlDao.findAll());

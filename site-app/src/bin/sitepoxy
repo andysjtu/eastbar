@@ -1,0 +1,12 @@
+#!/bin/sh
+
+start() {	
+  echo "analyze site-service...."
+  
+  chmod +x /usr/local/eastbar/site/bin/site-service
+	/usr/local/eastbar/site/bin/site-service >/dev/null 2>/dev/null &
+	echo $! > /var/run/site.pid
+}
+
+start
+

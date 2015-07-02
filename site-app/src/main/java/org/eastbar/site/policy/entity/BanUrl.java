@@ -11,7 +11,7 @@ public class BanUrl {
     @Id
     private Integer id;
     private Integer urlType;
-    @Column(length = 500)
+    @Column(length = 2000)
     private String urlValue;
     private int alarmType;
     private int isBlock;

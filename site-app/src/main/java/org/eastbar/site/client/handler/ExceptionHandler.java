@@ -14,7 +14,7 @@ public class ExceptionHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        logger.info("场所通道关闭：" + ctx.channel().remoteAddress());
+        logger.debug("场所通道关闭：" + ctx.channel().remoteAddress());
     }
 
     @Override

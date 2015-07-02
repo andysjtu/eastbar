@@ -1,0 +1,36 @@
+#!/bin/sh
+
+SLEEP_TIME=7200
+VERSION_FILE='/usr/local/eastbar/site/config/bar_server_version'
+HTTP_SITE='http://update.nbscreen.com/update?'
+WORKING_DIR='/usr/local/update/tmp'
+UPDATELOG=/usr/local/update/sitebar-update.log
+
+if [ `id -u` -ne 0 ]
+then
+	echo "Only root can do this"
+	exit 1
+fi
+
+mkdir $WORKING_DIR -p
+
+while [ 1 ]
+do
+	cd $WORKING_DIR
+	rm * -rf
+	VER=`cat $VERSION_FILE`
+	URL=${HTTP_SITE}'version='$VER
+	wget $URL -O update.tar.gz >>$UPDATELOG 2>&1
+	if [ -f $WORKING_DIR/update.tar.gz ] && [ -s $WORKING_DIR/update.tar.gz ]; then
+		tar zxf update.tar.gz
+		TMPDIR=`ls -l|grep ^d|awk '{print $9}'`
+		NOW=`date +%Y%m%d%H%M%S`
+		echo $NOW $TMPDIR
+//		cd $TMPDIR
+		chmod +x update
+		./update
+	else
+		echo "Already lastest version or wget occur error." >>$UPDATELOG
+	fi	
+	sleep $SLEEP_TIME
+done

@@ -38,7 +38,6 @@ public class LogSaver {
                         public SiteUrlLog apply(@Nullable UrlLog input) {
                             SiteUrlLog siteUrlLog = new SiteUrlLog();
                             DozerUtil.copyProperties(input, siteUrlLog);
-                            siteUrlLog.setId(null);
                             return siteUrlLog;
                         }
                     }).toList();
@@ -69,7 +68,7 @@ public class LogSaver {
                         public SiteInstMsgLog apply(@Nullable InstMsgLog input) {
                             SiteInstMsgLog siteIllegalLog = new SiteInstMsgLog();
                             DozerUtil.copyProperties(input, siteIllegalLog);
-                            siteIllegalLog.setId(null);
+
                             return siteIllegalLog;
                         }
                     }).toList();
@@ -93,7 +92,7 @@ public class LogSaver {
                         public SiteEmailLog apply(@Nullable EmailLog input) {
                             SiteEmailLog siteEmailLog = new SiteEmailLog();
                             DozerUtil.copyProperties(input, siteEmailLog);
-                            siteEmailLog.setId(null);
+
                             return siteEmailLog;
                         }
                     }).toList();
@@ -117,7 +116,7 @@ public class LogSaver {
                         public SiteIllegalLog apply(@Nullable IllegalLog input) {
                             SiteIllegalLog siteIllegalLog = new SiteIllegalLog();
                             DozerUtil.copyProperties(input, siteIllegalLog);
-                            siteIllegalLog.setId(null);
+
                             return siteIllegalLog;
                         }
                     }).toList();
@@ -141,7 +140,7 @@ public class LogSaver {
                         public SiteProgLog apply(@Nullable PrgLog input) {
                             SiteProgLog siteProgLog = new SiteProgLog();
                             DozerUtil.copyProperties(input, siteProgLog);
-                            siteProgLog.setId(null);
+
                             return siteProgLog;
                         }
                     }).toList();

@@ -1,0 +1,22 @@
+#!/bin/sh
+logfile="/var/log/propro.log"
+keepOnline(){
+
+	java=$(ps -C java -o pid=|grep `cat /var/run/site.pid`)
+	if [ "$java" = "" ]
+	then
+	  
+	  chmod +x /usr/local/eastbar/site/bin/sitepoxy
+	  /usr/local/eastbar/site/bin/sitepoxy
+	  NOW=$(date +%Y%m%d%H%M%S)
+	  echo -e $NOW "site-service restart \n" >> $logfile 2>&1          
+	fi
+  
+}
+keepOnline
+
+while [ 1 ]
+do
+    sleep 300	
+	keepOnline
+done

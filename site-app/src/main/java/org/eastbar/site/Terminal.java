@@ -28,6 +28,8 @@ public class Terminal {
 
     private final Site site;
 
+    private volatile boolean isSpecail =false;
+
     public Terminal(Site site, String ip) {
         this.siteCode = site.getSiteCode();
         this.site = site;
@@ -73,7 +75,8 @@ public class Terminal {
     }
 
 
-    public void loginCustomer(UserInfo loginEvent) {
+    public void loginCustomer(UserInfo loginEvent,boolean isSpecail) {
+        this.isSpecail = isSpecail;
         if (loginEvent.isSameLoginInfo(userInfo)) {
             return;
         }
@@ -94,6 +97,7 @@ public class Terminal {
     }
 
     public void logoutCustomer(UserInfo logoutEvent) {
+        this.isSpecail = false;
         if (logoutEvent.isSameLogoutInfo(userInfo)) {
             return;
         }
@@ -135,13 +139,16 @@ public class Terminal {
             DozerUtil.copyProperties(authScheme, termInfo);
 
             ClientAuthResp authResp = new ClientAuthResp();
-            logger.info("向客户端推送客户信息,推送地址是:{}", channel.remoteAddress());
+            logger.debug("向客户端推送客户信息,推送地址是:{}", channel.remoteAddress());
 
             authResp.setVersion(authScheme.getVersion());
             authResp.setIdType(userInfo.getIdType());
             authResp.setId(userInfo.getId());
             authResp.setName(userInfo.getName());
             authResp.setAccount(userInfo.getAccount());
+            if(isSpecail){
+                authResp.setSpecialMode(true);
+            }
 
             channel.closeFuture().addListener(new ChannelFutureListener() {
                 @Override

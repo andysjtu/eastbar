@@ -1,9 +1,11 @@
 package org.eastbar.net;
 
+import java.io.Serializable;
+
 /**
  * Created by AndySJTU on 2015/6/12.
  */
-public class DomainAndPort {
+public class DomainAndPort implements Serializable{
     private String domain;
     private int port;
 

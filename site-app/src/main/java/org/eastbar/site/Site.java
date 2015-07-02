@@ -5,6 +5,7 @@ import io.netty.channel.Channel;
 import org.apache.commons.lang3.StringUtils;
 import org.eastbar.codec.*;
 import org.eastbar.site.client.PolicyManager;
+import org.eastbar.site.policy.PolicyService;
 import org.eastbar.site.policy.entity.SitePolicyVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,7 @@ public class Site {
     private SiteReportManager reportManager;
 
 
+
     public void setCenterChannel(Channel centerChannel) {
         this.centerChannel = centerChannel;
     }
@@ -78,8 +80,8 @@ public class Site {
     }
 
     public Terminal findTerminal(String ip) {
-        logger.info("hostip is :"+ip);
-        logger.info("terminalMagerStatus is "+terminalManager.getTerminalReport());
+//        logger.info("hostip is :"+ip);
+//        logger.info("terminalMagerStatus is "+terminalManager.getTerminalReport());
         return terminalManager.getTerminalOrCreated(ip.trim());
     }
 

@@ -27,14 +27,13 @@ import javax.persistence.*;
 @Table(name="ban_prog")
 public class BanProg {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String progType;
-    @Column(length = 500)
-    private String progName;
-    @Column(length = 500)
-    private String progressName;
     @Column(length = 1000)
+    private String progName;
+    @Column(length = 1000)
+    private String progressName;
+    @Column(length = 2000)
     private String featureCode;
     private String alarmType;
     private String alarmRank;
