@@ -381,8 +381,8 @@ public class IpcController {
     @Transactional
     public String shutdown(@PathVariable String siteCode,@PathVariable String ip){
         try{
-            int i =rmiService.shutDown(siteCode, ip);
             MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,0);
+            int i =rmiService.shutDown(siteCode, monitorCmdBO.getHostIp());
             monitorCmdBO.setIsSuccess(i);
             monitorCmdService.save(monitorCmdBO);
             OperLogBO operLogBO=new OperLogBO();
@@ -409,8 +409,8 @@ public class IpcController {
     @Transactional
     public String restart(@PathVariable String siteCode,@PathVariable String ip){
         try{
-            int i =rmiService.restart(siteCode, ip);
             MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,1);
+            int i =rmiService.restart(siteCode, monitorCmdBO.getHostIp());
             monitorCmdBO.setIsSuccess(i);
             monitorCmdService.save(monitorCmdBO);
             OperLogBO operLogBO=new OperLogBO();
@@ -435,8 +435,8 @@ public class IpcController {
     @ResponseBody
     public String lock(@PathVariable String siteCode,@PathVariable String ip){
         try{
-            int i =rmiService.locking(siteCode, ip);
             MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,2);
+            int i =rmiService.locking(siteCode,monitorCmdBO.getHostIp());
             monitorCmdBO.setIsSuccess(i);
             monitorCmdService.save(monitorCmdBO);
             OperLogBO operLogBO=new OperLogBO();
@@ -461,8 +461,8 @@ public class IpcController {
     @ResponseBody
     public String unlock(@PathVariable String siteCode,@PathVariable String ip){
         try{
-            int i =rmiService.Unlock(siteCode, ip);
             MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,3);
+            int i =rmiService.Unlock(siteCode, monitorCmdBO.getHostIp());
             monitorCmdBO.setIsSuccess(i);
             monitorCmdService.save(monitorCmdBO);
             OperLogBO operLogBO=new OperLogBO();
@@ -501,7 +501,8 @@ public class IpcController {
     @RequestMapping("/{siteCode}/jpdata/{ip}/")
     public void captureData(@PathVariable String siteCode,@PathVariable String ip,HttpServletResponse response){
         try{
-            byte[] bytePic = rmiService.Screenshot(siteCode,ip);
+            MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,4);
+            byte[] bytePic = rmiService.Screenshot(siteCode,monitorCmdBO.getHostIp());
             response.reset();
             response.setContentType("image/JPEG");
             response.setHeader("CONTENT-DISPOSITION", "filename="+ Times.now()+".jpg");
@@ -509,7 +510,6 @@ public class IpcController {
             {
                 response.getOutputStream().write(bytePic);
             }
-            MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,2);
             if(bytePic.length>0){
                 monitorCmdBO.setIsSuccess(0);
             }else{

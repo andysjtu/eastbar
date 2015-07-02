@@ -63,10 +63,10 @@
         var cmdBO= allPrpos(cmd);
         switch (type){
             case 0: ajax("${ctx}/ipc/${tb.siteCode}/gj/"+cmdBO+"/");break;
-            case 1: ajax("${ctx}/ipc/${tb.siteCode}/cq/"+ip+"/");break;
-            case 2: ajax("${ctx}/ipc/${tb.siteCode}/sd/"+ip+"/");break;
-            case 3: ajax("${ctx}/ipc/${tb.siteCode}/js/"+ip+"/");break;
-            case 4: window.location = "${ctx}/ipc/${tb.siteCode}/jp/"+ip+"/#_0";break;
+            case 1: ajax("${ctx}/ipc/${tb.siteCode}/cq/"+cmdBO+"/");break;
+            case 2: ajax("${ctx}/ipc/${tb.siteCode}/sd/"+cmdBO+"/");break;
+            case 3: ajax("${ctx}/ipc/${tb.siteCode}/js/"+cmdBO+"/");break;
+            case 4: window.location = "${ctx}/ipc/${tb.siteCode}/jp/"+cmdBO+"/#_0";break;
         }
     }
 
