@@ -35,7 +35,7 @@ public class StatusSnapshotFactory implements Externalizable {
         return snapshotFactory;
     }
 
-    public synchronized static void init(File rootFile){
+    public static void init(File rootFile){
         if(snapshotFactory==null){
             log.info("StatusSnapshotFactory初始化成功");
             snapshotFactory = new StatusSnapshotFactory(rootFile);
@@ -78,9 +78,11 @@ public class StatusSnapshotFactory implements Externalizable {
     protected Center read() {
         ObjectInputStream in = null;
         try {
-            FileInputStream fin = new FileInputStream(centerFile);
-            in = new ObjectInputStream(new BufferedInputStream(fin));
-            readExternal(in);
+            if(centerFile.length()!=0){
+                FileInputStream fin = new FileInputStream(centerFile);
+                in = new ObjectInputStream(new BufferedInputStream(fin));
+                readExternal(in);
+            }
             return snapshot;
         } catch (Throwable e) {
             log.error("反序列化CenterSnapShot出错 ：", e);

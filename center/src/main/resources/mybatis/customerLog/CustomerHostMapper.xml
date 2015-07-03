@@ -26,7 +26,7 @@
             and t.offline_time is null
         </if>
         <if test="onlineTime!=null">
-            and to_char(t.online_time,'yyyy-mm-dd hh24:mi:ss')=#{onlineTime}
+            and to_char(t.online_time,'yyyymmddhh24miss')=#{onlineTime}
         </if>
     </select>
 
@@ -52,7 +52,7 @@
             <if test="siteCode!=null">t.site_code=#{siteCode},</if>
             <if test="version!=null">t.version=#{version}</if>
         </set>
-        where t.ip_add=#{ipAdd} and t.mac_add=#{macAddress} and t.offline_time is null
+        where t.site_code=#{siteCode} and t.ip_add=#{ipAdd} and t.mac_add=#{macAddress} and to_char(t.online_time,'yyyymmddhh24miss')=#{onlineTime}
     </update>
 
     <update id="resetCustomerHost"  parameterType="java.util.Map">

@@ -68,14 +68,19 @@
     </insert>
 
     <select id="getAllUser" resultMap="userRoleResult" parameterType="java.util.Map">
-        SELECT s.*,r.*,r.seq_id as rid,r.common_name as cname
+        SELECT *
         FROM (select * from(
         select t.*,rownum rn from
-         (select us.* from t_user us
+         (select us.*,r.seq_id as rid,r.common_name as cname,r.monitor_code from t_user us
+          LEFT JOIN t_user_role  ur ON ur.user_id=us.seq_id
+          LEFT JOIN t_role r ON ur.role_id=r.seq_id
+          <if test="monitorCode!=null and monitorCode!=''">
+             r.monitor_code like '${monitorCode}%'
+          </if>
          <trim prefix="WHERE" prefixOverrides="AND | OR">
 
            <if test="_parameter.containsKey('loginName')">
-               us.login_name like '%${loginName}%'
+              and us.login_name like '%${loginName}%'
            </if>
            <if test="_parameter.containsKey('commonName')">
                and us.common_name like '%${commonName}%'
@@ -88,13 +93,8 @@
            </if>
            </trim>
          )t where rownum&lt;=#{endRow}
-      ) u where u.rn>#{startRow}
-     ) s
-        LEFT JOIN t_user_role  ur ON ur.user_id=s.seq_id
-        LEFT JOIN t_role r ON ur.role_id=r.seq_id
-        <if test="monitorCode!=null and monitorCode!=''">
-        where r.monitor_code like '${monitorCode}%'
-        </if>
+      ) u where u.rn>#{startRow})
+
     </select>
 
     <select id="getAllUserCount" resultType="java.lang.Long" parameterType="java.util.Map">

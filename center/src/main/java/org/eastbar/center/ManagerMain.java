@@ -3,10 +3,14 @@ package org.eastbar.center;
 
 import org.eastbar.center.net.CenterConsoleListener;
 import org.eastbar.center.net.CityCenterListener;
+import org.eastbar.center.statusMachine.HostEvent;
 import org.eastbar.center.statusMachine.IEventPipe;
 import org.eastbar.center.statusMachine.StatusMachine;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
+import org.eastbar.center.strategy.util.Times;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -16,7 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class ManagerMain {
-
+    private static final Logger logger = LoggerFactory.getLogger(ManagerMain.class);
 	/**
 	 * @param args
 	 */
@@ -29,7 +33,8 @@ public class ManagerMain {
             if(!file.exists()){
                 Files.createDirectories(path.getParent());
                 Files.createFile(path);
-            }else if(file.isFile()){
+            }
+            if(file.isFile()){
                 StatusSnapshotFactory.init(file);
             }else{
                 throw new RuntimeException("系统重要文件/usr/local/eastbar/status.res遭到恶意破坏，请手动移除status.res");
@@ -48,12 +53,11 @@ public class ManagerMain {
 		//启动内部核心事件处理模块
         StatusMachine sm = (StatusMachine)ctx.getBean("statusMachine");
 	    sm.onStart();
-        System.out.println("--------------start manager-----------------");
+        logger.info("--------------启动内部核心事件处理模块-----------------");
 
-
-        System.out.println("------启动网络侦听-------");
         CityCenterListener listener = ctx.getBean(CityCenterListener.class);
         listener.listen();
+        logger.info("--------------启动网络侦听-----------------");
 
         CenterConsoleListener consoleListener = ctx.getBean(CenterConsoleListener.class);
         consoleListener.listen();

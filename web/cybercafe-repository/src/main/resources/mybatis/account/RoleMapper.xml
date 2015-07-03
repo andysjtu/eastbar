@@ -53,9 +53,11 @@
         SELECT t.* ,rownum rn FROM
         (select tr.* from t_role tr
         <trim prefix="WHERE" prefixOverrides="AND | OR">
-
             <if test="_parameter.containsKey('commonName')">
                 tr.common_name like '%${commonName}%'
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+              and  tr.monitor_code like '${monitorCode}%'
             </if>
         </trim>
          ) t where rownum&lt;=#{endRow}
@@ -64,9 +66,7 @@
         left join t_role_permission  rp on rp.role_id=s.seq_id
         left join t_permission  p on rp.per_id=p.seq_id
         left join t_monitor_info m on s.monitor_code=m.monitor_code
-        <if test="monitorCode!=null and monitorCode!=''">
-            where s.monitor_code like '${monitorCode}%'
-        </if>
+
     </select>
 
     <select id="getAllRoleCount" resultType="java.lang.Long" parameterType="java.util.Map">

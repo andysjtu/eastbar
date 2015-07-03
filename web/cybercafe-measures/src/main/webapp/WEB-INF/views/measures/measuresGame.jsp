@@ -50,7 +50,7 @@
                 <th data-options="field:'id',checkbox:true"></th>
                 <th data-options="field:'progName',align:'center'" width="17%">程序名称</th>
                 <th data-options="field:'progType',align:'center',formatter:replaceProgType" width="5%">程序类型</th>
-                <th data-options="field:'progFileName',align:'center'" width="17%">进程名称</th>
+                <th data-options="field:'progressName',align:'center'" width="17%">进程名称</th>
                 <th data-options="field:'monitorCode',align:'center'" width="10%">监管中心</th>
                 <th data-options="field:'progMF',align:'center'" width="10%">制造商</th>
                 <th data-options="field:'alarmType',align:'center',formatter:replaceType" width="8%">告警类型</th>

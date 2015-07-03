@@ -16,7 +16,6 @@ import org.eastbar.web.PageInfo;
  */
 public class UrlHistoryBO extends PageInfo {
 
-    private Integer id;//id
     private Integer cid;//pk customer_id
     private String siteCode; //site_code
     private String monitorCode;//monitor_code
@@ -32,13 +31,6 @@ public class UrlHistoryBO extends PageInfo {
     private String customerType;//customer_id_type
     private Integer isBlock;//is_block
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;
