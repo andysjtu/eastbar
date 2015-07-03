@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "t_mail_history")
 public class SiteEmailLog  {
+    private String siteCode;
     @Column(name = "customer_id")
     private String customerId;
     @Column(name = "customer_name")

@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="t_inst_msg_history")
 public class SiteInstMsgLog  {
+    private String siteCode;
     @Column(name="customer_id")
     private String customerId;
     

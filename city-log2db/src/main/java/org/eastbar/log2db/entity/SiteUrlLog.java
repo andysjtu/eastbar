@@ -15,6 +15,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "T_URL_HISTORY")
 public class SiteUrlLog  {
+	private String siteCode;
     @Column(name="CUSTOMER_ID")
     private String customerId;
     
@@ -35,6 +36,14 @@ public class SiteUrlLog  {
     
     @Column(name = "URL")
     private String url;
+
+	public String getSiteCode() {
+		return siteCode;
+	}
+
+	public void setSiteCode(String siteCode) {
+		this.siteCode = siteCode;
+	}
 
 	public String getCustomerId() {
 		return customerId;
@@ -91,5 +100,18 @@ public class SiteUrlLog  {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-    
+
+	@Override
+	public String toString() {
+		return "SiteUrlLog{" +
+				"siteCode='" + siteCode + '\'' +
+				", customerId='" + customerId + '\'' +
+				", customerName='" + customerName + '\'' +
+				", hostIp='" + hostIp + '\'' +
+				", recordTime=" + recordTime +
+				", blocked='" + blocked + '\'' +
+				", customerType='" + customerType + '\'' +
+				", url='" + url + '\'' +
+				'}';
+	}
 }
