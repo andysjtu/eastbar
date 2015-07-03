@@ -12,7 +12,7 @@ public class Alert2MqMain {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext-alertd.xml"
+                "applicationContext-alert2mq.xml"
         });
 
         AlertListener listener = context.getBean(AlertListener.class);

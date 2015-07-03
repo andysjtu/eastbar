@@ -12,7 +12,7 @@
     <appender name="file-log"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>../logs/log.%d{yyyy-MM-dd}.log</FileNamePattern>
+            <FileNamePattern>/usr/local/eastbar/logs/log-alert2db.%d{yyyy-MM-dd}.log</FileNamePattern>
             <MaxHistory>5</MaxHistory>
         </rollingPolicy>
         <encoder>

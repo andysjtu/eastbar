@@ -21,7 +21,7 @@
     </context:component-scan>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-alert2db.properties"/>
 
 	<!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
 	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
@@ -85,16 +85,12 @@
     </bean>
 
 
-    <bean id="queueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="queueConsumer"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
 
     <bean id="queueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destination" ref="alertQueueDestination" />
-        <property name="messageListener" ref="queueListener" />
-        <property name="concurrentConsumers" value="10"/>
+        <property name="messageListener" ref="queueConsumer" />
+        <property name="concurrentConsumers" value="${threadNum}"/>
     </bean>
 
 

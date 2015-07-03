@@ -29,7 +29,7 @@ public class SiteInstMsgLog  {
 
     
     @Column(name = "customer_id_type")
-    private String customerType;
+    private String customerType="1";
 
     @Column(name = "prog_type")
     private String progType;

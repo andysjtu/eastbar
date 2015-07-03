@@ -23,10 +23,10 @@ public abstract class AbstractConnector {
 
     protected NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
-    private volatile Channel remoteChannel;
-    private Bootstrap bootstrap;
+    protected volatile Channel remoteChannel;
+    protected Bootstrap bootstrap;
 
-    private volatile ChannelFuture future;
+    protected volatile ChannelFuture future;
 
     public AbstractConnector() {
     }
@@ -38,7 +38,7 @@ public abstract class AbstractConnector {
     }
 
 
-    private void configBootstrap() {
+    protected void configBootstrap() {
         checkParameter();
 
         bootstrap = new Bootstrap();
@@ -87,6 +87,7 @@ public abstract class AbstractConnector {
 
 
     public ChannelFuture connect() {
+        beforeConnect();
         if (bootstrap == null) {
             synchronized (this) {
                 if (bootstrap == null) {
@@ -123,6 +124,9 @@ public abstract class AbstractConnector {
 
         );
         return future;
+    }
+
+    protected void beforeConnect() {
     }
 
     protected void doSuccessConnect(ChannelFuture future) {

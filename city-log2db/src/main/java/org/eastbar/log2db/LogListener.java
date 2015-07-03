@@ -57,7 +57,7 @@ public class LogListener implements Listener {
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast("log", new LoggingHandler("日志接受通道", LogLevel.DEBUG));
-                        pipeline.addLast("readTimeout", new ReadTimeoutHandler(120, TimeUnit.SECONDS));
+                        pipeline.addLast("readTimeout", new ReadTimeoutHandler(180, TimeUnit.SECONDS));
                         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
                         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
                         pipeline.addLast("eastFrameDecoder", new EastbarFrameDecoder());

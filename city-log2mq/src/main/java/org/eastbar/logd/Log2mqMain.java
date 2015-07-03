@@ -13,7 +13,7 @@ public class Log2mqMain {
     public static void main(String[] args) {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext-logd.xml"
+                "applicationContext-log2mq.xml"
         });
 
         LogListener listener = context.getBean(LogListener.class);

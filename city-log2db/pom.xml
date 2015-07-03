@@ -107,25 +107,64 @@
             <artifactId>jackson-jaxrs-json-provider</artifactId>
         </dependency>
         <!-- JAX-RS end -->
-
-        <!-- JMS begin -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jms</artifactId>
+            <version>${spring.version}</version>
         </dependency>
-
 
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-spring</artifactId>
-            <version>5.11.1</version>
+            <artifactId>activemq-core</artifactId>
+            <version>${activemq.version}</version>
             <exclusions>
+                <exclusion>
+                    <groupId>org.apache.activemq.protobuf</groupId>
+                    <artifactId>activemq-protobuf</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.osgi</groupId>
+                    <artifactId>spring-osgi-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.osgi</groupId>
+                    <artifactId>org.osgi.core</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>commons-logging</groupId>
                     <artifactId>commons-logging</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- JMS end -->
+
+        <!-- JMS begin -->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-jms</artifactId>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-core</artifactId>-->
+            <!--<version>5.7.0</version>-->
+        <!--</dependency>-->
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-spring</artifactId>-->
+            <!--<version>5.11.1</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>commons-logging</groupId>-->
+                    <!--<artifactId>commons-logging</artifactId>-->
+                <!--</exclusion>-->
+                <!--<exclusion>-->
+                    <!--<groupId>org.apache.activemq</groupId>-->
+                    <!--<artifactId>activemq-client</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
         <!-- JMS end -->
 
         <!-- TIMER -->
@@ -217,11 +256,6 @@
         </dependency>
         <!-- XML end -->
 
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
-            <version>5.7.0</version>
-        </dependency>
 
         <!-- LOGGING begin -->
         <dependency>
@@ -409,20 +443,12 @@
                     <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
                     <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
                     <copyConfigurationDirectory>true</copyConfigurationDirectory>
-                    <assembleDirectory>${project.build.directory}/logd</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/log2db</assembleDirectory>
                     <extraJvmArguments>-Xms4096m -Xmx4096m</extraJvmArguments>
                     <programs>
                         <program>
-                            <mainClass>org.eastbar.log2db.LogMain</mainClass>
-                            <id>logd-service</id>
-                            <platforms>
-                                <platform>windows</platform>
-                                <platform>unix</platform>
-                            </platforms>
-                        </program>
-                        <program>
-                            <mainClass>org.eastbar.alertd.AlertMain</mainClass>
-                            <id>alertd-service</id>
+                            <mainClass>org.eastbar.log2db.Log2DbMain</mainClass>
+                            <id>log2db-service</id>
                             <platforms>
                                 <platform>windows</platform>
                                 <platform>unix</platform>

@@ -22,8 +22,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
     public final static Logger logger = LoggerFactory.getLogger(LogUploadHandler.class);
-    public static final int DEFAULT_UPLOAD_INTERVAL=3;
-    private int uploadInterval=DEFAULT_UPLOAD_INTERVAL;
+    public static final int DEFAULT_UPLOAD_INTERVAL = 3;
+    private int uploadInterval = DEFAULT_UPLOAD_INTERVAL;
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
 
@@ -58,7 +58,7 @@ public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.warn("连接日志服务器出现异常，将关闭通道，重新连接",cause);
+        logger.warn("连接日志服务器出现异常，将关闭通道，重新连接", cause);
         ctx.close();
     }
 
@@ -99,60 +99,69 @@ public class LogUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
         private void uploadLog() {
             try {
                 final List<EmailLog> emailLogList = logService.getOldestEmailRecords();
-                final EmailLogMsg msg = new EmailLogMsg(emailLogList);
-                channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if (channelFuture.isSuccess()) {
-                            deleteEmailLogs(emailLogList);
+                if (emailLogList.size() > 0) {
+                    final EmailLogMsg msg = new EmailLogMsg(emailLogList);
+                    channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deleteEmailLogs(emailLogList);
+                            }
                         }
-                    }
-                });
-
+                    });
+                }
                 final List<UrlLog> urlLogs = logService.getOldestURLRecords();
-                final UrlLogMsg urlLogMsg = new UrlLogMsg(urlLogs);
-                channel.writeAndFlush(urlLogMsg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if(channelFuture.isSuccess()){
-                            deleteURLLogs(urlLogs);
+                if (urlLogs.size() > 0) {
+                    final UrlLogMsg urlLogMsg = new UrlLogMsg(urlLogs);
+                    channel.writeAndFlush(urlLogMsg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deleteURLLogs(urlLogs);
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 final List<PrgLog> prgLogs = logService.getOldestProgRecords();
-                ProgLogMsg progLogMsg = new ProgLogMsg(prgLogs);
-                channel.writeAndFlush(progLogMsg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if(channelFuture.isSuccess()){
-                            deletePrgLogs(prgLogs);
+                if (prgLogs.size() > 0) {
+                    ProgLogMsg progLogMsg = new ProgLogMsg(prgLogs);
+                    channel.writeAndFlush(progLogMsg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deletePrgLogs(prgLogs);
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 final List<InstMsgLog> instMsgLogs = logService.getOldestInstMsgRecords();
-                InstMsgLogMsg instMsgLogMsg = new InstMsgLogMsg(instMsgLogs);
-                channel.writeAndFlush(instMsgLogMsg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if(channelFuture.isSuccess()){
-                            deleteInstMsgLogs(instMsgLogs);
+                if (instMsgLogs.size() > 0) {
+                    InstMsgLogMsg instMsgLogMsg = new InstMsgLogMsg(instMsgLogs);
+                    channel.writeAndFlush(instMsgLogMsg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deleteInstMsgLogs(instMsgLogs);
+                            }
                         }
-                    }
-                });
+                    });
+                }
 
                 final List<IllegalLog> illegalLogs = logService.getOldestIllegalLogRecords();
-                IllegalLogMsg illegalLogMsg = new IllegalLogMsg(illegalLogs);
-                channel.writeAndFlush(illegalLogMsg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if(channelFuture.isSuccess()){
-                            deleteIllegalLogMsgLogs(illegalLogs);
+                if (illegalLogs.size() > 0) {
+                    IllegalLogMsg illegalLogMsg = new IllegalLogMsg(illegalLogs);
+                    channel.writeAndFlush(illegalLogMsg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deleteIllegalLogMsgLogs(illegalLogs);
+                            }
+                            schduleUploadTask(channel);
                         }
-                        schduleUploadTask(channel);
-                    }
-                });
+                    });
+                }
 
 
             } catch (Throwable t) {

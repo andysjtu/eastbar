@@ -7,6 +7,8 @@ import org.eastbar.codec.GenResp;
 import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
+import org.eastbar.codec.server.PingMsg;
+import org.eastbar.codec.server.PongMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +31,7 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
         SiteMsgType msgType = SiteMsgType.valueOf(typeValue);
         switch (msgType) {
             case INST_MSG_LOG:
+                System.out.println("xxxxxxxxxx");
                 logSender.sendInstMsgLog(msg.data().content().toString(Charsets.UTF_8));
                 sendResp(ctx, msg);
                 break;
@@ -52,6 +55,9 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
             case ILLEGAL_LOG:
                 logSender.sendIllegalMsgLog(msg.data().content().toString(Charsets.UTF_8));
                 sendResp(ctx, msg);
+                break;
+            case PING_REQ:
+                ctx.writeAndFlush(new PongMsg());
                 break;
             default:
                 logger.warn("收到未知日志类型的数据，请检查SocketMsg: {}", msg);

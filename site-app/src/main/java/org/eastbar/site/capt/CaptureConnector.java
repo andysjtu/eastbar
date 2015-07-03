@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class CaptureConnector extends AbstractConnector {
-    public static final Logger logger = LoggerFactory.getLogger(CityConnector.class);
+    public static final Logger logger = LoggerFactory.getLogger(CaptureConnector.class);
     public static final int DEFAULT_LOCAL_PORT = 19997;
 
 
@@ -40,11 +40,11 @@ public class CaptureConnector extends AbstractConnector {
     private LoadbClient loadbClient;
 
 
-    @PostConstruct
+//    @PostConstruct
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("capture");
-            logger.info("receive capture server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            logger.debug("receive capture server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
@@ -54,6 +54,16 @@ public class CaptureConnector extends AbstractConnector {
 
         localPort=DEFAULT_LOCAL_PORT;
 
+    }
+
+    @Override
+    protected void beforeConnect() {
+        try {
+            this.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        configBootstrap();
     }
 
 

@@ -31,7 +31,6 @@ public class AlertMessageReceiver implements MessageListener {
             String content = mapMessage.getString("content");
             List<SiteAlert> alertList = JsonUtil.fromJson(new TypeReference<List<SiteAlert>>() {
             }, content.getBytes(Charsets.UTF_8));
-            System.out.println("alertList is : " + alertList);
             alertService.saveSiteAlet(alertList);
         } catch (JMSException e) {
             logger.warn("处理JMS信息出现异常",e);

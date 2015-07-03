@@ -28,14 +28,20 @@ public class SiteInstMsgLogMsgRcvr implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
+        String content = null;
         try {
-            String content = mapMessage.getString("content");
+            content = mapMessage.getString("content");
             List<SiteInstMsgLog> siteUrlLogList = JsonUtil.fromJson(new TypeReference<List<SiteInstMsgLog>>() {
             }, content.getBytes(Charsets.UTF_8));
-            logService.saveInstMsgLog(siteUrlLogList);
+            if (logger.isDebugEnabled()) {
+                logger.debug("SiteINstMsgLogList is : {}", siteUrlLogList);
+            }
+            if (siteUrlLogList.size() > 0)
+                logService.saveInstMsgLog(siteUrlLogList);
         } catch (JMSException e) {
             logger.warn("处理siteUrlLogListJMS异常出错:", e);
         } catch (Throwable t) {
+            logger.warn("JMS content is {}", content);
             logger.warn("处理siteUrlLogList入库程序出错：", t);
         }
     }

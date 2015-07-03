@@ -88,10 +88,10 @@
     </bean>
 
     <!-- 定义消息队列（Queue） -->
-    <bean id="instmsgQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+    <bean id="instQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
         <constructor-arg>
-            <value>instmsgLog</value>
+            <value>instLog</value>
         </constructor-arg>
     </bean>
 
@@ -130,74 +130,41 @@
     </bean>
 
 
-    <bean id="urlQueueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="urlQueueConsumer"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
-
-
-    <bean id="prgQueueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="prgQueueConsumer"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
-
-    <bean id="instQueueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="instmsgQueueDestination"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
-
-    <bean id="emailQueueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="emailQueueConsumer"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
-
-    <bean id="illegalQueueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">
-        <constructor-arg ref="illegalQueueConsumer"/>
-        <property name="defaultListenerMethod" value="receive"/>
-    </bean>
-
-
-
     <bean id="urlQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
         <property name="connectionFactory" ref="connectionFactory"/>
         <property name="destination" ref="urlQueueDestination"/>
-        <property name="messageListener" ref="urlQueueListener"/>
-        <property name="concurrentConsumers" value="10"/>
+        <property name="messageListener" ref="urlQueueConsumer"/>
+        <property name="concurrentConsumers" value="${threadNum}"/>
     </bean>
 
-    <!--<bean id="prgQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-        <!--<property name="destination" ref="prgQueueDestination"/>-->
-        <!--<property name="messageListener" ref="prgQueueListener"/>-->
-        <!--<property name="concurrentConsumers" value="10"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="instQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-        <!--<property name="destination" ref="instmsgQueueDestination"/>-->
-        <!--<property name="messageListener" ref="instQueueListener"/>-->
-        <!--<property name="concurrentConsumers" value="10"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="illegalQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-        <!--<property name="destination" ref="illegalQueueDestination"/>-->
-        <!--<property name="messageListener" ref="illegalQueueListener"/>-->
-        <!--<property name="concurrentConsumers" value="10"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="emailQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">-->
-        <!--<property name="connectionFactory" ref="connectionFactory"/>-->
-        <!--<property name="destination" ref="emailQueueDestination"/>-->
-        <!--<property name="messageListener" ref="emailQueueListener"/>-->
-        <!--<property name="concurrentConsumers" value="10"/>-->
-    <!--</bean>-->
+    <bean id="prgQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="prgQueueDestination"/>
+        <property name="messageListener" ref="prgQueueConsumer"/>
+        <property name="concurrentConsumers" value="${threadNum}"/>
+    </bean>
 
 
+    <bean id="illegalQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="illegalQueueDestination"/>
+        <property name="messageListener" ref="illegalQueueConsumer"/>
+        <property name="concurrentConsumers" value="${threadNum}"/>
+    </bean>
 
+    <bean id="emailQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="emailQueueDestination"/>
+        <property name="messageListener" ref="emailQueueConsumer"/>
+        <property name="concurrentConsumers" value="${threadNum}"/>
+    </bean>
 
-
-
+    <bean id="xxQueueListenerContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destination" ref="instQueueDestination"/>
+        <property name="messageListener" ref="instQueueConsumer"/>
+        <property name="concurrentConsumers" value="${threadNum}"/>
+    </bean>
 
 
 </beans>

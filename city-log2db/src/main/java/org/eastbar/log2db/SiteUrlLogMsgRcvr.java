@@ -27,14 +27,17 @@ public class SiteUrlLogMsgRcvr implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
+        String content = null;
         try {
-            String content = mapMessage.getString("content");
+            content = mapMessage.getString("content");
             List<SiteUrlLog> siteUrlLogList = JsonUtil.fromJson(new TypeReference<List<SiteUrlLog>>() {
             }, content.getBytes(Charsets.UTF_8));
-            logService.saveSiteUrlLog(siteUrlLogList);
+            if (siteUrlLogList.size() > 0)
+                logService.saveSiteUrlLog(siteUrlLogList);
         } catch (JMSException e) {
             logger.warn("处理UrlJMS异常出错:", e);
         } catch (Throwable t) {
+            logger.info("URL log Content is {}",content);
             logger.warn("处理Url入库程序出错：", t);
         }
     }

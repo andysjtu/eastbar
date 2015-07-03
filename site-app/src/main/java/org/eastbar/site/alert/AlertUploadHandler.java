@@ -24,9 +24,9 @@ import java.util.concurrent.TimeUnit;
  * Created by andyliang on 6/27/15.
  */
 public class AlertUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
-    public static final int DEFAULT_UPLOAD_INTERVAL=3;
-    private int uploadInterval=DEFAULT_UPLOAD_INTERVAL;
-    public final static Logger logger= LoggerFactory.getLogger(AlertUploadHandler.class);
+    public static final int DEFAULT_UPLOAD_INTERVAL = 3;
+    private int uploadInterval = DEFAULT_UPLOAD_INTERVAL;
+    public final static Logger logger = LoggerFactory.getLogger(AlertUploadHandler.class);
 
     private ScheduledExecutorService service = Executors.newScheduledThreadPool(3);
 
@@ -61,17 +61,16 @@ public class AlertUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.warn("连接告警服务器出现异常，关闭通道，进行重连",cause);
+        logger.warn("连接告警服务器出现异常，关闭通道，进行重连", cause);
         ctx.close();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SocketMsg socketMsg) throws Exception {
-          short type = socketMsg.getMessageType();
-        if(type== SiteMsgType.GEN_RESP.shortValue()){
+        short type = socketMsg.getMessageType();
+        if (type == SiteMsgType.GEN_RESP.shortValue()) {
             logger.debug("receive alert recept");
-        }
-        else{
+        } else {
             channelHandlerContext.fireChannelRead(ReferenceCountUtil.retain(socketMsg));
         }
     }
@@ -79,7 +78,7 @@ public class AlertUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
     private void removeDoneFuture() {
         Set<ScheduledFuture> unmod = Collections.unmodifiableSet(futureSet);
         for (ScheduledFuture future : unmod) {
-            if (future.isDone()||future.isCancelled()) {
+            if (future.isDone() || future.isCancelled()) {
                 futureSet.remove(future);
             }
         }
@@ -102,16 +101,18 @@ public class AlertUploadHandler extends SimpleChannelInboundHandler<SocketMsg> {
         private void uploadAlert() {
             try {
                 final List<GeneralAlert> logList = alertService.getOldestGeneralAlarmRecord();
-                final GeneralAlertMsg msg = new GeneralAlertMsg(logList);
-                channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
-                    @Override
-                    public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                        if (channelFuture.isSuccess()) {
-                            deleteGeneralAlertList(logList);
+                if (logList.size() > 0) {
+                    final GeneralAlertMsg msg = new GeneralAlertMsg(logList);
+                    channel.writeAndFlush(msg).addListener(new ChannelFutureListener() {
+                        @Override
+                        public void operationComplete(ChannelFuture channelFuture) throws Exception {
+                            if (channelFuture.isSuccess()) {
+                                deleteGeneralAlertList(logList);
+                            }
+                            schduleUploadTask(channel);
                         }
-                        schduleUploadTask(channel);
-                    }
-                });
+                    });
+                }
 
             } catch (Throwable t) {
                 logger.warn("上传Alert出错，请检查", t);

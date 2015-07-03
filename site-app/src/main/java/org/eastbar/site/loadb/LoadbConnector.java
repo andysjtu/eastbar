@@ -25,8 +25,4 @@ public class LoadbConnector extends AbstractConnector {
         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
     }
 
-    @Override
-    protected void scheduleNextConnect() {
-        //do not reconnect
-    }
 }

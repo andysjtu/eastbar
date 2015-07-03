@@ -28,14 +28,20 @@ public class SiteEmailMsgLogMsgRcvr implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
+        String content = null;
         try {
-            String content = mapMessage.getString("content");
+            content = mapMessage.getString("content");
             List<SiteEmailLog> siteEmailList = JsonUtil.fromJson(new TypeReference<List<SiteEmailLog>>() {
             }, content.getBytes(Charsets.UTF_8));
-            logService.saveEmailLog(siteEmailList);
+            if (logger.isDebugEnabled()) {
+                logger.debug("SitEmailList is :{}", siteEmailList);
+            }
+            if (siteEmailList.size() > 0)
+                logService.saveEmailLog(siteEmailList);
         } catch (JMSException e) {
             logger.warn("处理EmailJMS异常出错:", e);
         } catch (Throwable t) {
+            logger.warn("JMS Email content is :{}", content);
             logger.warn("处理Email入库程序出错：", t);
         }
     }

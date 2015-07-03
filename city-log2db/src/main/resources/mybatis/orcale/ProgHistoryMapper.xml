@@ -4,9 +4,9 @@
 <mapper namespace="org.eastbar.log2db.dao.SiteProgLogDao">
 
 	<insert id="saveListProgHistory" parameterType="java.util.List">
-		INSERT INTO t_prog_history (site_code,customer_id,customer_name,host_ip,access_time,is_block,customer_type,program_name,process_name,start_time,end_time)SELECT AA.* FROM(
+		INSERT INTO t_prog_history (site_code,customer_id,customer_name,host_ip,is_block,customer_id_type,program_name,start_time,end_time)SELECT AA.* FROM(
 		<foreach collection="list" item="item" index="index" separator="union all">
-			(select #{item.siteCode},#{item.customerId},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.blocked},#{item.customerType},#{item.progName},#{item.processName},#{item.startTime},#{item.endTime} from dual)
+			(select #{item.siteCode},#{item.customerId},#{item.customerName},#{item.hostIp},#{item.blocked},#{item.customerType},#{item.processName},#{item.startTime},#{item.endTime} from dual)
 		</foreach>) AA
 	</insert> 
 	

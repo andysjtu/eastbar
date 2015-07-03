@@ -10,7 +10,13 @@ import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.eastbar.codec.*;
+import org.eastbar.codec.log.EmailLogMsg;
+import org.eastbar.codec.log.InstMsgLogMsg;
+import org.eastbar.codec.log.ProgLogMsg;
 import org.eastbar.codec.log.UrlLogMsg;
+import org.eastbar.net.log.entity.EmailLog;
+import org.eastbar.net.log.entity.InstMsgLog;
+import org.eastbar.net.log.entity.PrgLog;
 import org.eastbar.net.log.entity.UrlLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,20 +118,28 @@ public class LogdConnector {
         if (connector.isConnected()) {
             System.out.println("------------------------");
             Channel channel = connector.channel();
-            List<UrlLog> logList = Lists.newArrayList();
+            List<InstMsgLog> logList = Lists.newArrayList();
             for (int i = 0; i < 100; i++) {
-                UrlLog urlLog = new UrlLog();
+                InstMsgLog urlLog = new InstMsgLog();
                 urlLog.setId(null);
                 urlLog.setCustomerId("320107197902026432");
                 urlLog.setCustomerName("梁琳");
                 urlLog.setHostIp("192.168.56.34");
                 urlLog.setIsBlock(false);
-                urlLog.setUrl("http://www.sina.com");
                 urlLog.setSiteCode("3101070001");
+                urlLog.setStartTime(new Date());
+                urlLog.setEndTime(new Date());
+                urlLog.setProgAccount("23@qq.com");
                 urlLog.setRecordTime(new Date());
+                urlLog.setProgType("1");
+
+
+
+                urlLog.setRecordTime(new Date());
+
                 logList.add(urlLog);
             }
-            UrlLogMsg msg = new UrlLogMsg(logList);
+            InstMsgLogMsg msg = new InstMsgLogMsg(logList);
             channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE);
         } else {
             System.out.println("没有连上，请检查");

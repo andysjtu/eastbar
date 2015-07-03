@@ -28,14 +28,20 @@ public class SitePrgLogMsgRcvr implements MessageListener {
     @Override
     public void onMessage(Message message) {
         MapMessage mapMessage = (MapMessage) message;
+        String content = null;
         try {
-            String content = mapMessage.getString("content");
+            content = mapMessage.getString("content");
             List<SiteProgLog> siteUrlLogList = JsonUtil.fromJson(new TypeReference<List<SiteProgLog>>() {
             }, content.getBytes(Charsets.UTF_8));
-            logService.saveProgLog(siteUrlLogList);
+            if (logger.isDebugEnabled()) {
+                logger.debug("SiteProgLogList :{}", siteUrlLogList);
+            }
+            if (siteUrlLogList.size() > 0)
+                logService.saveProgLog(siteUrlLogList);
         } catch (JMSException e) {
             logger.warn("处理SiteProgLogJMS异常出错:", e);
         } catch (Throwable t) {
+            logger.info("SiteProg cotent is {}", content);
             logger.warn("处理SiteProgLog入库程序出错：", t);
         }
     }

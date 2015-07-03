@@ -32,7 +32,7 @@ public class SiteUrlLog  {
     private boolean blocked;
     
     @Column(name = "CUSTOMER_TYPE")
-    private String customerType;
+    private String customerType="1";
     
     @Column(name = "URL")
     private String url;
@@ -101,5 +101,19 @@ public class SiteUrlLog  {
 
 	public void setSiteCode(String siteCode) {
 		this.siteCode = siteCode;
+	}
+
+	@Override
+	public String toString() {
+		return "SiteUrlLog{" +
+				"siteCode='" + siteCode + '\'' +
+				", customerId='" + customerId + '\'' +
+				", customerName='" + customerName + '\'' +
+				", hostIp='" + hostIp + '\'' +
+				", recordTime=" + recordTime +
+				", blocked=" + blocked +
+				", customerType='" + customerType + '\'' +
+				", url='" + url + '\'' +
+				'}';
 	}
 }

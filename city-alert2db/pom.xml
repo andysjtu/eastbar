@@ -409,7 +409,7 @@
                     <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
                     <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
                     <copyConfigurationDirectory>true</copyConfigurationDirectory>
-                    <assembleDirectory>${project.build.directory}/logd</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/alert2db</assembleDirectory>
                     <extraJvmArguments>-Xms4096m -Xmx4096m</extraJvmArguments>
                     <programs>
                         <program>

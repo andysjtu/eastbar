@@ -12,7 +12,7 @@ public class Mq2DbMain {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext-alertd.xml"
+                "applicationContext-alert2db.xml"
         });
 
         System.out.println("启动告警处理入库程序成功");

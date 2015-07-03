@@ -21,7 +21,15 @@
     </appender>
 
 
+     <logger name="org.hibernate" level="WARN" additivity="false">
+         <appender-ref ref="stdout" />
+         <appender-ref ref="file-log" />
+     </logger>
 
+    <logger name="org.springframework" level="WARN" additivity="false">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="file-log" />
+    </logger>
 
 
     <root level="INFO">
