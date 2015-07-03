@@ -35,7 +35,6 @@ public class AlertSaver {
     	alert.setCustomerName("gg");
     	alert.setHostIp("192.168.1.1");
     	alert.setRecordTime(new Date());
-    	alert.setBlocked("1");
     	alert.setCustomerType("1");
     	alert.setAlarmType("2");
     	alert.setAlarmLevel("3");

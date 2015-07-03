@@ -1,4 +1,4 @@
-package org.eastbar.logd;
+package org.eastbar.alert2mq;
 
 import com.google.common.collect.Lists;
 import io.netty.bootstrap.Bootstrap;
@@ -9,8 +9,13 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.compression.ZlibCodecFactory;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import org.eastbar.codec.*;
+import org.eastbar.alert2mq.entity.SiteAlert;
+import org.eastbar.codec.EastbarFrameDecoder;
+import org.eastbar.codec.SocketMsgDecoder;
+import org.eastbar.codec.SocketMsgEncoder;
+import org.eastbar.codec.alert.GeneralAlertMsg;
 import org.eastbar.codec.log.UrlLogMsg;
+import org.eastbar.net.alert.entity.GeneralAlert;
 import org.eastbar.net.log.entity.UrlLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,12 +27,12 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-public class LogdConnector {
-    public final static Logger logger = LoggerFactory.getLogger(LogdConnector.class);
+public class AlertConnector {
+    public final static Logger logger = LoggerFactory.getLogger(AlertConnector.class);
 
-    private String remoteAddr = "log.nbscreen.com";
+    private String remoteAddr = "alert.nbscreen.com";
 //    private String remoteAddr = "localhost";
-    private int remotePort = 9021;
+    private int remotePort = 9001;
 
 
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -105,27 +110,29 @@ public class LogdConnector {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        LogdConnector connector = new LogdConnector();
+        AlertConnector connector = new AlertConnector();
         connector.configBootstrap();
         connector.connect();
         Thread.sleep(5000);
         if (connector.isConnected()) {
             System.out.println("------------------------");
             Channel channel = connector.channel();
-            List<UrlLog> logList = Lists.newArrayList();
+            List<GeneralAlert> logList = Lists.newArrayList();
             for (int i = 0; i < 100; i++) {
-                UrlLog urlLog = new UrlLog();
-                urlLog.setId(null);
+                GeneralAlert urlLog = new GeneralAlert();
+                urlLog.setId(new Long(1));
                 urlLog.setCustomerId("320107197902026432");
                 urlLog.setCustomerName("梁琳");
                 urlLog.setHostIp("192.168.56.34");
-                urlLog.setIsBlock(false);
-                urlLog.setUrl("http://www.sina.com");
+                urlLog.setCustomerIdType("1");
                 urlLog.setSiteCode("3101070001");
-                urlLog.setRecordTime(new Date());
+                urlLog.setAlarmContent("告警内容测试");
+                urlLog.setAlertTime(new Date());
+                urlLog.setAlarmType("3");
+                urlLog.setAlarmRank("2");
                 logList.add(urlLog);
             }
-            UrlLogMsg msg = new UrlLogMsg(logList);
+            GeneralAlertMsg msg = new GeneralAlertMsg(logList);
             channel.writeAndFlush(msg).addListener(ChannelFutureListener.CLOSE);
         } else {
             System.out.println("没有连上，请检查");

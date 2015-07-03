@@ -48,4 +48,9 @@ public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 logger.warn("收到未知告警类型:{}的数据，请检查SocketMsg: {}", msg.getMessageType(), msg);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("接受告警数据出现异常", cause);
+    }
 }

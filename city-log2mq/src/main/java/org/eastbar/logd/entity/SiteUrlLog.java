@@ -12,7 +12,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "t_url_history")
-public class SiteUrlLog extends EntityObject {
+public class SiteUrlLog  {
+    private String siteCode;
     @Column(name="customer_id")
     private String customerId;
     @Column(name="customer_name")
@@ -81,5 +82,17 @@ public class SiteUrlLog extends EntityObject {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 }

@@ -31,6 +31,6 @@ do
 		./update
 	else
 		echo "Already lastest version or wget occur error." >>$UPDATELOG
-	fi	
+	fi
 	sleep $SLEEP_TIME
 done

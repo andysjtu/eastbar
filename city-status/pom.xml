@@ -367,12 +367,12 @@
 					<includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
 					<configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
 					<copyConfigurationDirectory>true</copyConfigurationDirectory>
-					<assembleDirectory>${project.build.directory}/center</assembleDirectory>
-					<extraJvmArguments>-Xms2056m -Xmx2056m</extraJvmArguments>
+					<assembleDirectory>${project.build.directory}/city</assembleDirectory>
+					<extraJvmArguments>-Xms8096m -Xmx8096m</extraJvmArguments>
 					<programs>
 						<program>
 							<mainClass>org.eastbar.city.CityCenterMain</mainClass>
-							<id>center-service</id>
+							<id>city-service</id>
 							<platforms>
 								<platform>windows</platform>
 								<platform>unix</platform>

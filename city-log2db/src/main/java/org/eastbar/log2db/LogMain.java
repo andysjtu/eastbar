@@ -13,7 +13,7 @@ public class LogMain {
     public static void main(String[] args) {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext-logd.xml"
+                "applicationContext-log2db.xml"
         });
 
         LogListener listener = context.getBean(LogListener.class);

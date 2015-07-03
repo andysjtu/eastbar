@@ -37,9 +37,9 @@ public class MockLoginHandler extends ChannelInboundHandlerAdapter {
         buf.writeByte('\0');
         buf.writeBytes(new BASE64Encoder().encode("徐汇公安局".getBytes("GBK")).getBytes());
         buf.writeByte('\0');
-        buf.writeBytes("192.168.9.190".getBytes());
+        buf.writeBytes("192.168.9.100".getBytes());
         buf.writeByte('\0');
-        buf.writeBytes("20150701134045".getBytes());
+        buf.writeBytes("20150703113845".getBytes());
         buf.writeByte('\0');
 
         return buf;

@@ -23,7 +23,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-log.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-log2db.properties"/>
 
 
 
@@ -79,7 +79,7 @@
         <property name="receiveTimeout" value="10000" />
     </bean>
 
-    <bean id="queueConsumer" class="org.eastbar.log2db.MessageReceiver"/>
+    <bean id="queueConsumer" class="org.eastbar.log2db.SiteUrlLogMsgRcvr"/>
 
 
     <bean id="queueListener" class="org.springframework.jms.listener.adapter.MessageListenerAdapter">

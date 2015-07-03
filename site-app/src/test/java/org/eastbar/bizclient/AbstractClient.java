@@ -16,7 +16,7 @@ import io.netty.handler.logging.LoggingHandler;
  * Created by AndySJTU on 2015/6/17.
  */
 public abstract class AbstractClient {
-    private String remoteAddr = "127.0.0.1";
+    private String remoteAddr = "192.168.9.144";
     private int remotePort=3004;
     private NioEventLoopGroup workerGroup = new NioEventLoopGroup();
     private Bootstrap bootstrap;
