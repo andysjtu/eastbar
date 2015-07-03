@@ -94,38 +94,42 @@ public class KeyWordServiceImpl implements KeyWordService{
 
     @Override
     public String siteControl(String siteCode, Integer version) throws Exception{
-        //根本版本号获取所有的操作位add的keyword列表
-        List<KeyWord> addKeywords=keyWordDao.getAllAddKeywords(version);
+        if(siteCode.length()>6){
+            //根本版本号获取所有的操作位add的keyword列表
+            List<KeyWord> addKeywords=keyWordDao.getAllAddKeywords(version);
 
-        List<KeyWord> editKeywords=keyWordDao.getAllEditKeywords(version);
+            List<KeyWord> editKeywords=keyWordDao.getAllEditKeywords(version);
 
-        List<KeyWord> removeKeywords=keyWordDao.getAllRemoveKeywords(version);
-        //根据版本号获得monitorCode列表
-        List<String> monitorCodes=keyWordDao.getMonitorCodesByVersion(version);
+            List<KeyWord> removeKeywords=keyWordDao.getAllRemoveKeywords(version);
+            //根据版本号获得monitorCode列表
+            List<String> monitorCodes=keyWordDao.getMonitorCodesByVersion(version);
 
-        List<KeyWordBO> addList=new ArrayList<>();
-        List<KeyWordBO> editList=new ArrayList<>();
-        List<KeyWordBO> removeList=new ArrayList<>();
-        if(addKeywords.size()>0){
-            addList=restructString(addKeywords, monitorCodes, siteCode);
-        }
-        if(editKeywords.size()>0){
-            editList=restructString(editKeywords, monitorCodes, siteCode);
-        }
-        if(removeKeywords.size()>0){
-            removeList=restructString(removeKeywords, monitorCodes, siteCode);
-        }
+            List<KeyWordBO> addList=new ArrayList<>();
+            List<KeyWordBO> editList=new ArrayList<>();
+            List<KeyWordBO> removeList=new ArrayList<>();
+            if(addKeywords.size()>0){
+                addList=restructString(addKeywords, monitorCodes, siteCode);
+            }
+            if(editKeywords.size()>0){
+                editList=restructString(editKeywords, monitorCodes, siteCode);
+            }
+            if(removeKeywords.size()>0){
+                removeList=restructString(removeKeywords, monitorCodes, siteCode);
+            }
 
-        String json="";
-        if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
-            KeyWordJson keyWordJson=new KeyWordJson();
-            keyWordJson.setVerNum(version);
-            keyWordJson.setAdd(addList);
-            keyWordJson.setEdit(editList);
-            keyWordJson.setRemove(removeList);
-            json=Po2Json.toJson(keyWordJson);
+            String json="";
+            if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
+                KeyWordJson keyWordJson=new KeyWordJson();
+                keyWordJson.setVerNum(version);
+                keyWordJson.setAdd(addList);
+                keyWordJson.setEdit(editList);
+                keyWordJson.setRemove(removeList);
+                json=Po2Json.toJson(keyWordJson);
+            }
+            return json;
+        }else{
+            return "";
         }
-        return json;
     }
 
     private List<KeyWordBO> restructString(List<KeyWord> keyWords,List<String> monitorCodes,String siteCode) throws Exception{
