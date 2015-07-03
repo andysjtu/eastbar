@@ -26,7 +26,7 @@ public class BannedProg implements Serializable {//t_banned_prog
     private String progressName;//progress_name
     private String progMF;//prog_mf
     private String monitorCode;//monitor_code
-    private Integer featureCode;//reature_code
+    private String featureCode;//reature_code
     private Integer alarmType;//alarm_type
     private Integer alarmRank;//alarm_rank
     private Integer isPub;//is_pub
@@ -84,11 +84,11 @@ public class BannedProg implements Serializable {//t_banned_prog
         this.progMF = progMF;
     }
 
-    public Integer getFeatureCode() {
+    public String getFeatureCode() {
         return featureCode;
     }
 
-    public void setFeatureCode(Integer featureCode) {
+    public void setFeatureCode(String featureCode) {
         this.featureCode = featureCode;
     }
 

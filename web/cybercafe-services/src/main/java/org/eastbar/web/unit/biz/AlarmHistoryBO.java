@@ -16,7 +16,6 @@ import org.eastbar.web.PageInfo;
  */
 public class AlarmHistoryBO extends PageInfo {
 
-    private Integer id; //id
     private String siteCode; //site_code
     private String monitorCode;//monitor_code
     private String provinceCode;//province_code
@@ -31,13 +30,6 @@ public class AlarmHistoryBO extends PageInfo {
     private String customerCertType;//customer_cert_type
     private String customerCertId;//customer_cert_id
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getSiteCode() {
         return siteCode;

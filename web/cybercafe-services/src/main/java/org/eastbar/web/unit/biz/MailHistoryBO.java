@@ -16,7 +16,6 @@ import org.eastbar.web.PageInfo;
  */
 public class MailHistoryBO extends PageInfo {
 
-    private Integer id;
     private Integer cid;
     private String customerId;
     private String siteCode;
@@ -35,13 +34,6 @@ public class MailHistoryBO extends PageInfo {
     private String theme;
     private String isBlock;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;

@@ -4,7 +4,6 @@
 <!-- namespace必须指向Dao接口 -->
 <mapper namespace="org.eastbar.web.unit.dao.UrlHistoryDao">
     <resultMap id="urlHistoryResult" type="UrlHistory">
-        <id property="id" column="seq_id" />
         <result property="cid" column="cid" />
         <result property="siteCode" column="site_code" />
         <result property="monitorCode" column="monitor_code" />

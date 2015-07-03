@@ -16,7 +16,6 @@ import org.eastbar.web.PageInfo;
  */
 public class InstantMessageHistoryBO extends PageInfo {
 
-    private Integer id;
     private Integer cid;
     private String customerId;
     private String siteCode;
@@ -33,13 +32,6 @@ public class InstantMessageHistoryBO extends PageInfo {
     private Integer instantType;
     private String progAccount;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;

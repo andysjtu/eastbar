@@ -23,7 +23,7 @@ public class BannedProgBO extends PageInfo {
     private String progFileName;//prog_filename
     private String progressName;//progress_name
     private String progMF;//prog_mf
-    private Integer featureCode;//reature_code
+    private String featureCode;//feature_code
     private Integer alarmType;//alarm_type
     private Integer alarmRank;//alarm_rank
     private Integer isPub;//is_pub
@@ -37,7 +37,7 @@ public class BannedProgBO extends PageInfo {
     private String[] progFileNames;//prog_filename
     private String[] progressNames;//progress_name
     private String[] progMFs;//prog_mf
-    private Integer[] featureCodes;//reature_code
+    private String[] featureCodes;//reature_code
     private Integer[] alarmTypes;//alarm_type
     private Integer[] alarmRanks;//alarm_rank
     private String[] monitorCodes;
@@ -91,11 +91,11 @@ public class BannedProgBO extends PageInfo {
         this.progMF = progMF;
     }
 
-    public Integer getFeatureCode() {
+    public String getFeatureCode() {
         return featureCode;
     }
 
-    public void setFeatureCode(Integer featureCode) {
+    public void setFeatureCode(String featureCode) {
         this.featureCode = featureCode;
     }
 
@@ -179,11 +179,11 @@ public class BannedProgBO extends PageInfo {
         this.progMFs = progMFs;
     }
 
-    public Integer[] getFeatureCodes() {
+    public String[] getFeatureCodes() {
         return featureCodes;
     }
 
-    public void setFeatureCodes(Integer[] featureCodes) {
+    public void setFeatureCodes(String[] featureCodes) {
         this.featureCodes = featureCodes;
     }
 
