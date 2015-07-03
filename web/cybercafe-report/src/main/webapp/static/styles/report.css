@@ -1,0 +1,25 @@
+@charset "utf-8";
+/* for account.css defined */
+.ipm input {
+    width: 200px;
+}
+.ipm>span {
+    min-width: 212px;
+}
+.sub{
+    margin-top: 30px;
+}
+.subr{
+    margin-top: 10px;
+}
+
+.mc_sel_mid{
+    width:70px;
+    height:25px;
+}
+
+.mc_sel_short{
+    width:50px;
+    height:25px;
+}
+

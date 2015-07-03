@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.eastbar.web</groupId>
+        <artifactId>cybercafe-parent</artifactId>
+        <version>${cybercafe.version}</version>
+        <relativePath>../cybercafe-parent/</relativePath>
+    </parent>
+
+    <artifactId>cybercafe-repository</artifactId>
+	<packaging>jar</packaging>
+
+    <properties>
+        <db.driver.groupid>mysql</db.driver.groupid>
+        <db.driver.artifact>mysql-connector-java</db.driver.artifact>
+        <db.driver.version>${db.mysql}</db.driver.version>
+    </properties>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${db.driver.groupid}</groupId>
+            <artifactId>${db.driver.artifact}</artifactId>
+            <version>${db.driver.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>${jdbc.driver.oracle.groupId}</groupId>-->
+            <!--<artifactId>${jdbc.driver.oracle.artifactId}</artifactId>-->
+            <!--<version></version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-utils</artifactId>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.github.pagehelper</groupId>-->
+            <!--<artifactId>pagehelper</artifactId>-->
+        <!--</dependency>-->
+        <!--可选依赖jsqlparser，用于解析sql去除order by-->
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+        </dependency>
+    </dependencies>
+</project>

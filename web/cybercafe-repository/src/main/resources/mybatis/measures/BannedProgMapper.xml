@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.measures.dao.BannedProgDao">
+    <resultMap id="bannedProgResult" type="BannedProg">
+        <id property="id" column="seq_id" />
+        <result property="progType" column="prog_type"/>
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="progName" column="prog_name" />
+        <result property="progFileName" column="prog_filename" />
+        <result property="progressName" column="progress_name" />
+        <result property="progMF" column="prog_mf" />
+        <result property="featureCode" column="feature_code" />
+        <result property="alarmType" column="alarm_type" />
+        <result property="alarmRank" column="alarm_rank" />
+        <result property="isPub" column="is_pub" />
+        <result property="version" column="version"/>
+        <result property="operation" column="operation"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="verNum" column="ver_num"/>
+    </resultMap>
+
+    <sql id="bannedProg">
+        select * from t_banned_prog t
+    </sql>
+
+    <!--根据id查找信息-->
+    <select id="getBannedProg" parameterType="int" resultMap="bannedProgResult">
+      <include refid="bannedProg"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllBannedProg" resultMap="bannedProgResult" parameterType="java.util.Map">
+        select * from t_banned_prog i
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('progName')">
+                i.prog_name like '%${progName}%'
+            </if>
+            <if test="_parameter.containsKey('progFileName')">
+                and i.prog_filename like '%${progFileName}%'
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+               and i.monitor_code like '${monitorCode}%'
+            </if>
+            and i.delete_flag=0
+        </trim>
+        order by i.ver_num desc
+
+    </select>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="BannedProg" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_BANNED_PROG_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_banned_prog(seq_id,prog_type,prog_name,monitor_code,prog_filename,progress_name,prog_mf,feature_code,alarm_type,alarm_rank,is_pub,version,operation,delete_flag,ver_num)
+        values(#{id,jdbcType=INTEGER},#{progType,jdbcType=INTEGER},#{progName,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{progFileName,jdbcType=VARCHAR},#{progressName,jdbcType=VARCHAR},#{progMF,jdbcType=VARCHAR},#{featureCode,jdbcType=VARCHAR},#{alarmType,jdbcType=INTEGER},#{alarmRank,jdbcType=VARCHAR},#{isPub,jdbcType=INTEGER},#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="int"></delete>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="BannedProg">
+        update t_banned_prog t
+        <set>
+            <if test="progType!=null">
+                t.prog_type=#{progType},
+            </if>
+           <if test="progName!=null">
+            t.prog_name=#{progName},
+           </if>
+           <if test="progFileName!=null">
+            t.prog_filename=#{progFileName},
+           </if>
+           <if test="progressName!=null">
+            t.progress_name=#{progressName},
+           </if>
+           <if test="progMF!=null">
+            t.prog_mf=#{progMF},
+           </if>
+           <if test="featureCode!=null">
+            t.feature_code=#{featureCode},
+           </if>
+           <if test="alarmType!=null">
+            t.alarm_type=#{alarmType},
+           </if>
+           <if test="alarmRank!=null">
+            t.alarm_rank=#{alarmRank},
+           </if>
+           <if test="isPub!=null">
+            t.is_pub=#{isPub},
+           </if>
+           <if test="version!=null">
+            t.version=#{version},
+           </if>
+           <if test="operation!=null">
+            t.operation=#{operation},
+           </if>
+           <if test="deleteFlag!=null">
+            t.delete_flag=#{deleteFlag},
+           </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,78 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+      <groupId>org.eastbar.web</groupId>
+      <artifactId>cybercafe-parent</artifactId>
+      <version>${cybercafe.version}</version>
+      <relativePath>../cybercafe-parent/</relativePath>
+  </parent>
+
+  <artifactId>cybercafe-report</artifactId>
+  <packaging>war</packaging>
+
+  <build>
+    <finalName>cybercafe-report</finalName>
+  </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-basic</artifactId>
+            <version>${cybercafe.version}</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-services</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eastbar.web</groupId>
+            <artifactId>cybercafe-utils</artifactId>
+        </dependency>
+        <!-- WEB begin -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <!-- WEB end -->
+        <!-- SECURITY begin -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+        </dependency>
+        <!-- SECURITY end -->
+        <!--jasperreports begin -->
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itext-asian</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>2.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itextasian</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!--jasperreports end -->
+    </dependencies>
+
+</project>

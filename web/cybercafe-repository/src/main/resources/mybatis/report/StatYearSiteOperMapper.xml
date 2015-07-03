@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.report.dao.StatYearSiteOperDao">
+    <resultMap id="statYearSiteOperResult" type="StatYearSiteOper">
+        <id property="id" column="seq_id" />
+        <result property="staYear" column="sta_year" />
+        <result property="staTime" column="sta_time"/>
+        <result property="siteCode" column="site_code"/>
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="onlineTime" column="online_time"/>
+        <result property="customerCount" column="customer_count"/>
+    </resultMap>
+
+    <sql id="StatYearSiteOper">
+        select * from t_stat_year_site_oper t
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="statYearSiteOperResult" parameterType="java.util.Map">
+        <include refid="StatYearSiteOper"/>
+        <where>
+            <if test="startYear!=null and startYear!=''">
+                t.sta_year>=#{startYear}
+            </if>
+            <if test="endYear!=null and endYear!=''">
+                and t.sta_year&lt;=#{endYear}
+            </if>
+            <if test="monitorCode!=null and monitorCode!=''">
+                and t.monitor_code like '%${monitorCode}%'
+            </if>
+            <if test="siteCode!=null and siteCode!=''">
+                and t.site_code like '%${siteCode}%'
+            </if>
+        </where>
+        <if test="order!=null and order!=''">
+            order by t.customer_count desc
+        </if>
+    </select>
+</mapper>

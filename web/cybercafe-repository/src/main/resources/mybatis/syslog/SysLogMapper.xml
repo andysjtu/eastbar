@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.syslog.dao.SysLogDao">
+        <resultMap id="sysLogResult" type="SysLog">
+            <id property="id" column="seq_id" />
+            <result property="userId" column="user_id" />
+            <result property="userName" column="user_name"/>
+            <result property="createDate" column="create_date" />
+            <result property="content" column="content" />
+            <result property="operation" column="operation" />
+        </resultMap>
+    <insert id="add" parameterType="SysLog">
+        insert into t_syslog(seq_id,user_id,create_date,content,operation) values(#{id,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},to_date(#{createDate},'yyyy-mm-dd hh24:mi:ss'),#{content,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR})
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_SYSLOG_ID.nextVal as seq_id from dual
+        </selectKey>
+    </insert>
+
+    <select id="getAllLog" parameterType="java.util.Map" resultMap="sysLogResult">
+
+        select l.*,u.common_name as user_name from t_syslog l left join t_user u on l.user_id=u.seq_id
+        <where>
+            <if test="userName!=null and userName!=''">
+                u.common_name like '%${userName}%'
+            </if>
+            <if test="operation!=null and operation!=''">
+                and l.operation =#{operation}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and l.create_date>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and l.create_date&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+        order by l.create_date desc
+    </select>
+</mapper>

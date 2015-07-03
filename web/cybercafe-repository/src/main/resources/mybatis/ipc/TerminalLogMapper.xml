@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.ipc.dao.TerminalLogDao">
+
+    <!--根据id查找表信息-->
+    <select id="getOnlineTerminal" parameterType="String" resultType="TerminalLog" >
+        select
+         t.seq_id as id,
+         t.SITE_CODE as siteCode,
+         t.MONITOR_CODE as monitorCode,
+         t.HOST_IP as hostIp,
+         t.ACCOUNT_ID as accountId,
+         t.CUSTOMER_NAME as customerName,
+         t.CUSTOMER_ID as certId,
+         t.CUSTOMER_ID_TYPE as customerIdType,
+         t.ONLINE_TIME as onlineTime,
+         t.OFFLINE_TIME as offlineTime,
+         t.TIME_SPAN as timeSpan
+         from T_SITE_TERMINAL_LOG t where t.SITE_CODE = #{siteCode} and t.OFFLINE_TIME is null
+    </select>
+
+    <select id="getOnlineTerminalByBO" parameterType="java.util.Map" resultType="TerminalLog">
+        select
+         t.seq_id as id,
+         t.SITE_CODE as siteCode,
+         t.MONITOR_CODE as monitorCode,
+         t.HOST_IP as hostIp,
+         t.ACCOUNT_ID as accountId,
+         t.CUSTOMER_NAME as customerName,
+         t.CUSTOMER_ID as certId,
+         t.CUSTOMER_ID_TYPE as customerIdType,
+         t.ONLINE_TIME as onlineTime,
+         t.OFFLINE_TIME as offlineTime,
+         t.TIME_SPAN as timeSpan
+        from t_site_terminal_log t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('siteCode')">
+                t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('monitorCode')">
+                and t.monitor_code like '%${monitorCode}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.ONLINE_TIME>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.ONLINE_TIME&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('monitor')">
+                and t.monitor_code like '${monitor}%'
+            </if>
+        </trim>
+        ORDER BY t.offline_time ASC
+    </select>
+</mapper>

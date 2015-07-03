@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.AlarmHistoryDao">
+    <resultMap id="alarmHistoryResult" type="AlarmHistory">
+        <result property="siteCode" column="site_code" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="provinceCode" column="province_code" />
+        <result property="cityCode" column="city_code" />
+        <result property="countyCode" column="county_code" />
+        <result property="hostIp" column="host_ip"/>
+        <result property="alarmTime" column="alarm_time" />
+        <result property="alarmType" column="alarm_type" />
+        <result property="alarmLevel" column="alarm_level"/>
+        <result property="alarmContent" column="alarm_content" />
+        <result property="customerName" column="customer_name" />
+        <result property="customerCertId" column="customer_cert_id" />
+        <result property="customerCertType" column="customer_cert_type" />
+        <result property="isBlock" column="is_block" />
+    </resultMap>
+
+    <sql id="alarmHistory">
+        select * from t_alarm_history t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getAlarmHistory" parameterType="int" resultMap="alarmHistoryResult">
+      <include refid="alarmHistory"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllAlarmHistory" resultMap="alarmHistoryResult">
+        select * from t_alarm_history t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('siteCode')">
+                t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('alarmType')">
+                and t.alarm_type =#{alarmType}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.alarm_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.alarm_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('monitor')">
+                and t.monitor_code like '${monitor}%'
+            </if>
+        </trim>
+        order by t.alarm_time desc
+    </select>
+
+</mapper>

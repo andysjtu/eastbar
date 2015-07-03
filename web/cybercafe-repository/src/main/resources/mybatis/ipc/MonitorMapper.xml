@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.ipc.dao.MonitorDao">
+    <resultMap id="monitorResult" type="Monitor">
+        <id property="monitorCode" column="monitor_code" />
+        <result property="type" column="type" />
+        <result property="parentCode" column="parent_code" />
+        <result property="name" column="name" />
+        <result property="address" column="address" />
+        <result property="zip" column="zip" />
+        <result property="principal" column="principal"/>
+        <result property="principalTel" column="principal_tel" />
+        <result property="contactPerson" column="contact_person" />
+        <result property="contactTel" column="contact_tel"/>
+        <result property="email" column="email" />
+        <result property="createTime" column="create_time" />
+        <result property="creator" column="creator" />
+        <result property="updateTime" column="update_time"/>
+        <result property="updator" column="updator"/>
+        <result property="permitSite" column="permit_site"/>
+        <result property="hourVer" column="hour_ver"/>
+        <result property="urlVer" column="url_ver"/>
+        <result property="progVer" column="prog_ver"/>
+        <result property="specialVer" column="special_ver"/>
+        <result property="keyWordVer" column="keyword_ver"/>
+    </resultMap>
+
+    <sql id="monitor">
+        select * from t_monitor_info t
+    </sql>
+
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="String" resultMap="monitorResult">
+      <include refid="monitor"/>
+      where t.monitor_code=#{monitorCode}
+    </select>
+
+    <!--查找表的全部信息
+    <select id="getAllMonitor" resultMap="monitorResult">
+        select * from t_monitor_info t;
+    </select>-->
+
+    <!--根据parcent_code查找信息   -->
+    <select id="byParentCode" resultMap="monitorResult" parameterType="java.util.Map">
+       select * from t_monitor_info i
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('monitorCode')">
+                   i.monitor_code like '%${monitorCode}%'
+            </if>
+            <if test="_parameter.containsKey('name')">
+                    and i.name like '%${name}%'
+            </if>
+            <if test="_parameter.containsKey('principal')">
+                and i.principal like '%${principal}%'
+            </if>
+            <if test="_parameter.containsKey('parentCode')">
+                and i.parent_code is null
+            </if>
+            <if test="monitor!=null and monitor!=''">
+               and i.monitor_code =#{monitor}
+            </if>
+        </trim>
+
+    </select>
+
+    <!--根据parcent_code查找信息   -->
+    <select id="byParentCodeSe" parameterType="java.util.Map" resultMap="monitorResult">
+       select * from t_monitor_info i
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('monitorCode')">
+                i.monitor_code like '%${monitorCode}%'
+            </if>
+            <if test="_parameter.containsKey('name')">
+                and i.name like '%${name}%'
+            </if>
+            <if test="_parameter.containsKey('principal')">
+                and i.principal like '%${principal}%'
+            </if>
+            <if test="_parameter.containsKey('parentCode')">
+                and i.parent_code=#{parentCode}
+            </if>
+            <if test="monitor!=null and monitor!=''">
+                and i.monitor_code =#{monitor}
+            </if>
+        </trim>
+    </select>
+
+    <!--插入信息 -->
+    <insert id="save" parameterType="Monitor" keyProperty="id" useGeneratedKeys="true">
+        insert into t_monitor_info(monitor_code,type,parent_code,name,address,zip,principal,principal_tel,contact_person,contact_tel,
+        email,create_time,creator,permit_site,hour_ver,prog_ver,url_ver,special_ver,keyword_ver)
+        values(#{monitorCode,jdbcType=VARCHAR},#{type,jdbcType=INTEGER},#{parentCode,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{zip,jdbcType=VARCHAR},#{principal,jdbcType=VARCHAR},#{principalTel,jdbcType=VARCHAR},#{contactPerson,jdbcType=VARCHAR},#{contactTel,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR},to_date(#{createTime},'yyyy-mm-dd hh24:mi:ss'),#{creator,jdbcType=VARCHAR},#{permitSite,jdbcType=INTEGER},#{hourVer,jdbcType=VARCHAR},#{progVer,jdbcType=VARCHAR},#{urlVer,jdbcType=VARCHAR},#{specialVer,jdbcType=VARCHAR},#{keyWordVer,jdbcType=VARCHAR})
+    </insert>
+
+    <!-- 删除信息 -->
+    <delete id="delete" parameterType="String">
+	     delete from t_monitor_info where monitor_code=#{monitorCode}
+	</delete>
+
+    <!-- 删除多条信息 -->
+    <delete id="deleteByParent" parameterType="String">
+	     delete from t_monitor_info where parent_code=#{parentCode}
+	</delete>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="Monitor">
+        update t_monitor_info t
+        <set>
+        <if test="monitorCode!=null">t.monitor_code=#{monitorCode},</if>
+        <if test="type!=null">t.type=#{type},</if>
+        <if test="parentCode!=null"> t.parent_code=#{parentCode},</if>
+        <if test="name!=null"> t.name=#{name},</if>
+        <if test="address!=null"> t.address=#{address},</if>
+        <if test="zip!=null"> t.zip=#{zip},</if>
+        <if test="principal!=null">t.principal=#{principal},</if>
+        <if test="principalTel!=null">t.principal_tel=#{principalTel},</if>
+        <if test="contactPerson!=null">t.contact_person=#{contactPerson},</if>
+        <if test="contactTel!=null"> t.contact_tel=#{contactTel},</if>
+        <if test="email!=null"> t.email=#{email},</if>
+        <if test="updateTime!=null"> t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss'),</if>
+        <if test="updator!=null">  t.updator=#{updator},</if>
+        <if test="hourVer!=null">  t.hour_ver=#{hourVer},</if>
+        <if test="progVer!=null">  t.prog_ver=#{progVer},</if>
+        <if test="urlVer!=null">  t.url_ver=#{urlVer},</if>
+        <if test="specialVer!=null">  t.special_ver=#{specialVer},</if>
+        <if test="keyWordVer!=null">  t.keyword_ver=#{keyWordVer},</if>
+        <if test="permitSite!=null">  t.permit_site=#{permitSite}</if>
+        </set>
+        where t.monitor_code=#{monitorCode}
+    </update>
+
+    <!-- 区/县 -->
+    <select id="getArea" resultMap="monitorResult">
+        <include refid="monitor"/>
+        where t.type=1
+    </select>
+</mapper>

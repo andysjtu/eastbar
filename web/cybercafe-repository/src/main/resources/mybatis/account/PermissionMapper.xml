@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.account.dao.PermissionDao">
+	<!--
+		获取权限: 输出直接映射到对象, per_desc列要"as perDes"以方便映射 ,team_id as "team.id"创建team对象并赋值
+	-->
+	<select id="get" parameterType="int" resultType="Permission">
+		select seq_id as id,
+		        per_desc as perDesc,
+		        permission as permission
+		from t_permission
+		where per_id=#{id}
+	</select>
+
+    <select id="byPermisson" parameterType="String" resultType="Permission">
+		select seq_id as id,
+		        per_desc as perDesc,
+		        permission as permission
+		from t_permission
+		where permission=#{permission}
+	</select>
+
+</mapper> 

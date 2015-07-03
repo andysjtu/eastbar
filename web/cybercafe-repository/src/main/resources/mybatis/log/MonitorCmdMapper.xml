@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.log.dao.MonitorCmdDao">
+    <resultMap id="monitorCmdResult" type="MonitorCmd">
+        <id property="id" column="seq_id" />
+        <result property="cmdType" column="cmd_type" />
+        <result property="customerId" column="customer_id" />
+        <result property="customerIdType" column="customer_id_type"/>
+        <result property="hostIp" column="host_ip"/>
+        <result property="siteCode" column="site_code"/>
+        <result property="monitorCode" column="monitor_code"/>
+        <result property="commander" column="commander"/>
+        <result property="cmdTime" column="cmd_time"/>
+        <result property="isSuccess" column="is_success"/>
+    </resultMap>
+
+    <sql id="MonitorCmd">
+        select * from t_monitor_cmd t
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="monitorCmdResult" parameterType="java.util.Map">
+        <include refid="MonitorCmd"/>
+        <where>
+            <if test="cmdType!=null and cmdType!=''">
+                and  t.cmd_type =#{cmdType}
+            </if>
+            <if test="siteCode!=null and siteCode!=''">
+                and t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.cmd_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.cmd_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="save" parameterType="MonitorCmd" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select SEQ_T_MONITOR_CMD_ID.nextVal as seq_id from dual
+        </selectKey>
+        insert into T_MONITOR_CMD(seq_id,cmd_type,customer_id,customer_id_type,host_ip,site_code,monitor_code,commander,cmd_time,is_success) values
+        (#{id,jdbcType=INTEGER},#{cmdType,jdbcType=INTEGER},#{customerId,jdbcType=VARCHAR},#{customerIdType,jdbcType=INTEGER},#{hostIp,jdbcType=VARCHAR},#{siteCode,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},
+        #{commander,jdbcType=VARCHAR},to_date(#{cmdTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),#{isSuccess,jdbcType=INTEGER})
+    </insert>
+
+    <!--查找单条信息-->
+    <select id="get" parameterType="int" resultMap="monitorCmdResult">
+        <include refid="MonitorCmd"/> where t.seq_id=#{id}
+    </select>
+</mapper>

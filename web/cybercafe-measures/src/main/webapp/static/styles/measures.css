@@ -1,0 +1,66 @@
+@charset "utf-8";
+/* for account.css defined */
+.ipm input {
+    width: 200px;
+}
+.ipm>span {
+    min-width: 212px;
+}
+.sub{
+    margin-top: 30px;
+}
+.subr{
+    margin-top: 10px;
+}
+
+.mc_sel_mid{
+    width:70px;
+    height:25px;
+}
+
+.mc_sel_short{
+    width:50px;
+    height:25px;
+}
+
+.tab_sub_title{
+    text-indent:20px;
+    background:darkgray;
+    height:20px;
+    line-height:25px;
+    color:#ffffff;
+    font-size: 10;
+    font-weight:bold;
+}
+
+.tab_top_title02{
+    text-indent:20px;
+    background:#808080;
+    height:20px;
+    line-height:25px;
+    color:#ffffff;
+    font-size: 10;
+    font-weight:bold;
+}
+
+.tab_sub_title td{
+    border: 1px solid silver;
+}
+
+.tab_line{
+    border: 1px solid silver;
+
+}
+
+.tr_h{
+    line-height: 2;
+}
+.tr_h td{
+    border: 1px solid silver;
+    padding: 20px;
+}
+
+.fr_10{
+    float:right;
+    margin-left: 10px;
+}

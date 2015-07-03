@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.CustomerHistoryDao">
+    <resultMap id="customerHistoryResult" type="CustomerHistory">
+        <id property="id" column="seq_id" />
+        <result property="accountId" column="account_id" />
+        <result property="siteCode" column="site_code" />
+        <result property="provinceCode" column="province_code" />
+        <result property="cityCode" column="city_code" />
+        <result property="countyCode" column="county_code" />
+        <result property="name" column="name" />
+        <result property="certType" column="cert_type" />
+        <result property="certId" column="cert_id" />
+        <result property="nationality" column="nationality" />
+        <result property="status" column="status" />
+        <result property="openTime" column="open_time" />
+        <result property="closeTime" column="close_time" />
+    </resultMap>
+    <resultMap id="customerOnlineResult" type="CustomerHistory" extends="customerHistoryResult">
+        <collection property="customer" ofType="CustomerHost">
+            <result property="ipAdd" column="ip_add"/>
+            <result property="onlineTime" column="online_time"/>
+        </collection>
+    </resultMap>
+
+    <sql id="customerHistory">
+        select * from t_customer t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getCustomerHistory" parameterType="int" resultMap="customerHistoryResult">
+      <include refid="customerHistory"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllCustomerHistory" resultMap="customerHistoryResult" parameterType="java.util.Map">
+        select * from t_customer t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('name')">
+                t.name like '%${name}%'
+            </if>
+            <if test="_parameter.containsKey('status')">
+                and t.status=#{status}
+            </if>
+            <if test="_parameter.containsKey('certType')">
+                and t.cert_type=#{certType}
+            </if>
+            <!--<if test="_parameter.containsKey('btime')">-->
+                <!--and t.open_time>=#{btime}-->
+            <!--</if>-->
+            <!--<if test="_parameter.containsKey('etime')">-->
+                <!--and t.open_time&lt;=#{etime}-->
+            <!--</if>-->
+            <if test="_parameter.containsKey('monitor')">
+                and t.site_code like '${monitor}%'
+            </if>
+        </trim>
+        order by t.open_time desc
+    </select>
+
+</mapper>

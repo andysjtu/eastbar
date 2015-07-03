@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.measures.dao.ShopHourDao">
+    <resultMap id="shopHourResult" type="ShopHour">
+        <id property="id" column="seq_id" />
+        <result property="startTime1" column="start_time1" />
+        <result property="endTime1" column="end_time1" />
+        <result property="operStatus1" column="oper_status1" />
+        <result property="startTime2" column="start_time2" />
+        <result property="endTime2" column="end_time2" />
+        <result property="operStatus2" column="oper_status2" />
+        <result property="startTime3" column="start_time3" />
+        <result property="endTime3" column="end_time3" />
+        <result property="operStatus3" column="oper_status3" />
+        <result property="shopHourType" column="shop_hour_type" />
+        <result property="dayOfWeek" column="day_of_week" />
+        <result property="startDate" column="start_date" />
+        <result property="endDate" column="end_date" />
+        <result property="isPub" column="is_pub" />
+        <result property="version" column="version"/>
+        <result property="operation" column="operation"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="verNum" column="ver_num"/>
+    </resultMap>
+
+    <sql id="shopHour">
+        select * from t_shop_hour t
+    </sql>
+
+    <!--根据id查找营业时间表信息-->
+    <select id="getShopHour" parameterType="int" resultMap="shopHourResult">
+      <include refid="shopHour"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找营业时间表的全部信息-->
+    <select id="getAllShopHour" resultMap="shopHourResult">
+        select * from t_shop_hour t where t.delete_flag=0;
+    </select>
+
+    <select id="getShopHourByType" resultMap="shopHourResult" parameterType="int">
+        <include refid="shopHour"/>
+        where t.shop_hour_type=#{shopHourType}
+        and t.delete_flag=0
+    </select>
+
+    <select id="getSome" resultMap="shopHourResult" parameterType="ShopHour">
+        <include refid="shopHour"/>
+        where t.shop_hour_type=#{shopHourType}
+        and t.day_of_week=#{dayOfWeek}
+    </select>
+
+    <!--插入营业时间信息 -->
+    <insert id="save" parameterType="ShopHour" keyProperty="id" useGeneratedKeys="true">
+        <selectKey resultType="int" keyProperty="id" order="BEFORE">
+            select seq_t_shop_hour_id.nextVal as seq_id from dual
+        </selectKey>
+        insert into t_shop_hour(seq_id,start_time1,end_time1,start_time2,end_time2,start_time3,end_time3,
+        shop_hour_type,day_of_week,start_date,end_date,is_pub,version,operation,delete_flag,ver_num)
+        values(#{id,jdbcType=INTEGER},#{startTime1,jdbcType=INTEGER},#{endTime1,jdbcType=INTEGER},#{startTime2,jdbcType=INTEGER},#{endTime2,jdbcType=INTEGER},#{startTime3,jdbcType=INTEGER},#{endTime3,jdbcType=INTEGER},
+        #{shopHourType,jdbcType=INTEGER},#{dayOfWeek,jdbcType=INTEGER},to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss'),to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss'),#{isPub,jdbcType=INTEGER},#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
+    </insert>
+
+    <!-- 删除营业时间信息 -->
+    <delete id="delete" parameterType="int">
+	     delete from t_shop_hour where id=#{id}
+	</delete>
+
+    <!-- 修改营业时间信息 -->
+    <update id="update" parameterType="ShopHour">
+        update t_shop_hour t
+        <set>
+           <if test="startTime1!=null">
+              t.start_time1=#{startTime1},
+           </if>
+           <if test="endTime1!=null">
+              t.end_time1=#{endTime1},
+           </if>
+           <if test="operStatus1!=null">
+              t.oper_status1=#{operStatus1},
+           </if>
+            <if test="startTime2!=null">
+                t.start_time2=#{startTime2},
+            </if>
+            <if test="endTime2!=null">
+                t.end_time2=#{endTime2},
+            </if>
+            <if test="operStatus2!=null">
+                t.oper_status2=#{operStatus2},
+            </if>
+            <if test="startTime3!=null">
+                t.start_time3=#{startTime3},
+            </if>
+            <if test="endTime3!=null">
+                t.end_time3=#{endTime3},
+            </if>
+            <if test="operStatus3!=null">
+                t.oper_status3=#{operStatus3},
+            </if>
+            <if test="shopHourType!=null">
+              t.shop_hour_type=#{shopHourType},
+            </if>
+            <if test="dayOfWeek!=null">
+              t.day_of_week=#{dayOfWeek},
+            </if>
+            <if test="startDate!=null">
+              t.start_date=to_date(#{startDate},'yyyy-mm-dd hh24:mi:ss'),
+            </if>
+            <if test="endDate!=null">
+              t.end_date=to_date(#{endDate},'yyyy-mm-dd hh24:mi:ss'),
+            </if>
+            <if test="isPub!=null">
+              t.is_pub=#{isPub},
+            </if>
+            <if test="version!=null">
+              t.version=#{version},
+            </if>
+            <if test="operation!=null">
+              t.operation=#{operation},
+            </if>
+            <if test="deleteFlag!=null">
+              t.delete_flag=#{deleteFlag},
+            </if>
+            <if test="verNum!=null">
+                t.ver_num=#{verNum}
+            </if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>

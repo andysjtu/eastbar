@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.InstantMessageHistoryDao">
+    <resultMap id="instantMessageHistoryResult" type="InstantMessageHistory">
+        <result property="cid" column="cid" />
+        <result property="siteCode" column="site_code" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="provinceCode" column="province_code" />
+        <result property="cityCode" column="city_code" />
+        <result property="countyCode" column="county_code" />
+        <result property="hostIp" column="host_ip"/>
+        <result property="programName" column="program_name" />
+        <result property="startTime" column="start_time" />
+        <result property="endTime" column="end_time" />
+        <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="customerIdType" column="customer_id_type" />
+        <result property="instantType" column="instant_type"/>
+        <result property="progAccount" column="prog_account"/>
+    </resultMap>
+
+    <sql id="instantMessageHistory">
+        select * from t_instant_message_history t
+    </sql>
+
+    <!--查找表的全部信息-->
+    <select id="getAll" resultMap="instantMessageHistoryResult"  parameterType="java.util.Map">
+        select * from t_instant_message_history t
+        <where>
+            <if test="_parameter.containsKey('instantType')">
+                t.instant_type like '%${instantType}%'
+            </if>
+            <if test="_parameter.containsKey('siteCode')">
+                and  t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.start_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.start_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('monitor')">
+                and t.site_code like '${monitor}%'
+            </if>
+        </where>
+        order by t.start_time desc
+    </select>
+
+</mapper>

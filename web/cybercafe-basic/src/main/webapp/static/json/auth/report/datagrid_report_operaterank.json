@@ -1,0 +1,12 @@
+{"total":10,"rows":[
+	{"id":"1","no":"3101012033","name":"上海中数圣旗互联网上网服务有限公司 ","placeNum":"1","terminatotal":"30","totalperson":"201","placeAveragePerson":201,"terminaAveragePerson":"10.77","totalhours":"501.26","placeAverageHour":"501.26","terminaAverageHour":"80.42"},
+	{"id":"2","no":"3101012032","name":"上海源源电脑信息服务有限公司","placeNum":"1","terminatotal":"26","totalperson":"168","placeAveragePerson":168,"terminaAveragePerson":"13","totalhours":"261.45","placeAverageHour":"261.45","terminaAverageHour":"73.41"},
+	{"id":"3","no":"3101011033","name":"上海金宏电脑技术有限公司 ","placeNum":"1","terminatotal":"28","totalperson":"201","placeAveragePerson":201,"terminaAveragePerson":"10","totalhours":"631.41","placeAverageHour":"631.41","terminaAverageHour":"90.0"},
+    {"id":"4","no":"3101011045","name":"上海东方网点乐空间海兴店","placeNum":"1","terminatotal":"30","totalperson":"201","placeAveragePerson":201,"terminaAveragePerson":"6.12","totalhours":"591.18","placeAverageHour":"591.18","terminaAverageHour":"46.56"},
+    {"id":"5","no":"3101012932","name":"上海东方网点金陵店有限公司 ","placeNum":"1","terminatotal":"26","totalperson":"855","placeAveragePerson":855,"terminaAveragePerson":"4.34","totalhours":"530.76","placeAverageHour":"530.76","terminaAverageHour":"69.32"},
+    {"id":"6","no":"3101011072","name":"上海中福超通网络通讯技术有限公司公众电脑屋 ","placeNum":"147","terminatotal":"728","totalperson":"20107","placeAveragePerson":728,"terminaAveragePerson":"5.90","totalhours":"943.46","placeAverageHour":"943.46","terminaAverageHour":"53.79"},
+    {"id":"7","no":"3101012036","name":"上海青士网络信息服务站","placeNum":"1","terminatotal":"30","totalperson":"201","placeAveragePerson":201,"terminaAveragePerson":"4.6","totalhours":"820.79","placeAverageHour":"820.79","terminaAverageHour":"48.65"},
+    {"id":"8","no":"3101011028","name":"上海鑫煜互联网上网服务有限公司 ","placeNum":"1","terminatotal":"26","totalperson":"168","placeAveragePerson":168,"terminaAveragePerson":"4.98","totalhours":"868.01","placeAverageHour":"868.01","terminaAverageHour":"64.2"},
+    {"id":"9","no":"3101012045","name":"上海东兴互联网上网服务有限公司 ","placeNum":"1","terminatotal":"28","totalperson":"201","placeAveragePerson":201,"terminaAveragePerson":"3.80","totalhours":"941.55","placeAverageHour":"941.55","terminaAverageHour":"56.3"},
+    {"id":"10","no":"310101160","name":"上海浩友综合服务部","placeNum":"1","terminatotal":"28","totalperson":"107","placeAveragePerson":107,"terminaAveragePerson":"7.0","totalhours":"687.06","placeAverageHour":"687.06","terminaAverageHour":"65.8"}
+]}

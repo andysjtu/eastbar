@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.unit.dao.UrlHistoryDao">
+    <resultMap id="urlHistoryResult" type="UrlHistory">
+        <result property="cid" column="cid" />
+        <result property="siteCode" column="site_code" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="provinceCode" column="province_code" />
+        <result property="cityCode" column="city_code" />
+        <result property="countyCode" column="county_code" />
+        <result property="hostIp" column="host_ip"/>
+        <result property="url" column="url" />
+        <result property="urlDomain" column="url_domain" />
+        <result property="accessTime" column="access_time" />
+        <result property="customerName" column="customer_name" />
+        <result property="customerId" column="customer_id" />
+        <result property="customerType" column="customer_type" />
+        <result property="isBlock" column="is_block" />
+    </resultMap>
+
+    <sql id="urlHistory">
+        select * from t_url_history t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="getUrlHistory" parameterType="int" resultMap="urlHistoryResult">
+      <include refid="urlHistory"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllUrlHistory" resultMap="urlHistoryResult">
+        select * from t_url_history t
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="_parameter.containsKey('url')">
+                t.url like '%${url}%'
+            </if>
+            <if test="_parameter.containsKey('siteCode')">
+                and  t.site_code like '%${siteCode}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and t.access_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and t.access_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('monitor')">
+                and t.site_code like '${monitor}%'
+            </if>
+        </trim>
+        order by t.access_time desc
+    </select>
+
+</mapper>

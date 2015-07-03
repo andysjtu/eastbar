@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.sys.dao.RankDao">
+    <resultMap id="rankResult" type="Rank">
+        <id property="id" column="seq_id" />
+        <result property="rankName" column="rank_name" />
+        <result property="isSms" column="is_sms" />
+        <result property="isEmail" column="is_email" />
+        <result property="createTime" column="create_time" />
+        <result property="creator" column="creator" />
+        <result property="updateTime" column="update_time"/>
+        <result property="updator" column="updator" />
+    </resultMap>
+
+    <sql id="Rank">
+        select * from t_rank t
+    </sql>
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="int" resultMap="rankResult">
+      <include refid="Rank"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--查找表的全部信息-->
+    <select id="getAllRank" resultMap="rankResult">
+        <include refid="Rank"/>
+    </select>
+
+    <!-- 修改信息 -->
+    <update id="update" parameterType="Rank">
+        update t_rank t
+        <set>
+            <if test="rankName!=null">t.rank_name=#{rankName},</if>
+            <if test="isSms!=null">t.is_sms=#{isSms},</if>
+            <if test="isEmail!=null">t.is_email=#{isEmail}, </if>
+            <if test="updateTime!=null">t.update_time=to_date(#{updateTime},'yyyy-mm-dd hh24:mi:ss')</if>
+        </set>
+        where t.seq_id=#{id}
+    </update>
+
+</mapper>

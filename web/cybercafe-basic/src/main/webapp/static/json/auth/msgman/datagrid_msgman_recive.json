@@ -1,0 +1,8 @@
+{"total":6,"rows":[
+	{"id":"1","msgtitle":"新的帐台工具使用","msgpubdate":"2014-07-28 14:20:52","msgmisdate":"2014-08-28 14:20:52","msgpubperson":" 计金弟","msgreceperson":"31","msgstatus":" 已发布","msgcontent":"下载最新的帐台工具后，请删除以前安装的帐台工具后再安装新的帐台工具。接收到新消息提醒后请通过web访问自己收到的消息内容。"},
+	{"id":"2","msgtitle":"需要反馈的消息","msgpubdate":"2014-07-28 14:19:54","msgmisdate":"2014-08-28 14:20:52","msgpubperson":"常建江","msgreceperson":"31","msgstatus":" 已发布","msgcontent":"测试反馈"},
+	{"id":"3","msgtitle":"测试消息","msgpubdate":"2014-07-21 10:10:50","msgmisdate":"2014-08-28 14:20:52","msgpubperson":"常建江","msgreceperson":"31","msgstatus":"已发布","msgcontent":"测试消息"},
+	{"id":"4","msgtitle":"文化服务器送修地址变更通知","msgpubdate":"2014-07-21 10:09:23","msgmisdate":"2014-08-28 14:20:52","msgpubperson":" 计金弟","msgreceperson":"31","msgstatus":"已发布","msgcontent":"测试文化服务器送修地址变更通知"},
+	{"id":"5","msgtitle":"测试","msgpubdate":"2014-05-06 14:46:35","msgmisdate":"2014-08-28 14:20:52","msgpubperson":"常建江","msgreceperson":"31","msgstatus":"已发布","msgcontent":"测试"},
+	{"id":"6","msgtitle":"回复","msgpubdate":"2014-05-06 14:45:56","msgmisdate":"2014-08-28 14:20:52","msgpubperson":"徐剑锋","msgreceperson":"31","msgstatus":"已发布","msgcontent":"回复"}
+]}

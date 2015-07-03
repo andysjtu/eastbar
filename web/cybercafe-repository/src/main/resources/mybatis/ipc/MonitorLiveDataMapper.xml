@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.ipc.dao.MonitorLiveDataDao">
+    <resultMap id="monitorLiveDataResult" type="MonitorLiveData">
+        <id property="id" column="seq_id" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="status" column="status" />
+        <result property="totalSite" column="total_site" />
+        <result property="setupSite" column="setup_site" />
+        <result property="openSite" column="open_site"/>
+        <result property="totalTerminal" column="total_terminal" />
+        <result property="totalAlarm" column="total_alarm" />
+        <result property="totalPunish" column="total_punish" />
+        <result property="lastUpdateTime" column="last_update_time" />
+    </resultMap>
+
+    <resultMap id="allMonitorLiveDataResult" type="MonitorLiveData">
+        <id property="id" column="seq_id" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="status" column="status" />
+        <result property="totalSite" column="total_site" />
+        <result property="setupSite" column="setup_site" />
+        <result property="openSite" column="open_site"/>
+        <result property="totalTerminal" column="total_terminal" />
+        <result property="totalAlarm" column="total_alarm" />
+        <result property="totalPunish" column="total_punish" />
+        <result property="lastUpdateTime" column="last_update_time" />
+
+        <result property="lname" column="name"/>
+    </resultMap>
+
+    <sql id="monitorLiveData">
+        select * from t_monitor_live t
+    </sql>
+
+
+    <!--根据id查找表信息-->
+    <select id="get" parameterType="Integer" resultMap="monitorLiveDataResult">
+      <include refid="monitorLiveData"/>
+      where t.seq_id=#{id}
+    </select>
+
+    <!--根据monitorCode查找表信息-->
+    <select id="byMonitorCode" parameterType="String" resultMap="monitorLiveDataResult">
+        <include refid="monitorLiveData"/>
+        where t.monitor_code=#{monitorCode}
+    </select>
+
+    <select id="getAllLatest" resultMap="monitorLiveDataResult">
+      select  a.* from t_monitor_live a,(select   monitor_code,max(last_update_time) as last_update_time from  t_monitor_live group  by  monitor_code) b
+      where  a.monitor_code=b.monitor_code and a.last_update_time=b.last_update_time
+    </select>
+
+    <!--查找全部-->
+    <select id="getAll" parameterType="java.util.Map" resultMap="allMonitorLiveDataResult">
+        select l.*,t.name as name from t_monitor_live l left join t_monitor_info t
+        on l.monitor_code=t.monitor_code
+        <where>
+            <if test="lname!=null and lname!=''">
+                t.name like '%${lname}%'
+            </if>
+            <if test="status!=null and status!=''">
+                and l.status=#{status}
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and l.last_update_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and l.last_update_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

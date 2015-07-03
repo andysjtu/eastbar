@@ -1,0 +1,8 @@
+{"total":6,"rows":[
+	{"id":"1","gameName":"50美分-血沙","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":"15","updatePerson":"上海网吧监管中心"},
+    {"id":"2","gameName":"50美分：防弹","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":" 15","updatePerson":"上海网吧监管中心"},
+    {"id":"3","gameName":"quake3","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":" 15","updatePerson":"上海网吧监管中心"},
+    {"id":"4","gameName":"使命召唤-现代战争2","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":" 15","updatePerson":"上海网吧监管中心"},
+    {"id":"5","gameName":"使命召唤2","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":" 15","updatePerson":"上海网吧监管中心"},
+    {"id":"6","gameName":"使命召唤-现代战争4","alertGrade":"一般报警","alertInfo":"非网络，暴力游戏","version":" 15","updatePerson":"上海网吧监管中心"}
+]}

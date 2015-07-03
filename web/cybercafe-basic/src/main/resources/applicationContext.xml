@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+       default-lazy-init="true">
+
+    <description>Spring公共配置</description>
+    <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+    <context:component-scan base-package="org.eastbar">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- 配置事务管理 -->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!-- 使用annotation定义事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <!-- 定义aspectj -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />-->
+
+    <!-- MyBatis配置 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 自动扫描entity目录, 省掉Configuration.xml里的手工配置 -->
+        <property name="typeAliasesPackage" value="org.eastbar.web"/>
+
+        <!-- 显式指定Mapper文件位置 -->
+        <property name="mapperLocations" value="classpath*:/mybatis/**/*Mapper.xml"/>
+        <!--<property name="typeHandlersPackage" value="org.eastbar.web.typeHandles"/>-->
+        <!--<property name="typeHandlers">-->
+            <!--<array>-->
+                <!--<bean class="org.eastbar.web.typeHandles.TimeTypeHandle">-->
+                    <!--<property name="javaType" value="String"/>-->
+                    <!--<property name="jdbcType" value="DATETIME"/>-->
+                <!--</bean>-->
+            <!--</array>-->
+        <!--</property>-->
+
+        <property name="plugins">
+            <array>
+                <bean class="org.eastbar.web.pagehelper.PageHelper">
+                    <property name="properties">
+                        <value>
+                            dialect=${dialect}
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+<!--jiaxiaodan add begin-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+<!--jiaxiaodan  add end  -->
+
+    <!-- 扫描basePackage下所有以@MyBatisRepository标识的 接口-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="org.eastbar.web"/>
+        <property name="annotationClass" value="org.eastbar.web.annotation.MyBatisRepository"/>
+    </bean>
+
+
+    <!-- production环境 -->
+    <beans profile="production">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.properties"/>
+
+        <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+            <!-- Connection Info -->
+            <property name="driverClassName" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+            <property name="maxActive" value="${jdbc.pool.maxActive}"/>
+            <property name="maxIdle" value="${jdbc.pool.maxIdle}"/>
+            <property name="minIdle" value="0"/>
+            <property name="defaultAutoCommit" value="false"/>
+            <!-- 连接Idle10分钟后超时，每1分钟检查一次 -->
+            <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+            <property name="minEvictableIdleTimeMillis" value="600000"/>
+        </bean>
+
+
+    </beans>
+    <!-- unit test环境 -->
+    <beans profile="test">
+        <context:property-placeholder ignore-resource-not-found="true"
+                                      location="classpath*:/application.test.properties"/>
+
+        <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+            <!-- Connection Info -->
+            <property name="driverClass" value="${jdbc.driver}"/>
+            <property name="url" value="${jdbc.url}"/>
+            <property name="username" value="${jdbc.username}"/>
+            <property name="password" value="${jdbc.password}"/>
+        </bean>
+    </beans>
+</beans>

@@ -1,0 +1,10 @@
+{"total":8,"rows":[
+	{"id":"1","name":"黄浦区监管中心","onlinePlaceNum":"15","openPlaceNum":"30","serverPercent":"70%","realTerminaNum":"782","realNoTerminaNum":"309","clientPercent":"91%","systemPercent":"85%","toolPercent":"60%"},
+    {"id":"2","name":"卢湾区监管中心","onlinePlaceNum":"21","openPlaceNum":"8","serverPercent":"50%","realTerminaNum":"145","realNoTerminaNum":"483","clientPercent":"100%","systemPercent":"82%","toolPercent":"58%"},
+    {"id":"3","name":"徐汇区监管中心","onlinePlaceNum":"38","openPlaceNum":"60","serverPercent":"79%","realTerminaNum":"1556","realNoTerminaNum":"146","clientPercent":"81%","systemPercent":"61%","toolPercent":"70%"},
+    {"id":"4","name":"长宁区监管中心","onlinePlaceNum":"9","openPlaceNum":"25","serverPercent":"63%","realTerminaNum":"839","realNoTerminaNum":"648","clientPercent":"73%","systemPercent":"56%","toolPercent":"81%"},
+    {"id":"5","name":"静安区监管中心","onlinePlaceNum":"42","openPlaceNum":"45","serverPercent":"72%","realTerminaNum":"303","realNoTerminaNum":"242","clientPercent":"81%","systemPercent":"67%","toolPercent":"64%"},
+    {"id":"6","name":"普陀区监管中心","onlinePlaceNum":"69","openPlaceNum":"83","serverPercent":"81%","realTerminaNum":"1915","realNoTerminaNum":"106","clientPercent":"49%","systemPercent":"39%","toolPercent":"63%"},
+    {"id":"7","name":"闸北区监管中心","onlinePlaceNum":"51","openPlaceNum":"120","serverPercent":"35%","realTerminaNum":"920","realNoTerminaNum":"711","clientPercent":"51%","systemPercent":"100%","toolPercent":"40%"},
+    {"id":"8","name":"虹口区监管中心","onlinePlaceNum":"94","openPlaceNum":"64","serverPercent":"40%","realTerminaNum":"1516","realNoTerminaNum":"471","clientPercent":"82%","systemPercent":"33%","toolPercent":"52%"}
+]}

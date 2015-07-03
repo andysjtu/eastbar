@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="org.eastbar.web.ipc.dao.SiteRepairInfoDao">
+    <resultMap id="siteRepairInfoResult" type="SiteRepairInfo">
+        <id property="id" column="seq_id" />
+        <result property="monitorCode" column="monitor_code" />
+        <result property="siteCode" column="site_code" />
+        <result property="siteName" column="site_name" />
+        <result property="type" column="type" />
+        <result property="status" column="status" />
+        <result property="siteReportTime" column="site_report_time"/>
+        <result property="finishedTime" column="finished_time"/>
+        <result property="siteResponseTime" column="site_response_time" />
+        <result property="beforeProcess" column="before_process" />
+        <result property="description" column="description" />
+        <result property="processSituation" column="process_situation" />
+        <result property="result" column="result"/>
+    </resultMap>
+
+    <select id="getAll" parameterType="java.util.Map" resultMap="siteRepairInfoResult">
+        select * from t_site_repair_info
+        <where>
+            monitor_code like '%${monitorCode}%'
+            <if test="siteCode!=null and siteCode!=''">
+                and site_code like '%${siteCode}%'
+            </if>
+            <if test="siteName!=null and siteName!=''">
+                and site_name like '%${siteName}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and site_report_time>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
+                and site_report_time&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="type!=0">
+                and type=#{type}
+            </if>
+            <if test="status!=0">
+                and status=#{status}
+            </if>
+            <if test="result!=0">
+                and result=#{result}
+            </if>
+
+        </where>
+    </select>
+</mapper>
