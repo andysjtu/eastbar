@@ -62,7 +62,7 @@ public class LogdConnector extends AbstractConnector {
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-LOG-SERVER", LogLevel.INFO));
+        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-LOG-SERVER", LogLevel.DEBUG));
         pipeline.addLast("gzipDecoder", ZlibCodecFactory.newZlibDecoder());
         pipeline.addLast("gzipEncoder", ZlibCodecFactory.newZlibEncoder(3));
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
