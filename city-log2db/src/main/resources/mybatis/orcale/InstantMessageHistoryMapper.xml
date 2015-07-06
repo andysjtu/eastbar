@@ -4,9 +4,9 @@
 <mapper namespace="org.eastbar.log2db.dao.SiteInstMsgLogDao">
 
 	<insert id="saveListInstantMessageHistory" parameterType="java.util.List">
-		INSERT INTO t_inst_msg_history (customer_id,customer_name,host_ip,access_time,is_block,customer_type,prog_type,prog_account,start_time,end_time)SELECT AA.* FROM(
+		INSERT INTO T_INSTANT_MESSAGE_HISTORY (site_code,customer_id,customer_name,host_ip,customer_id_type,instant_type,prog_account,start_time,end_time)SELECT AA.* FROM(
 		<foreach collection="list" item="item" index="index" separator="union all">
-			(select #{item.customerId},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.blocked},#{item.customerType},#{item.progType},#{item.progAccount},#{item.startTime},#{item.endTime} from dual)
+			(select #{item.siteCode},#{item.customerId},#{item.customerName},#{item.hostIp},#{item.customerType},#{item.progType},#{item.progAccount},#{item.startTime},#{item.endTime} from dual)
 		</foreach>) AA
 	</insert> 
 	

@@ -16,7 +16,7 @@
     <description>Spring公共配置</description>
 
     <!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-    <context:component-scan base-package="org.eastbar.alertd">
+    <context:component-scan base-package="org.eastbar.logd">
     </context:component-scan>
 
 
@@ -50,7 +50,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-log2mq.properties"/>
 
     <!-- 数据源配置,使用应用内的Tomcat JDBC连接池 -->
     <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"-->
@@ -77,13 +77,44 @@
     </bean>
 
     <!-- 定义消息队列（Queue） -->
-    <bean id="alertQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+    <bean id="prgQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
         <!-- 设置消息队列的名字 -->
         <constructor-arg>
-            <value>alert</value>
+            <value>prgLog</value>
         </constructor-arg>
     </bean>
 
+    <!-- 定义消息队列（Queue） -->
+    <bean id="urlQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 设置消息队列的名字 -->
+        <constructor-arg>
+            <value>urlLog</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- 定义消息队列（Queue） -->
+    <bean id="emailQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 设置消息队列的名字 -->
+        <constructor-arg>
+            <value>emailLog</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- 定义消息队列（Queue） -->
+    <bean id="instmsgQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 设置消息队列的名字 -->
+        <constructor-arg>
+            <value>instLog</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- 定义消息队列（Queue） -->
+    <bean id="illegalQueueDestination" class="org.apache.activemq.command.ActiveMQQueue">
+        <!-- 设置消息队列的名字 -->
+        <constructor-arg>
+            <value>illegalLog</value>
+        </constructor-arg>
+    </bean>
 
     <!-- 配置JMS模板（Queue），Spring提供的JMS工具类，它发送、接收消息。 -->
     <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">

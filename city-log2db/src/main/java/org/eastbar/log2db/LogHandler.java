@@ -50,4 +50,10 @@ public class LogHandler extends SimpleChannelInboundHandler<SocketMsg> {
                 logger.warn("收到未知日志类型的数据，请检查SocketMsg: {}", msg);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("接受日志出现异常: ",cause);
+        ctx.close();
+    }
 }

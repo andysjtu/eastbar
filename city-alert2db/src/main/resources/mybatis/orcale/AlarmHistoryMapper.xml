@@ -4,9 +4,9 @@
 <mapper namespace="org.eastbar.alert2db.dao.SiteAlertDao">
 
 	<insert id="saveListAlarmHistory" parameterType="java.util.List">
-		INSERT INTO t_alarm_history (customer_id,customer_name,host_ip,alarm_time,is_block,customer_type,alarm_type,alarm_level,alarm_content)SELECT AA.* FROM(
+		INSERT INTO t_alarm_history (site_code,customer_cert_id,is_block,customer_name,host_ip,alarm_time,customer_cert_type,alarm_type,alarm_level,alarm_content)SELECT AA.* FROM(
 		<foreach collection="list" item="item" index="index" separator="union all">
-			(select #{item.customerId},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.blocked},#{item.customerType},#{item.alarmType},#{item.alarmLevel},#{item.alarmContent} from dual)
+			(select #{item.siteCode},#{item.customerId},#{item.isBlock},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.customerCertType},#{item.alarmType},#{item.alarmLevel},#{item.alarmContent} from dual)
 		</foreach>) AA
 	</insert>  
 

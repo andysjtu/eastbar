@@ -395,20 +395,12 @@
                     <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
                     <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
                     <copyConfigurationDirectory>true</copyConfigurationDirectory>
-                    <assembleDirectory>${project.build.directory}/logd</assembleDirectory>
-                    <extraJvmArguments>-Xms4096m -Xmx4096m</extraJvmArguments>
+                    <assembleDirectory>${project.build.directory}/alert2mq</assembleDirectory>
+                    <extraJvmArguments>-Xms8192m -Xmx8192m</extraJvmArguments>
                     <programs>
                         <program>
-                            <mainClass>org.eastbar.logd.LogMain</mainClass>
-                            <id>logd-service</id>
-                            <platforms>
-                                <platform>windows</platform>
-                                <platform>unix</platform>
-                            </platforms>
-                        </program>
-                        <program>
-                            <mainClass>org.eastbar.alert2mq.AlertMain</mainClass>
-                            <id>alertd-service</id>
+                            <mainClass>org.eastbar.alert2mq.Alert2MqMain</mainClass>
+                            <id>alert2mq-service</id>
                             <platforms>
                                 <platform>windows</platform>
                                 <platform>unix</platform>

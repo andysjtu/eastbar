@@ -77,6 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
                         }
                         customerHost.setOfflineTime(hostEvent.getLogoutTime());
                         if (customerHostDao.get(customerHost) == null) {
+                            customer = customerDao.getCustomer(customer);
                             customerHost.setCid(customer.getId());
                             customerHostDao.save(customerHost);
                         } else {

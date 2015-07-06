@@ -42,8 +42,11 @@ public enum SiteMsgType {
     GENERAL_ALERT((short) 0x8004),
 
 
+
     ADDRESS_REQ((short)0x9001),
     ADDRESS_RESP((short)0x9002),
+    PING_REQ((short)0x9003),
+    PONG_RESP((short)0x9004),
 
     CUSTOMER_LOGIN((short)0x9010),
     CUSTOMER_LOGOUT((short)0x9011),

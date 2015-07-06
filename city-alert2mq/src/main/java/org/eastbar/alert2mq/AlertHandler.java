@@ -3,8 +3,12 @@ package org.eastbar.alert2mq;
 import com.google.common.base.Charsets;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.eastbar.codec.GenResp;
+import org.eastbar.codec.GenRespUtil;
 import org.eastbar.codec.SiteMsgType;
 import org.eastbar.codec.SocketMsg;
+import org.eastbar.codec.server.PingMsg;
+import org.eastbar.codec.server.PongMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,9 +47,20 @@ public class AlertHandler extends SimpleChannelInboundHandler<SocketMsg> {
 //                break;
             case GENERAL_ALERT:
                 alertSaver.sendAlert(msg.data().content().toString(Charsets.UTF_8));
+                GenResp resp = GenRespUtil.createCenter2SiteSuccessResp(msg.getMessageId(), msg.getMessageType());
+                ctx.channel().writeAndFlush(resp);
+                break;
+            case PING_REQ:
+                ctx.writeAndFlush(new PongMsg());
                 break;
             default:
                 logger.warn("收到未知告警类型:{}的数据，请检查SocketMsg: {}", msg.getMessageType(), msg);
         }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        logger.warn("接受告警数据出现异常", cause);
+        ctx.close();
     }
 }

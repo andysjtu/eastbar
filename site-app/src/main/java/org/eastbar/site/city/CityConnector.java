@@ -41,11 +41,11 @@ public class CityConnector extends AbstractConnector {
     @Autowired
     private LoadbClient loadbClient;
 
-    @PostConstruct
+//    @PostConstruct
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("status");
-            logger.info("receive status server address is {}/{}", domainAndPort.getDomain(), domainAndPort.getPort());
+            logger.debug("receive status server address is {}/{}", domainAndPort.getDomain(), domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
@@ -60,10 +60,20 @@ public class CityConnector extends AbstractConnector {
 
     }
 
+    @Override
+    protected void beforeConnect() {
+        try {
+            this.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        configBootstrap();
+    }
+
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
-        pipeline.addLast("logHandler", new LoggingHandler("CONN-TO-CITY", LogLevel.INFO));
+        pipeline.addLast("logHandler", new LoggingHandler("连接City服务器", LogLevel.DEBUG));
         pipeline.addLast("idleHandler", new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());

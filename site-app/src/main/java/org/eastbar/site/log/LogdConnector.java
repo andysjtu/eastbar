@@ -34,11 +34,11 @@ public class LogdConnector extends AbstractConnector {
     private LogService logService;
 
 
-    @PostConstruct
+//    @PostConstruct
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("log");
-            logger.info("receive logd server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            logger.debug("receive logd server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
@@ -50,7 +50,15 @@ public class LogdConnector extends AbstractConnector {
 
     }
 
-
+    @Override
+    protected void beforeConnect() {
+        try {
+            this.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        configBootstrap();
+    }
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {

@@ -25,24 +25,35 @@ public class AlertdConnector extends AbstractConnector {
     @Autowired
     private LoadbClient loadbClient;
 
+    @Autowired
+    private AlertService alertService;
 
-    @PostConstruct
+
+//    @PostConstruct
     public void init() throws Exception {
         try {
             DomainAndPort domainAndPort = loadbClient.getServerAddr("alert");
-            logger.info("receive alert server address is {}/{}",domainAndPort.getDomain(),domainAndPort.getPort());
+            logger.debug("receive alert server address is {}/{}", domainAndPort.getDomain(), domainAndPort.getPort());
             remoteAddress = domainAndPort.getDomain();
             remotePort = domainAndPort.getPort();
         } catch (Throwable t) {
-            remoteAddress="alert.nbscreen.com";
-            remotePort=9001;
+            remoteAddress = "alert.nbscreen.com";
+            remotePort = 9001;
         }
 
-        localPort=DEFAULT_LOCAL_PORT;
+        localPort = DEFAULT_LOCAL_PORT;
 
     }
 
-
+    @Override
+    protected void beforeConnect() {
+        try {
+            this.init();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        configBootstrap();
+    }
 
     @Override
     protected void registerHandler(ChannelPipeline pipeline) {
@@ -50,6 +61,7 @@ public class AlertdConnector extends AbstractConnector {
         pipeline.addLast("soketMsgEncoder", new SocketMsgEncoder());
         pipeline.addLast("eastframeDecoder", new EastbarFrameDecoder());
         pipeline.addLast("socketMsgDecoder", new SocketMsgDecoder());
+        pipeline.addLast("alertUploadHandler", new AlertUploadHandler(alertService));
     }
 
 
