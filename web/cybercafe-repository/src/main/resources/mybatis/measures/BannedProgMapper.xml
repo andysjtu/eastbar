@@ -56,7 +56,7 @@
             select SEQ_T_BANNED_PROG_ID.nextVal as seq_id from dual
         </selectKey>
         insert into t_banned_prog(seq_id,prog_type,prog_name,monitor_code,prog_filename,progress_name,prog_mf,feature_code,alarm_type,alarm_rank,is_pub,version,operation,delete_flag,ver_num)
-        values(#{id,jdbcType=INTEGER},#{progType,jdbcType=INTEGER},#{progName,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{progFileName,jdbcType=VARCHAR},#{progressName,jdbcType=VARCHAR},#{progMF,jdbcType=VARCHAR},#{featureCode,jdbcType=INTEGER},#{alarmType,jdbcType=INTEGER},#{alarmRank,jdbcType=VARCHAR},#{isPub,jdbcType=INTEGER},#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
+        values(#{id,jdbcType=INTEGER},#{progType,jdbcType=INTEGER},#{progName,jdbcType=VARCHAR},#{monitorCode,jdbcType=VARCHAR},#{progFileName,jdbcType=VARCHAR},#{progressName,jdbcType=VARCHAR},#{progMF,jdbcType=VARCHAR},#{featureCode,jdbcType=VARCHAR},#{alarmType,jdbcType=INTEGER},#{alarmRank,jdbcType=VARCHAR},#{isPub,jdbcType=INTEGER},#{version,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR},#{deleteFlag,jdbcType=INTEGER},#{verNum,jdbcType=INTEGER})
     </insert>
 
     <!-- 删除信息 -->

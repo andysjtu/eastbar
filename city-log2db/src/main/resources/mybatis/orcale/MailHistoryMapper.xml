@@ -4,9 +4,9 @@
 <mapper namespace="org.eastbar.log2db.dao.SiteEmailLogDao">
 
 	<insert id="saveListMailHistory" parameterType="java.util.List">
-		INSERT INTO t_mail_history (customer_id,customer_name,host_ip,access_time,is_block,customer_type,email_type,email_account,receive,theme)SELECT AA.* FROM(
+		INSERT INTO t_mail_history (site_code,customer_id,customer_name,host_ip,isblock,customer_id_type,email_type,email_account,recevie,theme,start_time)SELECT AA.* FROM(
 		<foreach collection="list" item="item" index="index" separator="union all">
-			(select #{item.customerId},#{item.customerName},#{item.hostIp},#{item.recordTime},#{item.blocked},#{item.customerType},#{item.emailType},#{item.emailAccount},#{item.emailReceptor},#{item.emailSubject} from dual)
+			(select #{item.siteCode}, #{item.customerId},#{item.customerName},#{item.hostIp},#{item.blocked},#{item.customerType},#{item.emailType},#{item.emailAccount},#{item.emailReceptor},#{item.emailSubject},#{item.recordTime} from dual)
 		</foreach>) AA
 	</insert> 
 	

@@ -97,6 +97,7 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
 
     @Override
     public String siteControl(String siteCode, Integer version) throws Exception{
+        if(siteCode.length()>6){
         //根本版本号获取所有的操作位add的keyword列表
         List<SpecialCustomer> addSpecials=specialCustomerDao.getAllAddSpecials(version);
 
@@ -128,6 +129,9 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
              json= Po2Json.toJson(specialCustomerJson);
         }
         return json;
+        }else{
+            return "";
+        }
 
     }
 

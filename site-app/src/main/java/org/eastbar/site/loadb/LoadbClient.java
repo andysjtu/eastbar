@@ -42,8 +42,8 @@ public class LoadbClient implements InitializingBean {
         if (connectFuture.isSuccess()) {
             ChannelPipeline pipeline = connectFuture.channel().pipeline();
             AddressReq req = new AddressReq(siteCode, type);
-            System.out.println("req messageId is " + req.getMessageId());
-            System.out.println("req messageType is " + req.getMessageType());
+//            System.out.println("req messageId is " + req.getMessageId());
+//            System.out.println("req messageType is " + req.getMessageType());
             ClientHandler handler = new ClientHandler(req, connectFuture.channel().eventLoop());
             pipeline.addLast(handler);
 

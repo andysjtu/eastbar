@@ -74,7 +74,7 @@ public class IpV4 {
         try {
            result = InetAddress.getLocalHost().getAddress();
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return result;
     }

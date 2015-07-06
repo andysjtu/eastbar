@@ -24,7 +24,7 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <context:property-placeholder
-            ignore-resource-not-found="true" location="classpath:/application-alertd.properties"/>
+            ignore-resource-not-found="true" location="classpath:/application-alert2mq.properties"/>
 
 
 

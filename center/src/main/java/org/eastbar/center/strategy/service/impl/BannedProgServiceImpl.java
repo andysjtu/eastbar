@@ -107,36 +107,40 @@ public class BannedProgServiceImpl implements BannedProgService {
      */
     @Override
     public String siteControl(String siteCode, Integer version) throws Exception{
-        //根本版本号获取所有的操作位add的prog列表
-        List<BannedProg> addBannedProgs=bannedProgDao.getAllAddProgs(version);
-        //根本版本号获取所有的操作位edit的prog列表
-        List<BannedProg> editBannedProgs=bannedProgDao.getAllEditProgs(version);
-        //根本版本号获取所有的操作位edit的prog列表
-        List<BannedProg> removeBannedProgs=bannedProgDao.getAllRemoveProgs(version);
-        //根据版本号获得monitorCode列表
-        List<String> monitorCodes=bannedProgDao.getMonitorCodesByVersion(version);
-        List<BannedProgBO> addList=new ArrayList<>();
-        List<BannedProgBO> editList=new ArrayList<>();
-        List<BannedProgBO> removeList=new ArrayList<>();
-        if(addBannedProgs.size()>0){
-            addList=restructString(addBannedProgs, monitorCodes, siteCode);
+        if(siteCode.length()>6){
+            //根本版本号获取所有的操作位add的prog列表
+            List<BannedProg> addBannedProgs=bannedProgDao.getAllAddProgs(version);
+            //根本版本号获取所有的操作位edit的prog列表
+            List<BannedProg> editBannedProgs=bannedProgDao.getAllEditProgs(version);
+            //根本版本号获取所有的操作位edit的prog列表
+            List<BannedProg> removeBannedProgs=bannedProgDao.getAllRemoveProgs(version);
+            //根据版本号获得monitorCode列表
+            List<String> monitorCodes=bannedProgDao.getMonitorCodesByVersion(version);
+            List<BannedProgBO> addList=new ArrayList<>();
+            List<BannedProgBO> editList=new ArrayList<>();
+            List<BannedProgBO> removeList=new ArrayList<>();
+            if(addBannedProgs.size()>0){
+                addList=restructString(addBannedProgs, monitorCodes, siteCode);
+            }
+            if(editBannedProgs.size()>0){
+                editList=restructString(editBannedProgs,monitorCodes,siteCode);
+            }
+            if(removeBannedProgs.size()>0){
+                removeList=restructString(removeBannedProgs,monitorCodes,siteCode);
+            }
+            String json="";
+            if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
+               BannedProgJson bannedProgJson=new BannedProgJson();
+               bannedProgJson.setVerNum(version);
+               bannedProgJson.setAdd(addList);
+               bannedProgJson.setEdit(editList);
+               bannedProgJson.setRemove(removeList);
+               json= Po2Json.toJson(bannedProgJson);
+            }
+            return json;
+        }else{
+            return "";
         }
-        if(editBannedProgs.size()>0){
-            editList=restructString(editBannedProgs,monitorCodes,siteCode);
-        }
-        if(removeBannedProgs.size()>0){
-            removeList=restructString(removeBannedProgs,monitorCodes,siteCode);
-        }
-        String json="";
-        if(addList.size()>0 || editList.size()>0 || removeList.size()>0){
-           BannedProgJson bannedProgJson=new BannedProgJson();
-           bannedProgJson.setVerNum(version);
-           bannedProgJson.setAdd(addList);
-           bannedProgJson.setEdit(editList);
-           bannedProgJson.setRemove(removeList);
-           json= Po2Json.toJson(bannedProgJson);
-        }
-        return json;
     }
 
     private List<BannedProgBO> restructString(List<BannedProg> bannedProgs,List<String> monitorCodes,String siteCode) throws Exception{

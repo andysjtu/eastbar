@@ -14,7 +14,6 @@ import java.io.Serializable;
  */
 public class UrlHistory implements Serializable {//t_url_history
 
-    private Integer id;//id
     private Integer cid;//pk customer_id
     private String siteCode; //site_code
     private String monitorCode;//monitor_code
@@ -29,14 +28,6 @@ public class UrlHistory implements Serializable {//t_url_history
     private String customerId;//customer_id
     private String customerType;//customer_id_type
     private Integer isBlock;//is_block
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;

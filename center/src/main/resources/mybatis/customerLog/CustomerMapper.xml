@@ -25,7 +25,7 @@
     </sql>
 
     <select id="getCustomer" parameterType="Customer" resultMap="customerResult">
-        select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and open_time=to_char(#{openTime},'yyyy-mm-dd hh24:mi:ss')
+        select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and to_char(open_time,'yyyymmddhh24miss')=#{openTime}
     </select>
 
     <!--插入信息 -->
@@ -60,7 +60,7 @@
             <if test="closeTime!=null">t.close_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss'),</if>
             <if test="status!=null">t.status=#{status}</if>
         </set>
-        where t.site_code=#{siteCode} and t.account_id=#{accountId} and t.open_time=to_char(#{openTime},'yyyy-mm-dd hh24:mi:ss')
+        where t.site_code=#{siteCode} and t.account_id=#{accountId} and to_char(t.open_time,'yyyymmddhh24miss')=#{openTime}
     </update>
 
     <update id="resetCustomer"  parameterType="java.util.Map">

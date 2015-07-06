@@ -19,7 +19,6 @@ import java.io.Serializable;
  */
 public class MailHistory implements Serializable {
 
-    private Integer id;
     private Integer cid;
     private String customerId;
     private String siteCode;
@@ -37,14 +36,6 @@ public class MailHistory implements Serializable {
     private String receive;
     private String theme;
     private String isBlock;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;

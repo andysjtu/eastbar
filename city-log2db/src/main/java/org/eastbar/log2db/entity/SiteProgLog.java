@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by AndySJTU on 2015/6/4.
@@ -31,7 +32,7 @@ public class SiteProgLog  {
     private boolean blocked = false;
     
     @Column(name = "customer_type")
-    private String customerType;
+    private String customerType="1";
 
     @Column(name = "program_name")
     private String progName;
@@ -40,26 +41,11 @@ public class SiteProgLog  {
     private String processName;
     
     @Column(name = "start_time")
-    private String startTime;
+    private Date startTime;
     
     @Column(name = "end_time")
-    private String endTime;
+    private Date endTime;
 
-    public String getSiteCode() {
-        return siteCode;
-    }
-
-    public void setSiteCode(String siteCode) {
-        this.siteCode = siteCode;
-    }
-
-    public String getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
 
     public String getCustomerName() {
         return customerName;
@@ -117,20 +103,39 @@ public class SiteProgLog  {
         this.processName = processName;
     }
 
-    public String getStartTime() {
-        return startTime;
-    }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(String endTime) {
+    public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Date getStartTime() {
+
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getCustomerId() {
+
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
     }
 
     @Override

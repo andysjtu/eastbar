@@ -35,6 +35,7 @@ public class SiteRedisServiceImpl implements SiteRedisService {
      */
     @Override
     public String returnProgVersionList(String siteCode, Integer version) throws Exception {
+        if(siteCode.length()>6){
         String list="{";
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         String hashValue=hashOperations.get(Strategy.PROG_CODE_VERSION_INDEX, version + "");
@@ -128,6 +129,9 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             list+="}";
         }
         return list;
+        }else{
+            return "";
+        }
     }
 
     /**
@@ -139,6 +143,7 @@ public class SiteRedisServiceImpl implements SiteRedisService {
      */
     @Override
     public String  returnUrlVersionList(String siteCode, Integer version) throws Exception {
+        if(siteCode.length()>6){
         String list="{";
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         String hashValue=hashOperations.get(Strategy.URL_CODE_VERSION_INDEX, version + "");
@@ -232,6 +237,9 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             list+="}";
         }
         return list;
+        }else{
+            return "";
+        }
     }
 
     /**
@@ -243,6 +251,7 @@ public class SiteRedisServiceImpl implements SiteRedisService {
      */
     @Override
     public String returnKeyWordVersionList(String siteCode, Integer version) throws Exception {
+        if(siteCode.length()>6){
         String list="{";
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         String hashValue=hashOperations.get(Strategy.KEYWORD_CODE_VERSION_INDEX, version + "");
@@ -336,6 +345,9 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             list+="}";
         }
         return list;
+        }else{
+            return "";
+        }
     }
 
     /**
@@ -347,6 +359,7 @@ public class SiteRedisServiceImpl implements SiteRedisService {
      */
     @Override
     public String returnSpecialCustomerVersionList(String siteCode, Integer version) throws Exception {
+        if(siteCode.length()>6){
         String list="{";
         HashOperations<String,String,String> hashOperations=redisTemplate.opsForHash();
         String hashValue=hashOperations.get(Strategy.SPECIALcUSTOMER_CODE_VERSION_INDEX, version + "");
@@ -440,6 +453,9 @@ public class SiteRedisServiceImpl implements SiteRedisService {
             list+="}";
         }
         return list;
+        }else{
+            return "";
+        }
     }
 
     /**

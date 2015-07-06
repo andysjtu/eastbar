@@ -107,7 +107,7 @@ public class TerminalLogServiceImpl implements TerminalLogService {
         TerminalBO tb = new TerminalBO();
         tb.setSiteCode(siteCode);
 
-        Integer[] state = new Integer[]{1,2,3,4};
+        Integer[] state = new Integer[]{0,0,0,0};
         try{
             Map<String,String> site=redisBasicService.getSiteHash(siteCode);
             String states=site.get("runStatus");

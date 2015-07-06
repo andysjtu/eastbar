@@ -19,7 +19,6 @@ import java.io.Serializable;
  */
 public class InstantMessageHistory implements Serializable {
 
-    private Integer id;
     private Integer cid;
     private String siteCode;
     private String monitorCode;
@@ -36,13 +35,6 @@ public class InstantMessageHistory implements Serializable {
     private Integer instantType;
     private String progAccount;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public Integer getCid() {
         return cid;

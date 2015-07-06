@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Service
+@Service("alertService")
 @Transactional
 public class AlertService {
     @Autowired

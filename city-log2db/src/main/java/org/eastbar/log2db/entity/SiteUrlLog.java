@@ -29,21 +29,16 @@ public class SiteUrlLog  {
     private Date recordTime;
     
     @Column(name = "IS_BLOCK")
-    private String blocked;
+    private boolean blocked;
     
     @Column(name = "CUSTOMER_TYPE")
-    private String customerType;
+    private String customerType="1";
     
     @Column(name = "URL")
     private String url;
 
-	public String getSiteCode() {
-		return siteCode;
-	}
 
-	public void setSiteCode(String siteCode) {
-		this.siteCode = siteCode;
-	}
+
 
 	public String getCustomerId() {
 		return customerId;
@@ -77,11 +72,11 @@ public class SiteUrlLog  {
 		this.recordTime = recordTime;
 	}
 
-	public String getBlocked() {
+	public boolean isBlocked() {
 		return blocked;
 	}
 
-	public void setBlocked(String blocked) {
+	public void setBlocked(boolean blocked) {
 		this.blocked = blocked;
 	}
 
@@ -101,6 +96,15 @@ public class SiteUrlLog  {
 		this.url = url;
 	}
 
+
+	public String getSiteCode() {
+		return siteCode;
+	}
+
+	public void setSiteCode(String siteCode) {
+		this.siteCode = siteCode;
+	}
+
 	@Override
 	public String toString() {
 		return "SiteUrlLog{" +
@@ -109,7 +113,7 @@ public class SiteUrlLog  {
 				", customerName='" + customerName + '\'' +
 				", hostIp='" + hostIp + '\'' +
 				", recordTime=" + recordTime +
-				", blocked='" + blocked + '\'' +
+				", blocked=" + blocked +
 				", customerType='" + customerType + '\'' +
 				", url='" + url + '\'' +
 				'}';

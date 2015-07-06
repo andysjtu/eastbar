@@ -12,7 +12,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="t_inst_msg_history")
-public class SiteInstMsgLog extends EntityObject {
+public class SiteInstMsgLog  {
+    private String siteCode;
     @Column(name="customer_id")
     private String customerId;
     @Column(name="customer_name")
@@ -32,4 +33,92 @@ public class SiteInstMsgLog extends EntityObject {
     private String startTime;
     @Column(name = "end_time")
     private String endTime;
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getHostIp() {
+        return hostIp;
+    }
+
+    public void setHostIp(String hostIp) {
+        this.hostIp = hostIp;
+    }
+
+    public Timestamp getRecordTime() {
+        return recordTime;
+    }
+
+    public void setRecordTime(Timestamp recordTime) {
+        this.recordTime = recordTime;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
+    }
+
+    public String getCustomerType() {
+        return customerType;
+    }
+
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
+    }
+
+    public String getProgType() {
+        return progType;
+    }
+
+    public void setProgType(String progType) {
+        this.progType = progType;
+    }
+
+    public String getProgAccount() {
+        return progAccount;
+    }
+
+    public void setProgAccount(String progAccount) {
+        this.progAccount = progAccount;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }

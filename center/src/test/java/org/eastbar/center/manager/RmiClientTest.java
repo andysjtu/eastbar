@@ -18,11 +18,11 @@ public class RmiClientTest{
     public static void main(String[] args) {
         RmiProxyFactoryBean factory = new RmiProxyFactoryBean();
         factory.setServiceInterface(RmiService.class);
-        factory.setServiceUrl("rmi://192.168.9.119:1199/RMIService");
+        factory.setServiceUrl("rmi://10.10.10.58:1199/RMIService");
         factory.afterPropertiesSet();
 
         RmiService userService = (RmiService)factory.getObject();
-        System.out.println(userService.locking("3001010001","192.168.9.146"));
+        System.out.println(userService.Screenshot("3101010007","192.168.9.100").length);
        // userService.sendBannedProgVersion(3,143);
     }
 }

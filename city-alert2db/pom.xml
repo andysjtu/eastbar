@@ -22,7 +22,11 @@
     </properties>
     <!-- 依赖项定义 -->
     <dependencies>
-
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0</version>
+        </dependency>
         <dependency>
             <groupId>org.eastbar</groupId>
             <artifactId>eastbar-codec</artifactId>
@@ -405,7 +409,7 @@
                     <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
                     <configurationSourceDirectory>src/main/resources</configurationSourceDirectory>
                     <copyConfigurationDirectory>true</copyConfigurationDirectory>
-                    <assembleDirectory>${project.build.directory}/logd</assembleDirectory>
+                    <assembleDirectory>${project.build.directory}/alert2db</assembleDirectory>
                     <extraJvmArguments>-Xms4096m -Xmx4096m</extraJvmArguments>
                     <programs>
                         <program>

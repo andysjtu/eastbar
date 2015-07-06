@@ -12,7 +12,8 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "t_mail_history")
-public class SiteEmailLog extends EntityObject {
+public class SiteEmailLog {
+    private String siteCode;
     @Column(name = "customer_id")
     private String customerId;
     @Column(name = "customer_name")
@@ -118,16 +119,26 @@ public class SiteEmailLog extends EntityObject {
     @Override
     public String toString() {
         return "SiteEmailLog{" +
-                "blocked=" + blocked +
+                "siteCode='" + siteCode + '\'' +
                 ", customerId='" + customerId + '\'' +
                 ", customerName='" + customerName + '\'' +
                 ", hostIp='" + hostIp + '\'' +
                 ", recordTime=" + recordTime +
+                ", blocked=" + blocked +
                 ", customerType='" + customerType + '\'' +
                 ", emailType='" + emailType + '\'' +
                 ", emailAccount='" + emailAccount + '\'' +
                 ", emailReceptor='" + emailReceptor + '\'' +
                 ", emailSubject='" + emailSubject + '\'' +
-                "} " + super.toString();
+                '}';
     }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
+
 }

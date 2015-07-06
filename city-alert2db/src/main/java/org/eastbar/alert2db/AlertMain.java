@@ -12,8 +12,8 @@ public class AlertMain {
 
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{
-                "applicationContext-alertd.xml"
+                "applicationContext-alert2db.xml"
         });
-        
+
     }
 }

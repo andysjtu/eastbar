@@ -2,6 +2,8 @@ package org.eastbar.alert2db.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -15,23 +17,29 @@ import javax.persistence.Table;
 //@Entity
 //@Table(name="t_alarm_history")
 public class SiteAlert  {
+
     private String siteCode;
 
     @Column(name="customer_id")
     private String customerId;
+    @JsonProperty("customerIdType")
+    @Column(name="customer_cert_type")
+    private String customerCertType;
     
     @Column(name="customer_name")
     private String customerName;
+
+    private boolean isBlock;
+
+
     
     @Column(name = "host_ip")
     private String hostIp;
-    
+
+    @JsonProperty("alertTime")
     @Column(name = "alarm_time")
     private Date recordTime;
-    
-    @Column(name = "is_block")
-    private String blocked;
-    
+
     @Column(name = "customer_type")
     private String customerType;
     
@@ -39,6 +47,7 @@ public class SiteAlert  {
     private String alarmType;
     
     @Column(name = "alarm_level")
+    @JsonProperty("alarmRank")
     private String alarmLevel;
     
     @Column(name="alarm_content")
@@ -68,13 +77,7 @@ public class SiteAlert  {
         this.alarmType = alarmType;
     }
 
-    public String isBlocked() {
-        return blocked;
-    }
 
-    public void setBlocked(String blocked) {
-        this.blocked = blocked;
-    }
 
     public String getCustomerId() {
         return customerId;
@@ -115,4 +118,45 @@ public class SiteAlert  {
     public void setRecordTime(Date recordTime) {
         this.recordTime = recordTime;
     }
+
+    public String getCustomerCertType() {
+        return customerCertType;
+    }
+
+    public void setCustomerCertType(String customerCertType) {
+        this.customerCertType = customerCertType;
+    }
+
+    public boolean isBlock() {
+        return isBlock;
+    }
+
+    public void setIsBlock(boolean isBlock) {
+        this.isBlock = isBlock;
+    }
+
+    @Override
+    public String toString() {
+        return "SiteAlert{" +
+                "siteCode='" + siteCode + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", customerCertType='" + customerCertType + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", hostIp='" + hostIp + '\'' +
+                ", recordTime=" + recordTime +
+                ", customerType='" + customerType + '\'' +
+                ", alarmType='" + alarmType + '\'' +
+                ", alarmLevel='" + alarmLevel + '\'' +
+                ", alarmContent='" + alarmContent + '\'' +
+                '}';
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
+    }
+
 }

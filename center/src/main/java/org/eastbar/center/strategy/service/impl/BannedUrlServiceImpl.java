@@ -103,6 +103,7 @@ public class BannedUrlServiceImpl implements BannedUrlService {
      */
     @Override
     public String siteControl(String siteCode, Integer version) throws Exception{
+        if(siteCode.length()>6){
         //根本版本号获取所有的操作位add的url列表
         List<BannedUrl> addBannedUrls=bannedUrlDao.getAllAddUrls(version);
         //根本版本号获取所有的操作位edit的url列表
@@ -134,6 +135,9 @@ public class BannedUrlServiceImpl implements BannedUrlService {
             json=Po2Json.toJson(bannedUrlJson);
         }
         return json;
+        }else{
+            return "";
+        }
     }
 
     private List<BannedUrlBO> restructString(List<BannedUrl> bannedUrls,List<String> monitorCodes,String siteCode) throws Exception{
