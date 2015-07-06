@@ -14,8 +14,8 @@ import org.eastbar.web.ipc.biz.TerminalBO;
 import org.eastbar.web.ipc.entity.Monitor;
 import org.eastbar.web.log.MonitorCmdService;
 import org.eastbar.web.log.OperLogService;
-import org.eastbar.web.log.biz.MonitorCmdBO;
 import org.eastbar.web.log.biz.OperLogBO;
+import org.eastbar.web.log.entity.MonitorCmd;
 import org.eastbar.web.shiro.ShiroCustomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -159,11 +159,17 @@ public class IpcController {
      */
     @RequestMapping("/remove/{monitorCode}")
     public String remove(@PathVariable String monitorCode,RedirectAttributes model){
-        if(monitorService.delete(monitorCode)){
-            model.addFlashAttribute("loadmsg", "删除成功");
-        }else{
+        try{
+            if(monitorService.delete(monitorCode)){
+                model.addFlashAttribute("loadmsg", "删除成功");
+            }else{
+                model.addFlashAttribute("loadmsg", "删除失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             model.addFlashAttribute("loadmsg", "删除失败");
         }
+
         return "redirect:/ipc/list#_0";
     }
 
@@ -178,13 +184,18 @@ public class IpcController {
 
         String[] monitorCodes1=monitorCodes.split(",");
         Map<String,String> msg=new HashMap<>();
-        if(monitorService.deleteMany(monitorCodes1)){
-            msg.put("msg","批量删除成功");
+        try{
+            if(monitorService.deleteMany(monitorCodes1)){
+                msg.put("msg","批量删除成功");
 
-        }else{
+            }else{
+                msg.put("msg","批量删除失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             msg.put("msg","批量删除失败");
         }
-            return msg;
+        return msg;
 
     }
 
@@ -376,11 +387,10 @@ public class IpcController {
     private final static String RMIERROR = "Connection refused: connect.";
     @RequestMapping("/{siteCode}/gj/{ip}/")
     @ResponseBody
-    @Transactional
     public String shutdown(@PathVariable String siteCode,@PathVariable String ip){
         try{
             if(ip!=null && !"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
-                MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,siteCode,0);
+                MonitorCmd monitorCmdBO=setTerminalBoValue(siteCode,ip, 0);
                 int i =rmiService.shutDown(siteCode, ip);
                 monitorCmdBO.setIsSuccess(i);
                 monitorCmdService.save(monitorCmdBO);
@@ -412,13 +422,14 @@ public class IpcController {
     public String restart(@PathVariable String siteCode,@PathVariable String ip){
         try{
             if(ip!=null && !"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
-                MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,siteCode,1);
+                MonitorCmd monitorCmdBO=setTerminalBoValue(siteCode,ip,1);
                 int i =rmiService.restart(siteCode, ip);
                 monitorCmdBO.setIsSuccess(i);
                 monitorCmdService.save(monitorCmdBO);
                 OperLogBO operLogBO=new OperLogBO();
                 operLogBO.setOperTime(Times.now());
                 operLogBO.setOperType(1);
+                operLogBO.setCmdId(monitorCmdBO.getId());
                 operLogBO.setUserId(ShiroCustomUtils.getCurrentID());
                 operLogBO.setOperLog("对"+siteCode+"的"+ip+"执行了重启操作");
                 operLogService.add(operLogBO);
@@ -442,13 +453,14 @@ public class IpcController {
     public String lock(@PathVariable String siteCode,@PathVariable String ip){
         try{
             if(ip!=null && !"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
-                MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,siteCode,2);
+                MonitorCmd monitorCmdBO=setTerminalBoValue(siteCode,ip,2);
                 int i =rmiService.locking(siteCode,ip);
                 monitorCmdBO.setIsSuccess(i);
                 monitorCmdService.save(monitorCmdBO);
                 OperLogBO operLogBO=new OperLogBO();
                 operLogBO.setOperTime(Times.now());
                 operLogBO.setOperType(2);
+                operLogBO.setCmdId(monitorCmdBO.getId());
                 operLogBO.setUserId(ShiroCustomUtils.getCurrentID());
                 operLogBO.setOperLog("对"+siteCode+"的"+ip+"执行了锁定操作");
                 operLogService.add(operLogBO);
@@ -472,13 +484,14 @@ public class IpcController {
     public String unlock(@PathVariable String siteCode,@PathVariable String ip){
         try{
             if(ip!=null && !"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
-                MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,siteCode,3);
+                MonitorCmd monitorCmdBO=setTerminalBoValue(siteCode,ip,3);
                 int i =rmiService.Unlock(siteCode, ip);
                 monitorCmdBO.setIsSuccess(i);
                 monitorCmdService.save(monitorCmdBO);
                 OperLogBO operLogBO=new OperLogBO();
                 operLogBO.setOperTime(Times.now());
                 operLogBO.setOperType(3);
+                operLogBO.setCmdId(monitorCmdBO.getId());
                 operLogBO.setUserId(ShiroCustomUtils.getCurrentID());
                 operLogBO.setOperLog("对"+siteCode+"的"+ip+"执行了解锁操作");
                 operLogService.add(operLogBO);
@@ -516,7 +529,7 @@ public class IpcController {
     public void captureData(@PathVariable String siteCode,@PathVariable String ip,HttpServletResponse response){
         try{
             if(ip!=null && !"".equals(ip) && siteCode!=null && !"".equals(siteCode)){
-                MonitorCmdBO monitorCmdBO=setTerminalBoValue(ip,siteCode,4);
+                MonitorCmd monitorCmdBO=setTerminalBoValue(siteCode,ip,4);
                 byte[] bytePic = rmiService.Screenshot(siteCode,ip);
                 response.reset();
                 response.setContentType("image/JPEG");
@@ -534,6 +547,7 @@ public class IpcController {
                 OperLogBO operLogBO=new OperLogBO();
                 operLogBO.setOperTime(Times.now());
                 operLogBO.setOperType(4);
+                operLogBO.setCmdId(monitorCmdBO.getId());
                 operLogBO.setUserId(ShiroCustomUtils.getCurrentID());
                 operLogBO.setOperLog("对"+siteCode+"的"+ip+"执行了截屏操作");
                 operLogService.add(operLogBO);
@@ -568,18 +582,18 @@ public class IpcController {
         return json;
     }
 
-    private MonitorCmdBO setTerminalBoValue(String ip,String siteCode,int cmdType){
-        MonitorCmdBO monitorCmdBO=new MonitorCmdBO();
+    private MonitorCmd setTerminalBoValue(String siteCode,String ip,int cmdType){
+        MonitorCmd monitorCmdBO=new MonitorCmd();
         try{
             monitorCmdBO.setHostIp(ip);
             monitorCmdBO.setCmdTime(Times.now());
             monitorCmdBO.setCommander(ShiroCustomUtils.getCurrentUserName());
             monitorCmdBO.setCustomerId("");
-            monitorCmdBO.setCustomerIdType(0);
+            monitorCmdBO.setCustomerIdType(2);
             monitorCmdBO.setSiteCode(siteCode);
             monitorCmdBO.setCmdType(cmdType);
             if(siteCode!=null && !"".equals(siteCode)){
-                String mCode=siteCode.substring(0,6);
+                String mCode=siteCode.substring(0, 6);
                 monitorCmdBO.setMonitorCode(mCode);
             }
         }catch (Exception e){

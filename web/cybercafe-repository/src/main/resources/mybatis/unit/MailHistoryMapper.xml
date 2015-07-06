@@ -20,7 +20,7 @@
         <result property="emailAccount" column="email_account"/>
         <result property="receive" column="recevie"/>
         <result property="theme" column="theme"/>
-        <result property="isBlock" column="is_block" />
+        <result property="isBlock" column="isblock" />
     </resultMap>
 
     <sql id="mailHistory">

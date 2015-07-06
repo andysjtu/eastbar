@@ -76,7 +76,7 @@ public class RolePermissionServiceImpl implements RolePermissionService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 }

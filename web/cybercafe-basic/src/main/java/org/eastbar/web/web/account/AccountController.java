@@ -206,11 +206,17 @@ public class AccountController {//add
      */
     @RequestMapping("/submitUserRoleEdit")
     public String submitRoleUserEdit(@ModelAttribute UserRoleBO userRoleBO,RedirectAttributes modle){
-        if(userRoleService.edit(userRoleBO)){
-            modle.addFlashAttribute("loadmsg","修改成功!");
-        }else{
+        try{
+            if(userRoleService.edit(userRoleBO)){
+                modle.addFlashAttribute("loadmsg","修改成功!");
+            }else{
+                modle.addFlashAttribute("loadmsg","修改失败!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             modle.addFlashAttribute("loadmsg","修改失败!");
         }
+
         return "redirect:/account/user#_1";
     }
 
@@ -233,9 +239,14 @@ public class AccountController {//add
     public String remove(@PathVariable Integer id,RedirectAttributes modle){
         UserRoleBO userRoleBO=new UserRoleBO();
         userRoleBO.setUserId(id);
-        if(userService.deleteRoleAndUser(userRoleBO)){
-            modle.addFlashAttribute("loadmsg","删除成功!");
-        }else{
+        try{
+            if(userService.deleteRoleAndUser(userRoleBO)){
+                modle.addFlashAttribute("loadmsg","删除成功!");
+            }else{
+                modle.addFlashAttribute("loadmsg","删除失败!");
+            }
+          }catch (Exception e){
+            e.printStackTrace();
             modle.addFlashAttribute("loadmsg","删除失败!");
         }
         return "redirect:/account/user#_1";
@@ -251,11 +262,17 @@ public class AccountController {//add
     public Map<String, String> deleteManyUser(@PathVariable String ids){
         Map<String,String> msg=new HashMap<>();
         String[] sid=ids.split(",");
-        if(userService.deleteMany(sid)){
-            msg.put("msg","批量删除成功");
-        }else{
+        try{
+            if(userService.deleteMany(sid)){
+                msg.put("msg","批量删除成功");
+            }else{
+                msg.put("msg","批量删除失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             msg.put("msg","批量删除失败");
         }
+
         return msg;
 
     }
@@ -357,11 +374,17 @@ public class AccountController {//add
      */
     @RequestMapping("/removeRole/{id}")
     public String removeRole(@PathVariable Integer id,RedirectAttributes modle){
-        if(roleService.delete(id)){
-            modle.addFlashAttribute("loadmsg","删除成功!");
-        }else{
+        try{
+            if(roleService.delete(id)){
+                modle.addFlashAttribute("loadmsg","删除成功!");
+            }else{
+                modle.addFlashAttribute("loadmsg","删除失败!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             modle.addFlashAttribute("loadmsg","删除失败!");
         }
+
         return "redirect:/account/role#_1";
     }
 
@@ -375,11 +398,17 @@ public class AccountController {//add
     public Map<String, String> deleteManyRole(@PathVariable String ids){
         Map<String,String> msg=new HashMap<>();
         String[] sid=ids.split(",");
-        if(roleService.deleteMany(sid)){
-            msg.put("msg","批量删除成功");
-        }else{
+        try{
+            if(roleService.deleteMany(sid)){
+                msg.put("msg","批量删除成功");
+            }else{
+                msg.put("msg","批量删除失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             msg.put("msg","批量删除失败");
         }
+
         return msg;
     }
 
@@ -409,11 +438,17 @@ public class AccountController {//add
         if(!"".equals(permission) && permission!=null){
             permissions=permission.split(",");
         }
-        if(rolePermissionService.updatePermissions(permissions,permissionBO.getId())){
-            modle.addFlashAttribute("loadmsg","修改权限成功!");
-        }else{
+        try{
+            if(rolePermissionService.updatePermissions(permissions,permissionBO.getId())){
+                modle.addFlashAttribute("loadmsg","修改权限成功!");
+            }else{
+                modle.addFlashAttribute("loadmsg","修改权限失败!");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
             modle.addFlashAttribute("loadmsg","修改权限失败!");
         }
+
         return "redirect:/account/role#_1";
     }
 

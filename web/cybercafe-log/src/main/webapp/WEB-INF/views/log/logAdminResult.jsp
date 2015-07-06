@@ -88,7 +88,7 @@
                 return '<a href="javascript:void();" onclick="detail('+row.id+')" class="link_col01">解锁</a>';
             }
             else if(row.operType==4){
-                return '<a href="javascript:void();" onclick="detail('+row.monitorCmd.id+')" class="link_col01">截屏</a>';
+                return '<a href="javascript:void();" onclick="detail('+row.id+')" class="link_col01">截屏</a>';
             }else{
                 return '<a href="javascript:void();" onclick="detail('+row.id+')" class="link_col01">无法识别</a>';
             }

@@ -84,7 +84,7 @@ public class CenterRedisServiceImpl implements CenterRedisService {
 
     /**
      * 终端计算机活动数据的添加操作
-     * @param terminalLog 包含siteCode、hostIp、customerName、customerId、siteState、onlineTime、authOrg、customerIdType、nationality
+     * @param terminalLog 包含siteCode、hostIp、customerName、certId、siteState、onlineTime、authOrg、customerIdType、nationality
      */
     public  void terminalDataPut(Map<String,String> terminalLog){
 

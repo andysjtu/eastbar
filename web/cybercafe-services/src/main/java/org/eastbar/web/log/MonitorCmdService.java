@@ -6,6 +6,7 @@ package org.eastbar.web.log;
 
 import org.eastbar.web.PageInfo;
 import org.eastbar.web.log.biz.MonitorCmdBO;
+import org.eastbar.web.log.entity.MonitorCmd;
 
 /**
  * @author cindy-jia
@@ -16,5 +17,5 @@ import org.eastbar.web.log.biz.MonitorCmdBO;
 public interface MonitorCmdService {
     PageInfo getAll(MonitorCmdBO monitorCmdBO);
     MonitorCmdBO get(Integer id);
-    Boolean save(MonitorCmdBO monitorCmdBO);
+    Boolean save(MonitorCmd monitorCmd);
 }

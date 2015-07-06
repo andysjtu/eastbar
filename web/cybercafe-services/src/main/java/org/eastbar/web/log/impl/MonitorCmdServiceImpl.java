@@ -58,10 +58,10 @@ public class MonitorCmdServiceImpl implements MonitorCmdService {
 
     @Override
     @Transactional
-    public Boolean save(MonitorCmdBO monitorCmdBO) {
+    public Boolean save(MonitorCmd monitorCmd) {
         try{
-            MonitorCmd monitorCmd=new MonitorCmd();
-            BeanUtils.copyProperties(monitorCmd,monitorCmdBO);
+           //MonitorCmd monitorCmd=new MonitorCmd();
+           // BeanUtils.copyProperties(monitorCmd,monitorCmdBO);
             monitorCmdDao.save(monitorCmd);
             return true;
         }catch (Exception e){

@@ -171,8 +171,8 @@ public class UserServiceImpl implements UserService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 
     @Override
@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
             return true;
         }catch(Exception e){
             e.printStackTrace();
-            return false;
+            throw new RuntimeException();
         }
     }
 

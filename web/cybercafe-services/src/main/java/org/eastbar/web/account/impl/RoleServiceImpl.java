@@ -13,6 +13,7 @@ import org.eastbar.web.account.dao.RoleDao;
 import org.eastbar.web.account.dao.RolePermissionDao;
 import org.eastbar.web.account.dao.UserRoleDao;
 import org.eastbar.web.account.entity.Role;
+import org.eastbar.web.account.entity.RolePermission;
 import org.eastbar.web.account.entity.UserRole;
 import org.eastbar.web.ipc.dao.MonitorDao;
 import org.eastbar.web.ipc.entity.Monitor;
@@ -75,12 +76,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Boolean delete(Integer id) {
         try {
+            rolePermissionDao.delete(id);
             roleDao.delete(id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 
     @Override
@@ -146,22 +148,23 @@ public class RoleServiceImpl implements RoleService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
- }
-return false;
         }
+        return false;
+     }
 
     @Override
     public Boolean deleteMany(String[] ids) {
         try {
             for(int i=0;i<ids.length;i++){
                 Integer id=Integer.parseInt(ids[i]+"");
+                rolePermissionDao.delete(id);
                 delete(id);
             }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 
     @Override

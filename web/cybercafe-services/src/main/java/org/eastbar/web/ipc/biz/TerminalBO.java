@@ -7,8 +7,6 @@ package org.eastbar.web.ipc.biz;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eastbar.web.PageInfo;
-import org.springside.modules.mapper.JsonMapper;
-
 /**
  * @author C.lins@aliyun.com
  * @date 2014年10月29
