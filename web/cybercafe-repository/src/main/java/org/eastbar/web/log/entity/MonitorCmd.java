@@ -21,7 +21,7 @@ public class MonitorCmd implements Serializable {
 
     private Integer id;
     private Integer cmdType;
-    private Integer customerId;
+    private String customerId;
     private Integer customerIdType;
     private String hostIp;
     private String siteCode;
@@ -46,11 +46,11 @@ public class MonitorCmd implements Serializable {
         this.cmdType = cmdType;
     }
 
-    public Integer getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

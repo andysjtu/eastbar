@@ -72,8 +72,8 @@
         <selectKey resultType="int" keyProperty="id" order="BEFORE">
             select SEQ_T_OPER_LOG_ID.nextVal as seq_id from dual
         </selectKey>
-        insert into t_oper_log(seq_id,user_id,oper_time,oper_log,oper_type) values
-         (#{id},#{userId,jdbcType=INTEGER},to_date(#{operTime},'yyyy-mm-dd hh24:mi:ss'),#{operLog,jdbcType=VARCHAR},#{operType,jdbcType=INTEGER})
+        insert into t_oper_log(seq_id,user_id,oper_time,oper_log,cmd_id,oper_type) values
+         (#{id},#{userId,jdbcType=INTEGER},to_date(#{operTime},'yyyy-mm-dd hh24:mi:ss'),#{operLog,jdbcType=VARCHAR},#{cmdId,jdbcType=INTEGER},#{operType,jdbcType=INTEGER})
     </insert>
 
 </mapper>

@@ -196,8 +196,8 @@ public class MonitorServiceImpl implements MonitorService {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 
     @Override
@@ -205,14 +205,15 @@ public class MonitorServiceImpl implements MonitorService {
         try {
             for(int i=0;i<monitorCodes.length;i++){
                 Integer id=Integer.parseInt(monitorCodes[i]+"");
+                roleDao.deleteByMonitorCode(monitorCodes[i]);
                 monitorDao.deleteByParent(monitorCodes[i]);
                 monitorDao.delete(monitorCodes[i]);
             }
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            throw new RuntimeException();
         }
-        return false;
     }
 
     @Override
