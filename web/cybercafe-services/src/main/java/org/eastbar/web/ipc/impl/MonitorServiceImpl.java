@@ -23,6 +23,7 @@ import org.eastbar.web.measures.dao.ManageRuleDao;
 import org.eastbar.web.measures.entity.ManageRule;
 import org.eastbar.web.pagehelper.PageHelper;
 import org.eastbar.web.shiro.ShiroCustomUtils;
+import org.eastbar.web.unit.AlarmHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +57,8 @@ public class MonitorServiceImpl implements MonitorService {
     private ManageRuleDao manageRuleDao;
     @Autowired
     private WebRedisService redisBasicService;
+    @Autowired
+    private AlarmHistoryService alarmHistoryService;
 
     @Override
     public PageInfo byParentCode(MonitorBO monitorBO) {
@@ -85,6 +88,7 @@ public class MonitorServiceImpl implements MonitorService {
                 for(Monitor m:list){
                     MonitorBO mb=new MonitorBO();
                     BeanUtils.copyProperties(mb,m);
+
                     //获取版本信息 begin
                     ManageRule manageRule=manageRuleDao.get();
                     mb.setHourVer(manageRule.getOperHourVer());
@@ -107,7 +111,10 @@ public class MonitorServiceImpl implements MonitorService {
                             mb.setStatus(0);//正常
                         }else{
                             mb.setStatus(1);//故障
-                        }                    }
+                        }
+                    }
+                    Long counts=alarmHistoryService.getCountByCode(mb.getMonitorCode());
+                    mb.setTotalAlarm(counts);
                     mbl.add(mb);
                 }
 
@@ -129,6 +136,7 @@ public class MonitorServiceImpl implements MonitorService {
         }
         return null;
     }
+
 
     @Override
     public MonitorBO get(String monitorCode) {

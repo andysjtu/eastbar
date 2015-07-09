@@ -20,4 +20,5 @@ public interface AlarmHistoryService {
     Boolean save(AlarmHistoryBO alarmHistoryBO);
     Boolean update(AlarmHistoryBO alarmHistoryBO);
     Boolean delete(Integer id);
+    Long getCountByCode(String code);
 }

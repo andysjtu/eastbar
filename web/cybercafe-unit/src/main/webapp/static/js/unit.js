@@ -1,50 +1,53 @@
 /*替换顾客身份类型*/
 function replaceCert(val){
-    var val=Number(val);
+    var val=val;
     switch (val){
-        case 2:
+        case '1':
             return '身份证';
             break;
-        case 3:
+        case '2':
+            return '身份证';
+            break;
+        case '3':
             return '连锁会员';
             break;
-        case 4:
+        case '4':
             return '移动电话';
             break;
-        case 5:
+        case '5':
             return '电话号码';
             break;
-        case 6:
+        case '6':
             return '社保卡号码';
             break;
-        case 7:
+        case '7':
             return '学生证';
             break;
-        case 8:
+        case '8':
             return '军官证';
             break;
-        case 9:
+        case '9':
             return '警官证';
             break;
-        case 10:
+        case '10':
             return '士兵证';
             break;
-        case 11:
+        case '11':
             return '户口簿';
             break;
-        case 12:
+        case '12':
             return '护照';
             break;
-        case 13:
+        case '13':
             return '台胞证';
             break;
-        case 14:
+        case '14':
             return '回乡证';
             break;
-        case 15:
+        case '15':
             return '其他证件';
             break;
-        case 19:
+        case '19':
             return '手机';
             break;
         default :

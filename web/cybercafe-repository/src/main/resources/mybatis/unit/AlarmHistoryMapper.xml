@@ -53,4 +53,8 @@
         order by t.alarm_time desc
     </select>
 
+    <select id="getCountByCode" resultType="long" parameterType="String">
+      select count(*) from t_alarm_history t where t.site_code like CONCAT(#{siteCode},'%' )
+    </select>
+
 </mapper>

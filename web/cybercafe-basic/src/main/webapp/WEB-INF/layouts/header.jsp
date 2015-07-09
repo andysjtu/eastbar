@@ -4,7 +4,7 @@
     <table width="100%" height="100%" cellpadding="0" cellspacing="0">
         <tr>
             <td class="slogan" align="right">
-                <a href="/auth/logout" id="close"></a>
+                <a href="javascript:void(0)" id="close" onclick="logout()"></a>
             </td>
         </tr>
         <tr>
@@ -30,3 +30,10 @@
         </tr>
         </table>
 </div>
+<script>
+    function logout(){
+        if(window.confirm('你确定退出吗？')){
+            window.location="${ctx}/auth/logout";
+        }
+    }
+</script>

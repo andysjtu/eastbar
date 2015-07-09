@@ -107,5 +107,16 @@ public class AlarmHistoryServiceImpl implements AlarmHistoryService {
         }
         return false;
     }
+
+    @Override
+    public Long getCountByCode(String code) {
+        Long counts=0L;
+        try {
+            counts=alarmHistoryDao.getCountByCode(code);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return counts;
+    }
 }
 

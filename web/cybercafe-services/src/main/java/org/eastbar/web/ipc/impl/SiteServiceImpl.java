@@ -19,6 +19,7 @@ import org.eastbar.web.ipc.entity.SiteLiveData;
 import org.eastbar.web.measures.ManageRuleService;
 import org.eastbar.web.pagehelper.PageHelper;
 import org.eastbar.web.shiro.ShiroCustomUtils;
+import org.eastbar.web.unit.AlarmHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,8 @@ public class SiteServiceImpl implements SiteService {
     private WebRedisService redisBasicService;
     @Autowired
     private ManageRuleService manageRuleService;
+    @Autowired
+    private AlarmHistoryService alarmHistoryService;
 
     @Override
     public SiteBO get(String siteCode) {
@@ -104,6 +107,8 @@ public class SiteServiceImpl implements SiteService {
                     //获取版本信息 end
                     Map<String,String> site=redisBasicService.getSiteHash(m.getSiteCode());
                     BeanUtils.populate(sb,site);
+                    Long counts=alarmHistoryService.getCountByCode(sb.getSiteCode());
+                    sb.setTotalAlarm(counts);
                     sbl.add(sb);
                 }
             }catch(Exception e){

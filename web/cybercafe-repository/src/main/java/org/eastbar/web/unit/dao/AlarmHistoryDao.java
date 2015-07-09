@@ -24,4 +24,5 @@ public interface AlarmHistoryDao {
     void save(AlarmHistory alarmHistory);
     void update(AlarmHistory alarmHistory);
     void delete(Integer id);
+    Long getCountByCode(String code);
 }

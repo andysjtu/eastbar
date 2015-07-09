@@ -60,7 +60,7 @@
                     <th data-options="field:'openSite',align:'center'" width="7%">营业场所总数</th>
                     <th data-options="field:'totalTerminal',align:'center'" width="6%">终端总数</th>
                     <th data-options="field:'totalAlarm',align:'center',formatter:formatAlarm" width="7%">本周报警数</th>
-                    <th data-options="field:'totalPunish',align:'center'" width="6%">处罚记录</th>
+                    <th data-options="field:'totalPunish',align:'center',formatter:formatPunish" width="6%">处罚记录</th>
                     <th data-options="field:'_operate',align:'center',formatter:formatOper" width="10%">操作</th>
                 </tr>
                 </thead>
@@ -91,6 +91,12 @@
             return '<a href="${ctx}/unit/alertList/'+row.monitorCode+'#_5" class="link_col01">'+val+'</a>';
         }
 
+    }
+
+    function formatPunish(val,row,index){
+        if(val==-999){
+            return '';
+        }
     }
 
     function replace(val,row,index){
