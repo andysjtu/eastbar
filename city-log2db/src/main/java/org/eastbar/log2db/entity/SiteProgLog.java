@@ -46,6 +46,7 @@ public class SiteProgLog  {
     @Column(name = "end_time")
     private Date endTime;
 
+
     public String getCustomerName() {
         return customerName;
     }
@@ -101,6 +102,7 @@ public class SiteProgLog  {
     public void setProcessName(String processName) {
         this.processName = processName;
     }
+
 
     public Date getEndTime() {
         return endTime;

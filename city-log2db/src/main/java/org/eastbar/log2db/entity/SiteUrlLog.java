@@ -39,6 +39,7 @@ public class SiteUrlLog  {
 
 
 
+
 	public String getCustomerId() {
 		return customerId;
 	}
@@ -94,6 +95,7 @@ public class SiteUrlLog  {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 
 	public String getSiteCode() {
 		return siteCode;

@@ -14,11 +14,12 @@ import javax.persistence.Table;
 /**
  * Created by AndySJTU on 2015/6/4.
  */
-@Entity
-@Table(name="t_alarm_history")
+//@Entity
+//@Table(name="t_alarm_history")
 public class SiteAlert  {
 
     private String siteCode;
+
     @Column(name="customer_id")
     private String customerId;
     @JsonProperty("customerIdType")

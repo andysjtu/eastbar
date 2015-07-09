@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="t_illegal_history")
 public class SiteIllegalLog {
+	private String siteCode;
     @Column(name="customer_id")
     private String customerId;
     
