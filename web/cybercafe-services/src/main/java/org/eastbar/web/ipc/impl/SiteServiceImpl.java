@@ -85,16 +85,6 @@ public class SiteServiceImpl implements SiteService {
             List<SiteBO> sbl = new ArrayList<>();
             try{
                 //TODO 连接REDIS获取实时统计数据
-//                Map<String,Map<String,Integer>> liveMap = rmiService.siteCount();
-//                for(Site s:list){
-//                    SiteBO sb = new SiteBO();
-//                    BeanUtils.copyProperties(sb, s);
-//                    if(liveMap.containsKey(s.getSiteCode())){
-//                        Map<String,Integer> siteLiveData=liveMap.get(s.getSiteCode());
-//                        BeanUtils.populate(sb,siteLiveData);
-//                    }
-//                    sbl.add(sb);
-//                }
                 for(Site m:list){
                     SiteBO sb=new SiteBO();
                     BeanUtils.copyProperties(sb,m);

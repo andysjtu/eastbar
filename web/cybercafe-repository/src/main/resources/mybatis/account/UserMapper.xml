@@ -71,29 +71,28 @@
         SELECT *
         FROM (select * from(
         select t.*,rownum rn from
-         (select us.*,r.seq_id as rid,r.common_name as cname,r.monitor_code from t_user us
-          LEFT JOIN t_user_role  ur ON ur.user_id=us.seq_id
-          LEFT JOIN t_role r ON ur.role_id=r.seq_id
-          <if test="monitorCode!=null and monitorCode!=''">
-             r.monitor_code like '${monitorCode}%'
-          </if>
-         <trim prefix="WHERE" prefixOverrides="AND | OR">
-
-           <if test="_parameter.containsKey('loginName')">
-              and us.login_name like '%${loginName}%'
-           </if>
-           <if test="_parameter.containsKey('commonName')">
-               and us.common_name like '%${commonName}%'
-           </if>
-           <if test="_parameter.containsKey('btime')">
-               and us.createtime>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
-           </if>
-           <if test="_parameter.containsKey('etime')">
+        (select us.*,r.seq_id as rid,r.common_name as cname,r.monitor_code from t_user us
+        LEFT JOIN t_user_role  ur ON ur.user_id=us.seq_id
+        LEFT JOIN t_role r ON ur.role_id=r.seq_id
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="monitorCode!=null and monitorCode!=''">
+                r.monitor_code like '${monitorCode}%'
+            </if>
+            <if test="_parameter.containsKey('loginName')">
+                us.login_name like '%${loginName}%'
+            </if>
+            <if test="_parameter.containsKey('commonName')">
+                and us.common_name like '%${commonName}%'
+            </if>
+            <if test="_parameter.containsKey('btime')">
+                and us.createtime>=to_date(#{btime},'yyyy-mm-dd hh24:mi:ss')
+            </if>
+            <if test="_parameter.containsKey('etime')">
                 and us.createtime&lt;=to_date(#{etime},'yyyy-mm-dd hh24:mi:ss')
-           </if>
-           </trim>
-         )t where rownum&lt;=#{endRow}
-      ) u where u.rn>#{startRow})
+            </if>
+        </trim>
+        )t where rownum&lt;=#{endRow}
+        ) u where u.rn>#{startRow})
 
     </select>
 

@@ -51,6 +51,8 @@ public class SiteBO extends PageInfo {
     private Integer installationRate;
     private String lastUpdateTime; //LAST_UPDATE_TIME
 
+    private Boolean isActive;
+
     public Integer getInstallationRate() {
         return installationRate;
     }
@@ -265,6 +267,14 @@ public class SiteBO extends PageInfo {
 
     public void setKeywordVer(String keywordVer) {
         this.keywordVer = keywordVer;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     @Override

@@ -108,11 +108,13 @@ public class TerminalLogServiceImpl implements TerminalLogService {
         tb.setSiteCode(siteCode);
 
         Integer[] state = new Integer[]{0,0,0,0};
+        String isActive="";
         try{
             Map<String,String> site=redisBasicService.getSiteHash(siteCode);
             String states=site.get("runStatus");
             states=states.substring(1,states.length()-1);
             String[] stateMap=states.split(",");
+            isActive=site.get("isActive");
             //Map<String,String> stateMap = rmiService.operationsCount(siteCode);
             //freeHost,useHost,locking,close
             if(stateMap.length==4){
@@ -132,7 +134,11 @@ public class TerminalLogServiceImpl implements TerminalLogService {
         tb.setSiteStatus(state);
         SiteBO sb = siteService.get(siteCode);
         tb.setSiteName(sb.getName());
-        tb.setSiteRunStatus(sb.getRegStatus());
+        if(isActive!=null){
+            tb.setSiteRunStatus(isActive);
+        }else{
+            tb.setSiteRunStatus("false");
+        }
 
         SiteLiveData sld = siteLiveDataService.getLiveCache(siteCode);
         if(sld != null){

@@ -116,11 +116,15 @@
     }
 
     function add(){
-        var html1="<div><hr/><blockquote><small>禁止URL信息<a href='javascript:void(0)'' name='close' style='margin-left: 40px;color: #0000ff'>[关闭]</a></small></blockquote><div class='control-group'><label class='control-label'>URL类型</label><div class='controls'><select name='urlTypes' id='urlType'><option value='1'>域名</option><option value='3'>URL地址</option></select></div></div><div class='control-group'><label class='control-label'>URL</label><div class='controls'><input type='text'  name='urlValues'>*必填（填入合法的域名）</div></div><div class='control-group'><label class='control-label'>告警类型</label><div class='controls'><select name='alarmTypes'><option value='3'>URL访问报警</option></select></div></div><div class='control-group'><label class='control-label'>报警等级</label><div class='controls'><select name='alarmRanks'><option value='1'>严重报警</option><option value='2'>中等程度报警</option><option value='3'>一般报警</option></select></div></div><div class='control-group'><label class='control-label' >是否拦截</label>"+
+        var html1="<div><hr/><blockquote><small>禁止URL信息<a href='javascript:void(0)'' name='close' onclick='closeAdd(this)' style='margin-left: 40px;color: #0000ff'>[关闭]</a></small></blockquote><div class='control-group'><label class='control-label'>URL类型</label><div class='controls'><select name='urlTypes' id='urlType'><option value='1'>域名</option><option value='3'>URL地址</option></select></div></div><div class='control-group'><label class='control-label'>URL</label><div class='controls'><input type='text'  name='urlValues'>*必填（填入合法的域名）</div></div><div class='control-group'><label class='control-label'>告警类型</label><div class='controls'><select name='alarmTypes'><option value='3'>URL访问报警</option></select></div></div><div class='control-group'><label class='control-label'>报警等级</label><div class='controls'><select name='alarmRanks'><option value='1'>严重报警</option><option value='2'>中等程度报警</option><option value='3'>一般报警</option></select></div></div><div class='control-group'><label class='control-label' >是否拦截</label>"+
                 "<div class='controls'><select name='isBlocks'><option value='1'>是</option><option value='0'>否</option></select></div></div></div>";
 
 
         $(html1).appendTo($("#add"));
+    }
+
+    function closeAdd(a){
+        $(a).parent().parent().parent().remove();
     }
 
     function returnList(){

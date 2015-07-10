@@ -286,8 +286,14 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<Monitor> getMonitorListByParent(String parentCode) {
         Map<String,Object> re=new HashMap<>();
-        re.put("parentCode",parentCode);
-        return  monitorDao.byParentCodeSe(re);
+        List<Monitor> monitorList=new ArrayList<>();
+        if(parentCode!=null && !"null".equals(parentCode)&& !"".equals(parentCode)){
+            re.put("parentCode",parentCode);
+            monitorList=monitorDao.byParentCodeSe(re);
+        }else{
+            monitorList=getUserMonitors();
+        }
+        return monitorList;
     }
 
 	@Override

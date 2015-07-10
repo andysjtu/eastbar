@@ -51,6 +51,7 @@
                         <th data-options="field:'id',checkbox:true"></th>
                         <th data-options="field:'siteCode',align:'center'" width="8%">场所编码</th>
                         <th data-options="field:'name',align:'center',formatter:linkMonitor" width="15%">场所名称</th>
+                        <th data-options="field:'isActive',align:'center',formatter:replaceStatus" width="3%">状态</th>
                         <th data-options="field:'principal',align:'center'" width="8%">负责人</th>
                         <th data-options="field:'principalTel',align:'center'" width="10%">负责人电话</th>
                         <th data-options="field:'terminalNum',align:'center'" width="6%">注册终端</th>
@@ -106,6 +107,14 @@
 
     function linkMonitor(val,row,index){
         return '<a href="javascript:void(0);" onclick="reloadList('+row.siteCode+')" style="text-decoration:underline;">'+row.name+'</a>';
+    }
+
+    function replaceStatus(val,row,index){
+        if(val){
+            return '正常';
+        }else{
+            return '故障';
+        }
     }
 
     function detail(siteCode){

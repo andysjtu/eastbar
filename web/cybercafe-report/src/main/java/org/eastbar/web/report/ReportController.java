@@ -92,7 +92,7 @@ public class ReportController {
 
     @RequestMapping("/history")
     public String history(@ModelAttribute SearchBO searchBO,Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         List<String> years= CreateTimeList.createYearList();
         List<Month> months=CreateTimeList.createMonthList();
         model.addAttribute("months",months);
@@ -248,7 +248,7 @@ public class ReportController {
 
     @RequestMapping("/period")
     public String period(@ModelAttribute SearchBO searchBO,Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         model.addAttribute("monitorList",monitorList);
 		List<Monitor> areaList = monitorService.getArea();
 		model.addAttribute("areaList",areaList);
@@ -384,7 +384,7 @@ public class ReportController {
 
     @RequestMapping("/alert")
     public String alert(@ModelAttribute SearchBO searchBO,Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         List<String> years= CreateTimeList.createYearList();
         List<Month> months=CreateTimeList.createMonthList();
         model.addAttribute("months",months);
@@ -533,7 +533,7 @@ public class ReportController {
 
     @RequestMapping("/operateRank")
     public String operateRank(Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         List<String> years= CreateTimeList.createYearList();
         List<Month> months=CreateTimeList.createMonthList();
         model.addAttribute("months",months);
@@ -610,7 +610,7 @@ public class ReportController {
 
     @RequestMapping("/urlRank")
     public String urlRank(Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         List<String> years= CreateTimeList.createYearList();
         List<Month> months=CreateTimeList.createMonthList();
         model.addAttribute("months",months);
@@ -677,7 +677,7 @@ public class ReportController {
 
     @RequestMapping("/programRank")
     public String programRank(Model model){
-        List<Monitor> monitorList=monitorService.getPlaceMonitors();
+        List<Monitor> monitorList=monitorService.getMonitors();
         List<String> years= CreateTimeList.createYearList();
         List<Month> months=CreateTimeList.createMonthList();
         model.addAttribute("months",months);

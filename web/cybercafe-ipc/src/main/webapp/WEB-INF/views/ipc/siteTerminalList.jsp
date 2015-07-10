@@ -89,7 +89,7 @@
             $.cachePut(item.hostIp,item);
         });
         var run = ${tb.siteRunStatus};
-        if(run=='0'){
+        if(run){
             $(".runStatus").html('正常');
         }else{
             $(".runStatus").html('故障');
