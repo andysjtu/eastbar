@@ -7,6 +7,8 @@ package org.eastbar.center.statusMachine.core;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Date;
+
 /**
  * @author C.lins@aliyun.com
  * @date 2015年04月01
@@ -16,6 +18,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class Event {
 
     private String siteCode;
+    private Date date;
 
     public String getSiteCode() {
         return siteCode;
@@ -23,6 +26,14 @@ public class Event {
 
     public void setSiteCode(String siteCode) {
         this.siteCode = siteCode;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     @Override

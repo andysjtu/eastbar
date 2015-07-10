@@ -66,7 +66,7 @@ public class ValidatePut {
      */
     public static Map validateSitePut(Map<String,String> siteLiveData){
 
-        String params="siteCode,activeCustomerCount,runStatus,totalAlarm,totalPunish";
+        String params="siteCode,activeCustomerCount,runStatus,totalAlarm,totalPunish,isActive";
         if(siteLiveData!=null){
             String siteCodeCode=siteLiveData.get("siteCode");
             if(siteCodeCode!=null && !"".equals(siteCodeCode)){

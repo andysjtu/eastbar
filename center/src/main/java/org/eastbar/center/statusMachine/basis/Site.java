@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eastbar.center.Po2Json;
 import org.eastbar.center.statusMachine.HostEvent;
+import org.eastbar.center.statusMachine.InitEvent;
 import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.core.Count;
 import org.eastbar.center.statusMachine.core.Event;
@@ -19,6 +20,7 @@ import org.eastbar.common.redis.CenterRedisService;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * @author C.lins@aliyun.com
@@ -30,7 +32,7 @@ public class Site implements Serializable {
 
     private String code;
     private int[] runStatus = {0,0,0,0};
-    private boolean isActive = false;
+    private boolean isActive = true;
     private Map<String,Terminal> terminalMap = new ConcurrentHashMap<>();
 
     private synchronized void addTerminal(Terminal terminal){
@@ -41,7 +43,9 @@ public class Site implements Serializable {
     }
     public int[] analysis(Event event){
         int[] offset = {0,0,0,0};
-        if(event instanceof HostEvent){
+        if(event instanceof InitEvent){
+            this.isActive = true;
+        }else if(event instanceof HostEvent){
             this.isActive = true;
             String terminalIp = ((HostEvent)event).getIp();
             Terminal terminal = findTerminal(terminalIp);
@@ -96,13 +100,14 @@ class Site2Redis implements Runnable{
     public void run() {
         CenterRedisService cs = SpringContextHolder.getBean("centerRedisServiceImpl");
 
-        //siteCode、activeCustomerCount、runStatus、totalAlarm、totalPunish
+        //siteCode、activeCustomerCount、runStatus、totalAlarm、totalPunish、isActive
         Map<String,String> sitemap = Maps.newHashMap();
         sitemap.put("siteCode",site.getCode());
         sitemap.put("activeCustomerCount",site.getRunStatus()[0]+"");
         sitemap.put("runStatus", Po2Json.toJson(site.getRunStatus()));
         sitemap.put("totalAlarm","-999");
         sitemap.put("totalPunish","-999");
+        sitemap.put("isActive", site.isActive()+"");
 
         cs.siteHashPut(sitemap);
     }

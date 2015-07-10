@@ -8,6 +8,7 @@ import com.google.common.collect.Maps;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.eastbar.center.statusMachine.HostEvent;
+import org.eastbar.center.statusMachine.InitEvent;
 import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.core.Offset;
 import org.eastbar.center.statusMachine.core.Count;
@@ -50,24 +51,7 @@ public class County implements Serializable {
         Offset offset = new Offset();
         String siteCode = event.getSiteCode();
         Site site = findSite(siteCode);
-        if(event instanceof ResetEvent){
-            if(site==null){
-                log.info("编号:Site-{}未上报过状态，无法Reset.",siteCode);
-                return null;
-            }
-        }
-        if(event instanceof HostEvent){
-            if(site==null){
-                site = new Site();
-                site.setCode(siteCode);
-                offset.setTotal(1);
-                addSite(site);
-            }
-            if(!site.isActive()){
-                this.openSite.getAndIncrement();
-                offset.setOpen(1);
-            }
-        }else if (event instanceof ResetEvent){
+        if (event instanceof ResetEvent){
             if(site==null){
                 log.info("编号:Site-{} 未上报过状态，无法Reset.",siteCode);
                 return null;
@@ -75,6 +59,19 @@ public class County implements Serializable {
             if(site.isActive()){
                 this.openSite.getAndDecrement();
                 offset.setOpen(-1);
+            }
+        }else{
+            if(site==null){
+                site = new Site();
+                site.setCode(siteCode);
+                addSite(site);
+                offset.setTotal(1);
+                this.openSite.getAndIncrement();
+                offset.setOpen(1);
+            }
+            if(!site.isActive()){
+                this.openSite.getAndIncrement();
+                offset.setOpen(1);
             }
         }
         offset.setRun(site.analysis(event));

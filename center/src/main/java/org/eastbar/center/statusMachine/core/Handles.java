@@ -6,6 +6,7 @@ package org.eastbar.center.statusMachine.core;
 
 import org.eastbar.center.customerLog.service.impl.CustomerServiceImpl;
 import org.eastbar.center.statusMachine.HostEvent;
+import org.eastbar.center.statusMachine.InitEvent;
 import org.eastbar.center.statusMachine.ResetEvent;
 import org.eastbar.center.statusMachine.basis.Center;
 import org.eastbar.center.statusMachine.IEventPipe;
@@ -60,15 +61,7 @@ class EventAnalysis implements Runnable{
     }
     @Override
     public void run() {
-
-        // 对事件进行处理，改变状态树
-        if(event instanceof HostEvent){
-            center.analysis((HostEvent)event);
-        }
-        // 重置某Stie节点下面所有Terminal
-        else if(event instanceof ResetEvent){
-            center.analysis((ResetEvent)event);
-        }
+        center.analysis(event);
     }
 }
 
