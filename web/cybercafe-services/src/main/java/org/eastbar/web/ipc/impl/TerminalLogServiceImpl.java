@@ -134,7 +134,7 @@ public class TerminalLogServiceImpl implements TerminalLogService {
         tb.setSiteStatus(state);
         SiteBO sb = siteService.get(siteCode);
         tb.setSiteName(sb.getName());
-        if(isActive!=null){
+        if(isActive!=null  && !"".equals(isActive)){
             tb.setSiteRunStatus(isActive);
         }else{
             tb.setSiteRunStatus("false");

@@ -68,7 +68,7 @@
         <div id="tb" style="padding:5px;height:auto">
             <div style="margin-bottom:5px">
                 <a href="/msgman/intoAdd#_2" class="easyui-linkbutton" iconCls="icon-add" plain="true"></a>
-                <a href="#" onclick="delsome()" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>
+                <%--<a href="#" onclick="delsome()" class="easyui-linkbutton" iconCls="icon-remove" plain="true"></a>--%>
             </div>
         </div>
     </div>

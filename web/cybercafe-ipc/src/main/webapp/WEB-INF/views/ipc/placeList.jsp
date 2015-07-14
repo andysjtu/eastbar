@@ -111,9 +111,9 @@
 
     function replaceStatus(val,row,index){
         if(val){
-            return '正常';
+            return '连接';
         }else{
-            return '故障';
+            return '未连接';
         }
     }
 
