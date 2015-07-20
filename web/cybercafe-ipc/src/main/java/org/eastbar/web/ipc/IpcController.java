@@ -106,6 +106,20 @@ public class IpcController {
     }
 
     /**
+     * 异步调用json，根据监管中心类型，获取监管中心列表数据
+     * @param type type=-1代表没有父节点 type=2代表有父节点
+     * @return
+     */
+    @RequestMapping("/getParent/{type}")
+    @ResponseBody
+    public String getParent(@PathVariable Integer type){
+        String json=null;
+        List<Monitor> monitors=monitorService.getMonitorsByType(type);
+        json = PR2Json.go(monitors);
+        return json;
+    }
+
+    /**
      * 提交添加监管中心信息，返回监管中心列表页面
      * @param monitorBO
      * @param model

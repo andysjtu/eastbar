@@ -54,10 +54,10 @@
                     <th data-options="field:'type',align:'center',formatter:replace" width="5%">行政级别</th>
                     <th data-options="field:'principal',align:'center'" width="8%">负责人</th>
                     <th data-options="field:'status',align:'center',formatter:replaceStatus" width="5%">状态</th>
-                    <th data-options="field:'totalSite',align:'center'" width="5%">场所总数</th>
+                    <%--<th data-options="field:'totalSite',align:'center'" width="5%">场所总数</th>--%>
                     <th data-options="field:'permitSite',align:'center'" width="7%">许可场所总数</th>
                     <%--<th data-options="field:'setupSite',align:'center'" width="7%">安装场所总数</th>--%>
-                    <th data-options="field:'openSite',align:'center'" width="7%">营业场所总数</th>
+                    <th data-options="field:'openSite',align:'center'" width="7%">在线场所总数</th>
                     <th data-options="field:'totalTerminal',align:'center'" width="6%">终端总数</th>
                     <th data-options="field:'totalAlarm',align:'center',formatter:formatAlarm" width="7%">本周报警数</th>
                     <th data-options="field:'totalPunish',align:'center',formatter:formatPunish" width="6%">处罚记录</th>

@@ -21,12 +21,12 @@
 
     <select id="getCustomerHost" parameterType="CustomerHost" resultMap="customerHostResult">
         select * from t_customer_host t
-        where t.ip_add=#{ipAdd} and t.mac_add=#{macAddress}
+        where t.ip_add=#{ipAdd,jdbcType=VARCHAR} and t.mac_add=#{macAddress,jdbcType=VARCHAR}
         <if test="offlineTime==null">
             and t.offline_time is null
         </if>
         <if test="onlineTime!=null">
-            and to_char(t.online_time,'yyyymmddhh24miss')=#{onlineTime}
+            and t.online_time=to_date(#{onlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
         </if>
     </select>
 
@@ -36,7 +36,7 @@
             select SEQ_T_CUSTOMER_HOST_ID.nextVal as seq_id from dual
         </selectKey>
         insert into t_customer_host(seq_id,customer_id,ip_add,mac_add,online_time,offline_time,os_system,version,site_code)
-        values(#{id,jdbcType=INTEGER},#{cid,jdbcType=INTEGER},#{ipAdd,jdbcType=VARCHAR},#{macAddress,jdbcType=VARCHAR},to_date(#{onlineTime},'yyyy-mm-dd hh24:mi:ss'),to_date(#{offlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),#{osSystem},#{version},#{siteCode})
+        values(#{id,jdbcType=INTEGER},#{cid,jdbcType=INTEGER},#{ipAdd,jdbcType=VARCHAR},#{macAddress,jdbcType=VARCHAR},to_date(#{onlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),to_date(#{offlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss'),#{osSystem,jdbcType=VARCHAR},#{version,jdbcType=VARCHAR},#{siteCode,jdbcType=VARCHAR})
     </insert>
 
     <!-- 修改信息 -->
@@ -52,15 +52,15 @@
             <if test="siteCode!=null">t.site_code=#{siteCode},</if>
             <if test="version!=null">t.version=#{version}</if>
         </set>
-        where t.site_code=#{siteCode} and t.ip_add=#{ipAdd} and t.mac_add=#{macAddress} and to_char(t.online_time,'yyyymmddhh24miss')=#{onlineTime}
+        where t.site_code=#{siteCode,jdbcType=VARCHAR} and t.ip_add=#{ipAdd,jdbcType=VARCHAR} and t.mac_add=#{macAddress,jdbcType=VARCHAR} and t.online_time=to_date(#{onlineTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
     </update>
 
     <update id="resetCustomerHost"  parameterType="java.util.Map">
         update t_customer_host t
         <set>
-            <if test="closeTime!=null">t.offline_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss')</if>
+            <if test="closeTime!=null">t.offline_time=to_date(#{closeTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')</if>
         </set>
-        where t.site_code=#{siteCode}
+        where t.site_code=#{siteCode,jdbcType=VARCHAR}
     </update>
 
 </mapper>

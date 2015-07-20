@@ -90,9 +90,9 @@
         });
         var run = ${tb.siteRunStatus};
         if(run){
-            $(".runStatus").html('正常');
+            $(".runStatus").html('连接');
         }else{
-            $(".runStatus").html('故障');
+            $(".runStatus").html('未连接');
         }
     });
 

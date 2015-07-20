@@ -25,7 +25,7 @@
     </sql>
 
     <select id="getCustomer" parameterType="Customer" resultMap="customerResult">
-        select * from t_customer where site_code=#{siteCode} and account_id=#{accountId} and to_char(open_time,'yyyymmddhh24miss')=#{openTime}
+        select * from t_customer where site_code=#{siteCode,jdbcType=VARCHAR} and account_id=#{accountId,jdbcType=VARCHAR} and open_time=to_date(#{openTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss')
     </select>
 
     <!--插入信息 -->
@@ -34,8 +34,8 @@
             select SEQ_T_CUSTOMER_ID.nextVal as seq_id from dual
         </selectKey>
         merge into t_customer t1
-        using (select #{id} seq_id,#{accountId} account_id,#{siteCode} site_code,#{provinceCode} province_code,#{cityCode} city_code,#{countyCode} county_code,#{name} name,
-        #{certType} cert_type,#{certId} cert_id,#{authOrg} auth_org,#{nationality} nationality,#{status} status,to_date(#{openTime},'yyyy-mm-dd hh24:mi:ss') open_time,null close_time from dual) t2
+        using (select #{id,jdbcType=INTEGER} seq_id,#{accountId,jdbcType=VARCHAR} account_id,#{siteCode,jdbcType=VARCHAR} site_code,#{provinceCode,jdbcType=VARCHAR} province_code,#{cityCode,jdbcType=VARCHAR} city_code,#{countyCode,jdbcType=VARCHAR} county_code,#{name,jdbcType=VARCHAR} name,
+        #{certType,jdbcType=VARCHAR} cert_type,#{certId,jdbcType=VARCHAR} cert_id,#{authOrg,jdbcType=VARCHAR} auth_org,#{nationality,jdbcType=VARCHAR} nationality,#{status,jdbcType=INTEGER} status,to_date(#{openTime,jdbcType=VARCHAR},'yyyy-mm-dd hh24:mi:ss') open_time,null close_time from dual) t2
         on (t1.site_code = t2.site_code and t1.account_id=t2.account_id and t1.open_time=t2.open_time)
         when not matched then
         insert values (t2.seq_id,t2.account_id,t2.site_code,t2.province_code,t2.city_code,t2.county_code,t2.name,t2.cert_type,
@@ -60,7 +60,7 @@
             <if test="closeTime!=null">t.close_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss'),</if>
             <if test="status!=null">t.status=#{status}</if>
         </set>
-        where t.site_code=#{siteCode} and t.account_id=#{accountId} and to_char(t.open_time,'yyyymmddhh24miss')=#{openTime}
+        where t.site_code=#{siteCode,jdbcType=VARCHAR} and t.account_id=#{accountId,jdbcType=VARCHAR} and t.open_time=to_date(#{openTime},'yyyy-mm-dd hh24:mi:ss')
     </update>
 
     <update id="resetCustomer"  parameterType="java.util.Map">
@@ -68,7 +68,7 @@
         <set>
             <if test="closeTime!=null">t.close_time=to_date(#{closeTime},'yyyy-mm-dd hh24:mi:ss')</if>
         </set>
-        where t.site_code=#{siteCode}
+        where t.site_code=#{siteCode,jdbcType=VARCHAR}
     </update>
 
 </mapper>
