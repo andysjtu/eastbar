@@ -12,7 +12,9 @@ import org.eastbar.web.PageInfo;
 import org.eastbar.web.Times;
 import org.eastbar.web.ipc.SiteLiveDataService;
 import org.eastbar.web.ipc.SiteService;
+import org.eastbar.web.ipc.TerminalLogService;
 import org.eastbar.web.ipc.biz.SiteBO;
+import org.eastbar.web.ipc.biz.TerminalBO;
 import org.eastbar.web.ipc.dao.SiteDao;
 import org.eastbar.web.ipc.entity.Site;
 import org.eastbar.web.ipc.entity.SiteLiveData;
@@ -52,6 +54,9 @@ public class SiteServiceImpl implements SiteService {
     @Autowired
     private AlarmHistoryService alarmHistoryService;
 
+    @Autowired
+    private TerminalLogService terminalLogService;
+
     @Override
     public SiteBO get(String siteCode) {
         SiteBO sbo = new SiteBO();
@@ -88,17 +93,20 @@ public class SiteServiceImpl implements SiteService {
                 for(Site m:list){
                     SiteBO sb=new SiteBO();
                     BeanUtils.copyProperties(sb,m);
-                    //获取版本信息 begin
-//                    ManageRule manageRule=manageRuleDao.get();
-//                    mb.setHourVer(manageRule.getOperHourVer());
-//                    mb.setProgVer(manageRule.getBanProgVer());
-//                    mb.setUrlVer(manageRule.getBanUrlVer());
-//                    mb.setSpecialVer(manageRule.getSpecialPersonVer());
-                    //获取版本信息 end
                     Map<String,String> site=redisBasicService.getSiteHash(m.getSiteCode());
                     BeanUtils.populate(sb,site);
                     Long counts=alarmHistoryService.getCountByCode(sb.getSiteCode());
                     sb.setTotalAlarm(counts);
+                    TerminalBO tb = terminalLogService.getSiteTerminalInfo(sb.getSiteCode());
+                    int usingNum=tb.getSiteTerminalTotalNum();
+                    int unKnownNum=tb.getSiteTerminalUnknowNum();
+                    if(usingNum!=0 && unKnownNum!=0){
+                        double rate=(usingNum+0.0)/(unKnownNum+usingNum+0.0);
+                        sb.setInstallationRate(String.format("%.2f", rate*100)+"%");
+                    }else{
+                        sb.setInstallationRate("0.0%");
+
+                    }
                     sbl.add(sb);
                 }
             }catch(Exception e){

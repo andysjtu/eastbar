@@ -112,13 +112,7 @@
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">已安装场所:</label>
-                <div class="controls">
-                    <span id="setupSite"></span>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">已营业场所:</label>
+                <label class="control-label">在线场所:</label>
                 <div class="controls">
                     <span id="openSite"></span>
                 </div>

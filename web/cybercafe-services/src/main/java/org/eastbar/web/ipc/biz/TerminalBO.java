@@ -33,8 +33,9 @@ public class TerminalBO extends PageInfo {
     private String lastUpdateTime;
     private String siteRunStatus;
     private Integer siteTerminalTotalNum;
-    private Integer[] siteStatus;  //机器状态
-    private String siteState;//
+    private Integer siteTerminalUnknowNum;
+    private Integer[] siteStatus;  //一组机器状态
+    private String siteState;//redis传过来的机器状态
 
     public String getSiteName() {
         return siteName;
@@ -170,6 +171,14 @@ public class TerminalBO extends PageInfo {
 
     public void setSiteStatus(Integer[] siteStatus) {
         this.siteStatus = siteStatus;
+    }
+
+    public Integer getSiteTerminalUnknowNum() {
+        return siteTerminalUnknowNum;
+    }
+
+    public void setSiteTerminalUnknowNum(Integer siteTerminalUnknowNum) {
+        this.siteTerminalUnknowNum = siteTerminalUnknowNum;
     }
 
     @Override

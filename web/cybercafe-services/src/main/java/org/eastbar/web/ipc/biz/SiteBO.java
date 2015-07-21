@@ -48,16 +48,16 @@ public class SiteBO extends PageInfo {
     private Integer runStatus; //RUN_STATUS
     private Long totalAlarm; //TOTAL_ALARM
     private Long totalPunish; //TOTAL_PUNISH
-    private Integer installationRate;
+    private String installationRate;
     private String lastUpdateTime; //LAST_UPDATE_TIME
 
     private Boolean isActive;
 
-    public Integer getInstallationRate() {
+    public String getInstallationRate() {
         return installationRate;
     }
 
-    public void setInstallationRate(Integer installationRate) {
+    public void setInstallationRate(String installationRate) {
         this.installationRate = installationRate;
     }
 

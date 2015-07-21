@@ -49,28 +49,42 @@
                 <td>场所编码：${tb.siteCode}，场所名称：${tb.siteName}，场所状态：<span class="runStatus">${tb.siteRunStatus}</span></td>
             </tr>
             <tr class="panel-body">
-                <td>上次更新时间：${tb.lastUpdateTime}，使用中 ${tb.siteTerminalTotalNum} 台</td>
+                <td>上次更新时间：${tb.lastUpdateTime}，使用中: ${tb.siteTerminalTotalNum} 台, 未知: ${tb.siteTerminalUnknowNum} 台</td>
             </tr>
             <tr class="panel-body">
                 <td><div class="terBox"><div class="col">
                     <c:forEach items="${tbs}" var="tb">
-                    <div class="ter">
-                        <div class="dropdown">
-                            <!-- Link or button to toggle dropdown -->
-                            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                <li class="li">${tb.customerName}</li>
-                                <li class="li">${tb.onlineTime}</li>
-                                <li class="divider"></li>
-                               <c:choose>
-                                    <c:when test="${tb.siteState=='ONLINE'}">
-                                        <li style="background-color: lightskyblue"><a tabindex="-1" href="javascript:void(0);" onclick="detail('${tb.hostIp}')">${tb.hostIp}</a></li>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <li style="background-color: darkgray"><a tabindex="-1"  href="javascript:void(0);">${tb.hostIp}</a></li>
-                                    </c:otherwise>
-                                </c:choose>
-                            </ul>
-                        </div></div>
+                        <c:choose>
+                            <c:when test="${tb.siteState=='ONLINE'}">
+                                <div class="ter">
+                                <div class="dropdown">
+                                <!-- Link or button to toggle dropdown -->
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                    <li class="li">${tb.customerName}</li>
+                                    <li class="li">${tb.onlineTime}</li>
+                                    <li class="divider"></li>
+                                    <li style="background-color: lightskyblue"><a tabindex="-1" href="javascript:void(0);" onclick="detail('${tb.hostIp}')">${tb.hostIp}</a></li>
+                                </ul>
+                                </div></div>
+                            </c:when>
+                            <c:when test="${tb.siteState=='UNKNOWN'}">
+                                <div class="ter">
+                                    <div class="dropdown">
+                                        <!-- Link or button to toggle dropdown -->
+                                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                            <li class="li">${tb.customerName}</li>
+                                            <li class="li">${tb.onlineTime}</li>
+                                            <li class="divider"></li>
+                                            <li style="background-color: #DA70D6"><a tabindex="-1"  href="javascript:void(0);">${tb.hostIp}</a></li>
+                                        </ul>
+                                    </div></div>
+                            </c:when>
+                            <%--<c:otherwise>--%>
+                                <%--<li style="background-color: darkgray"><a tabindex="-1"  href="javascript:void(0);">${tb.hostIp}</a></li>--%>
+                            <%--</c:otherwise>--%>
+                        </c:choose>
+
+
                     </c:forEach>
                     </div></div></td>
             </tr>
@@ -176,10 +190,24 @@
         $("#myModal").modal('toggle');
 
         var certType = $("#customerIdType");
-        certType.html(replaceCert(certType.html()));
-//        switch (certType.html()){
-//            case "2":certType.html('身份证');break;
-//        }
+        switch (certType.html()){
+            case "2":certType.html('身份证');break;
+            case "3":certType.html('连锁会员');break;
+            case "4":certType.html('移动电话');break;
+            case "5":certType.html('电话号码');break;
+            case "6":certType.html('社保卡号码');break;
+            case "7":certType.html('学生证');break;
+            case "8":certType.html('军官证');break;
+            case "9":certType.html('警官证');break;
+            case "10":certType.html('士兵证');break;
+            case "11":certType.html('户口簿');break;
+            case "12":certType.html('护照');break;
+            case "13":certType.html('台胞证');break;
+            case "14":certType.html('回乡证');break;
+            case "15":certType.html('其他证件');break;
+            case "19":certType.html('手机');break;
+            default :certType.html('身份证');break;
+        }
     }
 
 </script>

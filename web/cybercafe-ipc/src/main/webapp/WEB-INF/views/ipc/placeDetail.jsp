@@ -109,15 +109,15 @@
             <div class="control-group">
                 <label class="control-label">连接终端数:</label>
                 <div class="controls">
-                    <span id="connectTerm"></span>
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">活动顾客数:</label>
-                <div class="controls">
                     <span id="activeCustomerCount"></span>
                 </div>
             </div>
+            <%--<div class="control-group">--%>
+                <%--<label class="control-label">活动顾客数:</label>--%>
+                <%--<div class="controls">--%>
+                    <%--<span id="activeCustomerCount"></span>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <div class="control-group">
                 <label class="control-label">告警总数:</label>
                 <div class="controls">

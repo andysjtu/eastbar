@@ -111,24 +111,28 @@ public class TerminalLogServiceImpl implements TerminalLogService {
         String isActive="";
         try{
             Map<String,String> site=redisBasicService.getSiteHash(siteCode);
-            String states=site.get("runStatus");
-            states=states.substring(1,states.length()-1);
-            String[] stateMap=states.split(",");
-            isActive=site.get("isActive");
-            //Map<String,String> stateMap = rmiService.operationsCount(siteCode);
-            //freeHost,useHost,locking,close
-            if(stateMap.length==4){
-                state[0] = Integer.parseInt(stateMap[1]);//空闲
-                state[1] = Integer.parseInt(stateMap[0]);//使用
-                state[2] = Integer.parseInt(stateMap[3]);//锁定
-                state[3] = Integer.parseInt(stateMap[2]);//关机
-                //TODO 连接REDIS获取数的终端数
-                int num=state[1];
-                tb.setSiteTerminalTotalNum(num);
+            if(site.size()>0){
+                String states=site.get("runStatus");
+                states=states.substring(1,states.length()-1);
+                String[] stateMap=states.split(",");
+                isActive=site.get("isActive");
+                //Map<String,String> stateMap = rmiService.operationsCount(siteCode);
+                //freeHost,useHost,locking,close
+                if(stateMap.length==4){
+                    state[0] = Integer.parseInt(stateMap[1]);//空闲
+                    state[1] = Integer.parseInt(stateMap[0]);//使用
+                    state[2] = Integer.parseInt(stateMap[3]);//未知
+                    state[3] = Integer.parseInt(stateMap[2]);//关机
+                    //TODO 连接REDIS获取数的终端数
+                    int num=state[1];
+                    tb.setSiteTerminalTotalNum(num);
+                    tb.setSiteTerminalUnknowNum(state[2]);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
             tb.setSiteTerminalTotalNum(0);
+            tb.setSiteTerminalUnknowNum(0);
         }
 
         tb.setSiteStatus(state);

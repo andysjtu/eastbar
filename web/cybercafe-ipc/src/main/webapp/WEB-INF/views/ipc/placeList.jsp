@@ -58,7 +58,7 @@
                         <th data-options="field:'activeCustomerCount',align:'center'" width="9%">连接终端数</th>
                         <th data-options="field:'totalAlarm',align:'center',formatter:formatAlarm" width="10%">本周报警数</th>
                         <th data-options="field:'totalPunish',align:'center',formatter:formatPunish" width="8%">处罚数</th>
-                        <th data-options="field:'installationRate',align:'center',formatter:formatClient" width="8%">客户端安装率</th>
+                        <th data-options="field:'installationRate',align:'center'" width="8%">客户端安装率</th>
                         <th data-options="field:'_operate',align:'center',formatter:formatOper" width="10%">操作</th>
                     </tr>
                     </thead>
