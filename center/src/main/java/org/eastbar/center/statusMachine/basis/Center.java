@@ -68,12 +68,11 @@ public class Center implements Serializable {
                     return;
                 }
             }
-            if(event instanceof HostEvent){
-                if(city==null){
-                    city = new City();
-                    city.setCode(cityCode);
-                    addCity(city);
-                }
+
+            if(city==null){
+                city = new City();
+                city.setCode(cityCode);
+                addCity(city);
             }
             Offset offset = city.analysis(event);
             if(offset!=null){
@@ -82,10 +81,9 @@ public class Center implements Serializable {
                 synchronized (this.runStatus){
                     Count.runStatus(this.runStatus, offset.getRun());
                 }
-                this.lastUpDate = new Timestamp(System.currentTimeMillis());
-
-                StatusSnapshotFactory.getInstance().saveToFile(center);
             }
+            this.lastUpDate = new Timestamp(System.currentTimeMillis());
+            StatusSnapshotFactory.getInstance().saveToFile(center);
     }
 
     public int[] getRunStatus() {

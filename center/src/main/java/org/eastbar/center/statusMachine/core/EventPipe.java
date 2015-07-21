@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -36,6 +37,7 @@ public class EventPipe implements IEventPipe {
 
     @Override
     public boolean addEvents(Event event) {
+        event.setDate(new Date());
         synchronized(EVENTS){
             try{
                 if(EVENTS.size() > MAX_SIZE){

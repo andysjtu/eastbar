@@ -59,12 +59,11 @@ public class City implements Serializable {
                 return null;
             }
         }
-        if(event instanceof HostEvent){
-            if(county==null){
-                county = new County();
-                county.setCode(countyCode);
-                addCounty(county);
-            }
+
+        if(county==null){
+            county = new County();
+            county.setCode(countyCode);
+            addCounty(county);
         }
         Offset offset = county.analysis(event);
         if(offset!=null){

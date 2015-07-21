@@ -7,10 +7,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelPipeline;
-import org.eastbar.center.statusMachine.EventUtil;
-import org.eastbar.center.statusMachine.HostEvent;
-import org.eastbar.center.statusMachine.IEventPipe;
-import org.eastbar.center.statusMachine.ResetEvent;
+import org.eastbar.center.statusMachine.*;
 import org.eastbar.codec.*;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +87,9 @@ public class CenterHub {
         centerChannels.put(channel, Lists.newArrayList(reportListMap.keySet().iterator()));
         Set<SiteReport> reportSet = reportListMap.keySet();
         for (SiteReport siteReport : reportSet) {
+            if(siteReport.isConnected()){
+                eventPipe.addEvents(new InitEvent(siteReport.getSiteCode()));
+            }
             siteTermMaps.put(siteReport, reportListMap.get(siteReport));
             List<TermReport> termReports = reportListMap.get(siteReport);
             for (TermReport termReport : termReports) {
@@ -252,6 +252,7 @@ public class CenterHub {
         siteReports.add(siteReport);
         //submit event
         if (siteReport.isConnected()) {
+            eventPipe.addEvents(new InitEvent(siteReport.getSiteCode()));
             for (TermReport termReport : termReports) {
                 HostEvent hostEvent = EventUtil.convertFromTermReport(termReport);
                 eventPipe.addEvents(hostEvent);
@@ -272,8 +273,8 @@ public class CenterHub {
     }
 
     private void printStatus() {
-        logger.info("status is : {} ", siteTermMaps);
-        logger.info("channelMap is {}", centerChannels);
+        logger.debug("status is : {} ", siteTermMaps);
+        logger.debug("channelMap is {}", centerChannels);
 
     }
 
