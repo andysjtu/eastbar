@@ -286,8 +286,10 @@ public class CenterRedisServiceImpl implements CenterRedisService {
         center.addAll(monitor);
         center.addAll(site);
         center.addAll(terminal);
-        redisTemplate.delete(center);
-        flag=true;
+        if(!center.isEmpty()){
+            redisTemplate.delete(center);
+            flag=true;
+        }
         return false;
     }
 
