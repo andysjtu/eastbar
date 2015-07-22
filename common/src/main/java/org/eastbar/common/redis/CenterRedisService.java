@@ -86,4 +86,9 @@ public interface CenterRedisService {
      */
     public Boolean saveUpdatedVersion(String measure,Integer version) throws Exception;
 
+
+    public Boolean deleteMonitorLibrary() throws Exception;
+
+    public Boolean deleteStrategyLibrary() throws Exception;
+
 }

@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author cindy-jia
@@ -279,4 +276,23 @@ public class CenterRedisServiceImpl implements CenterRedisService {
         return flag;
     }
 
+    @Override
+    public Boolean deleteMonitorLibrary() throws Exception {
+        boolean flag=false;
+        Set center=redisTemplate.keys("center*");
+        Set monitor=redisTemplate.keys("monitor*");
+        Set site=redisTemplate.keys("site*");
+        Set terminal=redisTemplate.keys("terminal*");
+        center.addAll(monitor);
+        center.addAll(site);
+        center.addAll(terminal);
+        redisTemplate.delete(center);
+        flag=true;
+        return false;
+    }
+
+    @Override
+    public Boolean deleteStrategyLibrary() throws Exception {
+        return null;
+    }
 }

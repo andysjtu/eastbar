@@ -9,6 +9,7 @@ import org.eastbar.center.statusMachine.StatusMachine;
 import org.eastbar.center.statusMachine.core.EventPipe;
 import org.eastbar.center.statusMachine.core.StatusSnapshotFactory;
 import org.eastbar.center.strategy.util.Times;
+import org.eastbar.common.redis.CenterRedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -61,6 +62,12 @@ public class ManagerMain {
 
         CenterConsoleListener consoleListener = ctx.getBean(CenterConsoleListener.class);
         consoleListener.listen();
+
+        //begin
+        CenterRedisService centerRedisService= (CenterRedisService) ctx.getBean("centerRedisServiceImpl");
+        centerRedisService.deleteMonitorLibrary();
+        System.out.println("执行完毕");
+        //end
 
 //        //启动事件模拟 器
 //        Thread.sleep(10000);
