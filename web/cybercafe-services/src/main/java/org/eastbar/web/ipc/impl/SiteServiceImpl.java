@@ -98,14 +98,17 @@ public class SiteServiceImpl implements SiteService {
                     Long counts=alarmHistoryService.getCountByCode(sb.getSiteCode());
                     sb.setTotalAlarm(counts);
                     TerminalBO tb = terminalLogService.getSiteTerminalInfo(sb.getSiteCode());
-                    int usingNum=tb.getSiteTerminalTotalNum();
-                    int unKnownNum=tb.getSiteTerminalUnknowNum();
-                    if(usingNum!=0 && unKnownNum!=0){
-                        double rate=(usingNum+0.0)/(unKnownNum+usingNum+0.0);
-                        sb.setInstallationRate(String.format("%.2f", rate*100)+"%");
-                    }else{
-                        sb.setInstallationRate("0.0%");
-
+                    if(tb!=null){
+                        if(tb.getSiteTerminalTotalNum()!=null && tb.getSiteTerminalUnknowNum()!=null){
+                            int usingNum=tb.getSiteTerminalTotalNum();
+                            int unKnownNum=tb.getSiteTerminalUnknowNum();
+                            if(usingNum!=0 && unKnownNum!=0){
+                                double rate=(usingNum+0.0)/(unKnownNum+usingNum+0.0);
+                                sb.setInstallationRate(String.format("%.2f", rate*100)+"%");
+                            }else{
+                                sb.setInstallationRate("0.0%");
+                            }
+                        }
                     }
                     sbl.add(sb);
                 }

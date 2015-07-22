@@ -163,24 +163,39 @@
             return;
         }
 
-        var ids=[];
-        for (var i = 0; i < rows.length; i++) {
-            //获取checkbox值
-            var id=rows[i].id;
-            ids.push(id); //然后把单个id循环放到ids的数组中
+        var fy=0;
+        var fn=0
+        for(var j=0;j<rows.length;j++){
+            var isPub=rows[j].isPub;
+            if(isPub==1){
+                fy=1
+            }else{
+                fn=1;
+            }
         }
+        if(fy==1 && fn==1){
+            $.messager.alert('提示', '请选择统一的数据，全部为未发布的，或者全部为已发布的!', 'info');
+        }else{
+            var ids=[];
+            for (var i = 0; i < rows.length; i++) {
+                //获取checkbox值
+                var id=rows[i].id;
+                ids.push(id); //然后把单个id循环放到ids的数组中
+            }
 
-        if(confirm("确定要删除选中的多个角色吗?")){
-            $.ajax({
-                type:'POST',
-                url: '${ctx}/measures/deleteManySpecial/'+ids,
-                data: '',
-                dataType: "json",
-                success: function(data){
-                    showTips(data.msg);
-                    rertt();
-                }
-            });
+            if(confirm("确定要删除选中的多个角色吗?")){
+                $.ajax({
+                    type:'POST',
+                    url: '${ctx}/measures/deleteManySpecial/'+ids,
+                    data: '',
+                    dataType: "json",
+                    success: function(data){
+                        showTips(data.msg);
+                        rertt();
+                    }
+                });
+
+            }
 
         }
 

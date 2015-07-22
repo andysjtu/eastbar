@@ -110,6 +110,7 @@
     }
 
     function replaceStatus(val,row,index){
+       // alert(val);
         if(val){
             return '连接';
         }else{

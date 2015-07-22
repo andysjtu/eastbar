@@ -52,6 +52,9 @@ public class MonitorBO extends PageInfo {
     private Long totalPunish; //TOTAL_PUNISH
     private Long lastUpdateTime; //LAST_UPDATE_TIME
 
+    /** require compute*/
+    private String serverOnlineRate;  //服务器在线率
+
     public String getMonitorCode() {
         return monitorCode;
     }
@@ -282,6 +285,14 @@ public class MonitorBO extends PageInfo {
 
     public void setKeywordVer(String keywordVer) {
         this.keywordVer = keywordVer;
+    }
+
+    public String getServerOnlineRate() {
+        return serverOnlineRate;
+    }
+
+    public void setServerOnlineRate(String serverOnlineRate) {
+        this.serverOnlineRate = serverOnlineRate;
     }
 
     @Override

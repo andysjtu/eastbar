@@ -187,14 +187,21 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
     @Override
     public Boolean deleteMany(Integer[] ids) {
         boolean flag=false;
-        int ver=manageRuleService.get().getSpecialVerNum();
-        int i=rmiService.sendSpecialCustomerVersion(ver+1,ids,"remove");
-        if(i!=0){
-            throw new RuntimeException();
+        SpecialCustomerBO specialCustomerBO=getSpecialCustomer(ids[0]);
+        if(specialCustomerBO!=null && specialCustomerBO.getIsPub()!=null && specialCustomerBO.getIsPub()==1){
+            int ver=manageRuleService.get().getSpecialVerNum();
+            int i=rmiService.sendSpecialCustomerVersion(ver+1,ids,"remove");
+            if(i!=0){
+                throw new RuntimeException();
+            }else{
+                flag=true;
+            }
+            return flag;
         }else{
-            flag=true;
+            deleteByLocal(ids);
+            return true;
         }
-        return flag;
+
     }
 
     @Override
@@ -207,6 +214,14 @@ public class SpecialCustomerServiceImpl implements SpecialCustomerService {
             throw new RuntimeException();
          }
         return i;
+    }
+
+    @Transactional
+    private boolean deleteByLocal(Integer[] ids){
+        for(Integer id:ids){
+            delete(id);
+        }
+        return true;
     }
 }
 

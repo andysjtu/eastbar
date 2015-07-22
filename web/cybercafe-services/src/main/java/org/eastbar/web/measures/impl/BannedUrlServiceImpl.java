@@ -207,14 +207,21 @@ public class BannedUrlServiceImpl implements BannedUrlService {
     @Override
     public Boolean deleteMany(Integer[] ids) {
         boolean flag=false;
-        int ver=manageRuleService.get().getUrlVerNum();
-        int i=rmiService.sendBannedUrlVersion(ver+1,ids,"remove");
-        if(i!=0){
-            throw new RuntimeException();
+        BannedUrlBO bannedUrlBO=getBannedUrl(ids[0]);
+        if(bannedUrlBO!=null && bannedUrlBO.getIsPub()!=null && bannedUrlBO.getIsPub()==1){
+            int ver=manageRuleService.get().getUrlVerNum();
+            int i=rmiService.sendBannedUrlVersion(ver+1,ids,"remove");
+            if(i!=0){
+                throw new RuntimeException();
+            }else{
+                flag=true;
+            }
+            return flag;
         }else{
-            flag=true;
+            deleteByLocal(ids);
+            return true;
         }
-        return flag;
+
     }
 
     @Override
@@ -296,6 +303,14 @@ public class BannedUrlServiceImpl implements BannedUrlService {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Transactional
+    private boolean deleteByLocal(Integer[] ids){
+        for(Integer id:ids){
+            delete(id);
+        }
+        return true;
     }
 }
 

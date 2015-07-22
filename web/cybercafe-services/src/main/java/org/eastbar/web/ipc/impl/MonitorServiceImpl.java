@@ -114,6 +114,18 @@ public class MonitorServiceImpl implements MonitorService {
                         }
                     }
                     Long counts=alarmHistoryService.getCountByCode(mb.getMonitorCode());
+                    //计算服务器在线率
+                    if(mb.getOpenSite()!=null && mb.getPermitSite()!=null){
+                        long openSite=mb.getOpenSite();
+                        long permitSite=mb.getPermitSite();
+                        if(openSite!=0 && permitSite!=0){
+                            double rate=(openSite+0.0)/(permitSite+0.0);
+                            mb.setServerOnlineRate(String.format("%.2f", rate*100)+"%");
+                        }else{
+                            mb.setServerOnlineRate("0.0%");
+                        }
+
+                    }
                     mb.setTotalAlarm(counts);
                     mbl.add(mb);
                 }

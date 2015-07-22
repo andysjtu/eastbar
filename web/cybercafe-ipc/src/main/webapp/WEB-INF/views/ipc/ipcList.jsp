@@ -61,6 +61,7 @@
                     <th data-options="field:'totalTerminal',align:'center'" width="6%">终端总数</th>
                     <th data-options="field:'totalAlarm',align:'center',formatter:formatAlarm" width="7%">本周报警数</th>
                     <th data-options="field:'totalPunish',align:'center',formatter:formatPunish" width="6%">处罚记录</th>
+                    <th data-options="field:'serverOnlineRate',align:'center'" width="6%">服务器在线率</th>
                     <th data-options="field:'_operate',align:'center',formatter:formatOper" width="10%">操作</th>
                 </tr>
                 </thead>

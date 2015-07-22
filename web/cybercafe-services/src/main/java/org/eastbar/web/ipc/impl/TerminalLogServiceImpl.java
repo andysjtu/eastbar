@@ -128,7 +128,7 @@ public class TerminalLogServiceImpl implements TerminalLogService {
                     tb.setSiteTerminalTotalNum(num);
                     tb.setSiteTerminalUnknowNum(state[2]);
                 }
-            }
+          }
         }catch (Exception e){
             e.printStackTrace();
             tb.setSiteTerminalTotalNum(0);
