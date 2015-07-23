@@ -27,7 +27,7 @@ public class AlarmHistoryBO extends PageInfo {
     private String alarmLevel;
     private String alarmContent;
     private String customerName;//customer_name
-    private String customerCertType;//customer_cert_type
+    private Integer customerCertType;//customer_cert_type
     private String customerCertId;//customer_cert_id
 
 
@@ -119,11 +119,11 @@ public class AlarmHistoryBO extends PageInfo {
         this.customerName = customerName;
     }
 
-    public String getCustomerCertType() {
+    public Integer getCustomerCertType() {
         return customerCertType;
     }
 
-    public void setCustomerCertType(String customerCertType) {
+    public void setCustomerCertType(Integer customerCertType) {
         this.customerCertType = customerCertType;
     }
 

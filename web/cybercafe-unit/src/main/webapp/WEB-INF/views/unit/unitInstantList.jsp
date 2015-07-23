@@ -54,11 +54,11 @@
 				pageSize:10,url:'${ctx}/unit/instantjson',method:'post',queryParams:$.formParams('#sform')">
             <thead>
             <tr>
-                <th data-options="field:'siteCode',align:'center'" width="6%">场所编码</th>
+                <th data-options="field:'siteCode',align:'center'" width="10%">场所编码</th>
                 <%--<th data-options="field:'monitorCode',align:'center'" width="6%">监管中心编码</th>--%>
                 <th data-options="field:'instantType',align:'center',formatter:replaceType" width="8%">通信类型</th>
-                <th data-options="field:'programName',align:'center'" width="12%">程序名称</th>
-                <th data-options="field:'progAccount',align:'center'" width="7%">程序账号</th>
+                <%--<th data-options="field:'programName',align:'center'" width="12%">程序名称</th>--%>
+                <th data-options="field:'progAccount',align:'center'" width="10%">程序账号</th>
                 <th data-options="field:'hostIp',align:'center'" width="10%">客户机地址</th>
                 <th data-options="field:'startTime',align:'center'" width="9%">开始时间</th>
                 <th data-options="field:'endTime',align:'center'" width="9%">结束时间</th>

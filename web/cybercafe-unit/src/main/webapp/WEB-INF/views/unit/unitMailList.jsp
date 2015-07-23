@@ -56,7 +56,7 @@
 				pageSize:10,url:'${ctx}/unit/mailjson',method:'post',queryParams:$.formParams('#sform')">
             <thead>
             <tr>
-                <th data-options="field:'siteCode',align:'center'" width="6%">场所编码</th>
+                <th data-options="field:'siteCode',align:'center'" width="10%">场所编码</th>
                 <th data-options="field:'emailType',align:'center',formatter:replaceType" width="8%">email类型</th>
                 <th data-options="field:'emailAccount',align:'center'" width="12%">email账号</th>
                 <th data-options="field:'receive',align:'center'" width="7%">接收者</th>

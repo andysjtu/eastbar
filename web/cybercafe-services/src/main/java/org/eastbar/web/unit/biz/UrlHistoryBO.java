@@ -28,7 +28,7 @@ public class UrlHistoryBO extends PageInfo {
     private String AccessTime;//accessTime
     private String customerName;//customer_name
     private String customerId;//customer_id
-    private String customerType;//customer_id_type
+    private Integer customerType;//customer_id_type
     private Integer isBlock;//is_block
 
 
@@ -128,11 +128,11 @@ public class UrlHistoryBO extends PageInfo {
         this.customerId = customerId;
     }
 
-    public String getCustomerType() {
+    public Integer getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(String customerType) {
+    public void setCustomerType(Integer customerType) {
         this.customerType = customerType;
     }
 

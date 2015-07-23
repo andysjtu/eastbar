@@ -28,7 +28,7 @@ public class ProgHistoryBO extends PageInfo {
     private String endTime;//end_time
     private String customerName;//customer_name
     private String customerId;//customer_id
-    private String customerIdType;//customer_id_type
+    private Integer customerIdType;//customer_id_type
     private Integer isBlock;//is_block
 
 
@@ -128,11 +128,11 @@ public class ProgHistoryBO extends PageInfo {
         this.customerId = customerId;
     }
 
-    public String getCustomerIdType() {
+    public Integer getCustomerIdType() {
         return customerIdType;
     }
 
-    public void setCustomerIdType(String customerIdType) {
+    public void setCustomerIdType(Integer customerIdType) {
         this.customerIdType = customerIdType;
     }
 

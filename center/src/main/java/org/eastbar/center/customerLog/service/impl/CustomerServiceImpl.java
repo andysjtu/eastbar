@@ -42,7 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
                 customer.setAccountId(hostEvent.getAccount());
                 String siteCode = hostEvent.getSiteCode();
                 customer.setSiteCode(siteCode);
-                if (siteCode != null && !"".equals(siteCode)) {
+                if (siteCode != null && !"".equals(siteCode) && siteCode.length()>6) {
                     String cityCode = siteCode.substring(0, 4);
                     customer.setCityCode(cityCode);
                     String provinceCode = siteCode.substring(0, 3);
@@ -75,12 +75,12 @@ public class CustomerServiceImpl implements CustomerService {
                         if (result == 0) {
                             this.save(customer);
                         }
-                        customerHost.setOfflineTime(hostEvent.getLogoutTime());
                         if (customerHostDao.get(customerHost) == null) {
                             customer = customerDao.getCustomer(customer);
                             customerHost.setCid(customer.getId());
                             customerHostDao.save(customerHost);
                         } else {
+                            customerHost.setOfflineTime(hostEvent.getLogoutTime());
                             customerHostDao.update(customerHost);
                         }
                         flag = true;

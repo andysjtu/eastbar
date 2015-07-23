@@ -31,7 +31,7 @@ public class InstantMessageHistory implements Serializable {
     private String endTime;
     private String customerName;
     private String customerId;
-    private String customerIdType;
+    private Integer customerIdType;
     private Integer instantType;
     private String progAccount;
 
@@ -132,11 +132,11 @@ public class InstantMessageHistory implements Serializable {
         this.customerName = customerName;
     }
 
-    public String getCustomerIdType() {
+    public Integer getCustomerIdType() {
         return customerIdType;
     }
 
-    public void setCustomerIdType(String customerIdType) {
+    public void setCustomerIdType(Integer customerIdType) {
         this.customerIdType = customerIdType;
     }
 

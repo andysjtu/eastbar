@@ -28,7 +28,7 @@ public class MailHistoryBO extends PageInfo {
     private String startTime;
     private String endTime;
     private String customerName;
-    private String customerIdType;
+    private Integer customerIdType;
     private String emailAccount;
     private String receive;
     private String theme;
@@ -131,11 +131,11 @@ public class MailHistoryBO extends PageInfo {
         this.customerName = customerName;
     }
 
-    public String getCustomerIdType() {
+    public Integer getCustomerIdType() {
         return customerIdType;
     }
 
-    public void setCustomerIdType(String customerIdType) {
+    public void setCustomerIdType(Integer customerIdType) {
         this.customerIdType = customerIdType;
     }
 

@@ -35,8 +35,8 @@
                         <p/>
                         <p><span class="ipm">状态<select name="status">
                             <option></option>
-                            <option value="0">online</option>
-                            <option value="1">offline</option>
+                            <option value="3">在线</option>
+                            <option value="0">离线</option>
                         </select></span>
                             <span class="ipm">场所编码<input type="text" name="siteCode"/></span></p>
                         <p class="dp pt5" style="display: none;"><span class="ipm">时间<input name="btime"  type="text" class="easyui-datetimebox" value=""/></span>

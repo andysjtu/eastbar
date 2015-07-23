@@ -26,7 +26,7 @@ public class UrlHistory implements Serializable {//t_url_history
     private String AccessTime;//accessTime
     private String customerName;//customer_name
     private String customerId;//customer_id
-    private String customerType;//customer_id_type
+    private Integer customerType;//customer_id_type
     private Integer isBlock;//is_block
 
     public Integer getCid() {
@@ -133,11 +133,11 @@ public class UrlHistory implements Serializable {//t_url_history
         this.isBlock = isBlock;
     }
 
-    public String getCustomerType() {
+    public Integer getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(String customerType) {
+    public void setCustomerType(Integer customerType) {
         this.customerType = customerType;
     }
 }

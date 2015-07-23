@@ -95,10 +95,13 @@ public class CenterRedisServiceImpl implements CenterRedisService {
             String key= RedisKey.createTerminalKey(siteCode, ip);
             String setKey= RedisKey.createSetTerminalKey(siteCode);
             String onlineTime=terminalLog.get("onlineTime");
-            Dates.dateTransfer(onlineTime);
-            terminalLog.put("onlineTime",onlineTime);
-            hashOperations.putAll(key,terminalLog);
-            setOperations.add(setKey,ip);
+            if(onlineTime!=null && !"".equals(onlineTime)){
+                Dates.dateTransfer(onlineTime);
+                terminalLog.put("onlineTime",onlineTime);
+                hashOperations.putAll(key,terminalLog);
+                setOperations.add(setKey,ip);
+            }
+
         }
 
 
@@ -295,6 +298,26 @@ public class CenterRedisServiceImpl implements CenterRedisService {
 
     @Override
     public Boolean deleteStrategyLibrary() throws Exception {
-        return null;
+        boolean flag=false;
+        Set bannedProg=redisTemplate.keys("bannedProg*");
+        Set bannedUrl=redisTemplate.keys("bannedUrl*");
+        Set keyword=redisTemplate.keys("keyword*");
+        Set specialCustomer=redisTemplate.keys("specialCustomer*");
+        Set prog=redisTemplate.keys("prog*");
+        Set url=redisTemplate.keys("url*");
+        Set lasted=redisTemplate.keys("lasted*");
+        Set updated=redisTemplate.keys("updated*");
+        bannedProg.addAll(bannedUrl);
+        bannedProg.addAll(keyword);
+        bannedProg.addAll(prog);
+        bannedProg.addAll(url);
+        bannedProg.addAll(lasted);
+        bannedProg.addAll(updated);
+        if(!bannedProg.isEmpty()){
+            //bannedProg 包含里策略里面所有的key
+            redisTemplate.delete(bannedProg);
+            flag=true;
+        }
+        return false;
     }
 }

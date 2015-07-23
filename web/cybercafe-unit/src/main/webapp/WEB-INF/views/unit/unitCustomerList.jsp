@@ -51,12 +51,12 @@
 				pageSize:10,url:'${ctx}/unit/customerjson',method:'post',queryParams:$.formParams('#sform')">
             <thead>
             <tr>
-                <th data-options="field:'customerName',align:'center',formatter:showName" width="15%">客户姓名</th>
-                <th data-options="field:'accountId',align:'center',formatter:showId" width="15%">客户账号</th>
-                <th data-options="field:'ipAdd',align:'center'" width="15%">客户端IP</th>
-                <th data-options="field:'onlineTime',align:'center'" width="15%">上机时间</th>
-                <th data-options="field:'offlineTime',align:'center'" width="15%">下机时间</th>
-                <th data-options="field:'osSystem',align:'center'" width="15%">客户机操作系统名称</th>
+                <th data-options="field:'customerName',align:'center',formatter:showName" width="12%">客户姓名</th>
+                <th data-options="field:'accountId',align:'center',formatter:showId" width="12%">客户账号</th>
+                <th data-options="field:'ipAdd',align:'center'" width="12%">客户端IP</th>
+                <th data-options="field:'onlineTime',align:'center'" width="12%">上机时间</th>
+                <th data-options="field:'offlineTime',align:'center'" width="12%">下机时间</th>
+                <th data-options="field:'osSystem',align:'center'" width="12%">客户机操作系统名称</th>
                 <th data-options="field:'version',align:'center'" width="9%">监管软件版本</th>
             </tr>
             </thead>
