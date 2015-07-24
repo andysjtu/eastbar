@@ -130,7 +130,7 @@
     }
 
     function replaceBlock(val,row,index){
-        if(row.isBlock==1){
+        if(row.isBlock==0){
             return '是'
         }
         else{

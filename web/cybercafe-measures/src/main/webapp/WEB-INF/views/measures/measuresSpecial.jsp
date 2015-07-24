@@ -183,7 +183,7 @@
                 ids.push(id); //然后把单个id循环放到ids的数组中
             }
 
-            if(confirm("确定要删除选中的多个角色吗?")){
+            if(confirm("确定要删除选中的多个特殊人员吗?")){
                 $.ajax({
                     type:'POST',
                     url: '${ctx}/measures/deleteManySpecial/'+ids,

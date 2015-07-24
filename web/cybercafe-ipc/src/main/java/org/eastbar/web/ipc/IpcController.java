@@ -100,6 +100,9 @@ public class IpcController {
         int grade=1;
         if(monitorList.size()==0){
            grade=0;
+        }else{
+            model.addAttribute("name",monitorList.get(0).getName());
+            model.addAttribute("monitorCode",monitorList.get(0).getMonitorCode());
         }
         model.addAttribute("grade",grade);
         return "ipc/ipcAdd";

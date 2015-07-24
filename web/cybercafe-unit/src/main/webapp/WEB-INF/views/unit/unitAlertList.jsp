@@ -29,9 +29,11 @@
                         <p><span class="ipm">场所编码<input type="text" name="siteCode" value="${siteCode}"/></span>
                             <span class="ipm">告警类型<select name="alarmType">
                                 <option></option>
-                                <option value="1">url拦截告警</option>
-                                <option value="2">程序监管告警</option>
-                                <option value="3">非法信息告警</option>
+                                <option value="1">游戏、程序告警</option>
+                                <option value="2">运行告警</option>
+                                <option value="3">URL访问告警</option>
+                                <option value="4">特殊人员告警</option>
+                                <option value="5">关键字告警</option>
                             </select></span></p>
                         <p class="dp pt5"><span class="ipm">时间<input name="btime"  type="text" class="easyui-datetimebox" value="${alarmHistoryBO.btime}"/></span>
                             <span class="ipm">&nbsp;&nbsp;至&nbsp;<input name="etime" type="text" class="easyui-datetimebox" value="${alarmHistoryBO.etime}"/></span></p>
@@ -74,12 +76,25 @@
 </form>
 <script>
     function replaceType(val,row,index){
+//        if(row.alarmType==1){
+//            return 'url拦截告警'
+//        }else if(row.alarmType==2){
+//            return '程序监管告警';
+//        }else if(row.alarmType==3){
+//            return '非法信息告警';
+//        }
         if(row.alarmType==1){
-            return 'url拦截告警'
-        }else if(row.alarmType==2){
-            return '程序监管告警';
-        }else if(row.alarmType==3){
-            return '非法信息告警';
+            return '游戏、程序报警'
+        }
+        else if(row.alarmType==5){
+            return '关键字报警';
+        }
+        else if(row.alarmType==3){
+            return 'URL访问报警';
+        }else if(row.alarmType==4){
+            return '特殊人员报警';
+        }else{
+            return '运行报警';
         }
     }
 

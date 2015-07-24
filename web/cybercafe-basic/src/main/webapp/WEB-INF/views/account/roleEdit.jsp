@@ -14,16 +14,16 @@
             <div class="mlr8" style="border: 1px solid #d4d4d4;">
                 <input type="hidden" value="${roleBO.id}" name="id"/>
                 <hr/><blockquote> <small>角色信息</small></blockquote>
-                <div class="control-group">
-                    <label class="control-label">监管中心：</label>
-                    <div class="controls">
-                        <select id="monitorCode" name="monitorCode">
-                            <c:forEach items="${monitors}" var="monitor">
-                                <option value="${monitor.monitorCode}">${monitor.name}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
+                <%--<div class="control-group">--%>
+                    <%--<label class="control-label">监管中心：</label>--%>
+                    <%--<div class="controls">--%>
+                        <%--<select id="monitorCode" name="monitorCode">--%>
+                            <%--<c:forEach items="${monitors}" var="monitor">--%>
+                                <%--<option value="${monitor.monitorCode}">${monitor.name}</option>--%>
+                            <%--</c:forEach>--%>
+                        <%--</select>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="control-group">
                     <label class="control-label">显示名称：</label>
                     <div class="controls">
@@ -63,12 +63,13 @@
     }
 
     $(function() {
-        var monitorCodes=document.getElementById("monitorCode");
-        for(i=0;i<monitorCodes.length;i++){
-            if(monitorCodes.options[i].value==${roleBO.monitor[0].monitorCode}){
-                monitorCodes.options[i].selected=true;
-            }
-        }
+        $("#monitorCode").val(${roleBO.monitor[0].monitorCode});
+        <%--var monitorCodes=document.getElementById("monitorCode");--%>
+        <%--for(i=0;i<monitorCodes.length;i++){--%>
+            <%--if(monitorCodes.options[i].value==${roleBO.monitor[0].monitorCode}){--%>
+                <%--monitorCodes.options[i].selected=true;--%>
+            <%--}--%>
+        <%--}--%>
 
     });
 </script>

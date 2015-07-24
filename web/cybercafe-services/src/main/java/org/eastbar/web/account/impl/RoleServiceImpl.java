@@ -15,6 +15,7 @@ import org.eastbar.web.account.dao.UserRoleDao;
 import org.eastbar.web.account.entity.Role;
 import org.eastbar.web.account.entity.RolePermission;
 import org.eastbar.web.account.entity.UserRole;
+import org.eastbar.web.ipc.MonitorService;
 import org.eastbar.web.ipc.dao.MonitorDao;
 import org.eastbar.web.ipc.entity.Monitor;
 import org.eastbar.web.shiro.ShiroCustomUtils;
@@ -47,6 +48,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private MonitorDao monitorDao;
+
+    @Autowired
+    private MonitorService monitorService;
 
     @Override
     public RoleBO get(Integer id) {
@@ -178,7 +182,13 @@ public class RoleServiceImpl implements RoleService {
         if(monitors.size()==0){
             Map<String,Object> re=new HashMap<>();
             re.put("parentCode",null);
-            monitorList=monitorDao.byParentCode(re);
+            List<Monitor> monitorss=monitorDao.byParentCode(re);
+            monitorList.addAll(monitorss);
+            for(Monitor m:monitorss){
+                re.put("parentCode",m.getMonitorCode());
+                List<Monitor> ms=monitorDao.byParentCodeSe(re);
+                monitorList.addAll(ms);
+            }
         }
         else if(monitors.get(0).getMonitorCode().length()==4){
             Map<String,Object> re=new HashMap<>();

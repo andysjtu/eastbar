@@ -107,18 +107,20 @@
         if(row.alarmType==1){
             return '游戏、程序报警'
         }
-        else if(row.alarmType==2){
-            return '运行报警';
+        else if(row.alarmType==5){
+            return '关键字报警';
         }
         else if(row.alarmType==3){
             return 'URL访问报警';
-        }else{
+        }else if(row.alarmType==4){
             return '特殊人员报警';
+        }else{
+            return '运行报警';
         }
     }
 
     function replaceBlock(val,row,index){
-        if(row.isBlock==1){
+        if(row.isBlock==0){
             return '是'
         }
         else{
@@ -175,7 +177,7 @@
                 ids.push(id); //然后把单个id循环放到ids的数组中
             }
 
-            if(confirm("确定要删除选中的多个IP吗?")){
+            if(confirm("确定要删除选中的多个关键字吗?")){
                 $.ajax({
                     type:'POST',
                     url: '${ctx}/measures/deleteManyKeyWord/'+ids,

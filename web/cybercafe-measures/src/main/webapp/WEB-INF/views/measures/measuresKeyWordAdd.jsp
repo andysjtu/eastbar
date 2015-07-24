@@ -67,8 +67,8 @@
 
                     <div class="controls">
                         <select name="isBlocks">
-                            <option value="1">是</option>
-                            <option value="0">否</option>
+                            <option value="0">是</option>
+                            <option value="1">否</option>
                         </select>
                     </div>
                 </div>

@@ -239,10 +239,18 @@ public class MonitorServiceImpl implements MonitorService {
     @Override
     public List<Monitor> getMonitors() {
         List<Monitor> monitors=getUserMonitors();
+        List<Monitor> monitorListAll=new ArrayList<>();
         Map<String,Object> re=new HashMap<>();
        if(monitors.size()==0){
            re.put("parentCode",null);
-         return  monitorDao.byParentCode(re);
+           List<Monitor> monitorList=monitorDao.byParentCode(re);
+           monitorListAll.addAll(monitorList);
+           for(Monitor m:monitorList){
+               re.put("parentCode",m.getMonitorCode());
+               List<Monitor> monitors1=monitorDao.byParentCodeSe(re);
+               monitorListAll.addAll(monitors1);
+           }
+           return monitorListAll;
        }
        else{
            re.put("parentCode", monitors.get(0).getMonitorCode());
@@ -282,7 +290,12 @@ public class MonitorServiceImpl implements MonitorService {
         if(type==2){
             Map<String,Object> re=new HashMap<>();
             re.put("parentCode",null);
-            return  monitorDao.byParentCode(re);
+            if(getUserMonitors().size()==0){
+                return  monitorDao.byParentCode(re);
+            }else{
+                return getUserMonitors();
+            }
+
         }
         return null;
     }

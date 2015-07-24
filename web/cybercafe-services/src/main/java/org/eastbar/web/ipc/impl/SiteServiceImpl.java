@@ -102,7 +102,7 @@ public class SiteServiceImpl implements SiteService {
                         if(tb.getSiteTerminalTotalNum()!=null && tb.getSiteTerminalUnknowNum()!=null){
                             int usingNum=tb.getSiteTerminalTotalNum();
                             int unKnownNum=tb.getSiteTerminalUnknowNum();
-                            if(usingNum!=0 && unKnownNum!=0){
+                            if(usingNum!=0 || unKnownNum!=0){
                                 double rate=(usingNum+0.0)/(unKnownNum+usingNum+0.0);
                                 sb.setInstallationRate(String.format("%.2f", rate*100)+"%");
                             }else{
